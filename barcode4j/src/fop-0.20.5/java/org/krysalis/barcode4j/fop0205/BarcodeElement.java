@@ -25,7 +25,6 @@ import org.w3c.dom.Element;
 import org.apache.avalon.framework.CascadingRuntimeException;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.logger.NullLogger;
 import org.apache.fop.apps.FOPException;
 import org.apache.fop.fo.FObj;
 import org.apache.fop.fo.PropertyList;
@@ -202,7 +201,7 @@ public class BarcodeElement extends BarcodeObj {
             //MessageHandler.logln("Render mode: " + renderMode);
             
             BarcodeGenerator bargen = BarcodeUtil.getInstance().
-                    createBarcodeGenerator(cfg, new NullLogger());
+                    createBarcodeGenerator(cfg);
             String expandedMsg = VariableUtil.getExpandedMessage(foa.getPage(), msg);
             BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
             final float w = (float)UnitConv.mm2pt(bardim.getWidthPlusQuiet()) * 1000;

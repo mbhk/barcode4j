@@ -147,7 +147,7 @@ public class CommandLineTestCase extends AbstractBarcodeTestCase {
         final String[] args = {"-c", cfgFile.getAbsolutePath(),
             "9771422985503+00006"};
         callCLI(args);
-        assertEquals("Exit code must be -3", -3, this.exitHandler.getLastExitCode());
+        assertEquals("Exit code must be -6", -6, this.exitHandler.getLastExitCode());
         assertNotNull(this.exitHandler.getLastMsg());
         assertNotNull(this.exitHandler.getLastThrowable());
         assertTrue("In case of error stdout may only be written to if there's "

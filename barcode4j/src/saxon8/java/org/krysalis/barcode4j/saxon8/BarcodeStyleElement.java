@@ -19,7 +19,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.logger.Logger;
+import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
@@ -88,7 +88,6 @@ public class BarcodeStyleElement extends StyleElement {
 
     private static class BarcodeInstruction extends Instruction {
 
-        private Logger log = new org.apache.avalon.framework.logger.ConsoleLogger();
         private Expression message;
         private Configuration cfg;
         
@@ -117,7 +116,7 @@ public class BarcodeStyleElement extends StyleElement {
 
                 //Acquire BarcodeGenerator
                 final BarcodeGenerator gen = 
-                        BarcodeUtil.getInstance().createBarcodeGenerator(cfg, log);
+                        BarcodeUtil.getInstance().createBarcodeGenerator(cfg);
         
                 //Setup Canvas
                 final SVGCanvasProvider svg;
@@ -133,6 +132,8 @@ public class BarcodeStyleElement extends StyleElement {
                             SVGCanvasProvider.SVG_NAMESPACE);
                 out.append(wrapper);
 
+            } catch (ConfigurationException ce) {
+                throw new TransformerException("(Barcode4J) " + ce.getMessage());
             } catch (BarcodeException be) {
                 throw new TransformerException("(Barcode4J) " + be.getMessage());
             }

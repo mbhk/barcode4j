@@ -20,7 +20,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
-import org.apache.avalon.framework.logger.Logger;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
 
@@ -43,8 +42,6 @@ public class PlaygroundFrame extends Frame {
         add("Center", bcpanel);
         
         try {
-            Logger log = new org.apache.avalon.framework.logger.ConsoleLogger();
-            
             DefaultConfiguration cfg = new DefaultConfiguration("ean-13");
             DefaultConfiguration child = new DefaultConfiguration("human-readable-font");
             //child.setValue("OCR-B 10 Pitch BT");
@@ -52,7 +49,7 @@ public class PlaygroundFrame extends Frame {
             cfg.addChild(child);
             
             BarcodeGenerator gen = 
-                    BarcodeUtil.getInstance().createBarcodeGenerator(cfg, log);
+                    BarcodeUtil.getInstance().createBarcodeGenerator(cfg);
             
             bcpanel.setBarcode(gen, "419458670510+06");
         } catch (Exception e) {

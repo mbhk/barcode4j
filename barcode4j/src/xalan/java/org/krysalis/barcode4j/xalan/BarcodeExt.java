@@ -18,7 +18,6 @@ package org.krysalis.barcode4j.xalan;
 import javax.xml.transform.TransformerException;
 
 import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.logger.Logger;
 import org.apache.xalan.extensions.XSLProcessorContext;
 import org.apache.xalan.templates.ElemExtensionCall;
 import org.krysalis.barcode4j.BarcodeGenerator;
@@ -38,8 +37,6 @@ import org.xml.sax.SAXException;
  */
 public class BarcodeExt {
 
-    private Logger log = new org.apache.avalon.framework.logger.ConsoleLogger();
-
     /**
      * Generates a barcode in SVG format as a DOM fragment.
      * @param nl node list with the XML configuration
@@ -56,7 +53,7 @@ public class BarcodeExt {
             
             //Acquire BarcodeGenerator
             final BarcodeGenerator gen = 
-                    BarcodeUtil.getInstance().createBarcodeGenerator(cfg, log);
+                    BarcodeUtil.getInstance().createBarcodeGenerator(cfg);
     
             //Setup Canvas
             final SVGCanvasProvider svg;
@@ -94,7 +91,7 @@ public class BarcodeExt {
             
             //Acquire BarcodeGenerator
             final BarcodeGenerator gen = 
-                    BarcodeUtil.getInstance().createBarcodeGenerator(cfg, log);
+                    BarcodeUtil.getInstance().createBarcodeGenerator(cfg);
     
             //Setup Canvas
             final SVGCanvasProvider svg;
