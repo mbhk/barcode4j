@@ -175,7 +175,6 @@ public class BarcodeElement extends BarcodeObj {
 
         //MessageHandler.logln("Creating barcode area");
 
-        final Element barcodeRoot = element;
         /* create a barcode area */
         /* if width and height are zero, get the bounds of the content. */
         final ForeignObjectArea foa = (ForeignObjectArea)area;
@@ -210,6 +209,8 @@ public class BarcodeElement extends BarcodeObj {
             
             
             BarcodeArea barcodeArea = createArea(fs, w, h);
+            barcodeArea.setParent(foa);
+            barcodeArea.setPage(foa.getPage());
             barcodeArea.setBarcode(bargen, msg, renderMode);
             barcodeArea.start();
             barcodeArea.end();

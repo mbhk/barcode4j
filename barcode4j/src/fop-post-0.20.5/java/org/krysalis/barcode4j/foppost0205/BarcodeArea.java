@@ -72,7 +72,7 @@ public class BarcodeArea extends org.krysalis.barcode4j.fop0205.BarcodeArea {
         try {
             ByteArrayOutputStream baout = new ByteArrayOutputStream(1024);
             EPSCanvasProvider epsout = new EPSCanvasProvider(baout);
-            getBarcodeGenerator().generateBarcode(epsout, getMessage());
+            getBarcodeGenerator().generateBarcode(epsout, getExpandedMessage());
             epsout.finish();
             BarcodeDimension dim = epsout.getDimensions();
             int bw = (int)(UnitConv.mm2pt(dim.getWidthPlusQuiet()));
@@ -95,7 +95,7 @@ public class BarcodeArea extends org.krysalis.barcode4j.fop0205.BarcodeArea {
     protected void renderPDFBarcodeNative(PDFRenderer pdfr) {
         try {
             PDFCanvasProvider pdfout = new PDFCanvasProvider();
-            getBarcodeGenerator().generateBarcode(pdfout, getMessage());
+            getBarcodeGenerator().generateBarcode(pdfout, getExpandedMessage());
             PDFFormXObject xobj = pdfout.createXObject(pdfr.getPDFDocument());
             pdfr.renderXObject(xobj.getName(), getWidth(), getHeight(), getFontState());
         } catch (IOException ioe) {
