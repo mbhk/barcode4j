@@ -81,7 +81,7 @@ public class CodabarBean extends AbstractBarcodeBean {
     }
 
     /**
-     * @see org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator#getBarWidth(int)
+     * @see org.krysalis.barcode4j.impl.AbstractBarcodeBean#getBarWidth(int)
      */
     public double getBarWidth(int width) {
         if (width == 1) {

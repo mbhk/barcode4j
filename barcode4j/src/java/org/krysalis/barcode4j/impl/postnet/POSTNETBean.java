@@ -99,7 +99,7 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
     }
     
     /**
-     * @see org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator#getBarWidth(int)
+     * @see org.krysalis.barcode4j.impl.AbstractBarcodeBean#getBarWidth(int)
      */
     public double getBarWidth(int width) {
         if (width == 1) {
@@ -163,7 +163,7 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
     }
 
     /**
-     * @see org.krysalis.barcode4j.impl.HeightVariableBarcodeBean#setBaselinePosition(int)
+     * @see org.krysalis.barcode4j.impl.HeightVariableBarcodeBean#setBaselinePosition(BaselineAlignment)
      */
     public void setBaselinePosition(BaselineAlignment baselinePosition) {
         this.baselinePosition = baselinePosition;
