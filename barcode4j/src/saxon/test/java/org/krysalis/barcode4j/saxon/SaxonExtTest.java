@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * The Krysalis Patchy Software License, Version 1.1_01
- * Copyright (c) 2003 Nicola Ken Barozzi.  All rights reserved.
+ * Copyright (c) 2003-2004 Nicola Ken Barozzi.  All rights reserved.
  *
  * This Licence is compatible with the BSD licence as described and
  * approved by http://www.opensource.org/, and is based on the
@@ -69,8 +69,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.krysalis.barcode4j.AbstractBarcodeTestCase;
 
-import com.icl.saxon.TransformerFactoryImpl;
-
 /**
  * Test class for the Saxon 6.x extension.
  * 
@@ -83,7 +81,8 @@ public class SaxonExtTest extends AbstractBarcodeTestCase {
     }
     
     public void testSaxonExt() throws Exception {
-        TransformerFactory factory = new TransformerFactoryImpl();
+        Class clazz = Class.forName("com.icl.saxon.TransformerFactoryImpl");
+        TransformerFactory factory = (TransformerFactory)clazz.newInstance();
         Transformer trans = factory.newTransformer(new StreamSource(
                 new File(getBaseDir(), "src/saxon/test/xml/saxon-test.xsl")));
         Source src = new StreamSource(
