@@ -15,6 +15,9 @@
  */
 package org.krysalis.barcode4j.impl;
 
+import org.krysalis.barcode4j.impl.code128.Code128Encoder;
+import org.krysalis.barcode4j.impl.code128.DefaultCode128Encoder;
+
 import junit.framework.TestCase;
 
 /**

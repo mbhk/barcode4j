@@ -16,6 +16,8 @@
 package org.krysalis.barcode4j.impl;
 
 import org.krysalis.barcode4j.ChecksumMode;
+import org.krysalis.barcode4j.impl.postnet.POSTNET;
+import org.krysalis.barcode4j.impl.postnet.POSTNETLogicImpl;
 
 import junit.framework.TestCase;
 

@@ -16,6 +16,8 @@
 package org.krysalis.barcode4j.impl;
 
 import org.krysalis.barcode4j.ChecksumMode;
+import org.krysalis.barcode4j.impl.code39.Code39;
+import org.krysalis.barcode4j.impl.code39.Code39LogicImpl;
 
 import junit.framework.TestCase;
 

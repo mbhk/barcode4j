@@ -16,6 +16,8 @@
 package org.krysalis.barcode4j.impl;
 
 import org.krysalis.barcode4j.ChecksumMode;
+import org.krysalis.barcode4j.impl.codabar.Codabar;
+import org.krysalis.barcode4j.impl.codabar.CodabarLogicImpl;
 
 import junit.framework.TestCase;
 

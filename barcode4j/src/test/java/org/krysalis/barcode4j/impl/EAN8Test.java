@@ -16,6 +16,8 @@
 package org.krysalis.barcode4j.impl;
 
 import org.krysalis.barcode4j.ChecksumMode;
+import org.krysalis.barcode4j.impl.upcean.EAN8;
+import org.krysalis.barcode4j.impl.upcean.EAN8LogicImpl;
 
 import junit.framework.TestCase;
 

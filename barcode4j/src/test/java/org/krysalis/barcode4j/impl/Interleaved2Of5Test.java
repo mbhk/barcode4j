@@ -16,6 +16,7 @@
 package org.krysalis.barcode4j.impl;
 
 import org.krysalis.barcode4j.ChecksumMode;
+import org.krysalis.barcode4j.impl.int2fo5.Interleaved2Of5LogicImpl;
 
 import junit.framework.TestCase;
 
