@@ -12,3 +12,4 @@ vfs_cache
 build-local.properties
 checkstyle-noframes.xsl
 .checkstyle
+.externalToolBuilders
