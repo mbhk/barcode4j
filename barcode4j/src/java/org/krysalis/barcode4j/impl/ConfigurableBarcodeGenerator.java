@@ -62,7 +62,6 @@ public abstract class ConfigurableBarcodeGenerator
             Length fs = new Length(hr.getChild("font-size").getValue("8pt"));
             getBean().setFontSize(fs.getValueAsMillimeter());
 
-            //TODO this does not seem to work
             getBean().setFontName(hr.getChild("font-name").getValue("Helvetica"));
         } else {
             //Legacy code for compatibility
