@@ -23,7 +23,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 
-import org.apache.avalon.framework.CascadingRuntimeException;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.output.AbstractCanvasProvider;
 import org.krysalis.barcode4j.tools.UnitConv;
@@ -50,8 +49,8 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
         try {
             this.writer = new java.io.OutputStreamWriter(out, "US-ASCII");
         } catch (UnsupportedEncodingException uee) {
-            throw new CascadingRuntimeException(
-                    "Incompatible VM: Need US-ASCII encoding", uee);
+            throw new RuntimeException(
+                    "Incompatible VM: Need US-ASCII encoding. " + uee.getMessage());
         }
     }
     

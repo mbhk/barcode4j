@@ -31,7 +31,6 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
 import org.apache.avalon.framework.logger.ConsoleLogger;
 import org.apache.avalon.framework.logger.Logger;
-import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
@@ -89,18 +88,14 @@ public class BarcodeServlet extends HttpServlet {
             if (msg == null) msg = "0123456789";
             
             BarcodeUtil util = BarcodeUtil.getInstance();
-            BarcodeGenerator gen = util.createBarcodeGenerator(cfg, log);
+            BarcodeGenerator gen = util.createBarcodeGenerator(cfg);
             
             ByteArrayOutputStream bout = new ByteArrayOutputStream(4096);
             try {
                 if (format.equals(MimeTypes.MIME_SVG)) {
                     //Create Barcode and render it to SVG
                     SVGCanvasProvider svg = new SVGCanvasProvider(false);
-                    try {
-                        gen.generateBarcode(svg, msg);
-                    } catch (Exception e) {
-                        throw new BarcodeException("Error while generating barcode", e);
-                    }
+                    gen.generateBarcode(svg, msg);
                     org.w3c.dom.DocumentFragment frag = svg.getDOMFragment();
                      
                     //Serialize SVG barcode

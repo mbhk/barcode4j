@@ -40,6 +40,7 @@ import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.krysalis.barcode4j.tools.MimeTypes;
 
 import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.avalon.framework.logger.Logger;
@@ -83,12 +84,6 @@ public class Main {
     public static void main(String[] args) {
         Main app = new Main();
         app.handleCommandLine(args);
-        /*
-        try {
-            app.handleCommandLine(args);
-        } catch (Exception e) {
-            exitHandler.failureExit(app, "Unhandled exception", e, -1);
-        }*/
     }
     
     /**
@@ -160,7 +155,7 @@ public class Main {
             log.info("Generating " + format + "...");
             BarcodeUtil util = BarcodeUtil.getInstance();
             BarcodeGenerator gen = util.createBarcodeGenerator(
-                    getConfiguration(cl), log);
+                    getConfiguration(cl));
             
             if (MimeTypes.MIME_SVG.equals(format)) {
                 //Create Barcode and render it to SVG
@@ -205,6 +200,9 @@ public class Main {
         } catch (IOException ioe) {
             exitHandler.failureExit(this, 
                 "Error writing output file: " + ioe.getMessage(), null, -5);
+        } catch (ConfigurationException ce) {
+            exitHandler.failureExit(this, 
+                "Configuration problem: " + ce.getMessage(), ce, -6);
         } catch (BarcodeException be) {
             exitHandler.failureExit(this, 
                 "Error generating the barcode", be, -3);

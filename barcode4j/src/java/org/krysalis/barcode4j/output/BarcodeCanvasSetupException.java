@@ -34,14 +34,4 @@ public class BarcodeCanvasSetupException extends BarcodeException {
         super(message);
     }
 
-    /**
-     * Constructor for BarcodeCanvasSetupException.
-     * 
-     * @param message the detail message for this exception.
-     * @param throwable the root cause of the exception
-     */
-    public BarcodeCanvasSetupException(String message, Throwable throwable) {
-        super(message, throwable);
-    }
-
 }

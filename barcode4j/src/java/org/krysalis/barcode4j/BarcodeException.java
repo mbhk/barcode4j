@@ -15,15 +15,13 @@
  */
 package org.krysalis.barcode4j;
 
-import org.apache.avalon.framework.CascadingException;
-
 /**
  * Base exception class for Barcodes.
  * 
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class BarcodeException extends CascadingException {
+public class BarcodeException extends Exception {
 
     /**
      * Constructor for BarcodeException.
@@ -32,16 +30,6 @@ public class BarcodeException extends CascadingException {
      */
     public BarcodeException(String message) {
         super(message);
-    }
-
-    /**
-     * Constructor for BarcodeException.
-     * 
-     * @param message the detail message for this exception.
-     * @param throwable the root cause of the exception
-     */
-    public BarcodeException(String message, Throwable throwable) {
-        super(message, throwable);
     }
 
 }
