@@ -108,4 +108,10 @@ public class Code128Test extends TestCase {
         assertEquals(expected, sb.toString());
     }
 
+    public void testBug942246() throws Exception {
+        Code128LogicImpl logic = new Code128LogicImpl();
+        logic.generateBarcodeLogic(new NullClassicBarcodeLogicHandler(), "\u00f1020456789012341837100\u00f13101000200");
+        //expect no failure
+    }
+
 }
