@@ -13,3 +13,5 @@ build-local.properties
 checkstyle-noframes.xsl
 .checkstyle
 .externalToolBuilders
+build-site.bat
+deploy-site.bat
