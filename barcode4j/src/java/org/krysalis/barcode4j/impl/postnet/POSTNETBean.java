@@ -19,7 +19,6 @@ import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BaselineAlignment;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.HumanReadablePlacement;
-import org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator;
 import org.krysalis.barcode4j.impl.DefaultHeightVariableLogicHandler;
 import org.krysalis.barcode4j.impl.HeightVariableBarcodeBean;
 import org.krysalis.barcode4j.output.Canvas;

@@ -19,7 +19,6 @@ package org.krysalis.barcode4j.impl.code128;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
 import org.krysalis.barcode4j.impl.AbstractBarcodeBean;
-import org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator;
 import org.krysalis.barcode4j.impl.DefaultCanvasLogicHandler;
 import org.krysalis.barcode4j.output.Canvas;
 import org.krysalis.barcode4j.output.CanvasProvider;

@@ -37,7 +37,7 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
     
     /**
      * Main constructor.
-     * @param bcImpl the barcode implementation class
+     * @param bcBean the barcode implementation class
      * @param canvas the canvas to paint to
      */
     public DefaultCanvasLogicHandler(AbstractBarcodeBean bcBean, Canvas canvas) {

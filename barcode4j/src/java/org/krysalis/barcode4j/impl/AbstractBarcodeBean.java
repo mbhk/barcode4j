@@ -18,7 +18,6 @@ package org.krysalis.barcode4j.impl;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.HumanReadablePlacement;
-import org.krysalis.barcode4j.output.Canvas;
 import org.krysalis.barcode4j.output.CanvasProvider;
 import org.krysalis.barcode4j.tools.UnitConv;
 

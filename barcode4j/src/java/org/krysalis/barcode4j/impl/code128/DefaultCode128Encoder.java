@@ -47,7 +47,7 @@ public class DefaultCode128Encoder implements Code128Encoder {
      *   position in a duo.
      * @return true if the character is in the codeset
      */
-    private final boolean inCodeset(char c, int codeset, boolean second) {
+    private boolean inCodeset(char c, int codeset, boolean second) {
         switch (codeset) {
             case CODESET_A: return Code128LogicImpl.isInCodeSetA(c);
             case CODESET_B: return Code128LogicImpl.isInCodeSetB(c);
