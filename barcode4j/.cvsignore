@@ -1,0 +1,14 @@
+dist
+*.el
+*.ipr
+build.number
+log*.*
+*.log
+build
+.project
+.ant.properties
+vfs_cache
+.classpath
+build-local.properties
+checkstyle-noframes.xsl
+.checkstyle
