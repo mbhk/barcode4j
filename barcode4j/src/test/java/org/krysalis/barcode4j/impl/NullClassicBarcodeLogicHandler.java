@@ -49,9 +49,9 @@ public class NullClassicBarcodeLogicHandler
     }
 
     /**
-     * @see org.krysalis.barcode4j.BarcodeLogicHandler#startBarcode(String)
+     * @see org.krysalis.barcode4j.BarcodeLogicHandler#startBarcode(String, String)
      */
-    public void startBarcode(String msg) {
+    public void startBarcode(String msg, String formattedMsg) {
         //nop
     }
 

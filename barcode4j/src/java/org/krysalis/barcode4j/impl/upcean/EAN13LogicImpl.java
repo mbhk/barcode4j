@@ -119,7 +119,7 @@ public class EAN13LogicImpl extends UPCEANLogicImpl {
         if (supp != null) {
             canonicalMessage = canonicalMessage + "+" + supp;
         }
-        logic.startBarcode(canonicalMessage);
+        logic.startBarcode(canonicalMessage, canonicalMessage);
         
         //Left guard
         drawSideGuard(logic);

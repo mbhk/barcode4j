@@ -55,6 +55,13 @@ public class Interleaved2Of5 extends ConfigurableBarcodeGenerator
         getInterleaved2Of5Bean().setWideFactor(
             cfg.getChild("wide-factor").getValueAsFloat(
                     (float)Interleaved2Of5Bean.DEFAULT_WIDE_FACTOR));
+
+        Configuration hr = cfg.getChild("human-readable", false);
+        if (hr != null) {
+            //Display checksum in hr-message or not
+            getInterleaved2Of5Bean().setDisplayChecksum(
+                    hr.getChild("display-checksum").getValueAsBoolean(false));
+        }
     }
 
     /**

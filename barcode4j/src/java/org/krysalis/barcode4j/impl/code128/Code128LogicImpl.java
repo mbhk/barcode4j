@@ -286,7 +286,7 @@ public class Code128LogicImpl {
      * @param msg the message to encode
      */
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
-        logic.startBarcode(msg);
+        logic.startBarcode(msg, msg);
         
         int[] encodedMsg = createEncodedMessage(msg);
         for (int i = 0; i < encodedMsg.length; i++) {

@@ -40,16 +40,6 @@ public abstract class ConfigurableBarcodeGenerator
      * @see org.apache.avalon.framework.configuration.Configurable#configure(Configuration)
      */
     public void configure(Configuration cfg) throws ConfigurationException {
-        //Human-readable placement
-        getBean().setMsgPosition(HumanReadablePlacement.byName(
-            cfg.getChild("human-readable").getValue(HumanReadablePlacement.HRP_BOTTOM.getName())));
-
-        Length fs = new Length(cfg.getChild("human-readable-size").getValue("8pt"));
-        getBean().setFontSize(fs.getValueAsMillimeter());
-
-        //TODO: this does not seem to work
-        getBean().setFontName(cfg.getChild("human-readable-font").getValue("Helvetica"));
-        
         //Height (must be evaluated after the font size because of setHeight())
         Length h = new Length(cfg.getChild("height").getValue("15mm"), "mm");
         getBean().setHeight(h.getValueAsMillimeter());
@@ -61,6 +51,30 @@ public abstract class ConfigurableBarcodeGenerator
             getBean().setQuietZone(qz.getValue() * getBean().getModuleWidth());
         } else {
             getBean().setQuietZone(qz.getValueAsMillimeter());
+        }
+
+        Configuration hr = cfg.getChild("human-readable", false);
+        if ((hr != null) && (hr.getChildren().length > 0)) {
+            //Human-readable placement
+            getBean().setMsgPosition(HumanReadablePlacement.byName(
+                hr.getChild("placement").getValue(HumanReadablePlacement.HRP_BOTTOM.getName())));
+
+            Length fs = new Length(hr.getChild("font-size").getValue("8pt"));
+            getBean().setFontSize(fs.getValueAsMillimeter());
+
+            //TODO this does not seem to work
+            getBean().setFontName(hr.getChild("font-name").getValue("Helvetica"));
+        } else {
+            //Legacy code for compatibility
+
+            //Human-readable placement
+            getBean().setMsgPosition(HumanReadablePlacement.byName(
+                cfg.getChild("human-readable").getValue(HumanReadablePlacement.HRP_BOTTOM.getName())));
+            
+            Length fs = new Length(cfg.getChild("human-readable-size").getValue("8pt"));
+            getBean().setFontSize(fs.getValueAsMillimeter());
+
+            getBean().setFontName(cfg.getChild("human-readable-font").getValue("Helvetica"));
         }
     }
 

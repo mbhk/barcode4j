@@ -41,6 +41,7 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
     private double intercharGapWidth;
     private BaselineAlignment baselinePosition = BaselineAlignment.ALIGN_BOTTOM;
     private double shortBarHeight = 1.25f;
+    private boolean displayChecksum = false;
     
     /** Create a new instance. */
     public POSTNETBean() {
@@ -123,6 +124,25 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
     }
     
     /**
+     * Indicates whether the checksum will be displayed as
+     * part of the human-readable message.
+     * @return true if checksum will be included in the human-readable message
+     */
+    public boolean isDisplayChecksum() {
+        return this.displayChecksum;
+    }
+    
+    /**
+     * Enables or disables the use of the checksum in the
+     * human-readable message.
+     * @param value true to include the checksum in the human-readable message, 
+     *   false to ignore
+     */
+    public void setDisplayChecksum(boolean value) {
+        this.displayChecksum = value;
+    }
+    
+    /**
      * @see org.krysalis.barcode4j.BarcodeGenerator#generateBarcode(CanvasProvider, String)
      */
     public void generateBarcode(CanvasProvider canvas, String msg) {
@@ -134,7 +154,8 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
         DefaultHeightVariableLogicHandler handler = 
                 new DefaultHeightVariableLogicHandler(this, new Canvas(canvas));
 
-        POSTNETLogicImpl impl = new POSTNETLogicImpl(getChecksumMode());
+        POSTNETLogicImpl impl = new POSTNETLogicImpl(
+                getChecksumMode(), isDisplayChecksum());
         impl.generateBarcodeLogic(handler, msg);
     }
 

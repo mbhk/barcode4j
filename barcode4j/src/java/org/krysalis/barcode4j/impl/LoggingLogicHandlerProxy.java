@@ -55,9 +55,9 @@ public class LoggingLogicHandlerProxy implements ClassicBarcodeLogicHandler {
     }
 
     /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
-    public void startBarcode(String msg) {
-        System.out.println("startBarcode(" + msg + ")");
-        delegate.startBarcode(msg);
+    public void startBarcode(String msg, String formattedMsg) {
+        System.out.println("startBarcode(" + msg + ", " + formattedMsg + ")");
+        delegate.startBarcode(msg, formattedMsg);
     }
 
     /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */

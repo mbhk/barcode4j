@@ -62,6 +62,15 @@ public class Code39 extends ConfigurableBarcodeGenerator
         } else {
             getCode39Bean().setIntercharGapWidth(igw.getValueAsMillimeter());
         }
+        
+        Configuration hr = cfg.getChild("human-readable", false);
+        if (hr != null) {
+            //Display start/stop character and checksum in hr-message or not
+            getCode39Bean().setDisplayStartStop(
+                    hr.getChild("display-start-stop").getValueAsBoolean(false));
+            getCode39Bean().setDisplayChecksum(
+                    hr.getChild("display-checksum").getValueAsBoolean(false));
+        }
     }
    
     /**

@@ -161,7 +161,8 @@ public class CodabarLogicImpl {
         
         handleChecksum(sb);
         
-        logic.startBarcode(sb.toString());
+        String effMsg = sb.toString();
+        logic.startBarcode(effMsg, effMsg);
 
         for (int i = 0; i < sb.length(); i++) {
             if (i > 0) {

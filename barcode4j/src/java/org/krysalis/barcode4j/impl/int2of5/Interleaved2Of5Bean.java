@@ -39,10 +39,30 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
 
     private ChecksumMode checksumMode = ChecksumMode.CP_AUTO;
     private double wideFactor = DEFAULT_WIDE_FACTOR; //Determines the width of wide bar
+    private boolean displayChecksum = false;
 
     /** Create a new instance. */
     public Interleaved2Of5Bean() {
         this.moduleWidth = DEFAULT_MODULE_WIDTH;
+    }
+    
+    /**
+     * Indicates whether the checksum will be displayed as
+     * part of the human-readable message.
+     * @return true if checksum will be included in the human-readable message
+     */
+    public boolean isDisplayChecksum() {
+        return this.displayChecksum;
+    }
+    
+    /**
+     * Enables or disables the use of the checksum in the
+     * human-readable message.
+     * @param value true to include the checksum in the human-readable message, 
+     *   false to ignore
+     */
+    public void setDisplayChecksum(boolean value) {
+        this.displayChecksum = value;
     }
     
     /**
@@ -58,7 +78,8 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
                 new DefaultCanvasLogicHandler(this, new Canvas(canvas));
         //handler = new LoggingLogicHandlerProxy(handler);
 
-        Interleaved2Of5LogicImpl impl = new Interleaved2Of5LogicImpl(getChecksumMode());
+        Interleaved2Of5LogicImpl impl = new Interleaved2Of5LogicImpl(
+                getChecksumMode(), isDisplayChecksum());
         impl.generateBarcodeLogic(handler, msg);
     }
     

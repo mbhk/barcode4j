@@ -20,7 +20,6 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.krysalis.barcode4j.BaselineAlignment;
 import org.krysalis.barcode4j.ChecksumMode;
-import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator;
 import org.krysalis.barcode4j.tools.Length;
 
@@ -62,12 +61,15 @@ public class POSTNET extends ConfigurableBarcodeGenerator
         Length hbh = new Length(cfg.getChild("short-bar-height").getValue("0.050in"), "mm");
         getPOSTNETBean().setShortBarHeight(hbh.getValueAsMillimeter());
 
-        //Human-readable placement (repeated here because of different default)
-        getPOSTNETBean().setMsgPosition(HumanReadablePlacement.byName(
-            cfg.getChild("human-readable").getValue(HumanReadablePlacement.HRP_NONE.getName())));
-
         getPOSTNETBean().setBaselinePosition(BaselineAlignment.byName(
             cfg.getChild("baseline-alignment").getValue(BaselineAlignment.ALIGN_BOTTOM.getName())));
+
+        Configuration hr = cfg.getChild("human-readable", false);
+        if (hr != null) {
+            //Display checksum in hr-message or not
+            getPOSTNETBean().setDisplayChecksum(
+                    hr.getChild("display-checksum").getValueAsBoolean(false));
+        }
     }
    
     /**

@@ -68,7 +68,7 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
     }            
 
     /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
-    public void startBarcode(String msg) {
+    public void startBarcode(String msg, String formattedMsg) {
         this.msg = msg;
         //Calculate extents
         this.dim = bcBean.calcDimensions(msg);
