@@ -56,9 +56,17 @@ public class Java2DCanvasProvider extends AbstractCanvasProvider {
      * @param g2d Graphics2D object to paint on
      */
     public Java2DCanvasProvider(Graphics2D g2d) {
+        setGraphics2D(g2d);
+    }
+    
+    public void setGraphics2D(Graphics2D g2d) {
         this.g2d = g2d;
     }
 
+    public Graphics2D getGraphics2D() {
+        return this.g2d;
+    }
+    
     /** @see org.krysalis.barcode4j.output.CanvasProvider */
     public void deviceFillRect(double x, double y, double w, double h) {
         g2d.fill(new Rectangle2D.Double(x, y, w, h));
