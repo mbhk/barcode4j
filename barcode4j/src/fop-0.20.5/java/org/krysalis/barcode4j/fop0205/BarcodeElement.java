@@ -203,7 +203,8 @@ public class BarcodeElement extends BarcodeObj {
             
             BarcodeGenerator bargen = BarcodeUtil.getInstance().
                     createBarcodeGenerator(cfg, new NullLogger());
-            BarcodeDimension bardim = bargen.calcDimensions(msg);
+            String expandedMsg = VariableUtil.getExpandedMessage(foa.getPage(), msg);
+            BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
             final float w = (float)UnitConv.mm2pt(bardim.getWidthPlusQuiet()) * 1000;
             final float h = (float)UnitConv.mm2pt(bardim.getHeightPlusQuiet()) * 1000;
             
@@ -211,7 +212,7 @@ public class BarcodeElement extends BarcodeObj {
             BarcodeArea barcodeArea = createArea(fs, w, h);
             barcodeArea.setParent(foa);
             barcodeArea.setPage(foa.getPage());
-            barcodeArea.setBarcode(bargen, msg, renderMode);
+            barcodeArea.setBarcode(bargen, expandedMsg, renderMode);
             barcodeArea.start();
             barcodeArea.end();
             
