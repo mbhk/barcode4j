@@ -64,7 +64,7 @@ import org.apache.commons.cli.PosixParser;
 public class Main {
 
     private static final String[] APP_HEADER = {
-        "Barcode4J command-line application, Version 1.0beta",
+        "Barcode4J command-line application, Version 1.0",
         ""};
 
     /** stdout for this application (default: System.out) */
