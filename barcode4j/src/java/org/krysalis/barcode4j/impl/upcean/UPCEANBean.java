@@ -30,8 +30,17 @@ import org.krysalis.barcode4j.output.CanvasProvider;
  */
 public abstract class UPCEANBean extends AbstractBarcodeBean {
 
+    /** The default module width for UPC and EAN. */
+    protected static final double DEFAULT_MODULE_WIDTH = 0.33f; //mm
+    
     private ChecksumMode checksumMode = ChecksumMode.CP_AUTO;
 
+    /** Create a new instance. */
+    public UPCEANBean() {
+        super();
+        this.moduleWidth = DEFAULT_MODULE_WIDTH;
+    }
+    
     /**
      * Sets the checksum mode
      * @param mode the checksum mode

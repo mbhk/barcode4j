@@ -31,12 +31,20 @@ import org.krysalis.barcode4j.output.CanvasProvider;
  */
 public class CodabarBean extends AbstractBarcodeBean {
 
+    /** The default module width for Codabar. */
+    protected static final double DEFAULT_MODULE_WIDTH = 0.21f; //mm
+    
     /** The default wide factor for Codabar. */
     protected static final double DEFAULT_WIDE_FACTOR = 3.0;
 
     private ChecksumMode checksumMode = ChecksumMode.CP_AUTO;
     private double wideFactor = DEFAULT_WIDE_FACTOR; //Width of binary one
 
+    /** Create a new instance. */
+    public CodabarBean() {
+        this.moduleWidth = DEFAULT_MODULE_WIDTH;
+    }
+    
     /**
      * Returns the current checksum mode.
      * @return ChecksumMode the checksum mode

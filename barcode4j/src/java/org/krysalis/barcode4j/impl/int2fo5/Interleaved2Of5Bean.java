@@ -31,12 +31,20 @@ import org.krysalis.barcode4j.output.CanvasProvider;
  */
 public class Interleaved2Of5Bean extends AbstractBarcodeBean {
 
-    /** The default wide factor for Interleaved 2 of 5 */
+    /** The default module width for Interleaved 2 of 5. */
+    protected static final double DEFAULT_MODULE_WIDTH = 0.21f; //mm
+
+    /** The default wide factor for Interleaved 2 of 5. */
     public static final double DEFAULT_WIDE_FACTOR = 3.0;
 
     private ChecksumMode checksumMode = ChecksumMode.CP_AUTO;
     private double wideFactor = DEFAULT_WIDE_FACTOR; //Determines the width of wide bar
 
+    /** Create a new instance. */
+    public Interleaved2Of5Bean() {
+        this.moduleWidth = DEFAULT_MODULE_WIDTH;
+    }
+    
     /**
      * @see org.krysalis.barcode4j.BarcodeGenerator#generateBarcode(CanvasProvider, String)
      */

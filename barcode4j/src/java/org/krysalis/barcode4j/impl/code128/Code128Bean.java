@@ -31,6 +31,14 @@ import org.krysalis.barcode4j.output.CanvasProvider;
  */
 public class Code128Bean extends AbstractBarcodeBean {
 
+    /** The default module width for Code 128. */
+    protected static final double DEFAULT_MODULE_WIDTH = 0.21f; //mm
+
+    /** Create a new instance. */
+    public Code128Bean() {
+        this.moduleWidth = DEFAULT_MODULE_WIDTH;
+    }
+    
     /**
      * @see org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator#getBarWidth(int)
      */

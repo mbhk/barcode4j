@@ -23,6 +23,7 @@ import org.krysalis.barcode4j.impl.DefaultHeightVariableLogicHandler;
 import org.krysalis.barcode4j.impl.HeightVariableBarcodeBean;
 import org.krysalis.barcode4j.output.Canvas;
 import org.krysalis.barcode4j.output.CanvasProvider;
+import org.krysalis.barcode4j.tools.UnitConv;
 
 /**
  * Implements the United States Postal Service POSTNET barcode.
@@ -32,9 +33,12 @@ import org.krysalis.barcode4j.output.CanvasProvider;
  */
 public class POSTNETBean extends HeightVariableBarcodeBean {
 
+    /** The default module width for POSTNET. */
+    protected static final double DEFAULT_MODULE_WIDTH = UnitConv.in2mm(0.020f);
+
     private ChecksumMode checksumMode = ChecksumMode.CP_AUTO;
 
-    private double intercharGapWidth = moduleWidth;
+    private double intercharGapWidth;
     private BaselineAlignment baselinePosition = BaselineAlignment.ALIGN_BOTTOM;
     private double shortBarHeight = 1.25f;
     
@@ -42,6 +46,8 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
     public POSTNETBean() {
         super();
         this.msgPos = HumanReadablePlacement.HRP_NONE; //Different default than normal
+        this.moduleWidth = DEFAULT_MODULE_WIDTH;
+        this.intercharGapWidth = this.moduleWidth;
     }
     
     /**
