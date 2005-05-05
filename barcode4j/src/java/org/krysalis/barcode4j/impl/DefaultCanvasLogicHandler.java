@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2004 Jeremias Maerki.
+ * Copyright 2002-2005 Jeremias Maerki.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,11 +92,19 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
         if (bcBean.getMsgPosition() == HumanReadablePlacement.HRP_NONE) {
             //nop
         } else if (bcBean.getMsgPosition() == HumanReadablePlacement.HRP_TOP) {
+            double ty = bcBean.getHumanReadableHeight();
+            if (bcBean.hasFontDescender()) {
+                ty -= bcBean.getHumanReadableHeight() / 13 * 3;
+            }
             DrawingUtil.drawCenteredText(canvas, bcBean, formattedMsg, 
-                    getStartX(), x, bcBean.getHumanReadableHeight());
+                    getStartX(), x, ty);
         } else if (bcBean.getMsgPosition() == HumanReadablePlacement.HRP_BOTTOM) {
+            double ty = bcBean.getHeight();
+            if (bcBean.hasFontDescender()) {
+                ty -= bcBean.getHumanReadableHeight() / 13 * 3;
+            }
             DrawingUtil.drawCenteredText(canvas, bcBean, formattedMsg, 
-                    getStartX(), x, bcBean.getHeight());
+                    getStartX(), x, ty);
         }
     }
 

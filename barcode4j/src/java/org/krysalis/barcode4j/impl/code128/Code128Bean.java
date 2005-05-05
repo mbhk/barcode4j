@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2004 Jeremias Maerki.
+ * Copyright 2002-2005 Jeremias Maerki.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,13 @@ public class Code128Bean extends AbstractBarcodeBean {
     /** Create a new instance. */
     public Code128Bean() {
         this.moduleWidth = DEFAULT_MODULE_WIDTH;
+    }
+    
+    /**
+     * @see org.krysalis.barcode4j.impl.AbstractBarcodeBean#hasFontDescender()
+     */
+    protected boolean hasFontDescender() {
+        return true;
     }
     
     /**

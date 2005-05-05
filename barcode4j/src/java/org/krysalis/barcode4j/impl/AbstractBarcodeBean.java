@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2004 Jeremias Maerki.
+ * Copyright 2002-2005 Jeremias Maerki.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,12 +47,28 @@ public abstract class AbstractBarcodeBean
 
     
     /**
+     * Indicates whether the barcode height calculation should take a font descender
+     * into account. This is necessary for barcodes that support lower-case
+     * characters like Code128.
+     * @return true if the implementation has to take font descenders into account
+     */
+    protected boolean hasFontDescender() {
+        return false;
+    }
+    
+    /**
      * Returns the height of the human-readable part.
      * @return the height of the human-readable part (in mm)
      */
     public double getHumanReadableHeight() {
         double textHeight = this.fontSize;
-        return 1.0 * textHeight;
+        if (hasFontDescender()) {
+            return 1.3 * textHeight;
+            //1.3 is the factor for the font descender 
+            //(just an approximation due to the lack of a font engine)
+        } else {
+            return textHeight;
+        }
     }
 
     /**
