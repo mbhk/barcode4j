@@ -29,7 +29,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
 /**
- * Class representing an Barcode area in which the Barocde graphics sit
+ * Class representing an Barcode area in which the barcode graphics sits.
  * 
  * @version $Id$
  */

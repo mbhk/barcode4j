@@ -1,5 +1,5 @@
 /*
- * Copyright 2003,2004 Jeremias Maerki.
+ * Copyright 2003-2004 Jeremias Maerki.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.apache.fop.fo.FObj;
 import org.krysalis.barcode4j.BarcodeConstants;
 
 /**
- * Registers the elements covered by Barcode4's namespace.
+ * Registers the elements covered by Barcode4J's namespace.
  * 
  * @author Jeremias Maerki
  * @version $Id$
