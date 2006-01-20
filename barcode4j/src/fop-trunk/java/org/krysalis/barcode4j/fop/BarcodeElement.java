@@ -89,7 +89,7 @@ public class BarcodeElement extends BarcodeObj {
             
             BarcodeGenerator bargen = BarcodeUtil.getInstance().
                     createBarcodeGenerator(cfg);
-            String expandedMsg = msg; //VariableUtil.getExpandedMessage(foa.getPage(), msg);
+            String expandedMsg = VariableUtil.getExpandedMessage(null, msg);
             BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
             float w = (float)UnitConv.mm2pt(bardim.getWidthPlusQuiet());
             float h = (float)UnitConv.mm2pt(bardim.getHeightPlusQuiet());

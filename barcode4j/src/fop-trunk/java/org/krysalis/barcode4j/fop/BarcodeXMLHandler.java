@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.batik.dom.svg.SVGDOMImplementation;
+import org.apache.fop.area.PageViewport;
 import org.apache.fop.render.Graphics2DAdapter;
 import org.apache.fop.render.AbstractRenderer;
 import org.apache.fop.render.Graphics2DImagePainter;
@@ -78,9 +79,12 @@ public class BarcodeXMLHandler implements XMLHandler, PSRendererContextConstants
             String renderMode = cfg.getAttribute("render-mode", "native");
             if (DEBUG) System.out.println("Render mode: " + renderMode);
             
+            PageViewport page = (PageViewport)context.getProperty(PAGE_VIEWPORT);
+
             BarcodeGenerator bargen = BarcodeUtil.getInstance().
                     createBarcodeGenerator(cfg);
-            String expandedMsg = msg; //VariableUtil.getExpandedMessage(foa.getPage(), msg);
+            String expandedMsg = VariableUtil.getExpandedMessage(
+                    page, msg);
 
             boolean handled = false;
             if ("native".equals(renderMode)) {
@@ -113,8 +117,8 @@ public class BarcodeXMLHandler implements XMLHandler, PSRendererContextConstants
         bargen.generateBarcode(canvas, msg);
         canvas.finish();
         
-        float width = ((Integer)context.getProperty(WIDTH)).intValue() / 1000f;
-        float height = ((Integer)context.getProperty(HEIGHT)).intValue() / 1000f;
+        float width = ((Integer)context.getProperty(WIDTH)).intValue() / 1000f + 1;
+        float height = ((Integer)context.getProperty(HEIGHT)).intValue() / 1000f + 1;
         float x = ((Integer)context.getProperty(XPOS)).intValue() / 1000f;
         float y = ((Integer)context.getProperty(YPOS)).intValue() / 1000f;
         
