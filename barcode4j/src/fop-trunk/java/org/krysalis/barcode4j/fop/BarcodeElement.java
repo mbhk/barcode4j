@@ -59,15 +59,6 @@ public class BarcodeElement extends BarcodeObj {
 
     private void init() {
         createBasicDocument();
-        /*
-        DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
-        String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
-        doc = impl.createDocument(svgNS, "svg", null);
-
-        element = doc.getDocumentElement();
-
-        buildTopLevel(doc, element);
-        */
     }
 
     public Point2D getDimension(Point2D view) {
@@ -83,10 +74,7 @@ public class BarcodeElement extends BarcodeObj {
                     throw ce;
                 }
             }
-            System.out.println("Barcode message: " + msg);
-            String renderMode = cfg.getAttribute("render-mode", "native");
-            System.out.println("Render mode: " + renderMode);
-            
+
             BarcodeGenerator bargen = BarcodeUtil.getInstance().
                     createBarcodeGenerator(cfg);
             String expandedMsg = VariableUtil.getExpandedMessage(null, msg);
