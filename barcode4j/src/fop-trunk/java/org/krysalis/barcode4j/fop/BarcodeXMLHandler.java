@@ -33,10 +33,10 @@ import org.apache.fop.render.ImageAdapter;
 import org.apache.fop.render.Renderer;
 import org.apache.fop.render.RendererContext;
 import org.apache.fop.render.XMLHandler;
-import org.apache.fop.render.ps.PSGenerator;
 import org.apache.fop.render.ps.PSImageUtils;
 import org.apache.fop.render.ps.PSRenderer;
 import org.apache.fop.render.ps.PSRendererContextConstants;
+import org.apache.xmlgraphics.ps.PSGenerator;
 
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeGenerator;
