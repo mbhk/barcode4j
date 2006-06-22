@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2004 Jeremias Maerki.
+ * Copyright 2002-2004,2006 Jeremias Maerki.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,8 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         registerBarcodeClass("code128", "org.krysalis.barcode4j.impl.code128.Code128");
         registerBarcodeClass("2of5", "org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5");
         registerBarcodeClass("intl2of5", "org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5");
-        registerBarcodeClass("interleaved2of5", "org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5");
+        registerBarcodeClass("interleaved2of5", 
+                "org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5");
         registerBarcodeClass("ean-13", "org.krysalis.barcode4j.impl.upcean.EAN13");
         registerBarcodeClass("ean13", "org.krysalis.barcode4j.impl.upcean.EAN13");
         registerBarcodeClass("ean-8", "org.krysalis.barcode4j.impl.upcean.EAN8");
@@ -48,6 +49,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         registerBarcodeClass("upc-e", "org.krysalis.barcode4j.impl.upcean.UPCE");
         registerBarcodeClass("upce", "org.krysalis.barcode4j.impl.upcean.UPCE");
         registerBarcodeClass("postnet", "org.krysalis.barcode4j.impl.postnet.POSTNET");
+        registerBarcodeClass("pdf417", "org.krysalis.barcode4j.impl.pdf417.PDF417");
     }
 
     /**

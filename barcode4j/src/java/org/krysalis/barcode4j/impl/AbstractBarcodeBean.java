@@ -142,12 +142,14 @@ public abstract class AbstractBarcodeBean
         this.doQuietZone = value;
     }
 
-    /**
-     * Returns the width of the quiet zone.
-     * @return the width of the quiet zone (in mm)
-     */
+    /** @return the width of the quiet zone (in mm) */
     public double getQuietZone() {
         return this.quietZone;
+    }
+
+    /** @return the height of the vertical quiet zone (in mm) */
+    public double getVerticalQuietZone() {
+        return 0.0; //zero for 1D barcodes
     }
 
     /**
