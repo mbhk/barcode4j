@@ -74,13 +74,15 @@ public class BarcodeElement extends BarcodeObj {
                     throw ce;
                 }
             }
+            int orientation = cfg.getAttributeAsInteger("orientation", 0);
+            orientation = BarcodeDimension.normalizeOrientation(orientation);
 
             BarcodeGenerator bargen = BarcodeUtil.getInstance().
                     createBarcodeGenerator(cfg);
             String expandedMsg = VariableUtil.getExpandedMessage(null, msg);
             BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
-            float w = (float)UnitConv.mm2pt(bardim.getWidthPlusQuiet());
-            float h = (float)UnitConv.mm2pt(bardim.getHeightPlusQuiet());
+            float w = (float)UnitConv.mm2pt(bardim.getWidthPlusQuiet(orientation));
+            float h = (float)UnitConv.mm2pt(bardim.getHeightPlusQuiet(orientation));
             return new Point2D.Float(w, h);
         } catch (ConfigurationException ce) {
             ce.printStackTrace();

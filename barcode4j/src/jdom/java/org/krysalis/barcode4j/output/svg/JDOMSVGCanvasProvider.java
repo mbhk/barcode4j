@@ -37,31 +37,34 @@ public class JDOMSVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
     /**
      * Creates a new JDOMSVGCanvasProvider with namespaces enabled.
      * @param namespacePrefix the namespace prefix to use, null for no prefix
+     * @param orientation the barcode orientation (0, 90, 180, 270)
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public JDOMSVGCanvasProvider(String namespacePrefix)
+    public JDOMSVGCanvasProvider(String namespacePrefix, int orientation)
                 throws BarcodeCanvasSetupException {
-        super(namespacePrefix);
+        super(namespacePrefix, orientation);
     }
 
     /**
      * Creates a new JDOMSVGCanvasProvider.
      * @param useNamespace Controls whether namespaces should be used
+     * @param orientation the barcode orientation (0, 90, 180, 270)
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public JDOMSVGCanvasProvider(boolean useNamespace)
+    public JDOMSVGCanvasProvider(boolean useNamespace, int orientation)
                 throws BarcodeCanvasSetupException {
-        super(useNamespace);
+        super(useNamespace, orientation);
         init();
     }
 
     /**
      * Creates a new JDOMSVGCanvasProvider with default settings (with namespaces, 
      * but without namespace prefix).
+     * @param orientation the barcode orientation (0, 90, 180, 270)
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public JDOMSVGCanvasProvider() throws BarcodeCanvasSetupException {
-        super();
+    public JDOMSVGCanvasProvider(int orientation) throws BarcodeCanvasSetupException {
+        super(orientation);
         init();
     }
 

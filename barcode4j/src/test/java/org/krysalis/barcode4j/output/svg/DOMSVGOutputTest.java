@@ -38,7 +38,7 @@ public class DOMSVGOutputTest extends TestCase {
         DefaultConfiguration cfg = new DefaultConfiguration("cfg");
         cfg.addChild(new DefaultConfiguration("intl2of5"));
         BarcodeGenerator gen = BarcodeUtil.getInstance().createBarcodeGenerator(cfg);
-        SVGCanvasProvider svg = new SVGCanvasProvider(false);
+        SVGCanvasProvider svg = new SVGCanvasProvider(false, 0);
 
         //Create Barcode and render it to SVG
         gen.generateBarcode(svg, "123");

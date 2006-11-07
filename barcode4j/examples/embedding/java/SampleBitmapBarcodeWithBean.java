@@ -50,7 +50,7 @@ public class SampleBitmapBarcodeWithBean {
             try {
                 //Set up the canvas provider for monochrome JPEG output 
                 BitmapCanvasProvider canvas = new BitmapCanvasProvider(
-                        out, "image/jpeg", dpi, BufferedImage.TYPE_BYTE_BINARY, false);
+                        out, "image/jpeg", dpi, BufferedImage.TYPE_BYTE_BINARY, false, 0);
             
                 //Generate the barcode
                 bean.generateBarcode(canvas, "123456");

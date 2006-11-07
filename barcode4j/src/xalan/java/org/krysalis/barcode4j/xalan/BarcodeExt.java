@@ -20,6 +20,7 @@ import javax.xml.transform.TransformerException;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.xalan.extensions.XSLProcessorContext;
 import org.apache.xalan.templates.ElemExtensionCall;
+import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
 import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
@@ -56,11 +57,13 @@ public class BarcodeExt {
                     BarcodeUtil.getInstance().createBarcodeGenerator(cfg);
     
             //Setup Canvas
+            int orientation = cfg.getAttributeAsInteger("orientation", 0);
+            orientation = BarcodeDimension.normalizeOrientation(orientation);
             final SVGCanvasProvider svg;
             if (cfg.getAttributeAsBoolean("useNamespace", true)) {
-                svg = new SVGCanvasProvider(cfg.getAttribute("prefix", "svg"));
+                svg = new SVGCanvasProvider(cfg.getAttribute("prefix", "svg"), orientation);
             } else {
-                svg = new SVGCanvasProvider(false);
+                svg = new SVGCanvasProvider(false, orientation);
             }
             //Generate barcode
             gen.generateBarcode(svg, message);
@@ -94,11 +97,13 @@ public class BarcodeExt {
                     BarcodeUtil.getInstance().createBarcodeGenerator(cfg);
     
             //Setup Canvas
+            int orientation = cfg.getAttributeAsInteger("orientation", 0);
+            orientation = BarcodeDimension.normalizeOrientation(orientation);
             final SVGCanvasProvider svg;
             if (cfg.getAttributeAsBoolean("useNamespace", true)) {
-                svg = new SVGCanvasProvider(cfg.getAttribute("prefix", "svg"));
+                svg = new SVGCanvasProvider(cfg.getAttribute("prefix", "svg"), orientation);
             } else {
-                svg = new SVGCanvasProvider(false);
+                svg = new SVGCanvasProvider(false, orientation);
             }
             //Generate barcode
             gen.generateBarcode(svg, message);
