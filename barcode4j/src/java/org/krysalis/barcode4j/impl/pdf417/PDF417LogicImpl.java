@@ -29,15 +29,6 @@ import org.krysalis.barcode4j.TwoDimBarcodeLogicHandler;
  */
 public class PDF417LogicImpl {
 
-    /*
-    private int cols;
-    private int errorCorrectionLevel;
-    
-    public PDF417LogicImpl(int columns, int errorCorrectionLevel) {
-        this.cols = columns;
-        this.errorCorrectionLevel = errorCorrectionLevel;
-    }*/
-    
     /**
      * Calculates the necessary number of rows as described in annex Q of ISO/IEC 15438:2001(E).
      * @param m the number of source codewords prior to the additional of the Symbol Length
