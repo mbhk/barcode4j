@@ -65,7 +65,7 @@ public class POSTNETLogicImpl {
 
     /**
      * Calculates the checksum for a message to be encoded as an 
-     * Code39 barcode.
+     * POSTNET barcode.
      * @param msg message to calculate the check digit for
      * @return char the check digit
      */

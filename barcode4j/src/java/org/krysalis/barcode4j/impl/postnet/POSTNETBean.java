@@ -1,5 +1,5 @@
 /*
- * Copyright 2003,2004 Jeremias Maerki.
+ * Copyright 2003,2004,2006 Jeremias Maerki.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BaselineAlignment;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.HumanReadablePlacement;
-import org.krysalis.barcode4j.impl.DefaultHeightVariableLogicHandler;
 import org.krysalis.barcode4j.impl.HeightVariableBarcodeBean;
 import org.krysalis.barcode4j.output.Canvas;
 import org.krysalis.barcode4j.output.CanvasProvider;
@@ -151,8 +150,8 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        DefaultHeightVariableLogicHandler handler = 
-                new DefaultHeightVariableLogicHandler(this, new Canvas(canvas));
+        POSTNETLogicHandler handler = 
+                new POSTNETLogicHandler(this, new Canvas(canvas));
 
         POSTNETLogicImpl impl = new POSTNETLogicImpl(
                 getChecksumMode(), isDisplayChecksum());
