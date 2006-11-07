@@ -81,6 +81,7 @@ public class BarcodeServlet extends HttpServlet {
 
         try {
             String format = determineFormat(request);
+            int orientation = 0;
             
             Configuration cfg = buildCfg(request);
 
@@ -94,7 +95,7 @@ public class BarcodeServlet extends HttpServlet {
             try {
                 if (format.equals(MimeTypes.MIME_SVG)) {
                     //Create Barcode and render it to SVG
-                    SVGCanvasProvider svg = new SVGCanvasProvider(false);
+                    SVGCanvasProvider svg = new SVGCanvasProvider(false, orientation);
                     gen.generateBarcode(svg, msg);
                     org.w3c.dom.DocumentFragment frag = svg.getDOMFragment();
                      
@@ -105,7 +106,7 @@ public class BarcodeServlet extends HttpServlet {
                     Result res = new javax.xml.transform.stream.StreamResult(bout);
                     trans.transform(src, res);
                 } else if (format.equals(MimeTypes.MIME_EPS)) {
-                    EPSCanvasProvider eps = new EPSCanvasProvider(bout);
+                    EPSCanvasProvider eps = new EPSCanvasProvider(bout, orientation);
                     gen.generateBarcode(eps, msg);
                     eps.finish();
                 } else {
@@ -126,10 +127,10 @@ public class BarcodeServlet extends HttpServlet {
                     BitmapCanvasProvider bitmap = ("true".equalsIgnoreCase(gray)
                         ? new BitmapCanvasProvider(
                                 bout, format, resolution, 
-                                BufferedImage.TYPE_BYTE_GRAY, true)
+                                BufferedImage.TYPE_BYTE_GRAY, true, orientation)
                         : new BitmapCanvasProvider(
                                 bout, format, resolution, 
-                                BufferedImage.TYPE_BYTE_BINARY, false));
+                                BufferedImage.TYPE_BYTE_BINARY, false, orientation));
                     gen.generateBarcode(bitmap, msg);
                     bitmap.finish();
                 }

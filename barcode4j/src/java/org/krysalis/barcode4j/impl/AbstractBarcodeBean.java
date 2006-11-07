@@ -215,4 +215,5 @@ public abstract class AbstractBarcodeBean
     public BarcodeDimension calcDimensions(String msg) {
         throw new UnsupportedOperationException("NYI");
     }
+
 }

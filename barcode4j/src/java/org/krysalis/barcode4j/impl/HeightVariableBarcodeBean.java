@@ -1,5 +1,5 @@
 /*
- * Copyright 2003,2004 Jeremias Maerki.
+ * Copyright 2003,2004,2006 Jeremias Maerki.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 package org.krysalis.barcode4j.impl;
-
-import org.krysalis.barcode4j.BaselineAlignment;
 
 /**
  * Base class for barcodes that encode information by varying the height
@@ -32,19 +30,5 @@ public abstract class HeightVariableBarcodeBean extends AbstractBarcodeBean {
      * @return double
      */
     public abstract double getBarHeight(int height);
-
-    /**
-     * Returns whether the bars of the barcode are lined up along the top
-     * or along the bottom.
-     * @return BaselineAlignment alignment position
-     */
-    public abstract BaselineAlignment getBaselinePosition();
-
-    /**
-     * Sets whether the bars of the barcode are lined up along the top
-     * or along the bottom.
-     * @param baselinePosition alignment position
-     */
-    public abstract void setBaselinePosition(BaselineAlignment baselinePosition);
 
 }

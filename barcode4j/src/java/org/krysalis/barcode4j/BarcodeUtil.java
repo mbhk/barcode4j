@@ -150,12 +150,12 @@ public class BarcodeUtil {
                                                String msg) 
                     throws ConfigurationException, BarcodeException {
         BarcodeGenerator gen = createBarcodeGenerator(cfg);
-        SVGCanvasProvider svg = new SVGCanvasProvider(false);
+        SVGCanvasProvider svg = new SVGCanvasProvider(false, 0);
 
         //Create Barcode and render it to SVG
         gen.generateBarcode(svg, msg);
 
         return svg.getDOMFragment();
     }
-
+    
 }

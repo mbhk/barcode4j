@@ -30,6 +30,10 @@ public abstract class AbstractXMLGeneratingCanvasProvider
 
     private DecimalFormat df;
 
+    public AbstractXMLGeneratingCanvasProvider(int orientation) {
+        super(orientation);
+    }
+    
     /**
      * Returns the DecimalFormat instance to use internally to format numbers.
      * @return a DecimalFormat instance

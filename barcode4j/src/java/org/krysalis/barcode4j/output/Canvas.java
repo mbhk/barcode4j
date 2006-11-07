@@ -52,6 +52,13 @@ public class Canvas {
     public void establishDimensions(BarcodeDimension dim) {
         getCanvasImp().establishDimensions(dim);
     }
+    
+    /**
+     * @return the orientation of the barcode (0, 90, 180, 270, -90, -180, -270)
+     */
+    public int getOrientation() {
+        return getCanvasImp().getOrientation();
+    }
 
     /**
      * Draws a rectangle.
