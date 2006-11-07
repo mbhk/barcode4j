@@ -49,6 +49,8 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         registerBarcodeClass("upc-e", "org.krysalis.barcode4j.impl.upcean.UPCE");
         registerBarcodeClass("upce", "org.krysalis.barcode4j.impl.upcean.UPCE");
         registerBarcodeClass("postnet", "org.krysalis.barcode4j.impl.postnet.POSTNET");
+        registerBarcodeClass("royal-mail-cbc", 
+                "org.krysalis.barcode4j.impl.fourstate.RoyalMailCBC");
         registerBarcodeClass("pdf417", "org.krysalis.barcode4j.impl.pdf417.PDF417");
     }
 
