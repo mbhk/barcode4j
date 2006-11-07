@@ -46,7 +46,7 @@ public abstract class ConfigurableBarcodeGenerator
         
         //Quiet zone
         getBean().doQuietZone(cfg.getChild("quiet-zone").getAttributeAsBoolean("enabled", true));
-        Length qz = new Length(cfg.getChild("quiet-zone").getValue("10mw"), "mw");
+        Length qz = new Length(cfg.getChild("quiet-zone").getValue(getDefaultQuietZone()), "mw");
         if (qz.getUnit().equalsIgnoreCase("mw")) {
             getBean().setQuietZone(qz.getValue() * getBean().getModuleWidth());
         } else {
@@ -93,6 +93,11 @@ public abstract class ConfigurableBarcodeGenerator
     /** @see org.krysalis.barcode4j.BarcodeGenerator */
     public BarcodeDimension calcDimensions(String msg) {
         return getBean().calcDimensions(msg);
+    }
+
+    /** @return the default quiet zone */
+    protected String getDefaultQuietZone() {
+        return "10mw";
     }
     
 }
