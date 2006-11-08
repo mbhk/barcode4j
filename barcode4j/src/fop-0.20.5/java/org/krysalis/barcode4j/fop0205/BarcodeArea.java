@@ -90,7 +90,8 @@ public class BarcodeArea extends Area {
     
     protected SVGArea createSVGArea() throws BarcodeCanvasSetupException {
         DOMImplementation domImpl = SVGDOMImplementation.getDOMImplementation();
-        SVGCanvasProvider svgout = new SVGCanvasProvider(domImpl, true);
+        //TODO Implement orientation feature
+        SVGCanvasProvider svgout = new SVGCanvasProvider(domImpl, true, 0);
         getBarcodeGenerator().generateBarcode(svgout, getMessage());
         Document dom = svgout.getDOM();
         SVGArea svgarea = new SVGArea(getFontState(), getWidth(), getHeight());

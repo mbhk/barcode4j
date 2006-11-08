@@ -71,7 +71,7 @@ public class BarcodeArea extends org.krysalis.barcode4j.fop0205.BarcodeArea {
     protected void renderPostScriptBarcodeEPS(PSRenderer psr) {
         try {
             ByteArrayOutputStream baout = new ByteArrayOutputStream(1024);
-            EPSCanvasProvider epsout = new EPSCanvasProvider(baout);
+            EPSCanvasProvider epsout = new EPSCanvasProvider(baout, 0);
             getBarcodeGenerator().generateBarcode(epsout, getMessage());
             epsout.finish();
             BarcodeDimension dim = epsout.getDimensions();
