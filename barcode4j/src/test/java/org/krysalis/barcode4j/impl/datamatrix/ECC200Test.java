@@ -16,27 +16,25 @@
 
 /* $Id$ */
 
-package org.krysalis.barcode4j.impl.pdf417;
+package org.krysalis.barcode4j.impl.datamatrix;
 
 import org.krysalis.barcode4j.tools.TestHelper;
 
 import junit.framework.TestCase;
 
 /**
- * Tests for the error correction code.
+ * Tests for the ECC200 error correction.
  * 
  * @version $Id$
  */
-public class ErrorCorrectionTest extends TestCase {
+public class ECC200Test extends TestCase {
 
-    public void testErrorCorrection() throws Exception {
-        String data = "\u0005\u01c5\u00b2\u0079\u00ef";
-        assertEquals("5 453 178 121 239", TestHelper.visualize(data));
-        int errorCorrectionLevel = 1;
-        String ec = PDF417ErrorCorrection.generateErrorCorrection(data, errorCorrectionLevel);
-        String expected = "452 327 657 619";
-        assertEquals(expected, TestHelper.visualize(ec));
+
+    public void testRS() throws Exception {
+        //Sample from Annexe R in ISO/IEC 16022:2000(E)
+        char[] cw = new char[] {142, 164, 186};
+        String s = DataMatrixErrorCorrection.encodeECC200(String.valueOf(cw), 5);
+        assertEquals("114 25 5 88 102", TestHelper.visualize(s));
     }
-    
     
 }

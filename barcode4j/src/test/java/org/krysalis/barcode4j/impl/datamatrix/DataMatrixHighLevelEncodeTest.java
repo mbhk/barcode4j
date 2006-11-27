@@ -16,27 +16,25 @@
 
 /* $Id$ */
 
-package org.krysalis.barcode4j.impl.pdf417;
+package org.krysalis.barcode4j.impl.datamatrix;
 
 import org.krysalis.barcode4j.tools.TestHelper;
 
 import junit.framework.TestCase;
 
 /**
- * Tests for the error correction code.
+ * Tests for the high-level encoder.
  * 
  * @version $Id$
  */
-public class ErrorCorrectionTest extends TestCase {
+public class DataMatrixHighLevelEncodeTest extends TestCase {
 
-    public void testErrorCorrection() throws Exception {
-        String data = "\u0005\u01c5\u00b2\u0079\u00ef";
-        assertEquals("5 453 178 121 239", TestHelper.visualize(data));
-        int errorCorrectionLevel = 1;
-        String ec = PDF417ErrorCorrection.generateErrorCorrection(data, errorCorrectionLevel);
-        String expected = "452 327 657 619";
-        assertEquals(expected, TestHelper.visualize(ec));
+    public void testASCIIEncodation() throws Exception {
+        String encoded = DataMatrixHighLevelEncoder.encodeHighLevel("123456");
+        assertEquals("142 164 186", TestHelper.visualize(encoded));
+
+        encoded = DataMatrixHighLevelEncoder.encodeHighLevel("30Q324343430794<OQQ");
+        assertEquals("160 82 162 173 173 173 137 224 61 80 82 82", TestHelper.visualize(encoded));
     }
-    
     
 }

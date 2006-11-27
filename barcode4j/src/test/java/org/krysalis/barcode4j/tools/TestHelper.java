@@ -16,27 +16,30 @@
 
 /* $Id$ */
 
-package org.krysalis.barcode4j.impl.pdf417;
-
-import org.krysalis.barcode4j.tools.TestHelper;
-
-import junit.framework.TestCase;
+package org.krysalis.barcode4j.tools;
 
 /**
- * Tests for the error correction code.
+ * Helper methods for testing.
  * 
  * @version $Id$
  */
-public class ErrorCorrectionTest extends TestCase {
+public class TestHelper {
 
-    public void testErrorCorrection() throws Exception {
-        String data = "\u0005\u01c5\u00b2\u0079\u00ef";
-        assertEquals("5 453 178 121 239", TestHelper.visualize(data));
-        int errorCorrectionLevel = 1;
-        String ec = PDF417ErrorCorrection.generateErrorCorrection(data, errorCorrectionLevel);
-        String expected = "452 327 657 619";
-        assertEquals(expected, TestHelper.visualize(ec));
+    /**
+     * Convert a string of char codewords into a different string which lists each character 
+     * using its decimal value.
+     * @param codewords the codewords 
+     * @return the visualized codewords
+     */
+    public static String visualize(String codewords) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < codewords.length(); i++) {
+            if (i > 0) {
+                sb.append(" ");
+            }
+            sb.append((int)codewords.charAt(i));
+        }
+        return sb.toString();
     }
-    
     
 }
