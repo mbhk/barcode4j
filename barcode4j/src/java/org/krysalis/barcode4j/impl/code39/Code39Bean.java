@@ -47,6 +47,7 @@ public class Code39Bean extends AbstractBarcodeBean {
     public Code39Bean() {
         this.moduleWidth = DEFAULT_MODULE_WIDTH;
         this.intercharGapWidth = this.moduleWidth;
+        this.quietZone = 10 * this.moduleWidth;
     }
     
     /**

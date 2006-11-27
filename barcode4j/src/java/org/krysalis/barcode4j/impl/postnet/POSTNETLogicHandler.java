@@ -15,6 +15,7 @@
  */
 package org.krysalis.barcode4j.impl.postnet;
 
+import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BaselineAlignment;
 import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.impl.AbstractVariableHeightLogicHandler;
@@ -31,6 +32,8 @@ import org.krysalis.barcode4j.output.Canvas;
 public class POSTNETLogicHandler 
             extends AbstractVariableHeightLogicHandler {
 
+    private double y = 0.0;
+
     /**
      * Constructor 
      * @param bcBean the barcode implementation class
@@ -38,6 +41,20 @@ public class POSTNETLogicHandler
      */
     public POSTNETLogicHandler(HeightVariableBarcodeBean bcBean, Canvas canvas) {
         super(bcBean, canvas);
+    }
+
+    private double getStartY() {
+        if (bcBean.hasQuietZone()) {
+            return bcBean.getVerticalQuietZone();
+        } else {
+            return 0.0;
+        }
+    }            
+
+    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    public void startBarcode(String msg, String formattedMsg) {
+        super.startBarcode(msg, formattedMsg);
+        y = getStartY();
     }
 
     /**
@@ -52,15 +69,15 @@ public class POSTNETLogicHandler
         if (black) {
             if (bcBean.getMsgPosition() == HumanReadablePlacement.HRP_TOP) {
                 if (baselinePosition == BaselineAlignment.ALIGN_TOP) {
-                    canvas.drawRectWH(x, bcBean.getHumanReadableHeight(), w, h);
+                    canvas.drawRectWH(x, y + bcBean.getHumanReadableHeight(), w, h);
                 } else if (baselinePosition == BaselineAlignment.ALIGN_BOTTOM) {
-                    canvas.drawRectWH(x, bcBean.getHeight() - h, w, h);
+                    canvas.drawRectWH(x, y + bcBean.getHeight() - h, w, h);
                 }
             } else {
                 if (baselinePosition == BaselineAlignment.ALIGN_TOP) {
-                    canvas.drawRectWH(x, 0, w, h);
+                    canvas.drawRectWH(x, y, w, h);
                 } else if (baselinePosition == BaselineAlignment.ALIGN_BOTTOM) {
-                    canvas.drawRectWH(x, bcBean.getBarHeight() - h, w, h);
+                    canvas.drawRectWH(x, y + bcBean.getBarHeight() - h, w, h);
                 } 
             }
         }

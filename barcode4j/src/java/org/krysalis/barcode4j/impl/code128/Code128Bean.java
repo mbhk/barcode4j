@@ -37,6 +37,7 @@ public class Code128Bean extends AbstractBarcodeBean {
     /** Create a new instance. */
     public Code128Bean() {
         this.moduleWidth = DEFAULT_MODULE_WIDTH;
+        this.quietZone = 10 * this.moduleWidth;
     }
     
     /**

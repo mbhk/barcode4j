@@ -43,6 +43,7 @@ public class CodabarBean extends AbstractBarcodeBean {
     /** Create a new instance. */
     public CodabarBean() {
         this.moduleWidth = DEFAULT_MODULE_WIDTH;
+        this.quietZone = 10 * this.moduleWidth;
     }
     
     /**
