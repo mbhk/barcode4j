@@ -52,6 +52,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         registerBarcodeClass("royal-mail-cbc", 
                 "org.krysalis.barcode4j.impl.fourstate.RoyalMailCBC");
         registerBarcodeClass("pdf417", "org.krysalis.barcode4j.impl.pdf417.PDF417");
+        registerBarcodeClass("datamatrix", "org.krysalis.barcode4j.impl.datamatrix.DataMatrix");
     }
 
     /**
