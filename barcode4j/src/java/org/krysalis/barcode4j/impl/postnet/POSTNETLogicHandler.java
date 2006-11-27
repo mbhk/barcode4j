@@ -15,7 +15,6 @@
  */
 package org.krysalis.barcode4j.impl.postnet;
 
-import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BaselineAlignment;
 import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.impl.AbstractVariableHeightLogicHandler;
@@ -31,8 +30,6 @@ import org.krysalis.barcode4j.output.Canvas;
  */
 public class POSTNETLogicHandler 
             extends AbstractVariableHeightLogicHandler {
-
-    private double y = 0.0;
 
     /**
      * Constructor 
