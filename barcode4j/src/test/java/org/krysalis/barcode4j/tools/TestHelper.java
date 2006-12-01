@@ -18,6 +18,8 @@
 
 package org.krysalis.barcode4j.tools;
 
+import java.util.StringTokenizer;
+
 /**
  * Helper methods for testing.
  * 
@@ -38,6 +40,15 @@ public class TestHelper {
                 sb.append(" ");
             }
             sb.append((int)codewords.charAt(i));
+        }
+        return sb.toString();
+    }
+    
+    public static String unvisualize(String visualized) {
+        StringBuffer sb = new StringBuffer();
+        StringTokenizer st = new StringTokenizer(visualized, " ");
+        while (st.hasMoreTokens()) {
+            sb.append((char)Integer.parseInt(st.nextToken()));
         }
         return sb.toString();
     }
