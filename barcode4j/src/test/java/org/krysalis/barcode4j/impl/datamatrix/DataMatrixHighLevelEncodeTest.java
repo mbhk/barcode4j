@@ -29,6 +29,8 @@ import junit.framework.TestCase;
  */
 public class DataMatrixHighLevelEncodeTest extends TestCase {
 
+    private static final boolean DEBUG = true;
+    
     public void testASCIIEncodation() throws Exception {
         String visualized;
 
@@ -44,22 +46,44 @@ public class DataMatrixHighLevelEncodeTest extends TestCase {
 
         visualized = encodeHighLevel("AIMAIMAIM");
         assertEquals("230 91 11 91 11 91 11 254", visualized);
-        //230 shifts to C40 encoding, 254 unlatches
+        //230 shifts to C40 encodation, 254 unlatches
 
-        visualized = encodeHighLevel("AbAIMAI");
-        assertEquals("230 87 211 91 11 90 241 254", visualized);
+        visualized = encodeHighLevel("AIMAIAb");
+        assertEquals("230 91 11 90 255 12 209 254", visualized);
 
         visualized = encodeHighLevel("AIMAIMAIMË");
         assertEquals("230 91 11 91 11 91 11 11 9 254", visualized);
 
         visualized = encodeHighLevel("AIMAIMAIMë");
         assertEquals("230 91 11 91 11 91 11 10 243 254 235 107", visualized);
+
+        visualized = encodeHighLevel("A1B2C3D4E5F6G7H8I9J0K1L2");
+        assertEquals("230 88 88 40 8 107 147 59 67 126 206 78 126 144 121 35 47 254", visualized);
+    }
+
+    public void testTextEncodation() throws Exception {
+        String visualized;
+
+        visualized = encodeHighLevel("aimaimaim");
+        assertEquals("239 91 11 91 11 91 11 254", visualized);
+        //239 shifts to Text encodation, 254 unlatches
+
+        visualized = encodeHighLevel("aimaimaim'");
+        assertEquals("239 91 11 91 11 91 11 7 49 254", visualized);
+
+        visualized = encodeHighLevel("aimaimaIm");
+        assertEquals("239 91 11 91 11 87 218 254 110", visualized);
+
+        visualized = encodeHighLevel("aimaimaimB");
+        assertEquals("239 91 11 91 11 91 11 12 209 254", visualized);
     }
 
     private String encodeHighLevel(String msg) {
         String encoded = DataMatrixHighLevelEncoder.encodeHighLevel(msg);
         String visualized = TestHelper.visualize(encoded);
-        //System.out.println(msg + ": " + visualized);
+        if (DEBUG) {
+            System.out.println(msg + ": " + visualized);
+        }
         return visualized;
     }
     
