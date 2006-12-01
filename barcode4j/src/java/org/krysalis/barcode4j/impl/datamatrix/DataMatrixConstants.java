@@ -52,5 +52,6 @@ public interface DataMatrixConstants {
     /** ECI character (Extended Channel Interpretation) */
     char ECI = 241;
     
-
+    /** Unlatch from C40 encodation */
+    char C40_UNLATCH = 254;
 }

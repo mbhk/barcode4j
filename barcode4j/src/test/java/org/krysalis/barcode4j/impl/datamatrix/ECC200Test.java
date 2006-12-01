@@ -35,6 +35,11 @@ public class ECC200Test extends TestCase {
         char[] cw = new char[] {142, 164, 186};
         String s = DataMatrixErrorCorrection.encodeECC200(String.valueOf(cw), 5);
         assertEquals("114 25 5 88 102", TestHelper.visualize(s));
+
+        //"A" encoded (ASCII encoding + 2 padding characters)
+        cw = new char[] {66, 129, 70};
+        s = DataMatrixErrorCorrection.encodeECC200(String.valueOf(cw), 5);
+        assertEquals("138 234 82 82 95", TestHelper.visualize(s));
     }
     
 }

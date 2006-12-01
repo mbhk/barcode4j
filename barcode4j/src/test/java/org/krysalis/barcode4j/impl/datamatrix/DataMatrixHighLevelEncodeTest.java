@@ -30,11 +30,37 @@ import junit.framework.TestCase;
 public class DataMatrixHighLevelEncodeTest extends TestCase {
 
     public void testASCIIEncodation() throws Exception {
-        String encoded = DataMatrixHighLevelEncoder.encodeHighLevel("123456");
-        assertEquals("142 164 186", TestHelper.visualize(encoded));
+        String visualized;
 
-        encoded = DataMatrixHighLevelEncoder.encodeHighLevel("30Q324343430794<OQQ");
-        assertEquals("160 82 162 173 173 173 137 224 61 80 82 82", TestHelper.visualize(encoded));
+        visualized = encodeHighLevel("123456");
+        assertEquals("142 164 186", visualized);
+
+        visualized = encodeHighLevel("30Q324343430794<OQQ");
+        assertEquals("160 82 162 173 173 173 137 224 61 80 82 82", visualized);
+    }
+    
+    public void testC40Encodation() throws Exception {
+        String visualized;
+
+        visualized = encodeHighLevel("AIMAIMAIM");
+        assertEquals("230 91 11 91 11 91 11 254", visualized);
+        //230 shifts to C40 encoding, 254 unlatches
+
+        visualized = encodeHighLevel("AbAIMAI");
+        assertEquals("230 87 211 91 11 90 241 254", visualized);
+
+        visualized = encodeHighLevel("AIMAIMAIMË");
+        assertEquals("230 91 11 91 11 91 11 11 9 254", visualized);
+
+        visualized = encodeHighLevel("AIMAIMAIMë");
+        assertEquals("230 91 11 91 11 91 11 10 243 254 235 107", visualized);
+    }
+
+    private String encodeHighLevel(String msg) {
+        String encoded = DataMatrixHighLevelEncoder.encodeHighLevel(msg);
+        String visualized = TestHelper.visualize(encoded);
+        //System.out.println(msg + ": " + visualized);
+        return visualized;
     }
     
 }
