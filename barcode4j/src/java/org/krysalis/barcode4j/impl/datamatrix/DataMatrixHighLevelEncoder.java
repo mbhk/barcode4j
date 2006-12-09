@@ -421,7 +421,6 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         protected void handleEOD(EncoderContext context, StringBuffer buffer) {
             context.updateSymbolInfo();
             int available = context.symbolInfo.dataCapacity - context.getCodewordCount();
-            int remaining = context.getRemainingCharacters(); 
             int count = buffer.length();
             if (count == 2) {
                 context.writeCodeword(C40_UNLATCH);
@@ -547,9 +546,6 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         }
         
         public void encode(EncoderContext context) {
-            //Prepare length field
-            int startPos = context.pos;
-            
             StringBuffer buffer = new StringBuffer();
             buffer.append('\0'); //Initialize length field
             while (context.hasMoreCharacters()) {
