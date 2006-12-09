@@ -28,23 +28,6 @@ import org.krysalis.barcode4j.TwoDimBarcodeLogicHandler;
 public class DataMatrixLogicImpl {
 
     /**
-     * Convert a string of char codewords into a different string which lists each character 
-     * using its decimal value.
-     * @param codewords the codewords 
-     * @return the visualized codewords
-     */
-    public static String visualize(String codewords) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < codewords.length(); i++) {
-            if (i > 0) {
-                sb.append(" ");
-            }
-            sb.append((int)codewords.charAt(i));
-        }
-        return sb.toString();
-    }
-    
-    /**
      * Generates the barcode logic.
      * @param logic the logic handler to receive generated events
      * @param msg the message to encode
@@ -57,16 +40,6 @@ public class DataMatrixLogicImpl {
         String encoded = DataMatrixHighLevelEncoder.encodeHighLevel(msg);
         
         DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length());
-        /*
-        StringBuffer codewords = new StringBuffer(symbolInfo.getCodewordCount());
-        codewords.append(encoded);
-        if (codewords.length() < symbolInfo.dataCapacity) {
-            codewords.append(DataMatrixConstants.PAD);
-        }
-        while (codewords.length() < symbolInfo.dataCapacity) {
-            codewords.append(randomizedPad(DataMatrixConstants.PAD, codewords.length() + 1));
-        }*/
-        //TODO PADDING! Padding correct?
         
         //2. step: ECC generation
         StringBuffer codewords = new StringBuffer(symbolInfo.getCodewordCount());
