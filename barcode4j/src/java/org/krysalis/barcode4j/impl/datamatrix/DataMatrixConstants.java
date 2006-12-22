@@ -54,4 +54,6 @@ public interface DataMatrixConstants {
     
     /** Unlatch from C40 encodation */
     char C40_UNLATCH = 254;
+    /** Unlatch from X12 encodation */
+    char X12_UNLATCH = 254;
 }
