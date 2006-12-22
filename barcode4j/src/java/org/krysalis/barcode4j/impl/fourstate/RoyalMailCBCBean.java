@@ -31,7 +31,7 @@ import org.krysalis.barcode4j.output.CanvasProvider;
 public class RoyalMailCBCBean extends HeightVariableBarcodeBean {
 
     /** The default module width for RoyalMail. */
-    protected static final double DEFAULT_MODULE_WIDTH = 0.4; //mm
+    protected static final double DEFAULT_MODULE_WIDTH = 0.53; //mm
 
     private ChecksumMode checksumMode = ChecksumMode.CP_AUTO;
 
