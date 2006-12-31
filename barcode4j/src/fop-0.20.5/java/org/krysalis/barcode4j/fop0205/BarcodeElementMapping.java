@@ -34,6 +34,7 @@ public class BarcodeElementMapping implements ElementMapping {
 
     private static final String[] BARCODE_ELEMENTS =
         {"intl2of5", "code39", "codabar", "code128", 
+	     "ean128", "template", "group-separator", "check-digit-marker", "omit-brackets",
          "upc-a", "upc-e", "ean-13", "ean-8",
          "postnet",
          "height", "module-width", "wide-factor", "quiet-zone",
