@@ -33,7 +33,6 @@ public class DataMatrixLogicImpl {
      * Generates the barcode logic.
      * @param logic the logic handler to receive generated events
      * @param msg the message to encode
-     * @param cols the number of columns
      */
     public void generateBarcodeLogic(TwoDimBarcodeLogicHandler logic, String msg) {
 
