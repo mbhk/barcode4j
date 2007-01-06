@@ -64,7 +64,7 @@ import org.apache.commons.cli.PosixParser;
 public class Main {
 
     private static final String[] APP_HEADER = {
-        "Barcode4J command-line application, Version 1.0",
+        "Barcode4J command-line application, Version " + getVersion(),
         ""};
 
     /** stdout for this application (default: System.out) */
@@ -301,6 +301,20 @@ public class Main {
         return new DefaultConfiguration("cfg");
     }
 
+    /** @return the Barcode4J version */
+    public static String getVersion() {
+        String version = null;
+        Package jarinfo = Main.class.getPackage();
+        if (jarinfo != null) {
+            version = jarinfo.getImplementationVersion();
+        }
+        if (version == null) {
+            //Fallback if Barcode4J is used in a development environment
+            version = "DEV";
+        }
+        return version;
+    }
+    
     /**
      * Prints the application header on the console. Ensures that this is only
      * done once.
