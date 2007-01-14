@@ -50,7 +50,7 @@ public class PDF417 extends ConfigurableBarcodeGenerator
         getPDF417Bean().setColumns(cfg.getChild("columns").getValueAsInteger(
                 PDF417Bean.DEFAULT_COLUMN_COUNT));
         
-        getPDF417Bean().setErrorCorrectionLevel(cfg.getChild("columns").getValueAsInteger(
+        getPDF417Bean().setErrorCorrectionLevel(cfg.getChild("ec-level").getValueAsInteger(
                 PDF417Bean.DEFAULT_ERROR_CORRECTION_LEVEL));
         
         //Vertical quiet zone
