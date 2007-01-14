@@ -27,7 +27,7 @@ import org.krysalis.barcode4j.TwoDimBarcodeLogicHandler;
  */
 public class DataMatrixLogicImpl {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     
     /**
      * Generates the barcode logic.
