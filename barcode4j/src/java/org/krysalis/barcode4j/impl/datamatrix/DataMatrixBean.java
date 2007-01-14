@@ -31,7 +31,7 @@ import org.krysalis.barcode4j.tools.UnitConv;
 public class DataMatrixBean extends AbstractBarcodeBean {
 
     /** The default module width (dot size) for DataMatrix. */
-    protected static final double DEFAULT_MODULE_WIDTH = UnitConv.in2mm(1.0 / 72); //2px at 72dpi
+    protected static final double DEFAULT_MODULE_WIDTH = UnitConv.in2mm(1.0 / 72); //1px at 72dpi
 
     /** Create a new instance. */
     public DataMatrixBean() {
