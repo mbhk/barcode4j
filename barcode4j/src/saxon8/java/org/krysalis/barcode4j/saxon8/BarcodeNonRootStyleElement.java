@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2004 Jeremias Maerki.
+ * Copyright 2003-2004,2007 Jeremias Maerki.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,10 @@
  */
 package org.krysalis.barcode4j.saxon8;
 
-import javax.xml.transform.TransformerConfigurationException;
-
+import net.sf.saxon.expr.Expression;
 import net.sf.saxon.instruct.Executable;
-import net.sf.saxon.instruct.Instruction;
 import net.sf.saxon.style.StyleElement;
+import net.sf.saxon.trans.XPathException;
 
 /**
  * Non-root barcode elements.
@@ -32,14 +31,14 @@ public class BarcodeNonRootStyleElement extends StyleElement {
     /**
      * @see com.icl.saxon.style.StyleElement#prepareAttributes()
      */
-    public void prepareAttributes() throws TransformerConfigurationException {
+    public void prepareAttributes() throws XPathException {
         //nop
     }
 
     /**
      * @see net.sf.saxon.style.StyleElement#compile(net.sf.saxon.instruct.Executable)
      */
-    public Instruction compile(Executable arg0) throws TransformerConfigurationException {
+    public Expression compile(Executable exec) throws XPathException {
         return null;
     }
 
