@@ -36,6 +36,7 @@ public class BarcodeRequestBean {
     private String humanReadableSize;
     private String humanReadableFont;
     private String format;
+    private boolean svgEmbed;
     private String resolution;
     private boolean gray;
 
@@ -123,6 +124,14 @@ public class BarcodeRequestBean {
         return MimeTypes.MIME_SVG.equals(MimeTypes.expandFormat(getFormat()))
             || (getFormat() == null) 
             || (getFormat().length() == 0);
+    }
+
+    public boolean isSvgEmbed() {
+        return this.svgEmbed;
+    }
+
+    public void setSvgEmbed(boolean value) {
+        this.svgEmbed = value;
     }
 
     public boolean isBitmap() {
