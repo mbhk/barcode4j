@@ -253,7 +253,7 @@ public class BarcodeRequestBean {
         }
 
         String humanReadableFont = getHumanReadableFont();
-        if (humanReadableSize != null) {
+        if (humanReadableFont != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_HUMAN_READABLE_FONT);
             sb.append("=");
