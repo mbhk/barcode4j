@@ -57,6 +57,14 @@ public class BarcodeUtil {
     }
     
     /**
+     * Returns the class resolver used by this class.
+     * @return a BarcodeClassResolver instance
+     */
+    public BarcodeClassResolver getClassResolver() {
+        return this.classResolver;
+    }
+    
+    /**
      * Creates a BarcoderGenerator.
      * @param cfg Configuration object that specifies the barcode to produce.
      * @param classResolver The BarcodeClassResolver to use for lookup of

@@ -15,6 +15,8 @@
  */
 package org.krysalis.barcode4j;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -97,5 +99,12 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         }
         Class cl = Class.forName(clazz + "Bean");
         return cl;
+    }
+    
+    /**
+     * @see org.krysalis.barcode4j.BarcodeClassResolver#getBarcodeNames()
+     */
+    public Collection getBarcodeNames() {
+        return Collections.unmodifiableCollection(this.classes.keySet());
     }
 }

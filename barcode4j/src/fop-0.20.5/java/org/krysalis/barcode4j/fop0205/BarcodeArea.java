@@ -38,6 +38,7 @@ public class BarcodeArea extends Area {
     private BarcodeGenerator bargen;
     private String msg;
     private String renderMode;
+    private int orientation;
 
     /**
      * Construct an Barcode area
@@ -53,10 +54,16 @@ public class BarcodeArea extends Area {
     }
 
     public void setBarcode(BarcodeGenerator bargen, 
-                String msg, String renderMode) {
+            String msg, String renderMode) {
+        setBarcode(bargen, msg, renderMode, 0);
+    }
+    
+    public void setBarcode(BarcodeGenerator bargen, 
+                String msg, String renderMode, int orientation) {
         this.bargen = bargen;
         this.msg = msg;
         this.renderMode = renderMode;
+        this.orientation = orientation;
     }
 
     public BarcodeGenerator getBarcodeGenerator() {
@@ -70,7 +77,11 @@ public class BarcodeArea extends Area {
     public String getRenderMode() {
         return this.renderMode;
     }
-    
+
+    public int getOrientation() {
+        return this.orientation;
+    }
+        
     public int getWidth() {
         return contentRectangleWidth;
     }
@@ -91,7 +102,7 @@ public class BarcodeArea extends Area {
     protected SVGArea createSVGArea() throws BarcodeCanvasSetupException {
         DOMImplementation domImpl = SVGDOMImplementation.getDOMImplementation();
         //TODO Implement orientation feature
-        SVGCanvasProvider svgout = new SVGCanvasProvider(domImpl, true, 0);
+        SVGCanvasProvider svgout = new SVGCanvasProvider(domImpl, true, getOrientation());
         getBarcodeGenerator().generateBarcode(svgout, getMessage());
         Document dom = svgout.getDOM();
         SVGArea svgarea = new SVGArea(getFontState(), getWidth(), getHeight());
