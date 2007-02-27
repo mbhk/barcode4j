@@ -72,6 +72,8 @@ public class PDF417 extends ConfigurableBarcodeGenerator
             } else {
                 getPDF417Bean().setBarHeight(rh.getValueAsMillimeter());
             }
+        } else {
+            getPDF417Bean().setBarHeight(PDF417Bean.DEFAULT_X_TO_Y_FACTOR * getBean().getModuleWidth());
         }
     }
    
