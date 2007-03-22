@@ -175,11 +175,8 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
                 } else {
                     if (isAlphaUpper(ch)) {
                         tmp.append((char)27); //as
-                        if (ch != ' ') {
-                            tmp.append((char)(ch - 65));
-                        } else {
-                            tmp.append((char)26); //space
-                        }
+                        tmp.append((char)(ch - 65));
+                        //space cannot happen here, it is also in "Lower"
                         break;
                     } else if (isMixed(ch)) {
                         submode = SUBMODE_MIXED;
@@ -220,7 +217,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
                 break;
             default: //SUBMODE_PUNCTUATION
                 if (isPunctuation(ch)) {
-                    tmp.append(PUNCTUATION[ch]);
+                    tmp.append((char)PUNCTUATION[ch]);
                 } else {
                     submode = SUBMODE_ALPHA;
                     tmp.append((char)28); //al
@@ -237,7 +234,8 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
         for (int i = 0; i < len; i++) {
             boolean odd = (i % 2) != 0;
             if (odd) {
-                sb.append((char)((h * 30) + tmp.charAt(i)));
+                h = (char)((h * 30) + tmp.charAt(i));
+                sb.append(h);
             } else {
                 h = tmp.charAt(i);
             }
