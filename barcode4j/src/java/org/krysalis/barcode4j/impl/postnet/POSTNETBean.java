@@ -39,7 +39,7 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
 
     private double intercharGapWidth;
     private BaselineAlignment baselinePosition = BaselineAlignment.ALIGN_BOTTOM;
-    private double shortBarHeight = 1.25f;
+    private double shortBarHeight = UnitConv.in2mm(0.050f);
     private boolean displayChecksum = false;
     private Double quietZoneVertical;
     
@@ -51,6 +51,7 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
         this.intercharGapWidth = this.moduleWidth;
         this.quietZone = 10 * this.moduleWidth;
         this.quietZoneVertical = new Double(UnitConv.in2mm(1.0 / 8)); //1/8inch
+        setBarHeight(UnitConv.in2mm(0.125f));
     }
     
     /**
