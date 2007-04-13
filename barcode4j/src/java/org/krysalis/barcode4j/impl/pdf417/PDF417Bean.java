@@ -140,9 +140,20 @@ public class PDF417Bean extends AbstractBarcodeBean {
         return width * moduleWidth;
     }
     
-    /** @see org.krysalis.barcode4j.impl.AbstractBarcodeBean#getBarHeight() */
-    public double getBarHeight() {
-        return this.height;
+    /**
+     * Returns the height of the rows.
+     * @return the row height (in mm)
+     */
+    public double getRowHeight() {
+        return getBarHeight();
+    }
+    
+    /**
+     * Sets the height of the rows.
+     * @param height the height of the rows (in mm)
+     */
+    public void setRowHeight(double height) {
+        setBarHeight(height);
     }
     
 }
