@@ -34,13 +34,14 @@ public class DataMatrixLogicImpl {
      * @param logic the logic handler to receive generated events
      * @param msg the message to encode
      */
-    public void generateBarcodeLogic(TwoDimBarcodeLogicHandler logic, String msg) {
+    public void generateBarcodeLogic(TwoDimBarcodeLogicHandler logic, String msg, 
+            SymbolShapeHint shape) {
 
         //ECC 200
         //1. step: Data encodation
-        String encoded = DataMatrixHighLevelEncoder.encodeHighLevel(msg);
+        String encoded = DataMatrixHighLevelEncoder.encodeHighLevel(msg, shape);
         
-        DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length());
+        DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(), shape);
         if (DEBUG) System.out.println(symbolInfo);
         
         //2. step: ECC generation

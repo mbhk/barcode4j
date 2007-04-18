@@ -46,6 +46,11 @@ public class DataMatrix extends ConfigurableBarcodeGenerator
         }
 
         super.configure(cfg);
+        
+        String shape = cfg.getChild("shape").getValue(null);
+        if (shape != null) {
+            getDataMatrixBean().setShape(SymbolShapeHint.byName(shape));
+        }
     }
    
     /**

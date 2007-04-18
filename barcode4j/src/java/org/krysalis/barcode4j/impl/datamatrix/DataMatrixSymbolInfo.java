@@ -100,13 +100,27 @@ public class DataMatrixSymbolInfo {
     }
     
     public static DataMatrixSymbolInfo lookup(int dataCodewords) {
-        return lookup(dataCodewords, true, true);
+        return lookup(dataCodewords, SymbolShapeHint.FORCE_NONE, true);
+    }
+
+    public static DataMatrixSymbolInfo lookup(int dataCodewords, SymbolShapeHint shape) {
+        return lookup(dataCodewords, shape, true);
     }
     
     public static DataMatrixSymbolInfo lookup(int dataCodewords, 
                 boolean allowRectangular, boolean fail) {
+        SymbolShapeHint shape = allowRectangular 
+                ? SymbolShapeHint.FORCE_NONE : SymbolShapeHint.FORCE_SQUARE;
+        return lookup(dataCodewords, shape, fail);
+    }
+
+    public static DataMatrixSymbolInfo lookup(int dataCodewords,
+            SymbolShapeHint shape, boolean fail) {
         for (int i = 0, c = symbols.length; i < c; i++) {
-            if (!allowRectangular && symbols[i].rectangular) {
+            if (shape == SymbolShapeHint.FORCE_SQUARE && symbols[i].rectangular) {
+                continue;
+            }
+            if (shape == SymbolShapeHint.FORCE_RECTANGLE && !symbols[i].rectangular) {
                 continue;
             }
             if (dataCodewords <= symbols[i].dataCapacity) {

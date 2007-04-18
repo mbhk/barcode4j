@@ -34,12 +34,39 @@ public class SymbolInfoTest extends TestCase {
         assertEquals(10, info.getSymbolWidth());
         assertEquals(10, info.getSymbolHeight());
 
+        info = DataMatrixSymbolInfo.lookup(3, SymbolShapeHint.FORCE_RECTANGLE);
+        assertEquals(7, info.errorCodewords);
+        assertEquals(16, info.matrixWidth);
+        assertEquals(6, info.matrixHeight);
+        assertEquals(18, info.getSymbolWidth());
+        assertEquals(8, info.getSymbolHeight());
+
         info = DataMatrixSymbolInfo.lookup(9);
         assertEquals(11, info.errorCodewords);
         assertEquals(14, info.matrixWidth);
         assertEquals(6, info.matrixHeight);
         assertEquals(32, info.getSymbolWidth());
         assertEquals(8, info.getSymbolHeight());
+
+        info = DataMatrixSymbolInfo.lookup(9, SymbolShapeHint.FORCE_SQUARE);
+        assertEquals(12, info.errorCodewords);
+        assertEquals(14, info.matrixWidth);
+        assertEquals(14, info.matrixHeight);
+        assertEquals(16, info.getSymbolWidth());
+        assertEquals(16, info.getSymbolHeight());
+
+        try {
+            info = DataMatrixSymbolInfo.lookup(1559);
+            fail("There's no rectangular symbol for more than 1558 data codewords");
+        } catch (IllegalArgumentException iae) {
+            //expected
+        }
+        try {
+            info = DataMatrixSymbolInfo.lookup(50, SymbolShapeHint.FORCE_RECTANGLE);
+            fail("There's no rectangular symbol for 50 data codewords");
+        } catch (IllegalArgumentException iae) {
+            //expected
+        }
     }
     
 }

@@ -15,7 +15,6 @@
  */
 package org.krysalis.barcode4j.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.avalon.framework.configuration.Configurable;
@@ -68,6 +67,7 @@ public abstract class ConfigurableBarcodeGenerator
         elements.add("group-separator");
         elements.add("check-digit-marker");
         elements.add("omit-brackets");
+        elements.add("shape");
         BARCODE_ELEMENTS = (String[])elements.toArray(new String[elements.size()]);
     }
     
