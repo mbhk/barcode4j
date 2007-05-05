@@ -58,6 +58,7 @@ public class MessagePatternUtil {
         boolean escapeCharEncountered = false;
 
         // iterate trough pattern chars
+        boolean msgFinished = false;
         for (int patternIndex = 0; patternIndex < patternBytes.length; patternIndex++) {
 
             currentPatternChar = (char) patternBytes[patternIndex];
@@ -77,14 +78,18 @@ public class MessagePatternUtil {
             // else
             // append the currentPatternChar to the result and set the
             // escapeCharEncountered flag down
-            if ((!escapeCharEncountered) && isPlaceholder(currentPatternChar)) {
+            if ((!msgFinished) 
+                    && (!escapeCharEncountered) 
+                    && isPlaceholder(currentPatternChar)) {
                 result.append((char) msgBytes[msgIndex]);
                 msgIndex++;
                 if (msgIndex == msgBytes.length) {
-                    break;
+                    msgFinished = true;
                 }
             } else {
-                result.append(currentPatternChar);
+                if (escapeCharEncountered || !isPlaceholder(currentPatternChar)) {
+                    result.append(currentPatternChar);
+                }
                 escapeCharEncountered = false;
             }
         }

@@ -66,6 +66,18 @@ public class MessagePatternUtilTest extends TestCase {
         pattern = "_\\__"; //with escape
         result = MessagePatternUtil.applyCustomMessagePattern("AB", pattern);
         assertEquals("A_B", result);
+
+        pattern = "____>>>>"; //additional chars at the end
+        result = MessagePatternUtil.applyCustomMessagePattern("ABCD", pattern);
+        assertEquals("ABCD>>>>", result);
+
+        pattern = "____>>>>"; //underfull message
+        result = MessagePatternUtil.applyCustomMessagePattern("AB", pattern);
+        assertEquals("AB>>>>", result);
+
+        pattern = "____>>>>\\_"; //underfull message with escape
+        result = MessagePatternUtil.applyCustomMessagePattern("AB", pattern);
+        assertEquals("AB>>>>_", result);
     }
     
 }
