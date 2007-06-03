@@ -106,7 +106,6 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         int encodingMode = ASCII_ENCODATION; //Default mode
         EncoderContext context = new EncoderContext(msg, shape);
         
-        /*
         if (msg.startsWith(MACRO_05_HEADER) && msg.endsWith(MACRO_TRAILER)) {
             context.writeCodeword(MACRO_05);
             context.setSkipAtEnd(2);
@@ -115,7 +114,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
             context.writeCodeword(MACRO_06);
             context.setSkipAtEnd(2);
             context.pos += MACRO_06_HEADER.length();
-        }*/
+        }
         
         while (context.hasMoreCharacters()) {
             encoders[encodingMode].encode(context);
