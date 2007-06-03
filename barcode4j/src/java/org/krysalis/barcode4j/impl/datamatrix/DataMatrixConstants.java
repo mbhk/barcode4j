@@ -56,4 +56,11 @@ public interface DataMatrixConstants {
     char C40_UNLATCH = 254;
     /** Unlatch from X12 encodation */
     char X12_UNLATCH = 254;
+    
+    /** 05 Macro header */
+    String MACRO_05_HEADER = "[)>\u001E05\u001D";
+    /** 06 Macro header */
+    String MACRO_06_HEADER = "[)>\u001E06\u001D";
+    /** Macro trailer */
+    String MACRO_TRAILER = "\u001E\u0004";
 }

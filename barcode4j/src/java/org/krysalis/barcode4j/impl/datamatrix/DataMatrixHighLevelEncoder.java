@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2007 Jeremias Maerki.
+ * Copyright 2006 Jeremias Maerki.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,6 +105,18 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         
         int encodingMode = ASCII_ENCODATION; //Default mode
         EncoderContext context = new EncoderContext(msg, shape);
+        
+        /*
+        if (msg.startsWith(MACRO_05_HEADER) && msg.endsWith(MACRO_TRAILER)) {
+            context.writeCodeword(MACRO_05);
+            context.setSkipAtEnd(2);
+            context.pos += MACRO_05_HEADER.length();
+        } else if (msg.startsWith(MACRO_06_HEADER) && msg.endsWith(MACRO_TRAILER)) {
+            context.writeCodeword(MACRO_06);
+            context.setSkipAtEnd(2);
+            context.pos += MACRO_06_HEADER.length();
+        }*/
+        
         while (context.hasMoreCharacters()) {
             encoders[encodingMode].encode(context);
             if (context.newEncoding >= 0) {
@@ -150,6 +162,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         private int pos = 0;
         private int newEncoding = -1;
         private DataMatrixSymbolInfo symbolInfo;
+        private int skipAtEnd = 0;
         
         public EncoderContext(String msg, SymbolShapeHint shape) {
             this.msg = msg;
@@ -162,6 +175,10 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
             return this.msg;
         }
         
+        public void setSkipAtEnd(int count) {
+            this.skipAtEnd = count;
+        }
+
         public char getCurrentChar() {
             return msg.charAt(pos);
         }
@@ -195,11 +212,15 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         }
 
         public boolean hasMoreCharacters() {
-            return pos < msg.length();
+            return pos < getTotalMessageCharCount();
+        }
+
+        private int getTotalMessageCharCount() {
+            return msg.length() - skipAtEnd;
         }
         
         public int getRemainingCharacters() {
-            return msg.length() - pos;
+            return getTotalMessageCharCount() - pos;
         }
         
         public void updateSymbolInfo() {

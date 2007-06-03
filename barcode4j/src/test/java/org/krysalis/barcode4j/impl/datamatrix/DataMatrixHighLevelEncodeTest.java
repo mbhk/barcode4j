@@ -280,6 +280,14 @@ public class DataMatrixHighLevelEncodeTest extends TestCase {
 
     }
     
+    public void testMacroCharacters() throws Exception {
+        String visualized;
+
+        visualized = encodeHighLevel("[)>\u001E05\u001D5555\u001C6666\u001E\u0004");
+        //assertEquals("92 42 63 31 135 30 185 185 29 196 196 31 5 129 87 237", visualized);
+        assertEquals("236 185 185 29 196 196 129 56", visualized);
+    }
+
     private String encodeHighLevel(String msg) {
         String encoded = DataMatrixHighLevelEncoder.encodeHighLevel(msg);
         String visualized = TestHelper.visualize(encoded);
