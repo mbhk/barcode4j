@@ -164,6 +164,9 @@ public class DataMatrixHighLevelEncodeTest extends TestCase {
 
         visualized = encodeHighLevel("aimaimaimB");
         assertEquals("239 91 11 91 11 91 11 254 67 129", visualized);
+
+        visualized = encodeHighLevel("aimaimaim{txt}\u0004");
+        assertEquals("239 91 11 91 11 91 11 16 218 236 107 181 69 254 129 237", visualized);
     }
 
     public void testX12Encodation() throws Exception {
@@ -277,7 +280,6 @@ public class DataMatrixHighLevelEncodeTest extends TestCase {
 
         visualized = encodeHighLevel("CREX-TAN:hhh");
         assertEquals("240 13 33 88 181 64 78 124 59 105 105 105", visualized);
-
     }
     
     public void testMacroCharacters() throws Exception {
