@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.krysalis.barcode4j.impl;
+package org.krysalis.barcode4j.impl.code128;
 
-import org.krysalis.barcode4j.impl.code128.Code128;
-import org.krysalis.barcode4j.impl.code128.Code128LogicImpl;
+import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
+import org.krysalis.barcode4j.impl.NullClassicBarcodeLogicHandler;
 
 import junit.framework.TestCase;
 
