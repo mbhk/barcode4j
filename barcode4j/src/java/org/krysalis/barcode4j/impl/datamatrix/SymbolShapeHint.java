@@ -68,5 +68,8 @@ public class SymbolShapeHint {
         }
     }
     
-
+    /** @see java.lang.Object#toString() */
+    public String toString() {
+        return getName();
+    }
 }
