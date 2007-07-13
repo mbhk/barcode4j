@@ -185,6 +185,8 @@ public class Code128EncoderTest extends TestCase {
                 || res.equals("->BCode5->C[67][89]<SHIFT-B>a"));
         assertEquals("->BCode->C[56][78][90]->Bab", encodeToDebug("Code567890ab", encoder));
         assertEquals("->BCode5->C[67][89]", encodeToDebug("Code56789", encoder));
+        assertEquals("->BCode<FNC1>5->C[67][89]", encodeToDebug("Code\u00f156789", encoder));
+        assertEquals("->BCode->C[56]<FNC1>[78]->B9", encodeToDebug("Code56\u00f1789", encoder));
     }
 
     public void testDefaultEncoder() throws Exception {

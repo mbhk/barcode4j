@@ -129,7 +129,10 @@ public class DefaultCode128Encoder implements Code128Encoder {
 
                     saveChar++;
                     countC += 2;
-                } else if (character == Code128LogicImpl.FNC_1) {
+                } else if (character == Code128LogicImpl.FNC_1
+                        && (messagePos == 0 || countC > 0)) {
+                    // only include FNC_1 if it is the first character or if it is
+                    // preceeded by other codeset C characters
                     countC += 1;
                 } else {
                     break;
@@ -142,7 +145,12 @@ public class DefaultCode128Encoder implements Code128Encoder {
 
                 // if extra digit at end then skip first digit
                 if (extraDigitAtEnd) {
-                    messagePos++;
+
+                    // section should not contain FNC_1
+                    int fnc1Pos = message.indexOf(Code128LogicImpl.FNC_1, messagePos);
+                    if (fnc1Pos < 0 || fnc1Pos > messagePos + countC) {
+                        messagePos++;
+                    }
                 }
 
                 // write A or B section preceeding this C section
