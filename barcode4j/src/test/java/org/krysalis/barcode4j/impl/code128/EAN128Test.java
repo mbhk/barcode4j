@@ -78,6 +78,12 @@ public class EAN128Test extends TestCase {
         impl.setMessage("011234567890123" + CD + "1001234");
         assertEquals("(01)12345678901231(10)01234", impl.getHumanReadableMsg());
         assertEquals(FNC1 + "0112345678901231" + "1001234", impl.getCode128Msg());
-    }
+ 
+        //Test length redefinition of fixed length field not allowed
+        try {
+        	impl = new EAN128LogicImpl(ChecksumMode.CP_AUTO, "(00)n19");
+        	assertTrue("Exception expected", false);
+        } catch (Exception e) {};
+}
     
 }
