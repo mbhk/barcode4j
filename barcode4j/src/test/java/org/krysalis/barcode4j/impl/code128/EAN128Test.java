@@ -71,7 +71,7 @@ public class EAN128Test extends TestCase {
         assertEquals("(10)12(420)12345", impl.getHumanReadableMsg());
         assertEquals(FNC1 + "1012" + FNC1 + "42012345", impl.getCode128Msg());
 
-       //Test if GS is optional after real fixed length field (FNC1 is not added)
+        //Test if GS is optional after real fixed length field (FNC1 is not added)
         impl = new EAN128LogicImpl(ChecksumMode.CP_AUTO, null);
         impl.setMessage("0112345678901231" + GS + "1001234");
         assertEquals("(01)12345678901231(10)01234", impl.getHumanReadableMsg());
@@ -94,6 +94,18 @@ public class EAN128Test extends TestCase {
         	impl = new EAN128LogicImpl(ChecksumMode.CP_AUTO, "(00)n19");
         	assertTrue("Exception expected", false);
         } catch (Exception e) {};
-}
+        
+        //Test date Template
+        impl = new EAN128LogicImpl(ChecksumMode.CP_AUTO, "(11)d");
+        impl.setMessage("11071231");
+        assertEquals("(11)071231", impl.getHumanReadableMsg());
+        assertEquals(FNC1 + "11071231", impl.getCode128Msg());
+
+        //Test missing length in Template
+        try {
+            impl = new EAN128LogicImpl(ChecksumMode.CP_AUTO, "(10)n1-");
+        	assertTrue("Exception expected", false);
+        } catch (Exception e) {};
+    }
     
 }
