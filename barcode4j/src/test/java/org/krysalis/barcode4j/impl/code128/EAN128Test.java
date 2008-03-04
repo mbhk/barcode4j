@@ -18,9 +18,9 @@
 
 package org.krysalis.barcode4j.impl.code128;
 
-import org.krysalis.barcode4j.ChecksumMode;
-
 import junit.framework.TestCase;
+
+import org.krysalis.barcode4j.ChecksumMode;
 
 /**
  * Tests for EAN 128.
@@ -91,8 +91,8 @@ public class EAN128Test extends TestCase {
  
         //Test length redefinition of fixed length field not allowed
         try {
-        	impl = new EAN128LogicImpl(ChecksumMode.CP_AUTO, "(00)n19");
-        	assertTrue("Exception expected", false);
+            impl = new EAN128LogicImpl(ChecksumMode.CP_AUTO, "(00)n19");
+            assertTrue("Exception expected", false);
         } catch (Exception e) {};
         
         //Test date Template
@@ -104,7 +104,7 @@ public class EAN128Test extends TestCase {
         //Test missing length in Template
         try {
             impl = new EAN128LogicImpl(ChecksumMode.CP_AUTO, "(10)n1-");
-        	assertTrue("Exception expected", false);
+            assertTrue("Exception expected", false);
         } catch (Exception e) {};
     }
     
