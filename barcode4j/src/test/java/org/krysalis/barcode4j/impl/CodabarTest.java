@@ -15,11 +15,11 @@
  */
 package org.krysalis.barcode4j.impl;
 
+import junit.framework.TestCase;
+
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.codabar.Codabar;
 import org.krysalis.barcode4j.impl.codabar.CodabarLogicImpl;
-
-import junit.framework.TestCase;
 
 /**
  * Test class for the Codabar implementation.
@@ -72,6 +72,11 @@ public class CodabarTest extends TestCase {
             + "</BC>";
         //System.out.println(expected);
         //System.out.println(sb.toString());
+        assertEquals(expected, sb.toString());
+
+        //Again with upper-case characters
+        sb.setLength(0);
+        logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb), "D123E");
         assertEquals(expected, sb.toString());
         
         /**@todo Implement start/stop character checking */
