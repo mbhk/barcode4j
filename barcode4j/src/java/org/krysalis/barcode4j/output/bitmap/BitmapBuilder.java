@@ -90,9 +90,9 @@ public class BitmapBuilder {
         if (antiAlias) {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, 
+                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         }
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, 
-            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, 
             RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         g2d.setBackground(Color.white);
