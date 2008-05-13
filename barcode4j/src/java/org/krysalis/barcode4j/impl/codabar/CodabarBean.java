@@ -43,7 +43,8 @@ public class CodabarBean extends AbstractBarcodeBean {
     /** Create a new instance. */
     public CodabarBean() {
         this.moduleWidth = DEFAULT_MODULE_WIDTH;
-        this.quietZone = 10 * this.moduleWidth;
+        setQuietZone(10 * this.moduleWidth);
+        setVerticalQuietZone(0); //1D barcodes don't have vertical quiet zones
     }
     
     /**
@@ -89,7 +90,9 @@ public class CodabarBean extends AbstractBarcodeBean {
             return moduleWidth;
         } else if (width == 2) {
             return moduleWidth * wideFactor;
-        } else throw new IllegalArgumentException("Only widths 1 and 2 allowed");
+        } else {
+            throw new IllegalArgumentException("Only widths 1 and 2 allowed");
+        }
     }
     
     /**

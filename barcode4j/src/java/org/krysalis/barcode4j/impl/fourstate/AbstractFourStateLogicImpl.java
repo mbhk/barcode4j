@@ -75,7 +75,19 @@ public abstract class AbstractFourStateLogicImpl {
         return false;
     }
     
+    /**
+     * Turns the given message into a normalize representation. Some subclasses may update/add
+     * parentheses around the message and/or handle the checksum as necessary.
+     * @param msg the message
+     * @return the normalized message to be encoded
+     */
     protected abstract String normalizeMessage(String msg);
+    
+    /**
+     * Does the high-level encoding of the message into codewords.
+     * @param msg the message
+     * @return an array of Strings with codewords
+     */
     protected abstract String[] encodeHighLevel(String msg);
     
     /**
@@ -112,6 +124,5 @@ public abstract class AbstractFourStateLogicImpl {
 
         logic.endBarcode();
     }
-
 
 }

@@ -44,7 +44,8 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
     /** Create a new instance. */
     public Interleaved2Of5Bean() {
         this.moduleWidth = DEFAULT_MODULE_WIDTH;
-        this.quietZone = 10 * this.moduleWidth;
+        setQuietZone(10 * this.moduleWidth);
+        setVerticalQuietZone(0); //1D barcodes don't have vertical quiet zones
     }
     
     /**

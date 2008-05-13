@@ -43,7 +43,7 @@ public class DataMatrixBean extends AbstractBarcodeBean {
     public DataMatrixBean() {
         this.height = 0.0; //not used by DataMatrix
         this.moduleWidth = DEFAULT_MODULE_WIDTH;
-        this.quietZone = 1 * moduleWidth;
+        setQuietZone(1 * moduleWidth);
         this.shape = SymbolShapeHint.FORCE_NONE;
     }
 

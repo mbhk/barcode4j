@@ -22,8 +22,7 @@ import org.krysalis.barcode4j.impl.HeightVariableBarcodeBean;
 import org.krysalis.barcode4j.output.Canvas;
 
 /**
- * Logic Handler to be used by subclasses of HeightVariableBarcodeBean 
- * for painting on a Canvas.
+ * Logic Handler for POSTNET.
  * 
  * @author Chris Dolphy
  * @version $Id$

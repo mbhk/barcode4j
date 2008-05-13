@@ -15,11 +15,12 @@
  */
 package org.krysalis.barcode4j.impl.pdf417;
 
+import org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator;
+import org.krysalis.barcode4j.tools.Length;
+
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator;
-import org.krysalis.barcode4j.tools.Length;
 
 /**
  * This class is an implementation of the PDF417 barcode.
@@ -73,17 +74,6 @@ public class PDF417 extends ConfigurableBarcodeGenerator
         
         getPDF417Bean().setErrorCorrectionLevel(cfg.getChild("ec-level").getValueAsInteger(
                 PDF417Bean.DEFAULT_ERROR_CORRECTION_LEVEL));
-        
-        //Vertical quiet zone
-        String qzvs = cfg.getChild("vertical-quiet-zone").getValue(null);
-        if (qzvs != null) {
-            Length qz = new Length(qzvs, "mw");
-            if (qz.getUnit().equalsIgnoreCase("mw")) {
-                getPDF417Bean().setVerticalQuietZone(qz.getValue() * getBean().getModuleWidth());
-            } else {
-                getPDF417Bean().setVerticalQuietZone(qz.getValueAsMillimeter());
-            }
-        }
         
         String rhs = cfg.getChild("row-height").getValue(null);
         if (rhs != null) {
