@@ -63,6 +63,11 @@ public class Code39 extends ConfigurableBarcodeGenerator
             getCode39Bean().setIntercharGapWidth(igw.getValueAsMillimeter());
         }
         
+        if (cfg.getChild("extended-charset", false) != null) {
+            getCode39Bean().setExtendedCharSetEnabled(
+                    cfg.getChild("extended-charset").getValueAsBoolean());
+        }
+        
         Configuration hr = cfg.getChild("human-readable", false);
         if (hr != null) {
             //Display start/stop character and checksum in hr-message or not

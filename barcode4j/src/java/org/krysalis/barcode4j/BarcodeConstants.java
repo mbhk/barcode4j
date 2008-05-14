@@ -34,4 +34,7 @@ public interface BarcodeConstants {
      * was renamed.
      */
     String OLD_NAMESPACE = "http://www.krysalis.org/barcode/ns";
+    
+    /** URL to the Barcode4J website */
+    String WEBSITE = "http://barcode4j.sourceforge.net";
 }
