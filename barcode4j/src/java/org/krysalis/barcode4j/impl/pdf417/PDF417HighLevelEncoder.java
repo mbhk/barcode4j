@@ -214,7 +214,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
                     tmp.append((char)PUNCTUATION[ch]);
                 } else {
                     submode = SUBMODE_ALPHA;
-                    tmp.append((char)28); //al
+                    tmp.append((char)29); //al
                     continue;
                 }
             }
