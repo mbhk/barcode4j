@@ -27,11 +27,11 @@ REM ECHO %TMP_CLASSPATH%
 if "%OS%"=="Windows_NT" goto WinNT
 
 :Win98
-%JAVA_HOME%\bin\java -cp %TMP_CLASSPATH% org.krysalis.barcode4j.cli.Main %1 %2 %3 %4 %5 %6 %7 %8 %9
+"%JAVA_HOME%\bin\java" -cp %TMP_CLASSPATH% org.krysalis.barcode4j.cli.Main %1 %2 %3 %4 %5 %6 %7 %8 %9
 GOTO exit
 
 :WinNT
-%JAVA_HOME%\bin\java -cp %TMP_CLASSPATH% org.krysalis.barcode4j.cli.Main %*
+"%JAVA_HOME%\bin\java" -cp %TMP_CLASSPATH% org.krysalis.barcode4j.cli.Main %*
 GOTO exit
 
 
