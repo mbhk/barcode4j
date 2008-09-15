@@ -18,49 +18,58 @@
 
 package org.krysalis.barcode4j.impl.datamatrix;
 
+import java.io.IOException;
+
 import org.krysalis.barcode4j.TwoDimBarcodeLogicHandler;
 
 /**
  * Top-level class for the logic part of the DataMatrix implementation.
- * 
+ *
  * @version $Id$
  */
 public class DataMatrixLogicImpl {
 
     private static final boolean DEBUG = false;
-    
+
     /**
      * Generates the barcode logic.
      * @param logic the logic handler to receive generated events
      * @param msg the message to encode
      */
-    public void generateBarcodeLogic(TwoDimBarcodeLogicHandler logic, String msg, 
+    public void generateBarcodeLogic(TwoDimBarcodeLogicHandler logic, String msg,
             SymbolShapeHint shape) {
 
         //ECC 200
         //1. step: Data encodation
-        String encoded = DataMatrixHighLevelEncoder.encodeHighLevel(msg, shape);
-        
+        String encoded;
+        try {
+            encoded = DataMatrixHighLevelEncoder.encodeHighLevel(msg, shape);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Cannot fetch data: " + e.getLocalizedMessage());
+        }
+
         DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(), shape);
-        if (DEBUG) System.out.println(symbolInfo);
-        
+        if (DEBUG) {
+            System.out.println(symbolInfo);
+        }
+
         //2. step: ECC generation
         String codewords = DataMatrixErrorCorrection.encodeECC200(
                 encoded, symbolInfo);
 
         //3. step: Module placement in Matrix
         DefaultDataMatrixPlacement placement = new DefaultDataMatrixPlacement(
-                    codewords, 
+                    codewords,
                     symbolInfo.getSymbolDataWidth(), symbolInfo.getSymbolDataHeight());
         placement.place();
-        
+
         //4. step: low-level encoding
         logic.startBarcode(msg, msg);
         encodeLowLevel(logic, placement, symbolInfo);
         logic.endBarcode();
     }
 
-    private void encodeLowLevel(TwoDimBarcodeLogicHandler logic, 
+    private void encodeLowLevel(TwoDimBarcodeLogicHandler logic,
             DataMatrixPlacement placement, DataMatrixSymbolInfo symbolInfo) {
         int symbolWidth = symbolInfo.getSymbolDataWidth();
         int symbolHeight = symbolInfo.getSymbolDataHeight();
@@ -92,5 +101,5 @@ public class DataMatrixLogicImpl {
             }
         }
     }
-    
+
 }
