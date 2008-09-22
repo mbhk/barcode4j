@@ -18,6 +18,7 @@
 
 package org.krysalis.barcode4j.impl.datamatrix;
 
+import java.awt.Dimension;
 import java.io.IOException;
 
 import org.krysalis.barcode4j.TwoDimBarcodeLogicHandler;
@@ -35,20 +36,24 @@ public class DataMatrixLogicImpl {
      * Generates the barcode logic.
      * @param logic the logic handler to receive generated events
      * @param msg the message to encode
+     * @param shape the symbol shape constraint
+     * @param minSize the minimum symbol size constraint or null for no constraint
+     * @param maxSize the maximum symbol size constraint or null for no constraint
      */
     public void generateBarcodeLogic(TwoDimBarcodeLogicHandler logic, String msg,
-            SymbolShapeHint shape) {
+            SymbolShapeHint shape, Dimension minSize, Dimension maxSize) {
 
         //ECC 200
         //1. step: Data encodation
         String encoded;
         try {
-            encoded = DataMatrixHighLevelEncoder.encodeHighLevel(msg, shape);
+            encoded = DataMatrixHighLevelEncoder.encodeHighLevel(msg, shape, minSize, maxSize);
         } catch (IOException e) {
             throw new IllegalArgumentException("Cannot fetch data: " + e.getLocalizedMessage());
         }
 
-        DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(), shape);
+        DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(),
+                shape, minSize, maxSize, true);
         if (DEBUG) {
             System.out.println(symbolInfo);
         }

@@ -18,6 +18,8 @@
 
 package org.krysalis.barcode4j.impl.datamatrix;
 
+import java.awt.Dimension;
+
 import junit.framework.TestCase;
 
 /**
@@ -67,6 +69,42 @@ public class SymbolInfoTest extends TestCase {
         } catch (IllegalArgumentException iae) {
             //expected
         }
+
+        info = DataMatrixSymbolInfo.lookup(35);
+        assertEquals(24, info.getSymbolWidth());
+        assertEquals(24, info.getSymbolHeight());
+
+        Dimension fixedSize = new Dimension(26, 26);
+        info = DataMatrixSymbolInfo.lookup(35,
+                SymbolShapeHint.FORCE_NONE, fixedSize, fixedSize, false);
+        assertEquals(26, info.getSymbolWidth());
+        assertEquals(26, info.getSymbolHeight());
+
+        info = DataMatrixSymbolInfo.lookup(45,
+                SymbolShapeHint.FORCE_NONE, fixedSize, fixedSize, false);
+        assertNull(info);
+
+        Dimension minSize = fixedSize;
+        Dimension maxSize = new Dimension(32, 32);
+
+        info = DataMatrixSymbolInfo.lookup(35,
+                SymbolShapeHint.FORCE_NONE, minSize, maxSize, false);
+        assertEquals(26, info.getSymbolWidth());
+        assertEquals(26, info.getSymbolHeight());
+
+        info = DataMatrixSymbolInfo.lookup(40,
+                SymbolShapeHint.FORCE_NONE, minSize, maxSize, false);
+        assertEquals(26, info.getSymbolWidth());
+        assertEquals(26, info.getSymbolHeight());
+
+        info = DataMatrixSymbolInfo.lookup(45,
+                SymbolShapeHint.FORCE_NONE, minSize, maxSize, false);
+        assertEquals(32, info.getSymbolWidth());
+        assertEquals(32, info.getSymbolHeight());
+
+        info = DataMatrixSymbolInfo.lookup(63,
+                SymbolShapeHint.FORCE_NONE, minSize, maxSize, false);
+        assertNull(info);
     }
-    
+
 }
