@@ -78,6 +78,7 @@ public abstract class ConfigurableBarcodeGenerator
         elements.add("max-columns");
         elements.add("min-rows");
         elements.add("max-rows");
+        elements.add("ec-level");
         elements.add("width-to-height-ratio");
         elements.add("min-symbol-size");
         elements.add("max-symbol-size");
