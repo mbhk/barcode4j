@@ -188,16 +188,7 @@ public class BarcodeElement extends BarcodeObj {
 
         Configuration cfg = ConfigurationUtil.buildConfiguration(this.doc);
         try {
-            String msg;
-            try {
-                msg = cfg.getAttribute("message");
-            } catch (ConfigurationException ce) {
-                try {
-                    msg = cfg.getAttribute("msg"); //for compatibility
-                } catch (ConfigurationException ce1) {
-                    throw ce;
-                }
-            }
+            String msg = ConfigurationUtil.getMessage(cfg);
             msg = MessageUtil.unescapeUnicode(msg);
 
             int orientation = cfg.getAttributeAsInteger("orientation", 0);
