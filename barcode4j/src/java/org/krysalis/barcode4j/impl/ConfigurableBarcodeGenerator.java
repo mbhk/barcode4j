@@ -83,6 +83,8 @@ public abstract class ConfigurableBarcodeGenerator
         elements.add("min-symbol-size"); //DataMatrix
         elements.add("max-symbol-size"); //DataMatrix
         elements.add("codesets"); //Code128
+        elements.add("bearer-bar-width"); //ITF-14
+        elements.add("bearer-box"); //ITF-14
         BARCODE_ELEMENTS = (String[])elements.toArray(new String[elements.size()]);
     }
 
