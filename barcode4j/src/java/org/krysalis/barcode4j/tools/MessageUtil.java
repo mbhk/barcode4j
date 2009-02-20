@@ -73,4 +73,25 @@ public class MessageUtil {
        return sb.toString();
    }
 
+    /**
+     * Filters non-printable ASCII characters (0-31 and 127) from a string with spaces and
+     * returns that. Please note that non-printable characters outside the ASCII character
+     * set are not touched by this method.
+     * @param text the text to be filtered.
+     * @return the filtered text
+     */
+    public static String filterNonPrintableCharacters(String text) {
+        int len = text.length();
+        StringBuffer sb = new StringBuffer(len);
+        for (int i = 0; i < len; i++) {
+            final char ch = text.charAt(i);
+            if (ch < 32 || ch == 127) {
+                sb.append(' '); //Replace non-printables with a space
+            } else {
+                sb.append(ch);
+            }
+        }
+        return sb.toString();
+    }
+
 }
