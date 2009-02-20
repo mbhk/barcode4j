@@ -121,7 +121,7 @@ public class BarcodeXMLHandler implements XMLHandler, PSRendererContextConstants
         bargen.generateBarcode(canvas, msg);
         canvas.finish();
 
-        final BarcodeDimension barDim = bargen.calcDimensions(msg);
+        final BarcodeDimension barDim = canvas.getDimensions();
         float bw = (float)UnitConv.mm2pt(barDim.getWidthPlusQuiet(orientation));
         float bh = (float)UnitConv.mm2pt(barDim.getHeightPlusQuiet(orientation));
 
