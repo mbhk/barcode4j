@@ -69,12 +69,9 @@ public class ITF14CanvasLogicHandler extends DefaultCanvasLogicHandler {
     }
 
     /** {@inheritDoc} */
-    protected double getBarTopPosition() {
-        if (bcBean.getMsgPosition() == HumanReadablePlacement.HRP_TOP) {
-            return bcBean.getHumanReadableHeight() + getITF14Bean().getBearerBarWidth();
-        } else {
-            return getITF14Bean().getBearerBarWidth();
-        }
+    protected double getStartY() {
+        double y = super.getStartY() + getITF14Bean().getBearerBarWidth();
+        return y;
     }
 
     /** {@inheritDoc} */

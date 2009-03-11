@@ -37,6 +37,7 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
     /** the barcode dimensions */
     protected BarcodeDimension dimensions;
     private double x = 0.0;
+    private double y;
     private String formattedMsg;
 
     /**
@@ -61,6 +62,21 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
         }
     }
 
+    /**
+     * Returns the start Y position of the bars.
+     * @return the start Y position of the bars.
+     */
+    protected double getStartY() {
+        double y = 0.0;
+        if (bcBean.hasQuietZone()) {
+            y += bcBean.getVerticalQuietZone();
+        }
+        if (bcBean.getMsgPosition() == HumanReadablePlacement.HRP_TOP) {
+            y += bcBean.getHumanReadableHeight();
+        }
+        return y;
+    }
+
     /** {@inheritDoc} */
     public void startBarcode(String msg, String formattedMsg) {
         this.formattedMsg = MessagePatternUtil.applyCustomMessagePattern(
@@ -71,6 +87,7 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
 
         canvas.establishDimensions(dimensions);
         x = getStartX();
+        y = getStartY();
     }
 
     /** {@inheritDoc} */
@@ -78,19 +95,11 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
         //nop
     }
 
-    /**
-     * Returns the top position of the vertical bars.
-     * @return the top position of the vertical bars.
-     */
-    protected double getBarTopPosition() {
-        return 0;
-    }
-
     /** {@inheritDoc} */
     public void addBar(boolean black, int width) {
         final double w = bcBean.getBarWidth(width);
         if (black) {
-            canvas.drawRectWH(x, getBarTopPosition(), w, bcBean.getBarHeight());
+            canvas.drawRectWH(x, y, w, bcBean.getBarHeight());
         }
         x += w;
     }
