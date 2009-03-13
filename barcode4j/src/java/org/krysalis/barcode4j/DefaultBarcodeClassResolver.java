@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2004,2006 Jeremias Maerki.
+ * Copyright 2002-2004,2006,2008-2009 Jeremias Maerki.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import java.util.Set;
 /**
  * This is a simple implementation of a BarcodeClassResolver.
  *
- * @author Jeremias Maerki
  * @version $Id$
  */
 public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
@@ -61,7 +60,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         registerBarcodeClass("royal-mail-cbc",
                 "org.krysalis.barcode4j.impl.fourstate.RoyalMailCBC", true);
         registerBarcodeClass("usps4cb",
-        "org.krysalis.barcode4j.impl.fourstate.USPSIntelligentMail", true);
+                "org.krysalis.barcode4j.impl.fourstate.USPSIntelligentMail", true);
         registerBarcodeClass("pdf417", "org.krysalis.barcode4j.impl.pdf417.PDF417", true);
         registerBarcodeClass("datamatrix",
                 "org.krysalis.barcode4j.impl.datamatrix.DataMatrix", true);
