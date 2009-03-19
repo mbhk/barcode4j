@@ -86,7 +86,7 @@ public class PreloaderBarcode extends AbstractImagePreloader {
             }
             if (!BarcodeConstants.NAMESPACE.equals(
                     doc.getDocumentElement().getNamespaceURI())) {
-                in.reset();
+                resetInputStream(in);
                 return null;
             }
 
