@@ -83,7 +83,12 @@ public class PreloaderBarcode extends AbstractImagePreloader {
                 in = ImageUtil.needInputStream(src);
                 int length = in.available();
                 in.mark(length + 1);
-                doc = getDocument(new SubInputStream(in, Long.MAX_VALUE, false));
+                try {
+                    doc = getDocument(new SubInputStream(in, Long.MAX_VALUE, false));
+                } catch (IOException ioe) {
+                    resetInputStream(in);
+                    return null;
+                }
             }
             if (!BarcodeConstants.NAMESPACE.equals(
                     doc.getDocumentElement().getNamespaceURI())) {
