@@ -250,7 +250,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
 
     /**
      * Encode parts of the message using Byte Compaction as described in ISO/IEC 15438:2001(E),
-     * chapter 4.4.3. The Unicode characters will be converted to to binary using the cp437
+     * chapter 4.4.3. The Unicode characters will be converted to binary using the cp437
      * codepage.
      * @param msg the message
      * @param bytes the message converted to a byte array
