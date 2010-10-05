@@ -36,7 +36,7 @@ public class MimeTypes {
     /** GIF MIME type: image/gif */
     public static final String MIME_GIF  = "image/gif";
     /** BMP MIME type: image/bmp*/
-    public static final String MIME_BMP  = "image/x-bmp";
+    public static final String MIME_BMP  = "image/bmp";
 
     private static final String[][] FORMAT_MAPPINGS =
             {{"svg", MIME_SVG},
@@ -49,6 +49,7 @@ public class MimeTypes {
              {"png", MIME_PNG},
              {"image/png", MIME_PNG},
              {"gif", MIME_GIF},
+             {"image/x-bmp", MIME_BMP},
              {"bmp", MIME_BMP}};
 
     /**
