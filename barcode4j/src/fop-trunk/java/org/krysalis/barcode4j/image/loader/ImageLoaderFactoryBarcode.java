@@ -46,11 +46,6 @@ public class ImageLoaderFactoryBarcode extends AbstractImageLoaderFactory {
     }
 
     /** {@inheritDoc} */
-    public int getUsagePenalty(String mime, ImageFlavor flavor) {
-        return 0;
-    }
-
-    /** {@inheritDoc} */
     public boolean isAvailable() {
         try {
             Class.forName("org.krysalis.barcode4j.BarcodeGenerator");
