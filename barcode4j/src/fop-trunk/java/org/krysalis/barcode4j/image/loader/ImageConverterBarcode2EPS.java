@@ -18,6 +18,7 @@
 
 package org.krysalis.barcode4j.image.loader;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
@@ -30,7 +31,6 @@ import org.krysalis.barcode4j.output.eps.EPSCanvasProvider;
 
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import org.apache.xmlgraphics.image.loader.Image;
 import org.apache.xmlgraphics.image.loader.ImageException;
