@@ -26,6 +26,7 @@ import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
+import org.krysalis.barcode4j.fop.PageInfo;
 import org.krysalis.barcode4j.fop.VariableUtil;
 import org.krysalis.barcode4j.output.eps.EPSCanvasProvider;
 
@@ -55,8 +56,8 @@ public class ImageConverterBarcode2EPS extends AbstractImageConverter {
 
         try {
             String msg = barcodeImage.getMessage();
-            //TODO Replace null by some information on the page
-            String expandedMsg = VariableUtil.getExpandedMessage(null, msg);
+            PageInfo pageInfo = PageInfo.fromProcessingHints(hints);
+            String expandedMsg = VariableUtil.getExpandedMessage(pageInfo, msg);
 
             final BarcodeGenerator bargen = BarcodeUtil.getInstance().
                         createBarcodeGenerator(cfg);
