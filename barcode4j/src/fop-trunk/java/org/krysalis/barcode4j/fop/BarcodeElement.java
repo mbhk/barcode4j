@@ -1,5 +1,5 @@
 /*
- * Copyright 2005 Jeremias Maerki.
+ * Copyright 2005,2010 Jeremias Maerki.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
 import org.krysalis.barcode4j.tools.ConfigurationUtil;
 import org.krysalis.barcode4j.tools.MessageUtil;
+import org.krysalis.barcode4j.tools.PageInfo;
 import org.krysalis.barcode4j.tools.UnitConv;
 
 import org.xml.sax.Attributes;
