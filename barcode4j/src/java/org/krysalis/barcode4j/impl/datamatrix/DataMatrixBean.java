@@ -77,7 +77,7 @@ public class DataMatrixBean extends AbstractBarcodeBean {
      * @param minSize the minimum size (in pixels), or null for no constraint
      */
     public void setMinSize(Dimension minSize) {
-        this.minSize = new Dimension(minSize);
+        this.minSize = (minSize != null ? new Dimension(minSize) : null);
     }
 
     /**
@@ -98,7 +98,7 @@ public class DataMatrixBean extends AbstractBarcodeBean {
      * @param maxSize the maximum size (in pixels), or null for no constraint
      */
     public void setMaxSize(Dimension maxSize) {
-        this.maxSize = new Dimension(maxSize);
+        this.maxSize = (maxSize != null ? new Dimension(maxSize) : null);
     }
 
     /**
