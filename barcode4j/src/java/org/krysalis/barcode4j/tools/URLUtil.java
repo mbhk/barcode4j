@@ -29,6 +29,9 @@ import java.net.URLDecoder;
  */
 public class URLUtil {
 
+    public static final String URL_START = "url(";
+    public static final String URL_END = ")";
+
     private static final String DATA_PROTOCOL = "data:";
 
     /**
@@ -79,6 +82,20 @@ public class URLUtil {
             final String unescapedString = URLDecoder.decode(data, urlEncoding);
             byte[] bytes = unescapedString.getBytes(encoding);
             return bytes;
+        }
+    }
+
+    public static boolean isURL(String message) {
+        return message.startsWith(URLUtil.URL_START) && message.endsWith(URLUtil.URL_END);
+    }
+
+    public static String getURL(String message) {
+        if (URLUtil.isURL(message)) {
+            String url = message.substring(URLUtil.URL_START.length(),
+                    message.length() - URLUtil.URL_END.length());
+            return url;
+        } else {
+            return null;
         }
     }
 

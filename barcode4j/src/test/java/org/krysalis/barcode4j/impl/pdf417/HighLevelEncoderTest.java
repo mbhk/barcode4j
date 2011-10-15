@@ -249,4 +249,13 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         //Problem here was: shift to byte (913) does not reset text sub-mode!
         assertEquals(expected, result);
     }
+
+    public void testBinaryData() throws Exception {
+        String msg, result, expected;
+        msg = "url(data:;base64,flRlc3R+)"; //~Test~
+        //System.out.println(new String(URLUtil.getData(URLUtil.getURL(msg), "UTF-8")));
+        result = TestHelper.visualize(PDF417HighLevelEncoder.encodeHighLevel(msg));
+        expected = "924 211 636 247 386 518";
+        assertEquals(expected, result);
+    }
 }

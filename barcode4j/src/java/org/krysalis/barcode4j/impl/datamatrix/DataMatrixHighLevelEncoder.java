@@ -47,9 +47,6 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
 
     private static final String DEFAULT_ASCII_ENCODING = "ISO-8859-1";
 
-    private static final String URL_START = "url(";
-    private static final String URL_END = ")";
-
     /**
      * Converts the message to a byte array using the default encoding (cp437) as defined by the
      * specification
@@ -161,11 +158,10 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
     }
 
     private static EncoderContext createEncoderContext(String msg) throws IOException {
-        if (msg.startsWith(URL_START) && msg.endsWith(URL_END)) {
+        String url = URLUtil.getURL(msg);
+        if (url != null) {
             //URL processing
-            String url = msg.substring(URL_START.length(), msg.length() - URL_END.length());
-            byte[] data;
-            data = URLUtil.getData(url, DEFAULT_ASCII_ENCODING);
+            byte[] data = URLUtil.getData(url, DEFAULT_ASCII_ENCODING);
             return new EncoderContext(data);
         } else {
             return new EncoderContext(msg);
