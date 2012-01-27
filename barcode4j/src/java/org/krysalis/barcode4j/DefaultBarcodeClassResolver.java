@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import org.krysalis.barcode4j.tools.ZXingUtil;
+
 /**
  * This is a simple implementation of a BarcodeClassResolver.
  *
@@ -61,9 +63,20 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
                 "org.krysalis.barcode4j.impl.fourstate.RoyalMailCBC", true);
         registerBarcodeClass("usps4cb",
                 "org.krysalis.barcode4j.impl.fourstate.USPSIntelligentMail", true);
+        /*
+        registerBarcodeClass("austpost",
+                "org.krysalis.barcode4j.impl.fourstate.AustPost", true);
+                */
         registerBarcodeClass("pdf417", "org.krysalis.barcode4j.impl.pdf417.PDF417", true);
         registerBarcodeClass("datamatrix",
                 "org.krysalis.barcode4j.impl.datamatrix.DataMatrix", true);
+        if (ZXingUtil.isZxingAvailable()) {
+            //QR Code currently uses ZXing for encoding
+            final String clazz = "org.krysalis.barcode4j.impl.qr.QRCode";
+            registerBarcodeClass("qr", clazz, true);
+            registerBarcodeClass("qrcode", clazz);
+            registerBarcodeClass("qr-code", clazz);
+        }
     }
 
     /**
