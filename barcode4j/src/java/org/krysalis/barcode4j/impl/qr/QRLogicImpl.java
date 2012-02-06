@@ -53,24 +53,7 @@ public class QRLogicImpl implements QRConstants {
 
         //TODO ZXing doesn't allow to set minSize/maxSize through its API
 
-        ErrorCorrectionLevel zxingErrLevel;
-        switch (errorCorrectionLevel) {
-        case ERROR_CORRECTION_LEVEL_L:
-            zxingErrLevel = ErrorCorrectionLevel.L;
-            break;
-        case ERROR_CORRECTION_LEVEL_M:
-            zxingErrLevel = ErrorCorrectionLevel.M;
-            break;
-        case ERROR_CORRECTION_LEVEL_Q:
-            zxingErrLevel = ErrorCorrectionLevel.Q;
-            break;
-        case ERROR_CORRECTION_LEVEL_H:
-            zxingErrLevel = ErrorCorrectionLevel.H;
-            break;
-        default:
-            throw new IllegalArgumentException(
-                    "Invalid error correction level: " + errorCorrectionLevel);
-        }
+        ErrorCorrectionLevel zxingErrLevel = getZXingErrorLevel(errorCorrectionLevel);
         Hashtable hints = null;
         if (!"ISO-8859-1".equals(encoding)) {
             hints = new Hashtable();
@@ -89,6 +72,28 @@ public class QRLogicImpl implements QRConstants {
         logic.startBarcode(msg, msg);
         encodeLowLevel(logic, matrix);
         logic.endBarcode();
+    }
+
+    static ErrorCorrectionLevel getZXingErrorLevel(char errorCorrectionLevel) {
+        ErrorCorrectionLevel zxingErrLevel;
+        switch (errorCorrectionLevel) {
+        case ERROR_CORRECTION_LEVEL_L:
+            zxingErrLevel = ErrorCorrectionLevel.L;
+            break;
+        case ERROR_CORRECTION_LEVEL_M:
+            zxingErrLevel = ErrorCorrectionLevel.M;
+            break;
+        case ERROR_CORRECTION_LEVEL_Q:
+            zxingErrLevel = ErrorCorrectionLevel.Q;
+            break;
+        case ERROR_CORRECTION_LEVEL_H:
+            zxingErrLevel = ErrorCorrectionLevel.H;
+            break;
+        default:
+            throw new IllegalArgumentException(
+                    "Invalid error correction level: " + errorCorrectionLevel);
+        }
+        return zxingErrLevel;
     }
 
     private void encodeLowLevel(TwoDimBarcodeLogicHandler logic, ByteMatrix matrix) {
