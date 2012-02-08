@@ -167,7 +167,9 @@ public class QRCodeBean extends AbstractBarcodeBean {
     public BarcodeDimension calcDimensions(String msg) {
         QRCode code = new QRCode();
         try {
-            Encoder.encode(msg, QRLogicImpl.getZXingErrorLevel(errorCorrectionLevel), null, code);
+            Encoder.encode(msg,
+                    QRLogicImpl.getZXingErrorLevel(errorCorrectionLevel),
+                    QRLogicImpl.createHints(encoding), code);
         } catch (WriterException e) {
             throw new RuntimeException(e.getMessage());
         }

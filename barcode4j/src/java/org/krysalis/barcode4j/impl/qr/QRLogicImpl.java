@@ -54,11 +54,7 @@ public class QRLogicImpl implements QRConstants {
         //TODO ZXing doesn't allow to set minSize/maxSize through its API
 
         ErrorCorrectionLevel zxingErrLevel = getZXingErrorLevel(errorCorrectionLevel);
-        Hashtable hints = null;
-        if (!"ISO-8859-1".equals(encoding)) {
-            hints = new Hashtable();
-            hints.put(EncodeHintType.CHARACTER_SET, encoding);
-        }
+        Hashtable hints = createHints(encoding);
 
         QRCode code = new QRCode();
         try {
@@ -72,6 +68,15 @@ public class QRLogicImpl implements QRConstants {
         logic.startBarcode(msg, msg);
         encodeLowLevel(logic, matrix);
         logic.endBarcode();
+    }
+
+    static Hashtable createHints(String encoding) {
+        Hashtable hints = null;
+        if (!"ISO-8859-1".equals(encoding)) {
+            hints = new Hashtable();
+            hints.put(EncodeHintType.CHARACTER_SET, encoding);
+        }
+        return hints;
     }
 
     static ErrorCorrectionLevel getZXingErrorLevel(char errorCorrectionLevel) {
