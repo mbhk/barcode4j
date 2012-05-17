@@ -34,7 +34,6 @@ public class ZXingUtil {
             Class.forName("com.google.zxing.qrcode.QRCodeWriter");
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
