@@ -201,6 +201,7 @@
         <module>barcode4j-fop-ext-complete</module>
         <module>barcode4j-fop-ext-0.20.5</module>
         <module>barcode4j-fop-ext-0.20.5-complete</module>
+        <module>barcode4j-playground</module>
     </modules>
 
     <!-- BEGIN: Specific to mapping unit tests and covered code -->
