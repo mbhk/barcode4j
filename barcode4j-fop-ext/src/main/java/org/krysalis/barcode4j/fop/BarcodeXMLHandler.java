@@ -38,12 +38,12 @@ import org.w3c.dom.Document;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.batik.dom.svg.SVGDOMImplementation;
 
-import org.apache.xmlgraphics.java2d.Graphics2DImagePainter;
 import org.apache.xmlgraphics.ps.PSGenerator;
 import org.apache.xmlgraphics.ps.PSImageUtils;
 
 import org.apache.fop.area.PageViewport;
 import org.apache.fop.render.Graphics2DAdapter;
+import org.apache.fop.render.Graphics2DImagePainter;
 import org.apache.fop.render.ImageAdapter;
 import org.apache.fop.render.Renderer;
 import org.apache.fop.render.RendererContext;
