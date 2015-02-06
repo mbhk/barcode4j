@@ -41,7 +41,9 @@ public interface BarcodeClassResolver {
      * @param name Name or Classname of a Barcode bean implementation class
      * @return Class The class requested
      * @throws ClassNotFoundException If the class could not be resolved
+     * @deprecated as of version 2.1.2, replaced by {@link BarcodeGeneratorProvider#getBarcodeGenerator(java.lang.String)}
      */
+    @Deprecated
     Class resolveBean(String name) throws ClassNotFoundException;
     
     /**

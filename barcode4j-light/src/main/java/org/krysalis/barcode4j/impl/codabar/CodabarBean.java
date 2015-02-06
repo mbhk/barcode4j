@@ -15,6 +15,8 @@
  */
 package org.krysalis.barcode4j.impl.codabar;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
@@ -163,4 +165,13 @@ public class CodabarBean extends AbstractBarcodeBean {
                 quietZone, 0.0);
     }
 
+    @Override
+    public Collection<String> getAdditionalNames() {
+        return new ArrayList<String>(0);
+    }
+
+    @Override
+    public String getId() {
+        return "codabar";
+    }
 }

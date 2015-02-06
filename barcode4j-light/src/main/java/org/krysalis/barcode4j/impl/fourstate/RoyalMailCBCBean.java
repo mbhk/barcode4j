@@ -15,6 +15,8 @@
  */
 package org.krysalis.barcode4j.impl.fourstate;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.HumanReadablePlacement;
@@ -77,6 +79,17 @@ public class RoyalMailCBCBean extends AbstractFourStateBean {
         return new BarcodeDimension(width, getBarHeight(), 
                 width + (2 * qzh), getBarHeight() + (2 * qzv), 
                 qzh, qzv);
+    }
+
+    @Override
+    public Collection<String> getAdditionalNames() {
+        Collection<String> res = new ArrayList<String>(0);
+        return res;
+    }
+
+    @Override
+    public String getId() {
+        return "royal-mail-cbc";
     }
 
 }

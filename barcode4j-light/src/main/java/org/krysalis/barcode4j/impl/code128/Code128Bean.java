@@ -16,6 +16,8 @@
 package org.krysalis.barcode4j.impl.code128;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
 import org.krysalis.barcode4j.impl.AbstractBarcodeBean;
@@ -114,4 +116,13 @@ public class Code128Bean extends AbstractBarcodeBean {
         impl.generateBarcodeLogic(handler, msg);
     }
 
+    @Override
+    public Collection<String> getAdditionalNames() {
+        return new ArrayList<String>(0);
+    }
+
+    @Override
+    public String getId() {
+        return "code128";
+    }
 }

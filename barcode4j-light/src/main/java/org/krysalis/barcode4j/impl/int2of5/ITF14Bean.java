@@ -18,6 +18,8 @@
 
 package org.krysalis.barcode4j.impl.int2of5;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
@@ -140,5 +142,17 @@ public class ITF14Bean extends Interleaved2Of5Bean {
         return new BarcodeDimension(width, getHeight(),
                 width + (2 * qz) + (2 * vBearerBar), getHeight() + (2 * getBearerBarWidth()),
                 vBearerBar + getQuietZone(), getBearerBarWidth());
+    }
+
+    @Override
+    public Collection<String> getAdditionalNames() {
+        Collection<String> res = new ArrayList<String>(1);
+        res.add("iftf14");
+        return res;
+    }
+
+    @Override
+    public String getId() {
+        return "iftf-14";
     }
 }

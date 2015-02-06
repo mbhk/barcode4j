@@ -255,14 +255,4 @@ public abstract class AbstractBarcodeBean
     public BarcodeDimension calcDimensions(String msg) {
         throw new UnsupportedOperationException("NYI");
     }
-
-    @Override
-    public String getId() {
-        throw new UnsupportedOperationException("Not implemented in AbstractClass.");
-    }
-
-    @Override
-    public Collection<String> getAdditionalNames() {
-        throw new UnsupportedOperationException("Not implemented in AbstractClass.");
-    }
 }

@@ -15,6 +15,9 @@
  */
 package org.krysalis.barcode4j.impl.upcean;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * This class implements the EAN13 barcode.
  * 
@@ -28,4 +31,15 @@ public class EAN13Bean extends UPCEANBean {
         return new EAN13LogicImpl(getChecksumMode());
     }
 
+    @Override
+    public Collection<String> getAdditionalNames() {
+        Collection<String> res = new ArrayList<String>(1);
+        res.add("ean13");
+        return res;
+    }
+
+    @Override
+    public String getId() {
+        return "ean-13";
+    }
 }

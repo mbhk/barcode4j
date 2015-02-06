@@ -17,6 +17,8 @@ package org.krysalis.barcode4j.impl.datamatrix;
 
 import java.awt.Dimension;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.TwoDimBarcodeLogicHandler;
@@ -163,4 +165,14 @@ public class DataMatrixBean extends AbstractBarcodeBean {
         return moduleWidth;
     }
 
+    @Override
+    public Collection<String> getAdditionalNames() {
+        Collection<String> res = new ArrayList<String>(0);
+        return res;
+    }
+
+    @Override
+    public String getId() {
+        return "datamatrix";
+    }
 }

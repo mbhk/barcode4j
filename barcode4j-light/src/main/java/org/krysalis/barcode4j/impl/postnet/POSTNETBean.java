@@ -15,6 +15,8 @@
  */
 package org.krysalis.barcode4j.impl.postnet;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BaselineAlignment;
 import org.krysalis.barcode4j.ChecksumMode;
@@ -215,4 +217,14 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
         this.baselinePosition = baselinePosition;
     }
 
+    @Override
+    public Collection<String> getAdditionalNames() {
+        Collection<String> res = new ArrayList<String>(0);
+        return res;
+    }
+
+    @Override
+    public String getId() {
+        return "postnet";
+    }
 }

@@ -15,6 +15,8 @@
  */
 package org.krysalis.barcode4j.impl.fourstate;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.TextAlignment;
@@ -139,4 +141,14 @@ public class USPSIntelligentMailBean extends AbstractFourStateBean {
         }
     }
 
+    @Override
+    public Collection<String> getAdditionalNames() {
+        Collection<String> res = new ArrayList<String>(0);
+        return res;
+    }
+
+    @Override
+    public String getId() {
+        return "usps4cb";
+    }
 }
