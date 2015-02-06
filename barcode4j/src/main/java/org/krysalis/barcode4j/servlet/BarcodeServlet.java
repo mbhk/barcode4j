@@ -18,6 +18,8 @@ package org.krysalis.barcode4j.servlet;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
 import org.krysalis.barcode4j.BarcodeGenerator;
@@ -36,9 +39,9 @@ import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.krysalis.barcode4j.tools.MimeTypes;
 
 import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
-import org.apache.avalon.framework.logger.ConsoleLogger;
-import org.apache.avalon.framework.logger.Logger;
+import org.krysalis.barcode4j.BarcodeException;
 
 /**
  * Simple barcode servlet.
@@ -76,12 +79,11 @@ public class BarcodeServlet extends HttpServlet {
     /** Parameter name for the pattern to format the human readable message */
     public static final String BARCODE_HUMAN_READABLE_PATTERN = "hrpattern";
 
+    private static final String ERROR_WHILE_GENERATING_BARCODE = "Error while generating barcode";
 
-    private transient Logger log = new ConsoleLogger(ConsoleLogger.LEVEL_INFO);
+    private static final Logger LOGGER = Logger.getLogger(BarcodeServlet.class.getName());
 
-    /**
-     * @see javax.servlet.http.HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
-     */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
                 throws ServletException, IOException {
 
@@ -149,12 +151,21 @@ public class BarcodeServlet extends HttpServlet {
             response.setContentLength(bout.size());
             response.getOutputStream().write(bout.toByteArray());
             response.getOutputStream().flush();
-        } catch (Exception e) {
-            log.error("Error while generating barcode", e);
+        } catch (ConfigurationException e) {
+            LOGGER.log(Level.SEVERE, ERROR_WHILE_GENERATING_BARCODE, e);
             throw new ServletException(e);
-        } catch (Throwable t) {
-            log.error("Error while generating barcode", t);
-            throw new ServletException(t);
+        } catch (BarcodeException e) {
+            LOGGER.log(Level.SEVERE, ERROR_WHILE_GENERATING_BARCODE, e);
+            throw new ServletException(e);
+        } catch (TransformerException e) {
+            LOGGER.log(Level.SEVERE, ERROR_WHILE_GENERATING_BARCODE, e);
+            throw new ServletException(e);
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, ERROR_WHILE_GENERATING_BARCODE, e);
+            throw new ServletException(e);
+        } catch (IllegalArgumentException e) {
+            LOGGER.log(Level.SEVERE, ERROR_WHILE_GENERATING_BARCODE, e);
+            throw new ServletException(e);
         }
     }
 
@@ -259,5 +270,4 @@ public class BarcodeServlet extends HttpServlet {
 
         return cfg;
     }
-
 }
