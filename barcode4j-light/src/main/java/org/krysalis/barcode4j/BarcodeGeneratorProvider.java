@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,7 +51,7 @@ public class BarcodeGeneratorProvider {
     }
 
     public Collection<String> getAvailableBarcodeGenerators() {
-        HashSet<String> res = new HashSet<String>();
+        Set<String> res = new HashSet<String>();
         res.addAll(barcodeGenerators.keySet());
         return res;
     }
