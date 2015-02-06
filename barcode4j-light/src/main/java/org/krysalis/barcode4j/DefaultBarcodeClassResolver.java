@@ -120,9 +120,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         return cl;
     }
 
-    /**
-     * @see org.krysalis.barcode4j.BarcodeClassResolver#resolveBean(String)
-     */
+    @Override @Deprecated
     public Class resolveBean(String name) throws ClassNotFoundException {
         String clazz = null;
         if (this.classes != null) {

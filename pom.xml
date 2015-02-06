@@ -196,6 +196,7 @@
     <modules>
         <module>barcode4j</module>
         <module>barcode4j-light</module>
+        <module>barcode4j-spi</module>
         <module>barcode4j-xgc</module>
         <module>barcode4j-fop-ext</module>
         <module>barcode4j-fop-ext-complete</module>

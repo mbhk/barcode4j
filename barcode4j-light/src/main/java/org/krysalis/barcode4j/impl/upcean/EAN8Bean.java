@@ -15,6 +15,8 @@
  */
 package org.krysalis.barcode4j.impl.upcean;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.krysalis.barcode4j.BarcodeDimension;
 
 /**
@@ -44,4 +46,15 @@ public class EAN8Bean extends UPCEANBean {
                 quietZone, 0.0);
     }
 
+    @Override
+    public Collection<String> getAdditionalNames() {
+        Collection<String> res = new ArrayList<String>(1);
+        res.add("ean8");
+        return res;
+    }
+
+    @Override
+    public String getId() {
+        return "ean-8";
+    }
 }

@@ -15,6 +15,8 @@
  */
 package org.krysalis.barcode4j.impl.int2of5;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
@@ -149,5 +151,17 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
         }
         this.wideFactor = value;
     }
-    
+
+    @Override
+    public Collection<String> getAdditionalNames() {
+        Collection<String> res = new ArrayList<String>(1);
+        res.add("2of5");
+        res.add("interleaved2of5");
+        return res;
+    }
+
+    @Override
+    public String getId() {
+        return "intl2of5";
+    }
 }

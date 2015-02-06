@@ -1,0 +1,16 @@
+org.krysalis.barcode4j.impl.codabar.CodabarBean
+org.krysalis.barcode4j.impl.code39.Code39Bean
+org.krysalis.barcode4j.impl.code128.Code128Bean
+org.krysalis.barcode4j.impl.code128.EAN128Bean
+org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5Bean
+org.krysalis.barcode4j.impl.int2of5.ITF14Bean
+org.krysalis.barcode4j.impl.upcean.EAN13Bean
+org.krysalis.barcode4j.impl.upcean.EAN8Bean
+org.krysalis.barcode4j.impl.upcean.UPCABean
+org.krysalis.barcode4j.impl.upcean.UPCEBean
+org.krysalis.barcode4j.impl.postnet.POSTNETBean
+org.krysalis.barcode4j.impl.fourstate.RoyalMailCBCBean
+org.krysalis.barcode4j.impl.fourstate.USPSIntelligentMailBean
+org.krysalis.barcode4j.impl.pdf417.PDF417Bean
+org.krysalis.barcode4j.impl.datamatrix.DataMatrixBean
+org.krysalis.barcode4j.impl.qr.QRCodeBean

@@ -15,6 +15,7 @@
  */
 package org.krysalis.barcode4j;
 
+import java.util.Collection;
 import org.krysalis.barcode4j.output.CanvasProvider;
 
 /**
@@ -41,4 +42,18 @@ public interface BarcodeGenerator {
      * barcode's dimensions
      */
     BarcodeDimension calcDimensions(String msg);
+
+    /**
+     * Identifying Name of this Barcodetype.
+     *
+     * @return id of this Barcode
+     */
+    String getId();
+
+    /**
+     * Optional Names for this Barcodetype.
+     *
+     * @return non-empty Collection.
+     */
+    Collection<String> getAdditionalNames();
 }

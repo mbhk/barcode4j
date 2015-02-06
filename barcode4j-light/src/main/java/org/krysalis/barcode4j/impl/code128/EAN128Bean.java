@@ -16,6 +16,8 @@
  */
 package org.krysalis.barcode4j.impl.code128;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
@@ -173,5 +175,17 @@ public class EAN128Bean extends Code128Bean {
     public void setOmitBrackets(boolean b) {
         omitBrackets = b;
         impl.setOmitBrackets(b);
+    }
+
+    @Override
+    public Collection<String> getAdditionalNames() {
+        Collection<String> res = new ArrayList<String>(1);
+        res.add("ean128");
+        return res;
+    }
+
+    @Override
+    public String getId() {
+        return "ean-128";
     }
 }

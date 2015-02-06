@@ -26,13 +26,13 @@ import java.awt.geom.Rectangle2D;
  */
 public class BarcodeDimension {
     
-    private double width;
-    private double height;
+    private final double width;
+    private final double height;
     
-    private double widthPlusQuiet;
-    private double heightPlusQuiet;
-    private double xOffset;
-    private double yOffset;
+    private final double widthPlusQuiet;
+    private final double heightPlusQuiet;
+    private final double xOffset;
+    private final double yOffset;
     
     /**
      * Creates a new BarcodeDimension object. No quiet-zone is respected.
@@ -80,8 +80,7 @@ public class BarcodeDimension {
     }
 
     public double getHeight(int orientation) {
-        orientation = normalizeOrientation(orientation);
-        if (orientation % 180 != 0) {
+        if (haveToSwitchOrientation(orientation)) {
             return getWidth();
         } else {
             return getHeight();
@@ -97,8 +96,7 @@ public class BarcodeDimension {
     }
 
     public double getHeightPlusQuiet(int orientation) {
-        orientation = normalizeOrientation(orientation);
-        if (orientation % 180 != 0) {
+        if (haveToSwitchOrientation(orientation)) {
             return getWidthPlusQuiet();
         } else {
             return getHeightPlusQuiet();
@@ -131,10 +129,13 @@ public class BarcodeDimension {
                     "Orientation must be 0, 90, 180, 270, -90, -180 or -270");
         }
     }
+
+    public static boolean haveToSwitchOrientation(int orientation) {
+        return normalizeOrientation(orientation) % 180 != 0;
+    }
     
     public double getWidth(int orientation) {
-        orientation = normalizeOrientation(orientation);
-        if (orientation % 180 != 0) {
+        if (haveToSwitchOrientation(orientation)) {
             return getHeight();
         } else {
             return getWidth();
@@ -150,8 +151,7 @@ public class BarcodeDimension {
     }
 
     public double getWidthPlusQuiet(int orientation) {
-        orientation = normalizeOrientation(orientation);
-        if (orientation % 180 != 0) {
+        if (haveToSwitchOrientation(orientation)) {
             return getHeightPlusQuiet();
         } else {
             return getWidthPlusQuiet();
@@ -190,11 +190,9 @@ public class BarcodeDimension {
         return r;
     }
     
-    /**
-     * @see java.lang.Object#toString()
-     */
+    @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer(super.toString());
+        StringBuilder sb = new StringBuilder(super.toString());
         sb.append("[width=");
         sb.append(getWidth());
         sb.append("(");

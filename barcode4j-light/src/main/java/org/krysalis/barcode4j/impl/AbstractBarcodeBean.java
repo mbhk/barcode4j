@@ -15,6 +15,7 @@
  */
 package org.krysalis.barcode4j.impl;
 
+import java.util.Collection;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.HumanReadablePlacement;
@@ -254,5 +255,4 @@ public abstract class AbstractBarcodeBean
     public BarcodeDimension calcDimensions(String msg) {
         throw new UnsupportedOperationException("NYI");
     }
-
 }

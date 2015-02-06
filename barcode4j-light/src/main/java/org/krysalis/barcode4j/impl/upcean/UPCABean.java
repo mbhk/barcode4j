@@ -15,6 +15,9 @@
  */
 package org.krysalis.barcode4j.impl.upcean;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * This class is an implementation of the UPC-A barcode.
  * 
@@ -28,4 +31,15 @@ public class UPCABean extends UPCEANBean {
         return new UPCALogicImpl(getChecksumMode());
     }
 
+    @Override
+    public Collection<String> getAdditionalNames() {
+        Collection<String> res = new ArrayList<String>(1);
+        res.add("upca");
+        return res;
+    }
+
+    @Override
+    public String getId() {
+        return "upca-a";
+    }
 }

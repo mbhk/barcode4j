@@ -16,6 +16,8 @@
 package org.krysalis.barcode4j.impl.pdf417;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.TwoDimBarcodeLogicHandler;
@@ -297,4 +299,14 @@ public class PDF417Bean extends AbstractBarcodeBean {
         this.enableECI = value;
     }
 
+    @Override
+    public Collection<String> getAdditionalNames() {
+        Collection<String> res = new ArrayList<String>(0);
+        return res;
+    }
+
+    @Override
+    public String getId() {
+        return "pdf417";
+    }
 }
