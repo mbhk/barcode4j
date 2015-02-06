@@ -34,6 +34,7 @@ import com.google.zxing.qrcode.encoder.ByteMatrix;
 import com.google.zxing.qrcode.encoder.Encoder;
 import com.google.zxing.qrcode.encoder.QRCode;
 import java.util.Collection;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -235,7 +236,7 @@ public class QRCodeBean extends AbstractBarcodeBean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        TreeSet<String> res = new TreeSet<String>();
+        Set<String> res = new TreeSet<String>();
         res.add("qrcode");
         res.add("qr-code");
         return res;
