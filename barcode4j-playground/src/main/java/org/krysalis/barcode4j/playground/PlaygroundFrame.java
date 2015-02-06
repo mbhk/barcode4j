@@ -71,27 +71,7 @@ public class PlaygroundFrame extends JFrame implements ActionListener, ChangeLis
     private JTextField getMessageField() {
         if (messageField == null) {
             messageField = new JTextField("0123456");
-            messageField.getDocument().addDocumentListener(new DocumentListener() {
-
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    update();
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    update();
-                }
-
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    update();
-                }
-
-                private void update() {
-                    getBarcodePanel().setMessage(getMessageField().getText());
-                }
-            });
+            messageField.getDocument().addDocumentListener(new DocumentListenerImpl());
         }
         return messageField;
     }
@@ -144,6 +124,30 @@ public class PlaygroundFrame extends JFrame implements ActionListener, ChangeLis
     public void stateChanged(ChangeEvent e) {
         if (getOrientation().equals(e.getSource())) {
             getBarcodePanel().setOrientation(getOrientation().getValue());
+        }
+    }
+
+    private class DocumentListenerImpl implements DocumentListener {
+        public DocumentListenerImpl() {
+        }
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            update();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            update();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            update();
+        }
+
+        private void update() {
+            getBarcodePanel().setMessage(getMessageField().getText());
         }
     }
 }
