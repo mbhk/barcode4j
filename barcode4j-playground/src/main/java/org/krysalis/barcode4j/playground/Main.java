@@ -15,17 +15,20 @@
  */
 package org.krysalis.barcode4j.playground;
 
+import javax.swing.SwingUtilities;
+
 /**
  * @version $Id$
  */
 public class Main {
 
     public static void main(String[] args) {
-        try {
-            PlaygroundFrame mainframe = new PlaygroundFrame();
-            mainframe.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                PlaygroundFrame mf = new PlaygroundFrame();
+                mf.createAndShowGUI();
+            }
+        });
     }
 }

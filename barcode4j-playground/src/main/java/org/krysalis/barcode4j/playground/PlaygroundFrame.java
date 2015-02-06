@@ -15,52 +15,135 @@
  */
 package org.krysalis.barcode4j.playground;
 
-import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
-import org.krysalis.barcode4j.BarcodeGenerator;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collection;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.krysalis.barcode4j.BarcodeUtil;
 
 /**
  * @version $Id$
  */
-public class PlaygroundFrame extends Frame {
+public class PlaygroundFrame extends JFrame implements ActionListener, ChangeListener {
 
     public static final String TITLE = "Barcode Playground";
-    
-    public PlaygroundFrame() {
-        super(TITLE);
-        addWindowListener(new WindowHandler());
-        buildGUI();
-        setSize(500, 400);
-    }
-    
-    private void buildGUI() {
-        BarcodePanel bcpanel = new BarcodePanel();
-        add("Center", bcpanel);
-        
-        try {
-            DefaultConfiguration cfg = new DefaultConfiguration("ean-13");
-            DefaultConfiguration child = new DefaultConfiguration("human-readable-font");
-            //child.setValue("OCR-B 10 Pitch BT");
-            child.setValue("Tahoma");
-            cfg.addChild(child);
-            
-            BarcodeGenerator gen = 
-                    BarcodeUtil.getInstance().createBarcodeGenerator(cfg);
-            
-            bcpanel.setBarcode(gen, "419458670510+06");
-        } catch (Exception e) {
-            e.printStackTrace();
+    private static final long serialVersionUID = 3241340455560147586L;
+
+    private BarcodePanel bcpanel = null;
+    private JComboBox<String> barcodeNames = null;
+    private JTextField messageField = null;
+    private JSlider orientation = null;
+
+    private BarcodePanel getBarcodePanel() {
+        if (bcpanel == null) {
+            bcpanel = new BarcodePanel();
         }
+        return bcpanel;
     }
-    
-    private class WindowHandler extends WindowAdapter {
-        public void windowClosing(WindowEvent we) {
-            System.exit(0);
+
+    private JComboBox<String> getBarcodeNames() {
+        if (barcodeNames == null) {
+            barcodeNames = new JComboBox<String>();
+            Collection names = BarcodeUtil.getInstance().getClassResolver().getBarcodeNames();
+            for (Object name : names) {
+                barcodeNames.addItem((String) name);
+            }
+            barcodeNames.setSelectedItem("qr");
+            barcodeNames.addActionListener(this);
+        }
+        return barcodeNames;
+    }
+
+    private JTextField getMessageField() {
+        if (messageField == null) {
+            messageField = new JTextField("0123456");
+            messageField.getDocument().addDocumentListener(new DocumentListener() {
+
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    update();
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    update();
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    update();
+                }
+
+                private void update() {
+                    getBarcodePanel().setMessage(getMessageField().getText());
+                }
+            });
+        }
+        return messageField;
+    }
+
+    private JSlider getOrientation() {
+        if (orientation == null) {
+            orientation = new JSlider(0, 270, 0);
+            orientation.setMinorTickSpacing(90);
+            orientation.setPaintTicks(true);
+            orientation.setSnapToTicks(true);
+            orientation.addChangeListener(this);
+        }
+        return orientation;
+    }
+
+    private void buildGUI() {
+        setTitle(TITLE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new Dimension(600, 400));
+        Container contentPane = getContentPane();
+
+        JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        northPanel.add(new JLabel("Choose Barcode: "));
+        northPanel.add(getBarcodeNames());
+        northPanel.add(new JLabel("Message: "));
+        northPanel.add(getMessageField());
+        northPanel.add(new JLabel("Orientation: "));
+        northPanel.add(getOrientation());
+        contentPane.add(northPanel, BorderLayout.NORTH);
+        contentPane.add(getBarcodePanel(), BorderLayout.CENTER);
+
+        getBarcodePanel().setBarcodeName((String) getBarcodeNames().getSelectedItem());
+        getBarcodePanel().setMessage(getMessageField().getText());
+        getBarcodePanel().setOrientation(getOrientation().getValue());
+    }
+
+    public void createAndShowGUI() {
+        buildGUI();
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (getBarcodeNames().equals(e.getSource())) {
+            getBarcodePanel().setBarcodeName((String) getBarcodeNames().getSelectedItem());
         }
     }
 
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if (getOrientation().equals(e.getSource())) {
+            getBarcodePanel().setOrientation(getOrientation().getValue());
+        }
+    }
 }
