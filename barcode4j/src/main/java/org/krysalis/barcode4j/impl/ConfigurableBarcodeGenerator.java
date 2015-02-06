@@ -15,6 +15,7 @@
  */
 package org.krysalis.barcode4j.impl;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.krysalis.barcode4j.BarcodeDimension;
@@ -179,4 +180,13 @@ public abstract class ConfigurableBarcodeGenerator
         return getBean().calcDimensions(msg);
     }
 
+    @Override
+    public String getId() {
+        return getBean().getId();
+    }
+
+    @Override
+    public Collection<String> getAdditionalNames() {
+        return getBean().getAdditionalNames();
+    }
 }

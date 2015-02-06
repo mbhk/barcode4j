@@ -15,6 +15,7 @@
  */
 package org.krysalis.barcode4j.impl;
 
+import java.util.Collection;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.HumanReadablePlacement;
@@ -255,4 +256,13 @@ public abstract class AbstractBarcodeBean
         throw new UnsupportedOperationException("NYI");
     }
 
+    @Override
+    public String getId() {
+        throw new UnsupportedOperationException("Not implemented in AbstractClass.");
+    }
+
+    @Override
+    public Collection<String> getAdditionalNames() {
+        throw new UnsupportedOperationException("Not implemented in AbstractClass.");
+    }
 }

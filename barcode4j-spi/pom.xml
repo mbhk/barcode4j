@@ -6,25 +6,15 @@
         <artifactId>barcode4j-parent</artifactId>
         <version>2.1.2-SNAPSHOT</version>
     </parent>
-    <artifactId>barcode4j-light</artifactId>
+    <artifactId>barcode4j-spi</artifactId>
     <packaging>jar</packaging>
     
-    <name>barcode4j-light</name>
+    <name>barcode4j-spi</name>
     
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>barcode4j-spi</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>core</artifactId>
-            <version>1.7</version>
         </dependency>
     </dependencies>
 

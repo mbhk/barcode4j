@@ -33,6 +33,8 @@ import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.encoder.ByteMatrix;
 import com.google.zxing.qrcode.encoder.Encoder;
 import com.google.zxing.qrcode.encoder.QRCode;
+import java.util.Collection;
+import java.util.TreeSet;
 
 /**
  * This class is an implementation of QR Code (ISO 18004:2006(E)).
@@ -226,4 +228,16 @@ public class QRCodeBean extends AbstractBarcodeBean {
         return moduleWidth;
     }
 
+    @Override
+    public String getId() {
+        return "qr";
+    }
+
+    @Override
+    public Collection<String> getAdditionalNames() {
+        TreeSet<String> res = new TreeSet<String>();
+        res.add("qrcode");
+        res.add("qr-code");
+        return res;
+    }
 }
