@@ -17,6 +17,8 @@ package org.krysalis.barcode4j.webapp;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,8 +36,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 import org.apache.avalon.framework.CascadingException;
-import org.apache.avalon.framework.logger.ConsoleLogger;
-import org.apache.avalon.framework.logger.Logger;
 
 /**
  * Error handler servlet for Barcode exceptions.
@@ -47,11 +47,9 @@ public class BarcodeErrorServlet extends HttpServlet {
 
     private static final long serialVersionUID = 6515981491896593768L;
 
-    private transient Logger log = new ConsoleLogger(ConsoleLogger.LEVEL_INFO);
+    private static final Logger LOGGER = Logger.getLogger(BarcodeErrorServlet.class.getName());
 
-    /**
-     * @see javax.servlet.http.HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
-     */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
                 throws ServletException, IOException {
 
@@ -61,12 +59,12 @@ public class BarcodeErrorServlet extends HttpServlet {
             java.net.URL xslt = getServletContext().getResource("/WEB-INF/exception2svg.xslt");
             TransformerHandler thandler;
             if (xslt != null) {
-                log.debug(xslt.toExternalForm());
+                LOGGER.log(Level.FINE, xslt.toExternalForm());
                 Source xsltSource = new StreamSource(xslt.toExternalForm());
                 thandler = factory.newTransformerHandler(xsltSource);
                 response.setContentType("image/svg+xml");
             } else {
-                log.error("Exception stylesheet not found, sending back raw XML");
+                LOGGER.log(Level.SEVERE, "Exception stylesheet not found, sending back raw XML");
                 thandler = factory.newTransformerHandler();
                 response.setContentType("application/xml");
             }
@@ -84,7 +82,7 @@ public class BarcodeErrorServlet extends HttpServlet {
             response.getOutputStream().write(bout.toByteArray());
             response.getOutputStream().flush();
         } catch (Exception e) {
-            log.error("Error in error servlet", e);
+            LOGGER.log(Level.SEVERE, "Error in error servlet", e);
             throw new ServletException(e);
         }
     }
