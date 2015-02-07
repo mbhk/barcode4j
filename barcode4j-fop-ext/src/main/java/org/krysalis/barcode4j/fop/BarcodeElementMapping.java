@@ -32,7 +32,7 @@ import org.w3c.dom.DOMImplementation;
 public class BarcodeElementMapping extends ElementMapping {
 
     /** Barcode4J Namespace */
-    public static final String NAMESPACE = BarcodeConstants.NAMESPACE; 
+    public static final String NAMESPACE = BarcodeConstants.NAMESPACE.toString(); 
 
     public BarcodeElementMapping() {
         this.namespaceURI = NAMESPACE;

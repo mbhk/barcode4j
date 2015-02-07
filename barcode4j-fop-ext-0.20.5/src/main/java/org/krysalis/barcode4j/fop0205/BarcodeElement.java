@@ -109,7 +109,7 @@ public class BarcodeElement extends BarcodeObj {
         } catch (ParserConfigurationException pce) {
             throw new CascadingRuntimeException("Error creating DOM", pce);
         }
-        this.doc.appendChild(this.doc.createElementNS(BarcodeConstants.NAMESPACE, "barcode"));
+        this.doc.appendChild(this.doc.createElementNS(BarcodeConstants.NAMESPACE.toString(), "barcode"));
 
         this.element = doc.getDocumentElement();
 
@@ -183,7 +183,7 @@ public class BarcodeElement extends BarcodeObj {
         Element e = this.doc.getDocumentElement();
 
         //if(!e.hasAttributeNS(XMLSupport.XMLNS_NAMESPACE_URI, "xmlns")) {
-            e.setAttributeNS(XMLNS_NAMESPACE_URI, "xmlns", BarcodeConstants.NAMESPACE);
+            e.setAttributeNS(XMLNS_NAMESPACE_URI, "xmlns", BarcodeConstants.NAMESPACE.toString());
         //}
 
         Configuration cfg = ConfigurationUtil.buildConfiguration(this.doc);

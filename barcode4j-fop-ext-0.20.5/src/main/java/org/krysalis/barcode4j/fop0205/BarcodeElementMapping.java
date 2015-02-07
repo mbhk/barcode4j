@@ -47,21 +47,22 @@ public class BarcodeElementMapping implements ElementMapping {
             foObjs = new HashMap();
             String[] elements = ConfigurableBarcodeGenerator.BARCODE_ELEMENTS;
             foObjs.put("barcode", getBarcodeElementMaker());
-            for (int i = 0; i < elements.length; i++) {
-                foObjs.put(elements[i], getBarcodeObjMaker(elements[i]));
+            for (String element : elements) {
+                foObjs.put(element, getBarcodeObjMaker(element));
             }
         }
     }
 
+    @Override
     public void addToBuilder(TreeBuilder builder) {
         setupBarcodeElements();
-        builder.addMapping(BarcodeConstants.NAMESPACE, foObjs);
+        builder.addMapping(BarcodeConstants.NAMESPACE.toString(), foObjs);
 
-        builder.addPropertyListBuilder(BarcodeConstants.NAMESPACE, new DirectPropertyListBuilder());
+        builder.addPropertyListBuilder(BarcodeConstants.NAMESPACE.toString(), new DirectPropertyListBuilder());
         
         //for compatibility (Krysalis Barcode)
-        builder.addMapping(BarcodeConstants.OLD_NAMESPACE, foObjs);
-        builder.addPropertyListBuilder(BarcodeConstants.OLD_NAMESPACE, 
+        builder.addMapping(BarcodeConstants.OLD_NAMESPACE.toString(), foObjs);
+        builder.addPropertyListBuilder(BarcodeConstants.OLD_NAMESPACE.toString(), 
                 new DirectPropertyListBuilder());
     }
 }

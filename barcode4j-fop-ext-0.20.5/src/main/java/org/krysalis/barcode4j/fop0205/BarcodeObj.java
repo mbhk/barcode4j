@@ -45,9 +45,14 @@ public class BarcodeObj extends XMLObj {
          *
          * @param parent the parent formatting object
          * @param propertyList the explicit properties of this object
+         * @param systemId
+         * @param line
+         * @param column
          *
          * @return the barcode object
+         * @throws org.apache.fop.apps.FOPException
          */
+        @Override
         public FObj make(FObj parent, PropertyList propertyList,
                          String systemId, int line, int column)
                         throws FOPException {
@@ -59,6 +64,7 @@ public class BarcodeObj extends XMLObj {
     /**
      * returns the maker for this object.
      *
+     * @param str
      * @return the maker for an svg object
      */
     public static FObj.Maker maker(String str) {
@@ -70,18 +76,23 @@ public class BarcodeObj extends XMLObj {
      *
      * @param parent the parent formatting object
      * @param propertyList the explicit properties of this object
+     * @param tag
+     * @param systemId
+     * @param line
+     * @param column
      */
     protected BarcodeObj(FObj parent, PropertyList propertyList, String tag,
                      String systemId, int line, int column) {
         super(parent, propertyList, tag, systemId, line, column);
     }
 
+    @Override
     public String getName() {
         return "bc:" + tagName;
     }
 
+    @Override
     public String getNameSpace() {
-        return BarcodeConstants.NAMESPACE;
+        return BarcodeConstants.NAMESPACE.toString();
     }
 }
-
