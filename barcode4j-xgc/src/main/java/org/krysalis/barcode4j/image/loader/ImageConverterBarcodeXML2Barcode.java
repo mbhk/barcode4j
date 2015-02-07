@@ -50,7 +50,7 @@ public class ImageConverterBarcodeXML2Barcode extends AbstractImageConverter {
     /** An barcode in form of a W3C DOM instance */
     private static final XMLNamespaceEnabledImageFlavor BARCODE_XML_FLAVOR
         = new XMLNamespaceEnabledImageFlavor(
-            ImageFlavor.XML_DOM, BarcodeConstants.NAMESPACE);
+            ImageFlavor.XML_DOM, BarcodeConstants.NAMESPACE.toString());
 
 
     /** {@inheritDoc} */
