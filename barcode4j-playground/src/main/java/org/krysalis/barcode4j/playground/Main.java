@@ -18,13 +18,24 @@ package org.krysalis.barcode4j.playground;
 import javax.swing.SwingUtilities;
 
 /**
- * @version $Id$
+ * The Main class implements an application with a GUI to experiment
+ * with the barcode4j library.
+ * 
+ * @version 2.1.2
  */
 public class Main {
 
+    /**
+     * private contsructor to prevent instanciation.
+     */
     private Main() {
     }
 
+    /**
+     * Initialize and show the GUI.
+     *
+     * @param args are ignored
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

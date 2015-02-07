@@ -39,7 +39,11 @@ import org.krysalis.barcode4j.output.CanvasProvider;
 import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider;
 
 /**
- * @version $Id$
+ * A GUI Panel.
+ *
+ * The Barcode is directly drawn in {@link #paintComponent(java.awt.Graphics) } 
+ *
+ * @version 2.1.2
  */
 public class BarcodePanel extends JPanel {
 
@@ -51,6 +55,12 @@ public class BarcodePanel extends JPanel {
     private String msg = "";
     private int orientation = 0;
 
+    /**
+     * Sets the Barcode type-name and tries to load the corresponding
+     * implementation.
+     *
+     * @param name Name of barcode type
+     */
     public void setBarcodeName(String name) {
         this.barcodeName = name;
         DefaultConfiguration cfg = new DefaultConfiguration(this.barcodeName);
@@ -69,11 +79,21 @@ public class BarcodePanel extends JPanel {
         }
     }
 
+    /**
+     * Sets the unencoded message of the barcode.
+     *
+     * @param message unencoded message
+     */
     public void setMessage(String message) {
         this.msg = message;
         repaint();
     }
 
+    /**
+     * Sets orientation of Barcode.
+     *
+     * @param orientation rotation in degrees
+     */
     public void setOrientation(int orientation) {
         this.orientation = orientation;
         repaint();
@@ -91,11 +111,24 @@ public class BarcodePanel extends JPanel {
         }
     }
 
+    /**
+     * Changes barcode implementation and repaints component.
+     *
+     * @param bargen Barcode instance
+     */
     private void setBarcode(BarcodeGenerator bargen) {
         this.bargen = bargen;
         repaint();
     }
 
+    /**
+     * Returns current instance of barcode.
+     *
+     * If no instance is present but we have a type-name, trying to get a
+     * fresh instance (bargen is transient).
+     *
+     * @return Barcode instance
+     */
     private BarcodeGenerator getBarcode() {
         if (bargen == null && barcodeName != null) {
             setBarcodeName(barcodeName);
@@ -103,6 +136,15 @@ public class BarcodePanel extends JPanel {
         return bargen;
     }
 
+    /**
+     * Tries to paint barcode.
+     *
+     * Drawing is done on temporary BufferedImage to preserve graphics state
+     * in case of an error.
+     *
+     * @param graphics target drawing area
+     * @param rect usable painting area
+     */
     private void paintBarcode(Graphics graphics, Rectangle rect) {
         BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         final Dimension dim = rect.getSize();
@@ -128,6 +170,12 @@ public class BarcodePanel extends JPanel {
         graphics.drawImage(img, 0, 0, this);
     }
 
+    /**
+     * Paints the error message.
+     *
+     * @param g target drawing area
+     * @param e exception to show
+     */
     private void paintError(Graphics g, Exception e) {
         String exceptionMsg = e.getMessage();
         g.setColor(Color.RED);

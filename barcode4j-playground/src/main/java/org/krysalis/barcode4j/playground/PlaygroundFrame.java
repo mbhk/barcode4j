@@ -36,7 +36,9 @@ import javax.swing.event.DocumentListener;
 import org.krysalis.barcode4j.BarcodeUtil;
 
 /**
- * @version $Id$
+ * A Frame showing an barcode plus some controls to configure the barcode.
+ *
+ * @version 2.1.2
  */
 public class PlaygroundFrame extends JFrame implements ActionListener, ChangeListener {
 
@@ -108,6 +110,9 @@ public class PlaygroundFrame extends JFrame implements ActionListener, ChangeLis
         getBarcodePanel().setOrientation(getOrientation().getValue());
     }
 
+    /**
+     * Constructs the frame and brings it upfront.
+     */
     public void createAndShowGUI() {
         buildGUI();
         setVisible(true);
@@ -127,6 +132,9 @@ public class PlaygroundFrame extends JFrame implements ActionListener, ChangeLis
         }
     }
 
+    /**
+     * Helper class to handle events of the message input field.
+     */
     private class DocumentListenerImpl implements DocumentListener {
         public DocumentListenerImpl() {
         }
