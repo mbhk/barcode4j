@@ -42,8 +42,9 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
     private static final int EDIFACT_ENCODATION = 4;
     private static final int BASE256_ENCODATION = 5;
 
-    private static final String[] ENCODATION_NAMES
-        = new String[] {"ASCII", "C40", "Text", "ANSI X12", "EDIFACT", "Base 256"};
+    // TODO why was this code introduced?
+    //private static final String[] ENCODATION_NAMES
+    //    = new String[] {"ASCII", "C40", "Text", "ANSI X12", "EDIFACT", "Base 256"};
 
     private static final String DEFAULT_ASCII_ENCODING = "ISO-8859-1";
 
@@ -170,7 +171,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
 
     private static class EncoderContext {
 
-        private String msg;
+        private final String msg;
         private SymbolShapeHint shape = SymbolShapeHint.FORCE_NONE;
         private Dimension minSize;
         private Dimension maxSize;
@@ -188,7 +189,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
             } catch (UnsupportedEncodingException e) {
                 throw new UnsupportedOperationException("Unsupported encoding: " + e.getMessage());
             }
-            StringBuffer sb = new StringBuffer(msgBinary.length);
+            StringBuilder sb = new StringBuilder(msgBinary.length);
             for (int i = 0, c = msgBinary.length; i < c; i++) {
                 char ch = (char)(msgBinary[i] & 0xff);
                 if (ch == '?' && msg.charAt(i) != '?') {
@@ -203,7 +204,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
 
         public EncoderContext(byte[] data) {
             //From this point on Strings are not Unicode anymore!
-            StringBuffer sb = new StringBuffer(data.length);
+            StringBuilder sb = new StringBuilder(data.length);
             for (int i = 0, c = data.length; i < c; i++) {
                 char ch = (char)(data[i] & 0xff);
                 sb.append(ch);
@@ -291,10 +292,12 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
 
     private static class ASCIIEncoder implements Encoder {
 
+        @Override
         public int getEncodingMode() {
             return ASCII_ENCODATION;
         }
 
+        @Override
         public void encode(EncoderContext context) {
             //step B
             int n = determineConsecutiveDigitCount(context.msg, context.pos);
@@ -351,10 +354,12 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
 
     private static class C40Encoder implements Encoder {
 
+        @Override
         public int getEncodingMode() {
             return C40_ENCODATION;
         }
 
+        @Override
         public void encode(EncoderContext context) {
             //step C
             int lastCharSize = -1;
@@ -514,10 +519,12 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
 
     private static class TextEncoder extends C40Encoder {
 
+        @Override
         public int getEncodingMode() {
             return TEXT_ENCODATION;
         }
 
+        @Override
         protected int encodeChar(char c, StringBuffer sb) {
             if (c == ' ') {
                 sb.append('\3');
@@ -571,10 +578,12 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
 
     private static class X12Encoder extends C40Encoder {
 
+        @Override
         public int getEncodingMode() {
             return X12_ENCODATION;
         }
 
+        @Override
         public void encode(EncoderContext context) {
             //step C
             StringBuffer buffer = new StringBuffer();
@@ -598,6 +607,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
             handleEOD(context, buffer);
         }
 
+        @Override
         protected int encodeChar(char c, StringBuffer sb) {
             if (c == '\r') {
                 sb.append('\0');
@@ -639,13 +649,15 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
 
     private static class EdifactEncoder implements Encoder {
 
+        @Override
         public int getEncodingMode() {
             return EDIFACT_ENCODATION;
         }
 
+        @Override
         public void encode(EncoderContext context) {
             //step F
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             while (context.hasMoreCharacters()) {
                 char c = context.getCurrentChar();
                 encodeChar(c, buffer);
@@ -672,7 +684,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
          * @param context the encoder context
          * @param buffer the buffer with the remaining encoded characters
          */
-        protected void handleEOD(EncoderContext context, StringBuffer buffer) {
+        protected void handleEOD(EncoderContext context, StringBuilder buffer) {
             try {
                 int count = buffer.length();
                 if (count == 0) {
@@ -702,7 +714,8 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
                     if (available >= 3) {
                         restInAscii = false;
                         context.updateSymbolInfo(context.getCodewordCount() + encoded.length());
-                        available = context.symbolInfo.dataCapacity - context.getCodewordCount();
+                        // TODO why was this code introduced?
+                        //available = context.symbolInfo.dataCapacity - context.getCodewordCount();
                     }
                 }
 
@@ -717,7 +730,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
             }
         }
 
-        protected void encodeChar(char c, StringBuffer sb) {
+        protected void encodeChar(char c, StringBuilder sb) {
             if (c >= ' ' && c <= '?') {
                 sb.append(c);
             } else if (c >= '@' && c <= '^') {
@@ -727,7 +740,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
             }
         }
 
-        protected String encodeToCodewords(StringBuffer sb, int startPos) {
+        protected String encodeToCodewords(StringBuilder sb, int startPos) {
             int len = sb.length() - startPos;
             if (len == 0) {
                 throw new IllegalStateException("StringBuffer must not be empty");
@@ -741,7 +754,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
             char cw1 = (char)((v >> 16) & 255);
             char cw2 = (char)((v >> 8) & 255);
             char cw3 = (char)(v & 255);
-            StringBuffer res = new StringBuffer(3);
+            StringBuilder res = new StringBuilder(3);
             res.append(cw1);
             if (len >= 2) {
                 res.append(cw2);
@@ -756,12 +769,14 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
 
     private static class Base256Encoder implements Encoder {
 
+        @Override
         public int getEncodingMode() {
             return BASE256_ENCODATION;
         }
 
+        @Override
         public void encode(EncoderContext context) {
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             buffer.append('\0'); //Initialize length field
             while (context.hasMoreCharacters()) {
                 char c = context.getCurrentChar();
@@ -913,7 +928,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
                 int min = Integer.MAX_VALUE;
                 int[] intCharCounts = new int[6];
                 byte[] mins = new byte[6];
-                min = findMinimums(charCounts, intCharCounts, min, mins);
+                findMinimums(charCounts, intCharCounts, min, mins);
                 int minCount = getMinimumCount(mins);
 
                 if (intCharCounts[ASCII_ENCODATION] + 1 <= intCharCounts[BASE256_ENCODATION]
@@ -1083,5 +1098,4 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         throw new IllegalArgumentException("Illegal character: " + c
                 + " (0x" + hex + ")");
     }
-
 }
