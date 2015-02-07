@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.sf.barcode4j</groupId>
+    <artifactId>barcode4j-parent</artifactId>
+    <version>2.1.2</version>
+
+    <name>barcode4j-parent</name>
+    <description>barcode4j: Parent</description>
+
+    <packaging>pom</packaging>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:${barcode4j.scm.connection}</connection>
+        <developerConnection>scm:git:${barcode4j.scm.connection}</developerConnection>
+        <url>${barcode4j.scm.url}</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>jmaerki</id>
+            <name>Jeremias Märki</name>
+            <email>jmaerki@users.sourceforge.net</email>
+            <roles>
+                <role>primary author</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>the_webmaestro</id>
+            <name>Clay Leeds</name>
+            <email>the_webmaestro@users.sourceforge.net</email>
+            <roles>
+                <role>documentation improvements</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>nicolaken</id>
+            <name>Nicola Ken Barozzi</name>
+            <email>nicolaken@krysalis.org</email>
+        </developer>
+        <developer>
+            <id>buerkle</id>
+            <name>Dietmar Bürkle</name>
+            <email>buerkle@users.sourceforge.net</email>
+            <roles>
+                <role>EAN-128</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>mk</id>
+            <name>Michael Krüger</name>
+            <email>mbh.krueger@gmail.com</email>
+            <roles>
+                <role>maven</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <contributors>
+        <contributor>
+            <name>Chris Dolphy</name>
+            <roles>
+                <role>POSTNET implementation</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Bruno Marçal Dias</name>
+            <roles>
+                <role>bug fixes</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Andrew Nelson</name>
+            <roles>
+                <role>servlet improvements</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Robert Deeken</name>
+            <roles>
+                <role>update of the Saxon extension</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Dimitar Vlasev</name>
+            <roles>
+                <role>custom message patterns</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Branko van Abel</name>
+            <roles>
+                <role>various improvements and bugfixes for the barcode implementations</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Dan Anderson</name>
+            <roles>
+                <role>POSTNET bugfix</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Trevor Spiteri</name>
+            <roles>
+                <role>DataMatrix enhancements</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>ToM</name>
+            <roles>
+                <role>Codabar enhancements</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Kalle Sandberg</name>
+            <roles>
+                <role>improvements for message handling</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Didier Donsez</name>
+            <roles>
+                <role>Ant task</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Nicola Ken Barozzi</name>
+            <roles>
+                <role>Special thanks</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Nick Chalko</name>
+            <roles>
+                <role>Special thanks</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Adam Jack</name>
+            <roles>
+                <role>Special thanks</role>
+            </roles>
+        </contributor>
+    </contributors>
+
+    <properties>
+        <barcode4j.scm.url>https://github.com/mbhk/barcode4j</barcode4j.scm.url>
+        <barcode4j.scm.connection>git@github.com:mbhk/barcode4j.git</barcode4j.scm.connection>
+        <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.2</version>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>2.5</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.avalon.framework</groupId>
+                <artifactId>avalon-framework-impl</artifactId>
+                <version>4.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.xmlgraphics</groupId>
+                <artifactId>xmlgraphics-commons</artifactId>
+                <version>1.4</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>3.8.2</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>barcode4j</module>
+        <module>barcode4j-light</module>
+        <module>barcode4j-spi</module>
+        <module>barcode4j-xgc</module>
+        <module>barcode4j-fop-ext</module>
+        <module>barcode4j-fop-ext-complete</module>
+        <module>barcode4j-fop-ext-0.20.5</module>
+        <module>barcode4j-fop-ext-0.20.5-complete</module>
+        <module>barcode4j-playground</module>
+    <module>barcode4j-webapp</module>
+  </modules>
+
+    <!-- BEGIN: Specific to mapping unit tests and covered code -->
+    <profiles>
+        <profile>
+            <id>coverage-per-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.13</version>
+                        <configuration>
+                            <properties>
+                                <property>
+                                    <name>listener</name>
+                                    <value>org.sonar.java.jacoco.JUnitListener</value>
+                                </property>
+                            </properties>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.codehaus.sonar-plugins.java</groupId>
+                    <artifactId>sonar-jacoco-listeners</artifactId>
+                    <version>1.2</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+</project>
