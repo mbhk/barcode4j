@@ -62,7 +62,7 @@ public class ECIUtil {
     }
 
     private static void mapEncoding(String encoding, int eci) {
-        encodingToECI.put(encoding, new Integer(eci));
+        encodingToECI.put(encoding, eci);
     }
 
     /**

@@ -40,7 +40,7 @@ public class Code128EncoderTest extends TestCase {
         } else if (c == 127) {
             return "<DEL>";
         } else {
-            return new Character(c).toString();
+            return String.valueOf(c);
         }
     }
 

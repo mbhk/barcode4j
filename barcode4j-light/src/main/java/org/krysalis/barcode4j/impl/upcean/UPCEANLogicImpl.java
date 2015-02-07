@@ -138,7 +138,7 @@ public abstract class UPCEANLogicImpl {
      * @param charset the character set to use
      */
     protected void encodeChar(ClassicBarcodeLogicHandler logic, char c, int charset) {
-        logic.startBarGroup(BarGroup.MSG_CHARACTER, new Character(c).toString());
+        logic.startBarGroup(BarGroup.MSG_CHARACTER, String.valueOf(c));
         if (charset == LEFT_HAND_B) {
             for (byte i = 0; i < 4; i++) {
                 final int width = widthAt(c, 3 - i);

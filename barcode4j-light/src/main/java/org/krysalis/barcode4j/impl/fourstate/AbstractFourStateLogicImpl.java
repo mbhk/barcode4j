@@ -97,7 +97,7 @@ public abstract class AbstractFourStateLogicImpl {
      * @param codeword the codeword belonging to the character
      */
     protected void encodeCodeword(ClassicBarcodeLogicHandler logic, char c, String codeword) {
-        logic.startBarGroup(BarGroup.MSG_CHARACTER, new Character(c).toString());
+        logic.startBarGroup(BarGroup.MSG_CHARACTER, String.valueOf(c));
         for (int i = 0, count = codeword.length(); i < count; i++) {
             int height = Integer.parseInt(codeword.substring(i, i + 1));
             logic.addBar(true, height);

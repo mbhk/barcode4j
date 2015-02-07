@@ -117,7 +117,7 @@ public class UPCALogicImpl extends UPCEANLogicImpl {
 
         //Number system character
         final char lead = s.charAt(0);
-        logic.startBarGroup(BarGroup.UPC_EAN_LEAD, new Character(lead).toString());
+        logic.startBarGroup(BarGroup.UPC_EAN_LEAD, String.valueOf(lead));
         encodeChar(logic, lead, LEFT_HAND_A);
         logic.endBarGroup();
 
@@ -144,7 +144,7 @@ public class UPCALogicImpl extends UPCEANLogicImpl {
 
         //Checksum
         final char check = s.charAt(11);
-        logic.startBarGroup(BarGroup.UPC_EAN_CHECK, new Character(check).toString());
+        logic.startBarGroup(BarGroup.UPC_EAN_CHECK, String.valueOf(check));
         encodeChar(logic, check, RIGHT_HAND);
         logic.endBarGroup();
 

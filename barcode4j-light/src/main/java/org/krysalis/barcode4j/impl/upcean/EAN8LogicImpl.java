@@ -131,7 +131,7 @@ public class EAN8LogicImpl extends UPCEANLogicImpl {
 
         //Checksum
         final char check = s.charAt(7);
-        logic.startBarGroup(BarGroup.UPC_EAN_CHECK, new Character(check).toString());
+        logic.startBarGroup(BarGroup.UPC_EAN_CHECK, String.valueOf(check));
         encodeChar(logic, check, RIGHT_HAND);
         logic.endBarGroup();
 

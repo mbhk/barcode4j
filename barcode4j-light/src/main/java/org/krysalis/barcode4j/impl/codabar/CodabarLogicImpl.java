@@ -145,7 +145,7 @@ public class CodabarLogicImpl {
      */
     protected void encodeChar(ClassicBarcodeLogicHandler logic, char ch) {
         ch = Character.toLowerCase(ch);
-        logic.startBarGroup(BarGroup.MSG_CHARACTER, new Character(ch).toString());
+        logic.startBarGroup(BarGroup.MSG_CHARACTER, String.valueOf(ch));
         for (byte i = 0; i < 7; i++) {
             final int width = widthAt(ch, i);
             final boolean black = ((i % 2) == 0);

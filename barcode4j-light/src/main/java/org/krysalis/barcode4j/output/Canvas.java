@@ -94,7 +94,7 @@ public class Canvas {
      */
     public void drawCenteredChar(char ch, double x1, double x2, double y1, 
                 String fontName, double fontSize) {
-        drawCenteredText(new Character(ch).toString(), 
+        drawCenteredText(String.valueOf(ch), 
                 x1, x2, y1, 
                 fontName, fontSize);
     }

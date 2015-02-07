@@ -170,7 +170,7 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
             int colonPos = lastgroup.indexOf(":");
             String grouptext = lastgroup;
             if (colonPos >= 0) {
-                String lead = new Character(grouptext.charAt(0)).toString();
+                String lead = String.valueOf(grouptext.charAt(0));
                 drawLeadChar(lead);
                 grouptext = grouptext.substring(colonPos + 1);
             }

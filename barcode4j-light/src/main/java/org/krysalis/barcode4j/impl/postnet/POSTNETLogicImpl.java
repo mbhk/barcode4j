@@ -146,7 +146,7 @@ public class POSTNETLogicImpl {
         if (isIgnoredChar(c)) {
             return;  // allow dash, but don't encode
         }
-        logic.startBarGroup(BarGroup.MSG_CHARACTER, new Character(c).toString());
+        logic.startBarGroup(BarGroup.MSG_CHARACTER, String.valueOf(c));
         for (byte i = 0; i < 5; i++) {
             int height = heightAt(c, i);
             logic.addBar(true, height);
