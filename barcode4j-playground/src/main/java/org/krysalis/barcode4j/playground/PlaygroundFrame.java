@@ -33,7 +33,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.krysalis.barcode4j.BarcodeUtil;
+import org.krysalis.barcode4j.BarcodeGeneratorProvider;
 
 /**
  * A Frame showing an barcode plus some controls to configure the barcode.
@@ -60,9 +60,10 @@ public class PlaygroundFrame extends JFrame implements ActionListener, ChangeLis
     private JComboBox<String> getBarcodeNames() {
         if (barcodeNames == null) {
             barcodeNames = new JComboBox<String>();
-            Collection names = BarcodeUtil.getInstance().getClassResolver().getBarcodeNames();
-            for (Object name : names) {
-                barcodeNames.addItem((String) name);
+            Collection<String> names = BarcodeGeneratorProvider.getInstance()
+                    .getAvailableBarcodeGenerators();
+            for (String name : names) {
+                barcodeNames.addItem(name);
             }
             barcodeNames.setSelectedItem("qr");
             barcodeNames.addActionListener(this);

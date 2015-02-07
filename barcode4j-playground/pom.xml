@@ -11,17 +11,8 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>barcode4j</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>barcode4j-light</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.avalon.framework</groupId>
-            <artifactId>avalon-framework-impl</artifactId>
         </dependency>
     </dependencies>
 

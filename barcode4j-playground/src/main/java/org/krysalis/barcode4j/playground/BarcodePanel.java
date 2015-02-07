@@ -28,13 +28,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
 
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
-import org.krysalis.barcode4j.BarcodeUtil;
+import org.krysalis.barcode4j.BarcodeGeneratorProvider;
 import org.krysalis.barcode4j.output.CanvasProvider;
 import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider;
 
@@ -63,17 +61,9 @@ public class BarcodePanel extends JPanel {
      */
     public void setBarcodeName(String name) {
         this.barcodeName = name;
-        DefaultConfiguration cfg = new DefaultConfiguration(this.barcodeName);
-        DefaultConfiguration child = new DefaultConfiguration("human-readable-font");
-        child.setValue("Tahoma");
-        cfg.addChild(child);
 
         try {
-            BarcodeGenerator gen
-                    = BarcodeUtil.getInstance().createBarcodeGenerator(cfg);
-            setBarcode(gen);
-        } catch (ConfigurationException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            setBarcode(BarcodeGeneratorProvider.getInstance().getBarcodeGenerator(name));
         } catch (BarcodeException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
