@@ -27,8 +27,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Loading of implementation classes through SPI.
  *
  * @author mk
+ * @version 1.1
+ * @since 2.1.2
  */
 public class BarcodeGeneratorProvider {
 
@@ -37,12 +40,20 @@ public class BarcodeGeneratorProvider {
     private final ServiceLoader<BarcodeGenerator> loader;
     private final Map<String, Class<BarcodeGenerator>> barcodeGenerators;
 
+    /**
+     * Initialize this singleton.
+     */
     private BarcodeGeneratorProvider() {
         this.barcodeGenerators = new HashMap<String, Class<BarcodeGenerator>>();
         loader = ServiceLoader.load(BarcodeGenerator.class);
         initialize();
     }
 
+    /**
+     * Gets the Provider.
+     *
+     * @return single instance
+     */
     public static synchronized BarcodeGeneratorProvider getInstance() {
         if (instance == null) {
             instance = new BarcodeGeneratorProvider();
@@ -51,12 +62,24 @@ public class BarcodeGeneratorProvider {
         return instance;
     }
 
+    /**
+     * Lists all names of available BarcodeGenerators.
+     *
+     * @return Set of available BarcodeGenerator names
+     */
     public Collection<String> getAvailableBarcodeGenerators() {
         Set<String> res = new TreeSet<String>();
         res.addAll(barcodeGenerators.keySet());
         return res;
     }
 
+    /**
+     * Instanciates a fresh copy of a BarcodeGenerator.
+     *
+     * @param id Name of Barcode ({@link #getAvailableBarcodeGenerators() })
+     * @return a fresh copy
+     * @throws BarcodeException if barcode with {@code id} is not available 
+     */
     public BarcodeGenerator getBarcodeGenerator(String id) throws BarcodeException {
         Class<BarcodeGenerator> clazz = barcodeGenerators.get(id);
 
@@ -75,6 +98,9 @@ public class BarcodeGeneratorProvider {
         return res;
     }
 
+    /**
+     * Loads all implementing Classes through ServiceLoader interface.
+     */
     private void initialize() {
         Iterator<BarcodeGenerator> iterator = loader.iterator();
         while (iterator.hasNext()) {
