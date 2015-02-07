@@ -19,32 +19,42 @@ package org.krysalis.barcode4j;
  * Enumeration type for checksum policy.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
-public class ChecksumMode {
-
-    /** "auto" chooses the barcode's default checksum behaviour */
-    public static final ChecksumMode CP_AUTO   = new ChecksumMode("auto");
-    /** "ignore" doesn't check nor add a checksum */
-    public static final ChecksumMode CP_IGNORE = new ChecksumMode("ignore");
-    /** "add" adds the necessary checksum to the message to be encoded */
-    public static final ChecksumMode CP_ADD    = new ChecksumMode("add");
-    /** "check" requires the check character to be present in the message. It 
-     * will be checked.
+public enum ChecksumMode {
+    /**
+     * Chooses the barcode's default checksum behaviour.
      */
-    public static final ChecksumMode CP_CHECK  = new ChecksumMode("check");
+    CP_AUTO("auto"),
+    /**
+     * Doesn't check nor add a checksum.
+     */
+    CP_IGNORE("ignore"),
+    /** 
+     * Adds the necessary checksum to the message to be encoded.
+     */
+    CP_ADD("add"),
+    /**
+     * Requires the check character to be present in the message.
+     *
+     * It will be checked.
+     */
+    CP_CHECK("check");
 
-    private String name;
+    private final String name;
     
     /**
      * Creates a new ChecksumMode instance.
+     *
      * @param name the name of the ChecksumMode
      */
-    protected ChecksumMode(String name) {
+    private ChecksumMode(String name) {
         this.name = name;
     }
     
     /**
+     * Gets the associated name.
+     *
      * @return the name of the instance.
      */
     public String getName() {
@@ -53,6 +63,7 @@ public class ChecksumMode {
     
     /**
      * Returns a ChecksumMode instance by name.
+     *
      * @param name the name of the ChecksumMode
      * @return the requested instance
      */
@@ -69,5 +80,9 @@ public class ChecksumMode {
             throw new IllegalArgumentException("Invalid ChecksumMode: " + name);
         }
     }
-    
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
