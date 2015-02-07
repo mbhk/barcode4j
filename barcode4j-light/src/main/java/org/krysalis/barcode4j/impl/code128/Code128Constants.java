@@ -69,10 +69,14 @@ public enum Code128Constants {
         }
         return res;
     }
-    
+
     public static Code128Constants and(Code128Constants a, Code128Constants b) {
-        if (a == null) return b;
-        if (b == null) return a;
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
         return fromInt(a.value | b.value);
     }
 

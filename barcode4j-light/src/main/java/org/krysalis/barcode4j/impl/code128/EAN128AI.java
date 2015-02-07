@@ -41,7 +41,7 @@ public class EAN128AI {
      * Check digit
      */
     public static final byte TYPECD = 5;
-    private static final String[] typeToString = {"an", "n", "a", "d", "e", "cd"};
+    private static final String[] TYPE_TO_STRING = {"an", "n", "a", "d", "e", "cd"};
 
 
     String id;
@@ -51,13 +51,13 @@ public class EAN128AI {
     byte[] lenMin, lenMax, type, checkDigitStart;
     boolean fixed = false, canDoChecksumADD = false;
 
-    private static final String[] fixedLenTable = new String[]{
+    private static final String[] FIXED_LEN_TABLE = new String[]{
         "00", "01", "02", "03", "04", 
         "11", "12", "13", "14", "15", "16", "17", "18", "19", 
         "20", 
         "31", "32", "33", "34", "35", "36", 
         "41"};
-    private static final byte[] fixedLenValueTable = new byte[]{
+    private static final byte[] FIXED_LEN_VALUE_TABLE = new byte[]{
         20, 16, 16, 16, 18, 
         8, 8, 8, 8, 8, 8, 8, 8, 8, 
         4, 
@@ -97,8 +97,8 @@ public class EAN128AI {
         for (int i = 0; i <= 9; i++) {
             initFixedLen("23" + i, (byte)(1 + 9 * i));
         }
-        for (int i = fixedLenValueTable.length - 1; i >= 0; i--) {
-            initFixedLen(fixedLenTable[i], (byte)(fixedLenValueTable[i] - 2));
+        for (int i = FIXED_LEN_VALUE_TABLE.length - 1; i >= 0; i--) {
+            initFixedLen(FIXED_LEN_TABLE[i], (byte)(FIXED_LEN_VALUE_TABLE[i] - 2));
         }
     }
     
@@ -367,7 +367,7 @@ public class EAN128AI {
     public static final String getType(byte type) {
         String ret = "?";
         try {
-            ret = typeToString[type];
+            ret = TYPE_TO_STRING[type];
         } catch (Exception e) {
             //ignore
         }

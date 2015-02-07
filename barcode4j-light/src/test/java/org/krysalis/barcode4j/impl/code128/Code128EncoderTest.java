@@ -256,8 +256,8 @@ public class Code128EncoderTest extends TestCase {
         /*
          * Testing codeset A + B
          */
-        encoder = new DefaultCode128Encoder(Code128Constants.fromInt(
-                Code128Constants.CODESET_A.getValue() | Code128Constants.CODESET_B.getValue()));
+        encoder = new DefaultCode128Encoder(Code128Constants.and(
+                Code128Constants.CODESET_A, Code128Constants.CODESET_B));
         assertEquals("->Barthur<SHIFT-A><HT>DENT", encodeToDebug("arthur\tDENT", encoder));
         assertEquals("->B1234567890", encodeToDebug("1234567890", encoder));
 
@@ -279,12 +279,12 @@ public class Code128EncoderTest extends TestCase {
         } catch (IllegalArgumentException iae) {
             //expected
         }
-        encoder = new DefaultCode128Encoder(Code128Constants.fromInt(
-                Code128Constants.CODESET_A.getValue() | Code128Constants.CODESET_C.getValue()));
+        encoder = new DefaultCode128Encoder(Code128Constants.and(
+                Code128Constants.CODESET_A, Code128Constants.CODESET_C));
         assertEquals("->A7->C[48][39][27][58][43][1][83][75]",
                 encodeToDebug("74839275843018375", encoder));
-        encoder = new DefaultCode128Encoder(Code128Constants.fromInt(
-                Code128Constants.CODESET_B.getValue() | Code128Constants.CODESET_C.getValue()));
+        encoder = new DefaultCode128Encoder(Code128Constants.and(
+                Code128Constants.CODESET_B, Code128Constants.CODESET_C));
         assertEquals("->B7->C[48][39][27][58][43][1][83][75]",
                 encodeToDebug("74839275843018375", encoder));
     }
