@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.TreeSet;
@@ -77,18 +78,22 @@ public class BarcodeGeneratorProvider {
     private void initialize() {
         Iterator<BarcodeGenerator> iterator = loader.iterator();
         while (iterator.hasNext()) {
-            BarcodeGenerator bg = iterator.next();
-            String id = bg.getId();
-            Class<BarcodeGenerator> clazz = (Class<BarcodeGenerator>) bg.getClass();
-            barcodeGenerators.put(id, clazz);
-            Collection<String> addIds = bg.getAdditionalNames();
-            if (addIds != null) {
-                for (String addId : addIds) {
-                    barcodeGenerators.putIfAbsent(addId, clazz);
+            try {
+                BarcodeGenerator bg = iterator.next();
+                String id = bg.getId();
+                Class<BarcodeGenerator> clazz = (Class<BarcodeGenerator>) bg.getClass();
+                barcodeGenerators.put(id, clazz);
+                Collection<String> addIds = bg.getAdditionalNames();
+                if (addIds != null) {
+                    for (String addId : addIds) {
+                        barcodeGenerators.putIfAbsent(addId, clazz);
+                    }
                 }
+            } catch (ServiceConfigurationError e) {
+                LOGGER.log(Level.WARNING, "Failed to load a BarcodeGenerator service.", e);
             }
         }
-        if(LOGGER.isLoggable(Level.INFO)) {
+        if (LOGGER.isLoggable(Level.INFO)) {
             LOGGER.info("Available BarcodeGenerators: ");
             for (Map.Entry<String, Class<BarcodeGenerator>> entrySet : barcodeGenerators.entrySet()) {
                 String key = entrySet.getKey();
