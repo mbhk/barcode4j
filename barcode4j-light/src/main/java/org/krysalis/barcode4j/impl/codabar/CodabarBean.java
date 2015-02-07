@@ -88,7 +88,7 @@ public class CodabarBean extends AbstractBarcodeBean {
         this.wideFactor = value;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public double getBarWidth(int width) {
         if (width == 1) {
             return moduleWidth;
@@ -117,7 +117,7 @@ public class CodabarBean extends AbstractBarcodeBean {
         this.displayStartStop = value;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         if ((msg == null)
                 || (msg.length() == 0)) {
@@ -150,7 +150,7 @@ public class CodabarBean extends AbstractBarcodeBean {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         double width = 0.0;
         for (int i = 0; i < msg.length(); i++) {

@@ -37,7 +37,7 @@ public class EAN128Bean extends Code128Bean {
     /** Defines the default character for the check digit marker */
     public static final char DEFAULT_CHECK_DIGIT_MARKER = '\u00F0';
 
-    private EAN128LogicImpl impl;
+    private final EAN128LogicImpl impl;
 
     private ChecksumMode checksumMode = ChecksumMode.CP_AUTO;
     private String template = null;
@@ -51,9 +51,7 @@ public class EAN128Bean extends Code128Bean {
         impl = new EAN128LogicImpl(checksumMode, template, groupSeparator);
     }
     
-    /**
-     * @see org.krysalis.barcode4j.BarcodeGenerator#calcDimensions(String)
-     */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         int msgLen = impl.getEncodedMessage(msg).length + 1; 
         //TODO If the output is able to calculate text lenghts (e.g. awt, fop), and 
@@ -65,9 +63,7 @@ public class EAN128Bean extends Code128Bean {
                 quietZone, 0.0);
     }
 
-    /**
-     * @see org.krysalis.barcode4j.BarcodeGenerator#generateBarcode(CanvasProvider, String)
-     */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         if ((msg == null) || (msg.length() == 0)) {
             throw new NullPointerException("Parameter msg must not be empty");

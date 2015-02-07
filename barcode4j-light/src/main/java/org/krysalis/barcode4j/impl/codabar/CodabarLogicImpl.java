@@ -159,10 +159,6 @@ public class CodabarLogicImpl {
                 || (getChecksumMode() == ChecksumMode.CP_CHECK)) {
             throw new UnsupportedOperationException(
                 "No checksums are currently supported for Codabar symbols");
-        } else if (getChecksumMode() == ChecksumMode.CP_IGNORE) {
-            return;
-        } else if (getChecksumMode() == ChecksumMode.CP_AUTO) {
-            return; //equals ignore
         }
     }
 
@@ -211,5 +207,4 @@ public class CodabarLogicImpl {
 
         logic.endBarcode();
     }
-
 }

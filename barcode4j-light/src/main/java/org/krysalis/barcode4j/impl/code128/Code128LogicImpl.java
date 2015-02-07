@@ -145,7 +145,7 @@ public class Code128LogicImpl {
 
     private static final byte[] STOP = {2, 3, 3, 1, 1, 1, 2}; //106, STOP
 
-    private int codeset;
+    private Code128Constants codeset;
 
     /**
      * Default constructor.
@@ -158,7 +158,7 @@ public class Code128LogicImpl {
      * Main constructor.
      * @param codeset the enabled codeset
      */
-    public Code128LogicImpl(int codeset) {
+    public Code128LogicImpl(Code128Constants codeset) {
         this.codeset = codeset;
     }
 
@@ -236,7 +236,7 @@ public class Code128LogicImpl {
      * @return the String representation
      */
     public static String toString(int[] encodedMsg) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < encodedMsg.length; i++) {
             if (i > 0) {
                 sb.append("|");

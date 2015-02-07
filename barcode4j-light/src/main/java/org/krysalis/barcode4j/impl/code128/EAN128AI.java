@@ -51,19 +51,19 @@ public class EAN128AI {
     byte[] lenMin, lenMax, type, checkDigitStart;
     boolean fixed = false, canDoChecksumADD = false;
 
-    private static String[] fixedLenTable = new String[]{
+    private static final String[] fixedLenTable = new String[]{
         "00", "01", "02", "03", "04", 
         "11", "12", "13", "14", "15", "16", "17", "18", "19", 
         "20", 
         "31", "32", "33", "34", "35", "36", 
         "41"};
-    private static byte[] fixedLenValueTable = new byte[]{
+    private static final byte[] fixedLenValueTable = new byte[]{
         20, 16, 16, 16, 18, 
         8, 8, 8, 8, 8, 8, 8, 8, 8, 
         4, 
         10, 10, 10, 10, 10, 10, 
         16};
-    private static EAN128AI dft = parseSpecPrivate("xx", "an1-48");
+    private static final EAN128AI dft = parseSpecPrivate("xx", "an1-48");
     private static Object[] aiTable = new Object[] 
                                         {dft, dft, dft, dft, dft, dft, dft, dft, dft, dft};
     private static boolean propertiesLoaded = false;

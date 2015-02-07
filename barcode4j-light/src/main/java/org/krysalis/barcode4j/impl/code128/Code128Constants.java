@@ -17,16 +17,66 @@ package org.krysalis.barcode4j.impl.code128;
 
 /**
  * Constants for Code128.
+ *
+ * @version 1.2
  */
-public interface Code128Constants {
+public enum Code128Constants {
 
-    /** Enables the codeset A */
-    int CODESET_A = 1;
-    /** Enables the codeset B */
-    int CODESET_B = 2;
-    /** Enables the codeset C */
-    int CODESET_C = 4;
-    /** Enables all codesets */
-    int CODESET_ALL = CODESET_A | CODESET_B | CODESET_C;
+    /**
+     * Enables the codeset A
+     */
+    CODESET_A(1),
+    /**
+     * Enables the codeset B
+     */
+    CODESET_B(2),
+    /**
+     * Enables the codeset C
+     */
+    CODESET_C(4),
+    /**
+     * Enables the codesets A&B
+     */
+    CODESET_AB(CODESET_A.value | CODESET_B.value),
+    /**
+     * Enables the codesets A&C
+     */
+    CODESET_AC(CODESET_A.value | CODESET_C.value),
+    /**
+     * Enables the codesets B&C
+     */
+    CODESET_BC(CODESET_B.value | CODESET_C.value),
+    /**
+     * Enables all codesets
+     */
+    CODESET_ALL(CODESET_A.value | CODESET_B.value | CODESET_C.value);
 
+    private final int value;
+
+    private Code128Constants(int value) {
+        this.value = value;
+    }
+
+    public static Code128Constants fromInt(int i) {
+        Code128Constants res = null;
+        for (Code128Constants v : Code128Constants.values()) {
+            if (v.value == i) {
+                res = v;
+            }
+        }
+        if (res == null) {
+            throw new IllegalArgumentException("Can not convert " + i + " to " + Code128Constants.class.getName());
+        }
+        return res;
+    }
+    
+    public static Code128Constants and(Code128Constants a, Code128Constants b) {
+        if (a == null) return b;
+        if (b == null) return a;
+        return fromInt(a.value | b.value);
+    }
+
+    public int getValue() {
+        return value;
+    }
 }

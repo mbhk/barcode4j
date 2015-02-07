@@ -36,10 +36,10 @@ public class Code128Bean extends AbstractBarcodeBean {
     protected static final double DEFAULT_MODULE_WIDTH = 0.21f; //mm
 
     /** Default codeset. */
-    protected static final int DEFAULT_CODESET = Code128Constants.CODESET_ALL;
+    protected static final Code128Constants DEFAULT_CODESET = Code128Constants.CODESET_ALL;
 
     /** Codeset used to encode the message. */
-    private int codeset = DEFAULT_CODESET;
+    private Code128Constants codeset = DEFAULT_CODESET;
 
     /** Create a new instance. */
     public Code128Bean() {
@@ -53,8 +53,8 @@ public class Code128Bean extends AbstractBarcodeBean {
      * if an application requires that.
      * @param codeset the codesets to use (see {@link Code128Constants}.CODESET_*)
      */
-    public void setCodeset(int codeset) {
-        if (codeset == 0) {
+    public void setCodeset(Code128Constants codeset) {
+        if (codeset == null) {
             throw new IllegalArgumentException("At least one codeset must be allowed");
         }
         this.codeset = codeset;
@@ -64,16 +64,16 @@ public class Code128Bean extends AbstractBarcodeBean {
      * Returns the codeset to be used.
      * @return the codeset (see {@link Code128Constants}.CODESET_*)
      */
-    public int getCodeset() {
+    public Code128Constants getCodeset() {
         return this.codeset;
     }
 
-    /** {@inheritDoc} */
+    @Override
     protected boolean hasFontDescender() {
         return true;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public double getBarWidth(int width) {
         if ((width >= 1) && (width <= 4)) {
             return width * moduleWidth;
@@ -82,16 +82,14 @@ public class Code128Bean extends AbstractBarcodeBean {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         Code128LogicImpl impl = createLogicImpl();
-        int msgLen = 0;
-
-        msgLen = impl.createEncodedMessage(msg).length + 1;
+        int msgLen = impl.createEncodedMessage(msg).length + 1;
 
         final double width = ((msgLen * 11) + 13) * getModuleWidth();
         final double qz = (hasQuietZone() ? quietZone : 0);
-        final double vqz = (hasQuietZone() ? quietZoneVertical.doubleValue() : 0);
+        final double vqz = (hasQuietZone() ? quietZoneVertical : 0);
 
         return new BarcodeDimension(width, getHeight(),
                 width + (2 * qz), getHeight() + (2 * vqz),
@@ -102,7 +100,7 @@ public class Code128Bean extends AbstractBarcodeBean {
         return new Code128LogicImpl(getCodeset());
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         if ((msg == null) || (msg.length() == 0)) {
             throw new NullPointerException("Parameter msg must not be empty");

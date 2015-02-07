@@ -44,8 +44,8 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
     private boolean omitBrackets = false;
 
     private String msgCache = null;
-    private StringBuffer code128Msg = new StringBuffer(MAX_LENGTH);
-    private StringBuffer humanReadableMsg = new StringBuffer(MAX_LENGTH);
+    private final StringBuffer code128Msg;
+    private final StringBuffer humanReadableMsg;
     private int[] encodedMsg = new int[]{};
     private IllegalArgumentException exception = null;
 
@@ -53,12 +53,16 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
     private boolean checksumCHECK = true;
 
     public EAN128LogicImpl(ChecksumMode mode, String template, char fnc1) {
+        this.humanReadableMsg = new StringBuffer(MAX_LENGTH);
+        this.code128Msg = new StringBuffer(MAX_LENGTH);
         setChecksumMode(mode);
         setTemplate(template);
         this.groupSeparator = fnc1;
     }
 
     public EAN128LogicImpl(ChecksumMode mode, String template) {
+        this.humanReadableMsg = new StringBuffer(MAX_LENGTH);
+        this.code128Msg = new StringBuffer(MAX_LENGTH);
         setChecksumMode(mode);
         setTemplate(template);
     }
@@ -378,12 +382,12 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
         return humanReadableMsg.toString();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public String toString() {
         return getHumanReadableMsg();
     }
 
-    public void setChecksumMode(ChecksumMode mode) {
+    public final void setChecksumMode(ChecksumMode mode) {
         if (mode == ChecksumMode.CP_AUTO) {
             checksumADD = true;
             checksumCHECK = true;
@@ -417,8 +421,8 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
     /**
      * @param string
      */
-    public void setTemplate(String string) {
-        EAN128AI[] newTemplates = null;
+    public final void setTemplate(String string) {
+        EAN128AI[] newTemplates;
         if (string == null || string.trim().length() == 0) {
             return;
         }

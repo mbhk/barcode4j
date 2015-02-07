@@ -20,7 +20,7 @@ package org.krysalis.barcode4j.impl.code128;
  *
  * @version $Id$
  */
-public class DefaultCode128Encoder implements Code128Encoder, Code128Constants {
+public class DefaultCode128Encoder implements Code128Encoder {
 
     private static final int START_A = 103;
     private static final int START_B = 104;
@@ -34,14 +34,14 @@ public class DefaultCode128Encoder implements Code128Encoder, Code128Constants {
     private static final int FNC_4 = 0xF4;
     private static final int SHIFT = 98;
 
-    private int codesets;
+    private final Code128Constants codeset;
 
     /**
      * Create a new encoder
-     * @param codesets the allowed codesets
+     * @param codeset the allowed codeset
      */
-    public DefaultCode128Encoder(int codesets) {
-        this.codesets = codesets;
+    public DefaultCode128Encoder(Code128Constants codeset) {
+        this.codeset = codeset;
     }
 
     /**
@@ -61,7 +61,7 @@ public class DefaultCode128Encoder implements Code128Encoder, Code128Constants {
         return (c >= 96) && (c < 128);
     }
 
-    private int encodeAorB(char c, int codeset) {
+    private int encodeAorB(char c, Code128Constants codeset) {
         //Function chars
         if (c == Code128LogicImpl.FNC_1) {
             return FNC_1;
@@ -73,14 +73,14 @@ public class DefaultCode128Encoder implements Code128Encoder, Code128Constants {
             return FNC_3;
         }
         if (c == Code128LogicImpl.FNC_4) {
-            if (codeset == CODESET_A) {
+            if (codeset == Code128Constants.CODESET_A) {
                 return 101;
             } else {
                 return 100;
             }
         }
         //Convert normal characters
-        if (codeset == CODESET_A) {
+        if (codeset == Code128Constants.CODESET_A) {
             if ((c >= 0) && (c < 32)) {
                 return c + 64;
             } else if ((c >= 32) && (c <= 95)) {
@@ -88,7 +88,7 @@ public class DefaultCode128Encoder implements Code128Encoder, Code128Constants {
             } else {
                 throw new IllegalArgumentException("Illegal character: " + c);
             }
-        } else if (codeset == CODESET_B) {
+        } else if (codeset == Code128Constants.CODESET_B) {
             if ((c >= 32) && (c < 128)) {
                 return c - 32;
             } else {
@@ -99,20 +99,20 @@ public class DefaultCode128Encoder implements Code128Encoder, Code128Constants {
         }
     }
 
-    private boolean isAllowed(int codeset) {
-        return ((this.codesets & codeset) != 0);
+    private boolean isAllowed(Code128Constants codeset) {
+        return ((this.codeset.getValue() & codeset.getValue()) != 0);
     }
 
     private boolean isAAllowed() {
-        return isAllowed(CODESET_A);
+        return isAllowed(Code128Constants.CODESET_A);
     }
 
     private boolean isBAllowed() {
-        return isAllowed(CODESET_B);
+        return isAllowed(Code128Constants.CODESET_B);
     }
 
     private boolean isCAllowed() {
-        return isAllowed(CODESET_C);
+        return isAllowed(Code128Constants.CODESET_C);
     }
 
     /**
@@ -122,6 +122,7 @@ public class DefaultCode128Encoder implements Code128Encoder, Code128Constants {
      * @return array of code set caracters
      * @see org.krysalis.barcode4j.impl.code128.Code128Encoder#encode(java.lang.String)
      */
+    @Override
     public int[] encode(String message) {
 
         // Allocate enough space
@@ -326,9 +327,9 @@ public class DefaultCode128Encoder implements Code128Encoder, Code128Constants {
                     }
                     aUsed = true;
 
-                    encoded[encodedPos++] = encodeAorB(character, CODESET_A);
+                    encoded[encodedPos++] = encodeAorB(character, Code128Constants.CODESET_A);
                 } else {
-                    encoded[encodedPos++] = encodeAorB(character, CODESET_B);
+                    encoded[encodedPos++] = encodeAorB(character, Code128Constants.CODESET_B);
                 }
 
             } else {
@@ -345,9 +346,9 @@ public class DefaultCode128Encoder implements Code128Encoder, Code128Constants {
                     }
                     bUsed = true;
 
-                    encoded[encodedPos++] = encodeAorB(character, CODESET_B);
+                    encoded[encodedPos++] = encodeAorB(character, Code128Constants.CODESET_B);
                 } else {
-                    encoded[encodedPos++] = encodeAorB(character, CODESET_A);
+                    encoded[encodedPos++] = encodeAorB(character, Code128Constants.CODESET_A);
                 }
             }
         }

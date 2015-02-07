@@ -36,7 +36,7 @@ public class Code128 extends ConfigurableBarcodeGenerator
         this.bean = new Code128Bean();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
         Length mw = new Length(cfg.getChild("module-width").getValue("0.21mm"), "mm");
@@ -47,15 +47,15 @@ public class Code128 extends ConfigurableBarcodeGenerator
         String codesets = cfg.getChild("codesets").getValue(null);
         if (codesets != null) {
             codesets = codesets.toUpperCase();
-            int bits = 0;
+            Code128Constants bits = null;
             if (codesets.indexOf('A') >= 0) {
-                bits |= Code128Constants.CODESET_A;
+                bits = Code128Constants.and(Code128Constants.CODESET_A, bits);
             }
             if (codesets.indexOf('B') >= 0) {
-                bits |= Code128Constants.CODESET_B;
+                bits = Code128Constants.and(Code128Constants.CODESET_B, bits);
             }
             if (codesets.indexOf('C') >= 0) {
-                bits |= Code128Constants.CODESET_C;
+                bits = Code128Constants.and(Code128Constants.CODESET_C, bits);
             }
             getCode128Bean().setCodeset(bits);
         }
@@ -67,6 +67,4 @@ public class Code128 extends ConfigurableBarcodeGenerator
     public Code128Bean getCode128Bean() {
         return (Code128Bean)getBean();
     }
-
-
 }
