@@ -29,7 +29,7 @@ import org.krysalis.barcode4j.output.CanvasProvider;
  * This class is an implementation of the Interleaved 2 of 5 barcode.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.1
  */
 public class Interleaved2Of5Bean extends AbstractBarcodeBean {
 
@@ -69,9 +69,7 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
         this.displayChecksum = value;
     }
     
-    /**
-     * @see org.krysalis.barcode4j.BarcodeGenerator#generateBarcode(CanvasProvider, String)
-     */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         if ((msg == null) 
                 || (msg.length() == 0)) {
@@ -87,9 +85,7 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
         impl.generateBarcodeLogic(handler, msg);
     }
     
-    /**
-     * @see org.krysalis.barcode4j.BarcodeGenerator#calcDimensions(String)
-     */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         int msgLen = msg.length();
         if (getChecksumMode() == ChecksumMode.CP_ADD) {
@@ -106,9 +102,7 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
                 quietZone, 0.0);
     }
 
-    /**
-     * @see org.krysalis.barcode4j.impl.AbstractBarcodeBean#getBarWidth(int)
-     */
+    @Override
     public double getBarWidth(int width) {
         if (width == 1) {
             return moduleWidth;
@@ -143,7 +137,7 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
     
     /**
      * Sets the factor by which wide bars are broader than narrow bars.
-     * @param value the wide factory (should be > 1.0)
+     * @param value the wide factory (must be &gt; 1.0)
      */
     public void setWideFactor(double value) {
         if (value <= 1.0) {

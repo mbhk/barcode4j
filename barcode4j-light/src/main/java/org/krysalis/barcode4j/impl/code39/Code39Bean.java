@@ -29,7 +29,7 @@ import org.krysalis.barcode4j.output.CanvasProvider;
  * This class is an implementation of the Code39 barcode.
  *
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.1
  */
 public class Code39Bean extends AbstractBarcodeBean {
 
@@ -96,7 +96,7 @@ public class Code39Bean extends AbstractBarcodeBean {
 
     /**
      * Sets the factor by which wide bars are broader than narrow bars.
-     * @param value the wide factory (should be > 1.0)
+     * @param value the wide factory (should be &gt; 1.0)
      */
     public void setWideFactor(double value) {
         if (value <= 1.0) {
@@ -166,7 +166,7 @@ public class Code39Bean extends AbstractBarcodeBean {
         this.extendedCharSet = value;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public double getBarWidth(int width) {
         if (width == 1) {
             return moduleWidth;
@@ -179,7 +179,7 @@ public class Code39Bean extends AbstractBarcodeBean {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         if ((msg == null)
                 || (msg.length() == 0)) {
@@ -198,7 +198,7 @@ public class Code39Bean extends AbstractBarcodeBean {
                 isDisplayStartStop(), isDisplayChecksum(), isExtendedCharSetEnabled());
     }
 
-    /** {@inheritDoc} */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         Code39LogicImpl impl = createLogicImpl();
         int msglen = impl.prepareMessage(msg).length();

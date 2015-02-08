@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.tools;
 
 import java.io.ByteArrayOutputStream;
@@ -26,6 +24,8 @@ import java.net.URLDecoder;
 
 /**
  * Utility functions for handling URLs.
+ * 
+ * @version 1.1
  */
 public class URLUtil {
 
@@ -61,7 +61,6 @@ public class URLUtil {
      * Returns the data pointed at by a URL as a byte array.
      * @param url the URL
      * @return encoding text as a string
-     * @throws IOException if an I/O error occurs
      */
     public static String getDataEncoding(String url){
         int commaPos = url.indexOf(',');
@@ -119,5 +118,4 @@ public class URLUtil {
             return null;
         }
     }
-
 }

@@ -21,7 +21,7 @@ package org.krysalis.barcode4j;
  * format. Due to different barcode types (1D, 2D) there are different 
  * descendants of this interface that define the specifics. See this 
  * interface's descendants for more information.
- * <br/>
+ * <P>
  * The purpose of this interface is to enable the separatation of barcode logic
  * and painting/rendering logic.
  *

@@ -22,11 +22,11 @@ import java.util.Collection;
  * This class is an implementation of the UPC-A barcode.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.1
  */
 public class UPCABean extends UPCEANBean {
 
-    /** @see org.krysalis.barcode4j.impl.upcean.UPCEAN */
+    @Override
     public UPCEANLogicImpl createLogicImpl() {
         return new UPCALogicImpl(getChecksumMode());
     }

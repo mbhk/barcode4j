@@ -97,7 +97,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
      * Encodes a message into an array of character set indexes.
      * @param msg the message to encode
      * @return the requested array of character set indexes
-     * @see #getEncoder()
+     * @see #setMessage(java.lang.String) 
      */
     public int[] getEncodedMessage(String msg) {
         setMessage(msg);

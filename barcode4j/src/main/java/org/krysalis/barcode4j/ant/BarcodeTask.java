@@ -45,6 +45,7 @@ import org.apache.tools.ant.Task;
  * Ant task for Barcode4J.
  *
  * @author Didier Donsez
+ * @version 1.1
  */
 public class BarcodeTask extends Task {
 
@@ -76,6 +77,7 @@ public class BarcodeTask extends Task {
      * completion.
      * @throws BuildException if an error occurs
      */
+    @Override
     public void execute() throws BuildException {
 
         if (message == null || message.length() == 0) {
@@ -164,7 +166,7 @@ public class BarcodeTask extends Task {
     /**
      * Sets the desired symbology.
      * @param symbol the symbology to set
-     * @see http://barcode4j.sourceforge.net/latest/barcode-xml.html
+     * @see <a href="http://barcode4j.sourceforge.net/latest/barcode-xml.html#supported">Supported symbologies</a>
      */
     public void setSymbol(String symbol) {
         this.symbol = symbol;

@@ -211,8 +211,8 @@
         <module>barcode4j-fop-ext-0.20.5</module>
         <module>barcode4j-fop-ext-0.20.5-complete</module>
         <module>barcode4j-playground</module>
-    <module>barcode4j-webapp</module>
-  </modules>
+        <module>barcode4j-webapp</module>
+    </modules>
 
     <!-- BEGIN: Specific to mapping unit tests and covered code -->
     <profiles>
@@ -244,6 +244,51 @@
                     <scope>test</scope>
                 </dependency>
             </dependencies>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.1.2</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.1</version>
+                        <configuration>
+                            <failOnError>true</failOnError>
+                            <show>private</show>
+                            <tags>
+                                <tag>
+                                    <name>todo</name>
+                                    <!-- todo tag for all places -->
+                                    <placement>a</placement>
+                                    <head>To do something:</head>
+                                </tag>
+                            </tags>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>

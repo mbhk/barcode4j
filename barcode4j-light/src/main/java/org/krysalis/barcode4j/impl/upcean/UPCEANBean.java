@@ -26,7 +26,7 @@ import org.krysalis.barcode4j.output.CanvasProvider;
  * This is an abstract base class for UPC and EAN barcodes.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.1
  */
 public abstract class UPCEANBean extends AbstractBarcodeBean {
 
@@ -59,9 +59,7 @@ public abstract class UPCEANBean extends AbstractBarcodeBean {
         return this.checksumMode;
     }
 
-    /**
-     * @see org.krysalis.barcode4j.impl.AbstractBarcodeBean#getBarWidth(int)
-     */
+    @Override
     public double getBarWidth(int width) {
         if ((width >= 1) && (width <= 4)) {
             return width * moduleWidth;
@@ -78,9 +76,7 @@ public abstract class UPCEANBean extends AbstractBarcodeBean {
     public abstract UPCEANLogicImpl createLogicImpl();
        
 
-    /**
-     * @see org.krysalis.barcode4j.BarcodeGenerator#generateBarcode(CanvasProvider, String)
-     */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         if ((msg == null) || (msg.length() == 0)) {
             throw new NullPointerException("Parameter msg must not be empty");
@@ -111,9 +107,7 @@ public abstract class UPCEANBean extends AbstractBarcodeBean {
         return width;
     }
 
-    /**
-     * @see org.krysalis.barcode4j.BarcodeGenerator#calcDimensions(String)
-     */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         double width = 3 * moduleWidth; //left guard
         width += 6 * 7 * moduleWidth;
@@ -126,6 +120,4 @@ public abstract class UPCEANBean extends AbstractBarcodeBean {
                 width + (2 * qz), getHeight(), 
                 quietZone, 0.0);
     }
-
-
 }

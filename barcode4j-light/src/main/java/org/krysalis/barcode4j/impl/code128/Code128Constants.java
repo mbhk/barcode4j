@@ -35,15 +35,15 @@ public enum Code128Constants {
      */
     CODESET_C(4),
     /**
-     * Enables the codesets A&B
+     * Enables the codesets A&amp;B
      */
     CODESET_AB(CODESET_A.value | CODESET_B.value),
     /**
-     * Enables the codesets A&C
+     * Enables the codesets A&amp;C
      */
     CODESET_AC(CODESET_A.value | CODESET_C.value),
     /**
-     * Enables the codesets B&C
+     * Enables the codesets B&amp;C
      */
     CODESET_BC(CODESET_B.value | CODESET_C.value),
     /**

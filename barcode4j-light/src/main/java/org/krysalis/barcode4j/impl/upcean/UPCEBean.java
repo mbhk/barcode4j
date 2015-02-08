@@ -23,16 +23,16 @@ import org.krysalis.barcode4j.BarcodeDimension;
  * This class is an implementation of the UPC-E barcode.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.1
  */
 public class UPCEBean extends UPCEANBean {
 
-    /** @see org.krysalis.barcode4j.impl.upcean.UPCEAN */
+    @Override
     public UPCEANLogicImpl createLogicImpl() {
         return new UPCELogicImpl(getChecksumMode());
     }
 
-    /** @see org.krysalis.barcode4j.impl.upcean.UPCEAN */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         double width = 3 * moduleWidth; //left guard
         width += 6 * 7 * moduleWidth;

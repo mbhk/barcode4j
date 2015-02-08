@@ -23,16 +23,16 @@ import org.krysalis.barcode4j.BarcodeDimension;
  * This class implements the EAN-8 barcode.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.1
  */
 public class EAN8Bean extends UPCEANBean {
 
-    /** @see org.krysalis.barcode4j.impl.upcean.UPCEAN */
+    @Override
     public UPCEANLogicImpl createLogicImpl() {
         return new EAN8LogicImpl(getChecksumMode());
     }
 
-    /** @see org.krysalis.barcode4j.impl.upcean.UPCEAN */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         double width = 3 * moduleWidth; //left guard
         width += 4 * 7 * moduleWidth;
