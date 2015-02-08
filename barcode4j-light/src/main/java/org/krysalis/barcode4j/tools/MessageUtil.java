@@ -14,69 +14,65 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.tools;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utilities for pre-processing messages.
+ * 
+ * @version 1.2
  */
 public class MessageUtil {
 
+    private static final Pattern UNESCAPE_UNICODE_PATTERN = Pattern.compile("(\\\\\\\\)|(\\\\u([\\dA-Fa-f]{0,4}))");
+
+    private MessageUtil() {
+    }
+
     /**
-     * Un-escapes escaped Unicode characters in a message. This is used to support characters
-     * not encodable in XML, such as the RS or GS characters.
+     * Un-escapes escaped Unicode characters in a message.
+     *
+     * This is used to support characters not encodable in XML, such as the RS
+     * or GS characters.
+     *
      * @param message the message
      * @return the processed message
      */
-    public static String unescapeUnicode(String message) {
-       StringBuilder sb = new StringBuilder();
-       if (message == null) {
-           return null;
-       }
-       int sz = message.length();
-       StringBuilder unicode = new StringBuilder(4);
-       boolean hadSlash = false;
-       boolean inUnicode = false;
-       for (int i = 0; i < sz; i++) {
-           char ch = message.charAt(i);
-           if (inUnicode) {
-               unicode.append(ch);
-               if (unicode.length() == 4) {
-                   try {
-                       int value = Integer.parseInt(unicode.toString(), 16);
-                       sb.append((char)value);
-                       unicode.setLength(0);
-                       inUnicode = false;
-                       hadSlash = false;
-                   } catch (NumberFormatException nfe) {
-                       throw new java.lang.IllegalArgumentException(
-                               "Unable to parse Unicode value: " + unicode);
-                   }
-               }
-               continue;
-           }
-           if (hadSlash) {
-               hadSlash = false;
-               if (ch == 'u') {
-                   inUnicode = true;
-               } else {
-                   sb.append(ch);
-               }
-               continue;
-           } else if (ch == '\\') {
-               hadSlash = true;
-               continue;
-           }
-           sb.append(ch);
-       }
-       return sb.toString();
-   }
+    public static String unescapeUnicode(final String message) {
+        if (message == null) {
+            return null;
+        }
+
+        StringBuilder res = new StringBuilder();
+        int processedUntil = 0;
+
+        Matcher m = UNESCAPE_UNICODE_PATTERN.matcher(message);
+        while (m.find()) {
+            res.append(message.substring(processedUntil, m.start()));
+            if (m.group(1) != null) {
+                res.append('\\');
+            } else {
+                String substr = message.substring(m.start(3), m.end(3));
+                if (m.end(3) - m.start(3) != 4) {
+                    throw new IllegalArgumentException("Unfinished Unicode-Sequence in `" + message + "` (" + substr + ")");
+                }
+                char c = (char) Integer.parseUnsignedInt(substr, 16);
+                res.append(c);
+            }
+            processedUntil = m.end();
+        }
+        res.append(message.substring(processedUntil));
+
+        return res.toString();
+    }
 
     /**
-     * Filters non-printable ASCII characters (0-31 and 127) from a string with spaces and
-     * returns that. Please note that non-printable characters outside the ASCII character
-     * set are not touched by this method.
+     * Filters non-printable ASCII characters (0-31 and 127) from a string with
+     * spaces and returns that. Please note that non-printable characters
+     * outside the ASCII character set are not touched by this method.
+     *
      * @param text the text to be filtered.
      * @return the filtered text
      */
@@ -93,5 +89,4 @@ public class MessageUtil {
         }
         return sb.toString();
     }
-
 }

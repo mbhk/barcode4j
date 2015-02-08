@@ -21,7 +21,7 @@ import junit.framework.TestCase;
  * Tests the Length class.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
 public class LengthTest extends TestCase {
     
@@ -92,4 +92,24 @@ public class LengthTest extends TestCase {
         assertEquals(1, l.getValueAsMillimeter(), 0.001);
     }
 
+    public void testLengthBuilder() throws Exception {
+        Length.Builder builder = new Length.Builder();
+        try {
+            builder.build();
+            fail("expected failure due to missing unit and value");
+        } catch (IllegalStateException e) {}
+        
+        Length expected = new Length(1234.0, "mm");
+        
+        Length l = builder.withValue(1234.0).withUnit("mm").build();
+        assertEquals(expected, l);
+        
+        builder.reset();
+        l = builder.withValue("1234.0").withUnit("mm").build();
+        assertEquals(expected, l);
+
+        builder.reset();
+        l = builder.fromString("1234.0 mm").build();
+        assertEquals(expected, l);
+    }
 }
