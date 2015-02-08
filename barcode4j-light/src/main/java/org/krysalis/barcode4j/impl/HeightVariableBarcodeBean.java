@@ -20,7 +20,7 @@ package org.krysalis.barcode4j.impl;
  * of the bars.
  * 
  * @author Chris Dolphy
- * @version $Id$
+ * @version 1.1
  */
 public abstract class HeightVariableBarcodeBean extends AbstractBarcodeBean {
 

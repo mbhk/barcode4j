@@ -30,7 +30,7 @@ import org.krysalis.barcode4j.tools.UnitConv;
  * Implements the United States Postal Service POSTNET barcode.
  * 
  * @author Chris Dolphy
- * @version $Id$
+ * @version 1.1
  */
 public class POSTNETBean extends HeightVariableBarcodeBean {
 
@@ -66,14 +66,15 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
      * vertical quiet zone has the same width as the horizontal quiet zone.
      * @param height the height of the vertical quiet zone (in mm)
      */
+    @Override
     public void setVerticalQuietZone(double height) {
-        this.quietZoneVertical = new Double(height);
+        this.quietZoneVertical = height;
     }
     
-    /** {@inheritDoc} */
+    @Override
     public double getVerticalQuietZone() {
         if (this.quietZoneVertical != null) {
-            return this.quietZoneVertical.doubleValue();
+            return this.quietZoneVertical;
         } else {
             return getQuietZone();
         }
@@ -127,7 +128,7 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
         this.shortBarHeight = height;
     }
     
-    /** {@inheritDoc} */
+    @Override
     public double getBarWidth(int width) {
         if (width == 1) {
             return moduleWidth;
@@ -138,7 +139,7 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
         }
     }
     
-    /** {@inheritDoc} */
+    @Override
     public double getBarHeight(int height) {
         if (height == 2) {
             return getBarHeight();
@@ -170,7 +171,7 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
         this.displayChecksum = value;
     }
     
-    /** {@inheritDoc} */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         if ((msg == null) 
                 || (msg.length() == 0)) {
@@ -185,7 +186,7 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
         impl.generateBarcodeLogic(handler, msg);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         String modMsg = POSTNETLogicImpl.removeIgnoredCharacters(msg);
         final double width = (((modMsg.length() * 5) + 2) * moduleWidth) 

@@ -27,7 +27,7 @@ import org.w3c.dom.DOMImplementation;
  * Registers the elements covered by Barcode4J's namespace.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.1
  */
 public class BarcodeElementMapping extends ElementMapping {
 
@@ -39,13 +39,16 @@ public class BarcodeElementMapping extends ElementMapping {
         initialize();
     }
 
-    /** @see org.apache.fop.fo.ElementMapping#getDOMImplementation() */
+    @Override
     public DOMImplementation getDOMImplementation() {
         return getDefaultDOMImplementation();
     }
 
-    /** @see org.apache.fop.fo.ElementMapping#initialize() */
-    protected void initialize() {
+    /**
+     * Initializes ElementMapping.
+     */
+    @Override
+    protected final void initialize() {
         if (foObjs == null) {
             foObjs = new HashMap();
             foObjs.put("barcode", new BarcodeRootMaker());
@@ -56,16 +59,17 @@ public class BarcodeElementMapping extends ElementMapping {
     }
 
     static class BarcodeMaker extends ElementMapping.Maker {
+        @Override
         public FONode make(FONode parent) {
             return new BarcodeObj(parent);
         }
     }
 
     static class BarcodeRootMaker extends ElementMapping.Maker {
+        @Override
         public FONode make(FONode parent) {
             return new BarcodeElement(parent);
         }
     }
-
 }
 

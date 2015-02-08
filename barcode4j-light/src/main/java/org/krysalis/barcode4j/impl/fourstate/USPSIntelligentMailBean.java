@@ -28,7 +28,7 @@ import org.krysalis.barcode4j.tools.UnitConv;
  * Implements the USPS Intelligent Mail Barcode (Four State Customer Barcode).
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.1
  */
 public class USPSIntelligentMailBean extends AbstractFourStateBean {
 
@@ -58,7 +58,7 @@ public class USPSIntelligentMailBean extends AbstractFourStateBean {
         setAscenderHeight(UnitConv.in2mm(DEFAULT_ASCENDER_HEIGHT_INCH)); //0.0435 - 0.0555in
     }
 
-    /** {@inheritDoc} */
+    @Override
     public double getVerticalQuietZone() {
         if (this.quietZoneVertical != null) {
             return this.quietZoneVertical.doubleValue();
@@ -72,11 +72,12 @@ public class USPSIntelligentMailBean extends AbstractFourStateBean {
      * vertical quiet zone has the same width as the horizontal quiet zone.
      * @param height the height of the vertical quiet zone (in mm)
      */
+    @Override
     public void setVerticalQuietZone(double height) {
-        this.quietZoneVertical = new Double(height);
+        this.quietZoneVertical = height;
     }
     
-    /** {@inheritDoc} */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         if ((msg == null) 
                 || (msg.length() == 0)) {
@@ -91,7 +92,7 @@ public class USPSIntelligentMailBean extends AbstractFourStateBean {
         impl.generateBarcodeLogic(handler, msg);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         final int barCount = 65;
         final double width = (barCount * getModuleWidth()) 

@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.qr;
 
 import java.awt.Dimension;
@@ -40,7 +38,7 @@ import java.util.TreeSet;
 /**
  * This class is an implementation of QR Code (ISO 18004:2006(E)).
  *
- * @version $Id$
+ * @version 1.1
  */
 public class QRCodeBean extends AbstractBarcodeBean {
 
@@ -151,7 +149,7 @@ public class QRCodeBean extends AbstractBarcodeBean {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         if ((msg == null)
                 || (msg.length() == 0)) {
@@ -166,7 +164,7 @@ public class QRCodeBean extends AbstractBarcodeBean {
                 getMinSize(), getMaxSize());
     }
 
-    /** {@inheritDoc} */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         QRCode code = null;
         try {
@@ -214,17 +212,17 @@ public class QRCodeBean extends AbstractBarcodeBean {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public double getVerticalQuietZone() {
         return getQuietZone();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public double getBarWidth(int width) {
         return moduleWidth;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public double getBarHeight() {
         return moduleWidth;
     }
