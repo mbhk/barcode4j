@@ -131,7 +131,7 @@ public class BarcodeUtil {
                     + " generator: " + ia.getMessage());
         } catch (InstantiationException ie) {
             throw new BarcodeException("Error instantiating a barcode generator: "
-                    + cl.getName());
+                    + (cl == null ? "NULL" :cl.getName()));
         }
     }
 

@@ -111,7 +111,7 @@ public class EAN128AI {
         try {
             InputStream is = EAN128AI.class.getResourceAsStream(filename);
             if (is == null) {
-               is = EAN128AI.class.getClassLoader().getResourceAsStream(filename);
+               is = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
             }
             if (is != null) {
                 try {
