@@ -37,7 +37,7 @@ public class USPSIntelligentMail extends ConfigurableBarcodeGenerator
         this.bean = new USPSIntelligentMailBean();
     }
     
-    /** {@inheritDoc} */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
         Length mw = new Length(cfg.getChild("module-width").getValue(
@@ -77,5 +77,4 @@ public class USPSIntelligentMail extends ConfigurableBarcodeGenerator
     public USPSIntelligentMailBean getUSPSIntelligentMailBean() {
         return (USPSIntelligentMailBean)getBean();
     }
-
 }

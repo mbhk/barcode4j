@@ -40,9 +40,7 @@ public class QRCode extends ConfigurableBarcodeGenerator
         this.bean = new QRCodeBean();
     }
 
-    /**
-     * @see org.apache.avalon.framework.configuration.Configurable#configure(Configuration)
-     */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
         String mws = cfg.getChild("module-width").getValue(null);
@@ -93,5 +91,4 @@ public class QRCode extends ConfigurableBarcodeGenerator
     public QRCodeBean getQRBean() {
         return (QRCodeBean)getBean();
     }
-
 }

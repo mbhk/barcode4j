@@ -42,9 +42,8 @@ public class EAN128 extends Code128
     public EAN128Bean getEAN128Bean() {
         return (EAN128Bean)getBean();
     }
-    /**
-     * @see org.apache.avalon.framework.configuration.Configurable#configure(Configuration)
-     */
+    
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
         Length mw = new Length(cfg.getChild("module-width").getValue("0.21mm"), "mm");

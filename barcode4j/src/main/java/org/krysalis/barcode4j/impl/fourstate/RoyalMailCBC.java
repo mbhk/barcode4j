@@ -37,7 +37,7 @@ public class RoyalMailCBC extends ConfigurableBarcodeGenerator
         this.bean = new RoyalMailCBCBean();
     }
     
-    /** {@inheritDoc} */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
         Length mw = new Length(cfg.getChild("module-width").getValue("0.53mm"), "mm");
@@ -73,5 +73,4 @@ public class RoyalMailCBC extends ConfigurableBarcodeGenerator
     public RoyalMailCBCBean getRoyalMailCBCBean() {
         return (RoyalMailCBCBean)getBean();
     }
-
 }

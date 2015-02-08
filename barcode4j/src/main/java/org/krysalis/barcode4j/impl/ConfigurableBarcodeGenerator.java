@@ -92,7 +92,7 @@ public abstract class ConfigurableBarcodeGenerator
     /** Proxy target. Barcode bean to configure. */
     protected AbstractBarcodeBean bean;
 
-    /** {@inheritDoc} */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Height (must be evaluated after the font size because of setHeight())
         Configuration c = cfg.getChild("height", false);
@@ -170,12 +170,12 @@ public abstract class ConfigurableBarcodeGenerator
         return this.bean;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         getBean().generateBarcode(canvas, msg);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         return getBean().calcDimensions(msg);
     }

@@ -31,9 +31,7 @@ import org.krysalis.barcode4j.tools.Length;
 public abstract class UPCEAN extends ConfigurableBarcodeGenerator 
             implements Configurable {
 
-    /**
-     * @see org.apache.avalon.framework.configuration.Configurable#configure(Configuration)
-     */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
         Length mw = new Length(cfg.getChild("module-width").getValue("0.33mm"), "mm");
@@ -52,5 +50,4 @@ public abstract class UPCEAN extends ConfigurableBarcodeGenerator
     public UPCEANBean getUPCEANBean() {
         return (UPCEANBean)getBean();
     }
-    
 }

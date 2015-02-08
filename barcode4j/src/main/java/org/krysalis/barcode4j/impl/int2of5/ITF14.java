@@ -34,12 +34,12 @@ public class ITF14 extends Interleaved2Of5 {
         super();
     }
 
-    /** {@inheritDoc} */
+    @Override
     protected AbstractBarcodeBean createBean() {
         return new ITF14Bean();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         super.configure(cfg);
 
@@ -68,5 +68,4 @@ public class ITF14 extends Interleaved2Of5 {
     public ITF14Bean getITFBean() {
         return (ITF14Bean)getBean();
     }
-
 }

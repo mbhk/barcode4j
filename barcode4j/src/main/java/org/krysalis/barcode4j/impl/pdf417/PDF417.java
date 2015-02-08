@@ -35,9 +35,7 @@ public class PDF417 extends ConfigurableBarcodeGenerator
         this.bean = new PDF417Bean();
     }
 
-    /**
-     * @see org.apache.avalon.framework.configuration.Configurable#configure(Configuration)
-     */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
         String mws = cfg.getChild("module-width").getValue(null);
@@ -106,5 +104,4 @@ public class PDF417 extends ConfigurableBarcodeGenerator
     public PDF417Bean getPDF417Bean() {
         return (PDF417Bean)getBean();
     }
-
 }

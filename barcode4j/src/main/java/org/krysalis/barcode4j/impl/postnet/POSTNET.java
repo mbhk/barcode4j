@@ -38,7 +38,7 @@ public class POSTNET extends ConfigurableBarcodeGenerator
         this.bean = new POSTNETBean();
     }
     
-    /** {@inheritDoc} */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
         Length mw = new Length(cfg.getChild("module-width").getValue(
@@ -81,5 +81,4 @@ public class POSTNET extends ConfigurableBarcodeGenerator
     public POSTNETBean getPOSTNETBean() {
         return (POSTNETBean)getBean();
     }
-
 }

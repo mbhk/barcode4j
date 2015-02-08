@@ -46,7 +46,7 @@ public class Interleaved2Of5 extends ConfigurableBarcodeGenerator
         return new Interleaved2Of5Bean();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         Interleaved2Of5Bean bean = getInterleaved2Of5Bean();
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
@@ -79,5 +79,4 @@ public class Interleaved2Of5 extends ConfigurableBarcodeGenerator
     public Interleaved2Of5Bean getInterleaved2Of5Bean() {
         return (Interleaved2Of5Bean)getBean();
     }
-
 }

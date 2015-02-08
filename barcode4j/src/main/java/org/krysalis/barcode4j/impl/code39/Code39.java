@@ -36,9 +36,7 @@ public class Code39 extends ConfigurableBarcodeGenerator
         this.bean = new Code39Bean();
     }
     
-    /**
-     * @see org.apache.avalon.framework.configuration.Configurable#configure(Configuration)
-     */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
         Length mw = new Length(cfg.getChild("module-width").getValue("0.19mm"), "mm");
@@ -84,5 +82,4 @@ public class Code39 extends ConfigurableBarcodeGenerator
     public Code39Bean getCode39Bean() {
         return (Code39Bean)getBean();
     }
-
 }

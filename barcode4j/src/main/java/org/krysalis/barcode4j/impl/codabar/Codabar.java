@@ -37,7 +37,7 @@ public class Codabar extends ConfigurableBarcodeGenerator
         this.bean = new CodabarBean();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
         Length mw = new Length(cfg.getChild("module-width").getValue("0.21mm"), "mm");
@@ -69,5 +69,4 @@ public class Codabar extends ConfigurableBarcodeGenerator
     public CodabarBean getCodabarBean() {
         return (CodabarBean)getBean();
     }
-
 }
