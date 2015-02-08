@@ -15,14 +15,24 @@
  */
 package org.krysalis.barcode4j.tools;
 
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
- * This class represents a length (value plus unit). It is used to parse 
- * expressions like "0.21mm".
+ * This class represents a length (value plus unit).
+ *
+ * It is used to parse expressions like "0.21mm".
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @author mk
+ * @version 1.2
  */
 public class Length {
+    private static final Logger LOGGER = Logger.getLogger(Length.class.getName());
     
     /** String constant for inches. */
     public static final String INCH = "in";
@@ -52,7 +62,16 @@ public class Length {
      * @param defaultUnit the default unit to assume
      */
     public Length(String text, String defaultUnit) {
-        parse(text, defaultUnit);
+        Builder b = new Builder();
+        try {
+            b.fromString(text);
+        } catch (Exception e) {
+            LOGGER.log(Level.FINEST, "Length not buildable fromString.", e);
+            b.reset().withValue(text).withUnit(defaultUnit);
+        }
+        Length l = b.build();
+        this.unit = l.unit;
+        this.value = l.value;
     }
     
     /**
@@ -61,69 +80,6 @@ public class Length {
      */
     public Length(String text) {
         this(text, null);
-    }
-    
-    /**
-     * Parses a value with unit.
-     * @param text the String to parse
-     * @param defaultUnit the default unit to assume
-     */
-    protected void parse(String text, String defaultUnit) {
-        final String s = text.trim();
-        if (s.length() == 0) {
-            throw new IllegalArgumentException("Length is empty");
-        }
-        StringBuffer sb = new StringBuffer(s.length());
-        int mode = 0;
-        int i = 0;
-        while (i < s.length()) {
-            char c = s.charAt(i);
-            
-            if (mode == 0) {
-                //Parse value
-                if (Character.isDigit(c) || c == '.' || c == ',') {
-                    if (c == ',') {
-                        c = '.';
-                    }
-                    sb.append(c);
-                    i++;
-                } else {
-                    this.value = Double.parseDouble(sb.toString());
-                    sb.setLength(0);
-                    mode = 1;
-                }
-            } else if (mode == 1) {
-                //Parse optional whitespace
-                if (Character.isWhitespace(c)) {
-                    i++;
-                    continue;
-                }
-                mode = 2;
-            } else if (mode == 2) {
-                //Parse unit
-                if (!Character.isWhitespace(c)) {
-                    sb.append(c);
-                    i++;
-                } else {
-                    //Break on first white space after unit
-                    break;
-                }
-                
-            }
-        }
-        if (mode == 0) {
-            this.value = Double.parseDouble(sb.toString());
-            mode = 1;
-        }
-        if (mode != 2) {
-            if ((mode > 0) && (defaultUnit != null)) {
-                this.unit = defaultUnit.toLowerCase();
-                return;
-            }
-            throw new IllegalArgumentException("Invalid length specified. "
-                    + "Expected '<value> <unit>' (ex. 1.7mm) but got: " + text);
-        }
-        this.unit = sb.toString().toLowerCase();
     }
 
     /**
@@ -161,9 +117,127 @@ public class Length {
         }
     }
     
-    /** {@inheritDoc} */
+    /**
+     * Gets als supported unit types.
+     *
+     * @return List of supported unit
+     */
+    public static Set<String> getSupportedUnits() {
+        Set<String> res = new TreeSet<String>();
+        res.add(CM);
+        res.add(INCH);
+        res.add(POINT);
+        res.add(MM);
+        return res;
+    }
+
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Length other = (Length) obj;
+        if (Double.doubleToLongBits(this.value) != Double.doubleToLongBits(other.value)) {
+            return false;
+        }
+        return this.unit == null ? other.unit == null : this.unit.equals(other.unit);
+    }
+
+    @Override
     public String toString() {
         return getValue() + getUnit();
     }
     
+    public static class Builder {
+        private Double value = null;
+        private String unit = null;
+        private final Set<String> supportedUnits;
+        private static final Pattern UNIT_PATTERN = Pattern.compile("[\\s]*([a-zA-Z]+)[\\s]*.*$");
+        private static final Pattern VALUE_PATTERN = Pattern.compile("^(([\\d]?[\\.,][\\d]+)|([\\d]+))[\\s]*");
+
+        public Builder() {
+            supportedUnits = Length.getSupportedUnits();
+        }
+
+        public Builder withValue(double value) {
+            this.value = value;
+            return this;
+        }
+
+        public Builder withValue(String value) {
+            this.value = parseValue(value);
+            return this;
+        }
+
+        public Builder withUnit(String unit) {
+            this.unit = checkUnit(unit);
+            return this;
+        }
+
+        public Builder fromString(String valueWithUnit) {
+            if (valueWithUnit == null) {
+                throw new IllegalArgumentException("argument must not be null");
+            }
+
+            String tmp = valueWithUnit.trim();
+            String tmpUnit = checkUnit(extractUnit(tmp));
+            this.value = parseValue(extractValue(tmp));
+            this.unit = tmpUnit;
+            return this;
+        }
+
+        public Length build() {
+            if (value == null || unit == null) {
+                throw new IllegalStateException("you have to specify value and unit " + value + unit);
+            }
+            return new Length(value, unit);
+        }
+
+        public Builder reset() {
+            this.unit = null;
+            this.value = null;
+            return this;
+        }
+
+        private double parseValue(String value) {
+            return Double.parseDouble(value.replaceAll(",", "."));
+        }
+
+        private String extractUnit(String valueWithUnit) {
+            Matcher m = UNIT_PATTERN.matcher(valueWithUnit);
+            if (m.find()) {
+                return m.group(1);
+            } else {
+                throw new IllegalArgumentException("unit not found in " + valueWithUnit);
+            }
+        }
+
+        private String extractValue(String valueWithUnit) {
+            Matcher m = VALUE_PATTERN.matcher(valueWithUnit);
+            if (m.find()) {
+                return m.group(1);
+            } else {
+                throw new IllegalArgumentException("value not found in " + valueWithUnit);
+            }
+        }
+
+        private String checkUnit(String unit) {
+            if(unit == null) {
+                throw new IllegalArgumentException("unit must not be null");
+            }
+            String tmp = unit.trim().toLowerCase();
+            if (!supportedUnits.contains(tmp)) {
+                throw new IllegalArgumentException("Unsupported unit " + tmp);
+            }
+            return tmp;
+        }
+    }
 }
