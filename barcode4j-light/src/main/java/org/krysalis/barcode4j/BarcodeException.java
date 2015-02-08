@@ -32,4 +32,5 @@ public class BarcodeException extends Exception {
     public BarcodeException(String message) {
         super(message);
     }
+
 }

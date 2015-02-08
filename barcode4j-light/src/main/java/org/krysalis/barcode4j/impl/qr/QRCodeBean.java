@@ -38,7 +38,7 @@ import java.util.TreeSet;
 /**
  * This class is an implementation of QR Code (ISO 18004:2006(E)).
  *
- * @version 1.1
+ * @version 1.2
  */
 public class QRCodeBean extends AbstractBarcodeBean {
 
@@ -112,7 +112,7 @@ public class QRCodeBean extends AbstractBarcodeBean {
      * @param minSize the minimum size (in pixels), or null for no constraint
      */
     public void setMinSize(Dimension minSize) {
-        this.minSize = (minSize != null ? new Dimension(minSize) : null);
+        this.minSize = minSize == null ? null : new Dimension(minSize);
     }
 
     /**
@@ -121,11 +121,7 @@ public class QRCodeBean extends AbstractBarcodeBean {
      * @return the minimum symbol size (in pixels), or null if there's no size constraint
      */
     public Dimension getMinSize() {
-        if (this.minSize != null) {
-            return new Dimension(this.minSize);
-        } else {
-            return null;
-        }
+        return this.minSize == null ? null : new Dimension(this.minSize);
     }
 
     /**
@@ -133,7 +129,7 @@ public class QRCodeBean extends AbstractBarcodeBean {
      * @param maxSize the maximum size (in pixels), or null for no constraint
      */
     public void setMaxSize(Dimension maxSize) {
-        this.maxSize = (maxSize != null ? new Dimension(maxSize) : null);
+        this.maxSize = maxSize == null ? null : new Dimension(maxSize);
     }
 
     /**
@@ -142,24 +138,19 @@ public class QRCodeBean extends AbstractBarcodeBean {
      * @return the maximum symbol size (in pixels), or null if there's no size constraint
      */
     public Dimension getMaxSize() {
-        if (this.maxSize != null) {
-            return new Dimension(this.maxSize);
-        } else {
-            return null;
-        }
+        return this.maxSize == null ? null : new Dimension(this.maxSize);
     }
 
     @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
-        if ((msg == null)
-                || (msg.length() == 0)) {
+        if (msg == null || msg.isEmpty()) {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        TwoDimBarcodeLogicHandler handler =
+        final TwoDimBarcodeLogicHandler handler =
                 new DefaultTwoDimCanvasLogicHandler(this, new Canvas(canvas));
 
-        QRLogicImpl impl = new QRLogicImpl();
+        final QRLogicImpl impl = new QRLogicImpl();
         impl.generateBarcodeLogic(handler, msg, encoding, errorCorrectionLevel,
                 getMinSize(), getMaxSize());
     }
@@ -172,17 +163,17 @@ public class QRCodeBean extends AbstractBarcodeBean {
                     QRLogicImpl.getZXingErrorLevel(errorCorrectionLevel),
                     QRLogicImpl.createHints(encoding));
         } catch (WriterException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new IllegalStateException(e);
         }
-        ByteMatrix matrix = code.getMatrix();
-        int effWidth = matrix.getWidth();
-        int effHeight = matrix.getHeight();
+        final ByteMatrix matrix = code.getMatrix();
+        final int effWidth = matrix.getWidth();
+        final int effHeight = matrix.getHeight();
         checkSizeConstraints(effWidth, effHeight);
 
-        double width = effWidth * getModuleWidth();
-        double height = effHeight * getBarHeight();
-        double qzh = (hasQuietZone() ? getQuietZone() : 0);
-        double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);
+        final double width = effWidth * getModuleWidth();
+        final double height = effHeight * getBarHeight();
+        final double qzh = hasQuietZone() ? getQuietZone() : 0;
+        final double qzv = hasQuietZone() ? getVerticalQuietZone() : 0;
         return new BarcodeDimension(width, height,
                 width + (2 * qzh), height + (2 * qzv),
                 qzh, qzv);
@@ -190,25 +181,21 @@ public class QRCodeBean extends AbstractBarcodeBean {
 
     private void checkSizeConstraints(int width, int height) {
         //Note: we're only checking the constraints, we can't currently influence ZXing's encoder.
-        if (this.minSize != null) {
-            if (width < this.minSize.width || height < this.minSize.height) {
-                throw new IllegalArgumentException(
-                        "The given message would result in a smaller symbol than required."
-                        + " Requested minimum: "
-                        + this.minSize.width + " x " + this.minSize.height
-                        + ", effective: "
-                        + width + " x " + height);
-            }
+        if (this.minSize != null && (width < this.minSize.width || height < this.minSize.height)) {
+            throw new IllegalArgumentException(
+                    "The given message would result in a smaller symbol than required."
+                    + " Requested minimum: "
+                    + this.minSize.width + " x " + this.minSize.height
+                    + ", effective: "
+                    + width + " x " + height);
         }
-        if (this.maxSize != null) {
-            if (width > this.maxSize.width || height > this.maxSize.height) {
-                throw new IllegalArgumentException(
-                        "The given message would result in a larger symbol than required."
-                        + " Requested maximum: "
-                        + this.maxSize.width + " x " + this.maxSize.height
-                        + ", effective: "
-                        + width + " x " + height);
-            }
+        if (this.maxSize != null && (width > this.maxSize.width || height > this.maxSize.height)) {
+            throw new IllegalArgumentException(
+                    "The given message would result in a larger symbol than required."
+                    + " Requested maximum: "
+                    + this.maxSize.width + " x " + this.maxSize.height
+                    + ", effective: "
+                    + width + " x " + height);
         }
     }
 
@@ -234,7 +221,7 @@ public class QRCodeBean extends AbstractBarcodeBean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        Set<String> res = new TreeSet<String>();
+        final Set<String> res = new TreeSet<String>();
         res.add("qrcode");
         res.add("qr-code");
         return res;
