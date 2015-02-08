@@ -201,7 +201,7 @@ public class Code128LogicImpl {
      */
     public static boolean canBeInCodeSetC(char ch, boolean second) {
         if (second) {
-            return (ch >= '0' && ch <= '9');
+            return ch >= '0' && ch <= '9';
         } else {
             return (ch >= '0' && ch <= '9') || (ch == FNC_1);
         }
@@ -214,18 +214,13 @@ public class Code128LogicImpl {
      * @return the String representation
      */
     public static String symbolCharToString(int index) {
-        switch (index) {
-            case 96: return "FNC3/96";
-            case 97: return "FNC2/97";
-            case 98: return "Shift/98";
-            case 99: return "CodeC/99";
-            case 100: return "CodeB/FNC4";
-            case 101: return "CodeA/FNC4";
-            case 102: return "FNC1";
-            case 103: return "StartA";
-            case 104: return "StartB";
-            case 105: return "StartC";
-            default: return "idx" + Integer.toString(index);
+        if (index >= 96 && index <= 105) {
+            final String[] replacementString = new String[]{
+                "FNC3/96", "FNC3/97", "FNC3/98", "FNC3/99",
+                "CodeB/FNC4", "CodeA/FNC4", "FNC1", "StartA", "StartB", "StartC"};
+            return replacementString[index - 96];
+        } else {
+            return "idx" + Integer.toString(index);
         }
     }
 
@@ -235,8 +230,11 @@ public class Code128LogicImpl {
      * @param encodedMsg the encoded message
      * @return the String representation
      */
-    public static String toString(int[] encodedMsg) {
-        StringBuilder sb = new StringBuilder();
+    public static String toString(int... encodedMsg) {
+        if(encodedMsg == null) {
+            return "";
+        }
+        final StringBuilder sb = new StringBuilder();
         for (int i = 0; i < encodedMsg.length; i++) {
             if (i > 0) {
                 sb.append("|");
@@ -255,7 +253,7 @@ public class Code128LogicImpl {
         logic.startBarGroup(BarGroup.MSG_CHARACTER, symbolCharToString(index));
         for (byte i = 0; i < 6; i++) {
             final int width = CHARSET[index][i];
-            final boolean black = ((i % 2) == 0);
+            final boolean black = isBlack(i);
             logic.addBar(black, width);
         }
         logic.endBarGroup();
@@ -263,18 +261,22 @@ public class Code128LogicImpl {
 
     /**
      * Encodes the special stop character.
+     *
      * @param logic LogicHandler to send the barcode events to
      */
     protected void encodeStop(ClassicBarcodeLogicHandler logic) {
         logic.startBarGroup(BarGroup.STOP_CHARACTER, null);
         for (byte i = 0; i < 7; i++) {
             final int width = STOP[i];
-            final boolean black = ((i % 2) == 0);
+            final boolean black = isBlack(i);
             logic.addBar(black, width);
         }
         logic.endBarGroup();
     }
 
+    private boolean isBlack(byte i) {
+        return (i % 2) == 0;
+    }
     /**
      * Returns the encoder to be used. The encoder is responsible for turning
      * a String message into an array of character set indexes.
@@ -304,7 +306,7 @@ public class Code128LogicImpl {
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
         logic.startBarcode(msg, MessageUtil.filterNonPrintableCharacters(msg));
 
-        int[] encodedMsg = createEncodedMessage(msg);
+        final int[] encodedMsg = createEncodedMessage(msg);
         for (int i = 0; i < encodedMsg.length; i++) {
             encodeChar(logic, encodedMsg[i]);
         }
