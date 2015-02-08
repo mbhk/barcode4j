@@ -15,18 +15,26 @@
  */
 package org.krysalis.barcode4j.output.bitmap;
 
-import java.util.Iterator;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Set;
 
 /**
  * Registry class for BitmapEncoders.
  *
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
-public class BitmapEncoderRegistry {
+public final class BitmapEncoderRegistry {
 
-    private static Set encoders = new java.util.TreeSet();
+    private static final Set<Entry> encoders = new java.util.TreeSet<Entry>(new Comparator<Entry>() {
+
+        @Override
+        public int compare(Entry o1, Entry o2) {
+            //highest priority first
+            return o1.priority - o2.priority;
+        }
+    });
 
     static {
         register(org.krysalis.barcode4j.output.bitmap.ImageIOBitmapEncoder.class.getName(),
@@ -34,57 +42,59 @@ public class BitmapEncoderRegistry {
     }
 
     /**
-     * Utility class: Constructor prevents instantiating when subclassed.
+     * Utility class: No instantiation
      */
-    protected BitmapEncoderRegistry() {
-        throw new UnsupportedOperationException();
+    private BitmapEncoderRegistry() {
+        // intentionally left blank
     }
 
-    private static class Entry implements Comparable {
-        private BitmapEncoder encoder;
-        private int priority;
+    private static class Entry {
+
+        private final BitmapEncoder encoder;
+        private final int priority;
 
         public Entry(BitmapEncoder encoder, int priority) {
             this.encoder = encoder;
             this.priority = priority;
         }
-
-        @Override
-        public int compareTo(Object o) {
-            Entry e = (Entry)o;
-            return e.priority - this.priority; //highest priority first
-        }
-
     }
 
+    /**
+     * Register a new BitmapEncoder implementation.
+     *
+     * @param classname fully qualified classname of the BitmapEncoder
+     * implementation
+     * @param priority lets you define a priority for an encoder. If you want to
+     * give an encoder a high priority, assign a value of 100 or higher.
+     * @param complain throw an exception in case of failure
+     */
     private static synchronized void register(String classname, int priority, boolean complain) {
-        boolean failed = false;
+        Throwable error = null;
         try {
-            Class clazz = Class.forName(classname);
-            BitmapEncoder encoder = (BitmapEncoder)clazz.newInstance();
+            final Class clazz = Class.forName(classname);
+            final BitmapEncoder encoder = (BitmapEncoder) clazz.newInstance();
             encoders.add(new Entry(encoder, priority));
-        } catch (Exception e) {
-            failed = true;
-        } catch (LinkageError le) {
-            failed = true; //NoClassDefFoundError for example
+        } catch (ClassNotFoundException e) {
+            error = e;
+        } catch (InstantiationException e) {
+            error = e;
+        } catch (IllegalAccessException e) {
+            error = e;
         }
-        if (failed) {
-            if (complain) {
-                throw new IllegalArgumentException(
+        if (error != null && complain) {
+            throw new IllegalArgumentException(
                     "The implementation being registered is unavailable or "
-                    + "cannot be instantiated: " + classname);
-            } else {
-                return;
-            }
+                    + "cannot be instantiated: " + classname, error);
         }
     }
 
     /**
      * Register a new BitmapEncoder implementation.
+     *
      * @param classname fully qualified classname of the BitmapEncoder
-     *      implementation
-     * @param priority lets you define a priority for an encoder. If you want
-     *      to give an encoder a high priority, assign a value of 100 or higher.
+     * implementation
+     * @param priority lets you define a priority for an encoder. If you want to
+     * give an encoder a high priority, assign a value of 100 or higher.
      */
     public static void register(String classname, int priority) {
         register(classname, priority, true);
@@ -93,14 +103,14 @@ public class BitmapEncoderRegistry {
     /**
      * Indicates whether a specific BitmapEncoder implementation supports a
      * particular MIME type.
+     *
      * @param encoder BitmapEncoder to inspect
      * @param mime MIME type to check
      * @return true if the MIME type is supported
      */
     public static boolean supports(BitmapEncoder encoder, String mime) {
-        String[] mimes = encoder.getSupportedMIMETypes();
-        for (int i = 0; i < mimes.length; i++) {
-            if (mimes[i].equals(mime)) {
+        for (final String mime1 : encoder.getSupportedMIMETypes()) {
+            if (mime1.equals(mime)) {
                 return true;
             }
         }
@@ -110,14 +120,13 @@ public class BitmapEncoderRegistry {
     /**
      * Indicates whether a particular MIME type is supported by one of the
      * registered BitmapEncoder implementations.
+     *
      * @param mime MIME type to check
      * @return true if the MIME type is supported
      */
     public static boolean supports(String mime) {
-        Iterator i = encoders.iterator();
-        while (i.hasNext()) {
-            Entry entry = (Entry)i.next();
-            BitmapEncoder encoder = entry.encoder;
+        for (final Entry entry : encoders) {
+            final BitmapEncoder encoder = entry.encoder;
             if (supports(encoder, mime)) {
                 return true;
             }
@@ -127,40 +136,33 @@ public class BitmapEncoderRegistry {
 
     /**
      * Returns a BitmapEncoder instance for a particular MIME type.
+     *
      * @param mime desired MIME type
      * @return a BitmapEncoder instance (throws an UnsupportedOperationException
-     *      if no suitable BitmapEncoder is available)
+     * if no suitable BitmapEncoder is available)
      */
     public static BitmapEncoder getInstance(String mime) {
-        Iterator i = encoders.iterator();
-        while (i.hasNext()) {
-            Entry entry = (Entry)i.next();
-            BitmapEncoder encoder = entry.encoder;
+        for (final Entry entry : encoders) {
+            final BitmapEncoder encoder = entry.encoder;
             if (supports(encoder, mime)) {
                 return encoder;
             }
         }
         throw new UnsupportedOperationException(
-            "No BitmapEncoder available for " + mime);
+                "No BitmapEncoder available for " + mime);
     }
 
     /**
      * Returns a Set of Strings with all the supported MIME types from all
      * registered BitmapEncoders.
+     *
      * @return a Set of Strings (MIME types)
      */
-    public static Set getSupportedMIMETypes() {
-        Set mimes = new java.util.HashSet();
-        Iterator i = encoders.iterator();
-        while (i.hasNext()) {
-            Entry entry = (Entry)i.next();
-            BitmapEncoder encoder = entry.encoder;
-            String[] s = encoder.getSupportedMIMETypes();
-            for (int j = 0; j < s.length; j++) {
-                mimes.add(s[j]);
-            }
+    public static Set<String> getSupportedMIMETypes() {
+        final Set<String> mimes = new java.util.HashSet<String>();
+        for (final Entry entry : encoders) {
+            mimes.addAll(Arrays.asList(entry.encoder.getSupportedMIMETypes()));
         }
         return mimes;
     }
-
 }
