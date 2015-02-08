@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.datamatrix;
 
 import java.awt.Dimension;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.krysalis.barcode4j.tools.URLUtil;
+import static org.krysalis.barcode4j.impl.datamatrix.DataMatrixConstants.*;
 
 /**
  * DataMatrix ECC 200 data encoder following the algorithm described in ISO/IEC 16022:200(E) in
  * annex S.
  *
- * @version $Id$
+ * @version 1.2
  */
-public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
+public class DataMatrixHighLevelEncoder {
 
     private static final boolean DEBUG = false;
 
@@ -47,10 +48,12 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
     //    = new String[] {"ASCII", "C40", "Text", "ANSI X12", "EDIFACT", "Base 256"};
 
     private static final String DEFAULT_ASCII_ENCODING = "ISO-8859-1";
+    private static final Logger LOGGER = Logger.getLogger(DataMatrixHighLevelEncoder.class.getName());
 
     /**
      * Converts the message to a byte array using the default encoding (cp437) as defined by the
-     * specification
+     * specification.
+     *
      * @param msg the message
      * @return the byte array of the message
      */
@@ -140,14 +143,12 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         int capacity = context.symbolInfo.dataCapacity;
         if (len < capacity) {
             if (encodingMode != ASCII_ENCODATION && encodingMode != BASE256_ENCODATION) {
-                if (DEBUG) {
-                    System.out.println("Unlatch because symbol isn't filled up");
-                }
+                LOGGER.log(Level.FINE, "Unlatch because symbol isn't filled up");
                 context.writeCodeword('\u00fe'); //Unlatch (254)
             }
         }
         //Padding
-        StringBuffer codewords = context.codewords;
+        StringBuilder codewords = context.codewords;
         if (codewords.length() < capacity) {
             codewords.append(DataMatrixConstants.PAD);
         }
@@ -175,7 +176,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         private SymbolShapeHint shape = SymbolShapeHint.FORCE_NONE;
         private Dimension minSize;
         private Dimension maxSize;
-        private StringBuffer codewords;
+        private StringBuilder codewords;
         private int pos = 0;
         private int newEncoding = -1;
         private DataMatrixSymbolInfo symbolInfo;
@@ -199,7 +200,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
                 sb.append(ch);
             }
             this.msg = sb.toString(); //Not Unicode here!
-            this.codewords = new StringBuffer(msg.length());
+            this.codewords = new StringBuilder(msg.length());
         }
 
         public EncoderContext(byte[] data) {
@@ -210,7 +211,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
                 sb.append(ch);
             }
             this.msg = sb.toString(); //Not Unicode here!
-            this.codewords = new StringBuffer(msg.length());
+            this.codewords = new StringBuilder(msg.length());
         }
 
         public void setSymbolShape(SymbolShapeHint shape) {
@@ -363,7 +364,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         public void encode(EncoderContext context) {
             //step C
             int lastCharSize = -1;
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             outerloop: while (context.hasMoreCharacters()) {
                 char c = context.getCurrentChar();
                 context.pos++;
@@ -378,7 +379,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
 
                 if (!context.hasMoreCharacters()) {
                     //Avoid having a single C40 value in the last triplet
-                    StringBuffer removed = new StringBuffer();
+                    StringBuilder removed = new StringBuilder();
                     if ((buffer.length() % 3) == 2) {
                         if (available < 2 || available > 2) {
                             lastCharSize = backtrackOneCharacter(context, buffer, removed,
@@ -406,7 +407,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         }
 
         private int backtrackOneCharacter(EncoderContext context,
-                StringBuffer buffer, StringBuffer removed, int lastCharSize) {
+                StringBuilder buffer, StringBuilder removed, int lastCharSize) {
             int count = buffer.length();
             buffer.delete(count - lastCharSize, count);
             context.pos--;
@@ -416,7 +417,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
             return lastCharSize;
         }
 
-        protected void writeNextTriplet(EncoderContext context, StringBuffer buffer) {
+        protected void writeNextTriplet(EncoderContext context, StringBuilder buffer) {
             context.writeCodewords(encodeToCodewords(buffer, 0));
             buffer.delete(0, 3);
         }
@@ -426,7 +427,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
          * @param context the encoder context
          * @param buffer the buffer with the remaining encoded characters
          */
-        protected void handleEOD(EncoderContext context, StringBuffer buffer, int lastCharSize) {
+        protected void handleEOD(EncoderContext context, StringBuilder buffer, int lastCharSize) {
             int unwritten = (buffer.length() / 3) * 2;
             int rest = buffer.length() % 3;
 
@@ -465,7 +466,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
             context.signalEncoderChange(ASCII_ENCODATION);
         }
 
-        protected int encodeChar(char c, StringBuffer sb) {
+        protected int encodeChar(char c, StringBuilder sb) {
             if (c == ' ') {
                 sb.append('\3');
                 return 1;
@@ -505,7 +506,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
             }
         }
 
-        protected String encodeToCodewords(StringBuffer sb, int startPos) {
+        protected String encodeToCodewords(StringBuilder sb, int startPos) {
             char c1 = sb.charAt(startPos);
             char c2 = sb.charAt(startPos + 1);
             char c3 = sb.charAt(startPos + 2);
@@ -525,7 +526,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         }
 
         @Override
-        protected int encodeChar(char c, StringBuffer sb) {
+        protected int encodeChar(char c, StringBuilder sb) {
             if (c == ' ') {
                 sb.append('\3');
                 return 1;
@@ -586,7 +587,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         @Override
         public void encode(EncoderContext context) {
             //step C
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             while (context.hasMoreCharacters()) {
                 char c = context.getCurrentChar();
                 context.pos++;
@@ -608,7 +609,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         }
 
         @Override
-        protected int encodeChar(char c, StringBuffer sb) {
+        protected int encodeChar(char c, StringBuilder sb) {
             if (c == '\r') {
                 sb.append('\0');
             } else if (c == '*') {
@@ -627,7 +628,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
             return 1;
         }
 
-        protected void handleEOD(EncoderContext context, StringBuffer buffer) {
+        protected void handleEOD(EncoderContext context, StringBuilder buffer) {
             context.updateSymbolInfo();
             int available = context.symbolInfo.dataCapacity - context.getCodewordCount();
             int count = buffer.length();
@@ -743,7 +744,7 @@ public class DataMatrixHighLevelEncoder implements DataMatrixConstants {
         protected String encodeToCodewords(StringBuilder sb, int startPos) {
             int len = sb.length() - startPos;
             if (len == 0) {
-                throw new IllegalStateException("StringBuffer must not be empty");
+                throw new IllegalStateException("StringBuilder must not be empty");
             }
             char c1 = sb.charAt(startPos);
             char c2 = (len >= 2 ? sb.charAt(startPos + 1) : 0);

@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.datamatrix;
 
 import java.awt.Dimension;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.krysalis.barcode4j.TwoDimBarcodeLogicHandler;
 
 /**
  * Top-level class for the logic part of the DataMatrix implementation.
  *
- * @version $Id$
+ * @version 1.2
  */
 public class DataMatrixLogicImpl {
-
-    private static final boolean DEBUG = false;
+    private static final Logger LOGGER = Logger.getLogger(DataMatrixLogicImpl.class.getName());
 
     /**
      * Generates the barcode logic.
@@ -54,9 +53,7 @@ public class DataMatrixLogicImpl {
 
         DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(),
                 shape, minSize, maxSize, true);
-        if (DEBUG) {
-            System.out.println(symbolInfo);
-        }
+        LOGGER.log(Level.FINE, symbolInfo.toString());
 
         //2. step: ECC generation
         String codewords = DataMatrixErrorCorrection.encodeECC200(
@@ -106,5 +103,4 @@ public class DataMatrixLogicImpl {
             }
         }
     }
-
 }

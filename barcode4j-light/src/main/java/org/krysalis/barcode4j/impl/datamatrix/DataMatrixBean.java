@@ -31,7 +31,7 @@ import org.krysalis.barcode4j.tools.UnitConv;
 /**
  * This class is an implementation of DataMatrix (ISO 16022:2000(E)).
  *
- * @version $Id$
+ * @version 1.2
  */
 public class DataMatrixBean extends AbstractBarcodeBean {
 
@@ -116,7 +116,7 @@ public class DataMatrixBean extends AbstractBarcodeBean {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         if ((msg == null)
                 || (msg.length() == 0)) {
@@ -130,7 +130,7 @@ public class DataMatrixBean extends AbstractBarcodeBean {
         impl.generateBarcodeLogic(handler, msg, getShape(), getMinSize(), getMaxSize());
     }
 
-    /** {@inheritDoc} */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         String encoded;
         try {
@@ -141,26 +141,26 @@ public class DataMatrixBean extends AbstractBarcodeBean {
         }
         DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(), shape);
 
-        double width = symbolInfo.getSymbolWidth() * getModuleWidth();
-        double height = symbolInfo.getSymbolHeight() * getBarHeight();
+        double symbolWidth = symbolInfo.getSymbolWidth() * getModuleWidth();
+        double symbolHeight = symbolInfo.getSymbolHeight() * getBarHeight();
         double qzh = (hasQuietZone() ? getQuietZone() : 0);
         double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);
-        return new BarcodeDimension(width, height,
-                width + (2 * qzh), height + (2 * qzv),
+        return new BarcodeDimension(symbolWidth, symbolHeight,
+                symbolWidth + (2 * qzh), symbolHeight + (2 * qzv),
                 qzh, qzv);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public double getVerticalQuietZone() {
         return getQuietZone();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public double getBarWidth(int width) {
         return moduleWidth;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public double getBarHeight() {
         return moduleWidth;
     }

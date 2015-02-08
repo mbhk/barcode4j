@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.datamatrix;
 
 import java.awt.Dimension;
@@ -23,7 +21,7 @@ import java.awt.Dimension;
 /**
  * Symbol info table for DataMatrix.
  *
- * @version $Id$
+ * @version 1.2
  */
 public class DataMatrixSymbolInfo {
 
@@ -209,14 +207,14 @@ public class DataMatrixSymbolInfo {
         return rsBlockError;
     }
 
-    /** @see java.lang.Object#toString() */
+    @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(rectangular ? "Rectangular Symbol:" : "Square Symbol:");
-        sb.append(" data region " + matrixWidth + "x" + matrixHeight);
-        sb.append(", symbol size " + getSymbolWidth() + "x" + getSymbolHeight());
-        sb.append(", symbol data size " + getSymbolDataWidth() + "x" + getSymbolDataHeight());
-        sb.append(", codewords " + dataCapacity + "+" + errorCodewords);
+        sb.append(" data region ").append(matrixWidth).append("x").append(matrixHeight);
+        sb.append(", symbol size ").append(getSymbolWidth()).append("x").append(getSymbolHeight());
+        sb.append(", symbol data size ").append(getSymbolDataWidth()).append("x").append(getSymbolDataHeight());
+        sb.append(", codewords ").append(dataCapacity).append("+").append(errorCodewords);
         return sb.toString();
     }
 
@@ -228,14 +226,14 @@ public class DataMatrixSymbolInfo {
             this.rsBlockError = 62;
         }
 
+        @Override
         public int getInterleavedBlockCount() {
             return 10;
         }
 
+        @Override
         public int getDataLengthForInterleavedBlock(int index) {
             return (index <= 8) ? 156 : 155;
         }
-
     }
-
 }

@@ -14,53 +14,54 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.datamatrix;
 
 /**
  * Constants for DataMatrix.
  * 
- * @version $Id$
+ * @version 1.2
  */
-public interface DataMatrixConstants {
+class DataMatrixConstants {
 
     /** Padding character */
-    char PAD = 129;
+    public static final char PAD = 129;
     /** mode latch to C40 encodation mode */
-    char LATCH_TO_C40 = 230;
+    public static final char LATCH_TO_C40 = 230;
     /** mode latch to Base 256 encodation mode */
-    char LATCH_TO_BASE256 = 231;
+    public static final char LATCH_TO_BASE256 = 231;
     /** FNC1 Codeword */
-    char FNC1 = 232;
+    public static final char FNC1 = 232;
     /** Structured Append Codeword */
-    char STRUCTURED_APPEND = 233;
+    public static final char STRUCTURED_APPEND = 233;
     /** Reader Programming */
-    char READER_PROGRAMMING = 234;
+    public static final char READER_PROGRAMMING = 234;
     /** Upper Shift */
-    char UPPER_SHIFT = 235;
+    public static final char UPPER_SHIFT = 235;
     /** 05 Macro */
-    char MACRO_05 = 236;
+    public static final char MACRO_05 = 236;
     /** 06 Macro */
-    char MACRO_06 = 237;
+    public static final char MACRO_06 = 237;
     /** mode latch to ANSI X.12 encodation mode */
-    char LATCH_TO_ANSIX12 = 238;
+    public static final char LATCH_TO_ANSIX12 = 238;
     /** mode latch to Text encodation mode */
-    char LATCH_TO_TEXT = 239;
+    public static final char LATCH_TO_TEXT = 239;
     /** mode latch to EDIFACT encodation mode */
-    char LATCH_TO_EDIFACT = 240;
+    public static final char LATCH_TO_EDIFACT = 240;
     /** ECI character (Extended Channel Interpretation) */
-    char ECI = 241;
+    public static final char ECI = 241;
     
     /** Unlatch from C40 encodation */
-    char C40_UNLATCH = 254;
+    public static final char C40_UNLATCH = 254;
     /** Unlatch from X12 encodation */
-    char X12_UNLATCH = 254;
+    public static final char X12_UNLATCH = 254;
     
     /** 05 Macro header */
-    String MACRO_05_HEADER = "[)>\u001E05\u001D";
+    public static final String MACRO_05_HEADER = "[)>\u001E05\u001D";
     /** 06 Macro header */
-    String MACRO_06_HEADER = "[)>\u001E06\u001D";
+    public static final String MACRO_06_HEADER = "[)>\u001E06\u001D";
     /** Macro trailer */
-    String MACRO_TRAILER = "\u001E\u0004";
+    public static final String MACRO_TRAILER = "\u001E\u0004";
+
+    private DataMatrixConstants() {
+    }
 }

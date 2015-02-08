@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.datamatrix;
 
 import java.util.Arrays;
@@ -23,6 +21,8 @@ import java.util.Arrays;
 /**
  * Default implementation of DataMatrixPlacement which uses a byte array to store the bits
  * (one bit per byte to allow for checking whether a bit has been set or not).
+ * 
+ * @version 1.1
  */
 class DefaultDataMatrixPlacement extends DataMatrixPlacement {
     
@@ -41,19 +41,18 @@ class DefaultDataMatrixPlacement extends DataMatrixPlacement {
         Arrays.fill(this.bits, (byte)-1); //Initialize with "not set" value
     }
     
-    /** @see org.krysalis.barcode4j.impl.datamatrix.DataMatrixPlacement#getBit(int, int) */
+    @Override
     protected boolean getBit(int col, int row) {
         return bits[row * numcols + col] == 1;
     }
 
-    /** @see org.krysalis.barcode4j.impl.datamatrix.DataMatrixPlacement#setBit(int, int, boolean) */
+    @Override
     protected void setBit(int col, int row, boolean bit) {
         bits[row * numcols + col] = (bit ? (byte)1 : (byte)0);
     }
 
-    /** @see org.krysalis.barcode4j.impl.datamatrix.DataMatrixPlacement#hasBit(int, int) */
+    @Override
     protected boolean hasBit(int col, int row) {
         return bits[row * numcols + col] >= 0;
     }
-    
 }

@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.datamatrix;
 
 /**
  * Symbol Character Placement Program. Adapted from Annex M.1 in ISO/IEC 16022:2000(E). 
  * 
- * @version $Id$
+ * @version 1.1
  */
 public abstract class DataMatrixPlacement {
 
-    private String codewords;
+    private final String codewords;
     protected int numrows;
     protected int numcols;
     
@@ -166,5 +164,4 @@ public abstract class DataMatrixPlacement {
         module(1, numcols - 2, pos, 7);
         module(1, numcols - 1, pos, 8);
     }
-    
 }

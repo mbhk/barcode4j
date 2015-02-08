@@ -37,9 +37,7 @@ public class DataMatrix extends ConfigurableBarcodeGenerator
         this.bean = new DataMatrixBean();
     }
 
-    /**
-     * @see org.apache.avalon.framework.configuration.Configurable#configure(Configuration)
-     */
+    @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
         String mws = cfg.getChild("module-width").getValue(null);
@@ -85,5 +83,4 @@ public class DataMatrix extends ConfigurableBarcodeGenerator
     public DataMatrixBean getDataMatrixBean() {
         return (DataMatrixBean)getBean();
     }
-
 }

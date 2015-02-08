@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.datamatrix;
 
 /**
  * Precomputed factor tables for all the different variants in ECC200. 
  *
- * @version $Id$
+ * @version 1.1
  */
 public interface DataMatrixReedSolomonFactors {
 
@@ -85,5 +83,4 @@ public interface DataMatrixReedSolomonFactors {
     66, 139, 153, 185, 202, 167, 179, 25, 220, 232, 96, 210, 231, 136, 223, 239,
     181, 241, 59, 52, 172, 25, 49, 232, 211, 189, 64, 54, 108, 153, 132, 63,
     96, 103, 82, 186}};
-    
 }

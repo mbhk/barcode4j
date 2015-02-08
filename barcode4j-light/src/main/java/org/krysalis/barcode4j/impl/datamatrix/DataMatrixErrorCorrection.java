@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.datamatrix;
 
 /**
  * Error Correction Code for ECC200.
  * 
- * @version $Id$
+ * @version 1.1
  */
 public class DataMatrixErrorCorrection implements DataMatrixReedSolomonFactors {
 
@@ -57,7 +55,7 @@ public class DataMatrixErrorCorrection implements DataMatrixReedSolomonFactors {
             throw new IllegalArgumentException(
                     "The number of codewords does not match the selected symbol");
         }
-        StringBuffer sb = new StringBuffer(symbolInfo.dataCapacity + symbolInfo.errorCodewords);
+        StringBuilder sb = new StringBuilder(symbolInfo.dataCapacity + symbolInfo.errorCodewords);
         sb.append(codewords);
         int blockCount = symbolInfo.getInterleavedBlockCount();
         if (blockCount == 1) {
@@ -77,7 +75,7 @@ public class DataMatrixErrorCorrection implements DataMatrixReedSolomonFactors {
                 }
             }
             for (int block = 0; block < blockCount; block++) {
-                StringBuffer temp = new StringBuffer(dataSizes[block]);
+                StringBuilder temp = new StringBuilder(dataSizes[block]);
                 for (int d = block; d < symbolInfo.dataCapacity; d += blockCount) {
                     temp.append(codewords.charAt(d));
                 }
@@ -134,5 +132,4 @@ public class DataMatrixErrorCorrection implements DataMatrixReedSolomonFactors {
         }
         return String.valueOf(eccReversed);
     }
-    
 }
