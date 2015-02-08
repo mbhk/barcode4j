@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.tools;
 
 import java.io.IOException;
@@ -70,7 +68,7 @@ public class Base64InputStream extends InputStream {
         this.source = source;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public int read() throws IOException {
         checkOpen();
         if (tripleIndex >= tripleFilled) {
@@ -126,10 +124,9 @@ public class Base64InputStream extends InputStream {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void close() throws IOException {
         this.source.close();
         this.source = null;
     }
-
 }

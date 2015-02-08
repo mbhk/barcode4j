@@ -64,7 +64,7 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
     /** The context constant for the PostScript generator that is being used to drawn into. */
     private static final String PS_GENERATOR = "psGenerator";
 
-    /** {@inheritDoc} */
+    @Override
     public void handleXML(RendererContext context,
             Document doc, String ns) throws Exception {
         Configuration cfg = ConfigurationUtil.buildConfiguration(doc);
@@ -154,6 +154,7 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
 
             Graphics2DImagePainter painter = new Graphics2DImagePainter() {
 
+                @Override
                 public void paint(Graphics2D g2d, Rectangle2D area) {
                     Java2DCanvasProvider canvas = new Java2DCanvasProvider(null, orientation);
                     canvas.setGraphics2D(g2d);
@@ -162,6 +163,7 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
                     bargen.generateBarcode(canvas, msg);
                 }
 
+                @Override
                 public Dimension getImageSize() {
                     return new Dimension(w, h);
                 }
@@ -234,19 +236,17 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
                 svg, SVGDOMImplementation.SVG_NAMESPACE_URI);
     }
 
-    /** {@inheritDoc} */
     public String getMimeType() {
         return XMLHandler.HANDLE_ALL;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public String getNamespace() {
         return BarcodeElementMapping.NAMESPACE;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public boolean supportsRenderer(Renderer renderer) {
         return (renderer.getGraphics2DAdapter() != null);
     }
-
 }

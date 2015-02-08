@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.tools;
 
 import java.util.Map;
@@ -23,7 +21,7 @@ import java.util.Map;
 /**
  * Utilities around ECI (extended channel interpretation).
  *
- * @version $Id$
+ * @version 1.1
  */
 public class ECIUtil {
 
@@ -78,5 +76,4 @@ public class ECIUtil {
             return -1; //undefined
         }
     }
-
 }

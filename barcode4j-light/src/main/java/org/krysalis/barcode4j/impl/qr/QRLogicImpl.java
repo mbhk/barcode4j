@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.qr;
 
 import java.awt.Dimension;
-import java.util.Hashtable;
 
 import org.krysalis.barcode4j.TwoDimBarcodeLogicHandler;
 
@@ -29,11 +26,13 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.google.zxing.qrcode.encoder.ByteMatrix;
 import com.google.zxing.qrcode.encoder.Encoder;
 import com.google.zxing.qrcode.encoder.QRCode;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Top-level class for the logic part of the DataMatrix implementation.
  *
- * @version $Id$
+ * @version 1.2
  */
 public class QRLogicImpl implements QRConstants {
 
@@ -54,7 +53,7 @@ public class QRLogicImpl implements QRConstants {
         //TODO ZXing doesn't allow to set minSize/maxSize through its API
 
         ErrorCorrectionLevel zxingErrLevel = getZXingErrorLevel(errorCorrectionLevel);
-        Hashtable hints = createHints(encoding);
+        Map<EncodeHintType, ?> hints = createHints(encoding);
 
         QRCode code = null;
         try {
@@ -70,10 +69,10 @@ public class QRLogicImpl implements QRConstants {
         logic.endBarcode();
     }
 
-    static Hashtable createHints(String encoding) {
-        Hashtable hints = null;
+    static Map<EncodeHintType, ?> createHints(String encoding) {
+        Map<EncodeHintType, String> hints = null;
         if (!"ISO-8859-1".equals(encoding)) {
-            hints = new Hashtable();
+            hints = new EnumMap<EncodeHintType, String>(EncodeHintType.class);
             hints.put(EncodeHintType.CHARACTER_SET, encoding);
         }
         return hints;
@@ -112,5 +111,4 @@ public class QRLogicImpl implements QRConstants {
             logic.endRow();
         }
     }
-
 }

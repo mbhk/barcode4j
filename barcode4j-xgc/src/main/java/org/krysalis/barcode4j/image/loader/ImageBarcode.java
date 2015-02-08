@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.image.loader;
 
 import org.krysalis.barcode4j.BarcodeDimension;
@@ -54,12 +52,12 @@ public class ImageBarcode extends AbstractImage {
         this.bardim = bardim;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public ImageFlavor getFlavor() {
         return BARCODE_IMAGE_FLAVOR;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public boolean isCacheable() {
         return true;
     }
@@ -93,5 +91,4 @@ public class ImageBarcode extends AbstractImage {
         }
         return msg;
     }
-
 }

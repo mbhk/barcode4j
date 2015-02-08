@@ -32,7 +32,7 @@ public class RoyalMailCBCLogicImpl extends AbstractRMCBCKIXLogicImpl {
         super(mode);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public char calcChecksum(String msg) {
         String[] codewords = encodeHighLevel(removeStartStop(msg));
         final int[] multiplier = new int[] {4, 2, 1, 0};
@@ -117,11 +117,10 @@ public class RoyalMailCBCLogicImpl extends AbstractRMCBCKIXLogicImpl {
         return sb.toString();
     }
     
-    /** {@inheritDoc} */
+    @Override
     public String normalizeMessage(String msg) {
         String s = removeStartStop(msg);
         s = handleChecksum(s);
         return "(" + s + ")";
     }
-    
 }

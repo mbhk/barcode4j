@@ -91,7 +91,7 @@ public class BitmapCanvasProvider extends AbstractCanvasProvider {
         return this.image;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void establishDimensions(BarcodeDimension dim) {
         super.establishDimensions(dim);
         this.image = BitmapBuilder.prepareImage(dim, getOrientation(),
@@ -102,12 +102,12 @@ public class BitmapCanvasProvider extends AbstractCanvasProvider {
         this.delegate.establishDimensions(dim);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void deviceFillRect(double x, double y, double w, double h) {
         this.delegate.deviceFillRect(x, y, w, h);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void deviceText(String text,
             double x1, double x2, double y1,
             String fontName, double fontSize, TextAlignment textAlign) {

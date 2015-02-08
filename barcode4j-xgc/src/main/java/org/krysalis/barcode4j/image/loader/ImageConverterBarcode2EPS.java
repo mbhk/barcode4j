@@ -45,7 +45,7 @@ import org.apache.xmlgraphics.image.loader.impl.ImageRawStream;
  */
 public class ImageConverterBarcode2EPS extends AbstractImageConverter {
 
-    /** {@inheritDoc} */
+    @Override
     public Image convert(Image src, Map hints) throws ImageException, IOException {
         checkSourceFlavor(src);
         ImageBarcode barcodeImage = (ImageBarcode)src;
@@ -79,14 +79,13 @@ public class ImageConverterBarcode2EPS extends AbstractImageConverter {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public ImageFlavor getSourceFlavor() {
         return ImageBarcode.BARCODE_IMAGE_FLAVOR;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public ImageFlavor getTargetFlavor() {
         return ImageFlavor.RAW_EPS;
     }
-
 }

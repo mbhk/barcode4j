@@ -19,7 +19,7 @@ package org.krysalis.barcode4j.tools;
  * Utility class for unit conversions.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.1
  */
 public class UnitConv {
 
@@ -75,5 +75,4 @@ public class UnitConv {
     public static int mm2px(double mm, int resolution) {
         return (int)Math.round(mm2in(mm) * resolution);
     }
-
 }

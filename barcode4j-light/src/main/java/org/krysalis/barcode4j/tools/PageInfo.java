@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.tools;
 
 import java.util.Map;
@@ -67,5 +65,4 @@ public class PageInfo {
     public String getPageNumberString() {
         return this.pageNumberString;
     }
-
 }

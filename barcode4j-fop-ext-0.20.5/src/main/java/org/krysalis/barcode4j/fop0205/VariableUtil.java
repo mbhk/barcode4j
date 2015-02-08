@@ -22,12 +22,14 @@ import org.apache.fop.layout.Page;
 
 /**
  * @author Jeremias Maerki
+ * @version 1.2
  */
 public class VariableUtil {
 
     private static String replace(String text, String repl, String with) {
-        StringBuffer buf = new StringBuffer(text.length());
-        int start = 0, end = 0;
+        StringBuilder buf = new StringBuilder(text.length());
+        int start = 0;
+        int end;
         while ((end = text.indexOf(repl, start)) != -1) {
             buf.append(text.substring(start, end)).append(with);
             start = end + repl.length();
@@ -50,13 +52,12 @@ public class VariableUtil {
             }
             String fmt = s.substring(idx + PAGE_NUMBER_WITH_FORMAT.length(), endidx);
             NumberFormat nf = new DecimalFormat(fmt);
-            StringBuffer sb = new StringBuffer(s);
+            StringBuilder sb = new StringBuilder(s);
             sb.replace(idx, endidx + 1, nf.format(page.getNumber()));
             s = sb.toString();
         }
         s = replace(s, PAGE_NUMBER, Integer.toString(page.getNumber()));
         s = replace(s, FORMATTED_PAGE_NUMBER, page.getFormattedNumber());
         return s;
-    }
-    
+    }   
 }

@@ -23,13 +23,13 @@ package org.krysalis.barcode4j.cli;
  */
 public class DefaultExitHandler extends AbstractExitHandler {
 
-    /** {@inheritDoc} */
+    @Override
     public void failureExit(Main app, String msg, Throwable t, int exitCode) {
         super.failureExit(app, msg, t, exitCode);
         System.exit(exitCode);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void successfulExit(Main app) {
         super.successfulExit(app);
         System.exit(0);

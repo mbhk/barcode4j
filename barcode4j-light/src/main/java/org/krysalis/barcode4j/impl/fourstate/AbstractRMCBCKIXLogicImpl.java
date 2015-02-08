@@ -82,7 +82,7 @@ public abstract class AbstractRMCBCKIXLogicImpl extends AbstractFourStateLogicIm
         super(mode);
     }
 
-    /** {@inheritDoc} */
+    @Override
     protected String[] encodeHighLevel(String msg) {
         List codewords = new java.util.ArrayList(msg.length());
         for (int i = 0, c = msg.length(); i < c; i++) {
@@ -95,7 +95,4 @@ public abstract class AbstractRMCBCKIXLogicImpl extends AbstractFourStateLogicIm
         }
         return (String[])codewords.toArray(new String[codewords.size()]);
     }
-
-
-
 }

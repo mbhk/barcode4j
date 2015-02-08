@@ -46,12 +46,12 @@ public class RoyalMailCBCBean extends AbstractFourStateBean {
         updateHeight();
     }
     
-    /** {@inheritDoc} */
+    @Override
     public void setMsgPosition(HumanReadablePlacement placement) {
         //nop, no human-readable with this symbology!!!
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         if ((msg == null) 
                 || (msg.length() == 0)) {
@@ -66,7 +66,7 @@ public class RoyalMailCBCBean extends AbstractFourStateBean {
         impl.generateBarcodeLogic(handler, msg);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         String modMsg = RoyalMailCBCLogicImpl.removeStartStop(msg);
         int additional = (getChecksumMode() == ChecksumMode.CP_ADD 
@@ -91,5 +91,4 @@ public class RoyalMailCBCBean extends AbstractFourStateBean {
     public String getId() {
         return "royal-mail-cbc";
     }
-
 }

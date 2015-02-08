@@ -78,7 +78,7 @@ public class Java2DCanvasProvider extends AbstractCanvasProvider {
         return this.g2d;
     }
     
-    /** {@inheritDoc} */
+    @Override
     public void establishDimensions(BarcodeDimension dim) {
         super.establishDimensions(dim);
         int orientation = BarcodeDimension.normalizeOrientation(getOrientation());
@@ -103,17 +103,16 @@ public class Java2DCanvasProvider extends AbstractCanvasProvider {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void deviceFillRect(double x, double y, double w, double h) {
         g2d.fill(new Rectangle2D.Double(x, y, w, h));
     }
 
-    /** {@inheritDoc} */
     public void deviceDrawRect(double x, double y, double w, double h) {
         g2d.draw(new Rectangle2D.Double(x, y, w, h));
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void deviceText(
             String text,
             double x1,
@@ -189,5 +188,4 @@ public class Java2DCanvasProvider extends AbstractCanvasProvider {
                 textwidth, fontSize));
         }
     }
-
 }

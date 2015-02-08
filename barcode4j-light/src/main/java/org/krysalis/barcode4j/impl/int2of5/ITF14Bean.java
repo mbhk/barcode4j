@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.int2of5;
 
 import java.util.ArrayList;
@@ -31,7 +29,7 @@ import org.krysalis.barcode4j.output.CanvasProvider;
  * <a href="http://www.gs1.org">GS1 standards organization</a>).
  * ITF-14 is basically an Interleaved 2 of 5 barcode with an added, so-called bearer bar.
  *
- * @version $Id$
+ * @version 1.1
  */
 public class ITF14Bean extends Interleaved2Of5Bean {
 
@@ -92,7 +90,7 @@ public class ITF14Bean extends Interleaved2Of5Bean {
         this.bearerBarWidth = width;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void doQuietZone(boolean value) {
         if (!value) {
             throw new IllegalArgumentException("Quiet zone may not be disabled for ITF-14!");
@@ -110,7 +108,7 @@ public class ITF14Bean extends Interleaved2Of5Bean {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void generateBarcode(CanvasProvider canvas, String msg) {
         if ((msg == null)
                 || (msg.length() == 0)) {
@@ -126,7 +124,7 @@ public class ITF14Bean extends Interleaved2Of5Bean {
         impl.generateBarcodeLogic(handler, msg);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         int msgLen = msg.length();
         if (getChecksumMode() == ChecksumMode.CP_ADD) {

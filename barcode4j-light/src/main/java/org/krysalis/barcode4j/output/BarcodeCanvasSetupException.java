@@ -21,9 +21,10 @@ import org.krysalis.barcode4j.BarcodeException;
  * This exception is use during the setup of a barcode canvas.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
 public class BarcodeCanvasSetupException extends BarcodeException {
+    private static final long serialVersionUID = 8862133851109269908L;
 
     /**
      * Constructor for BarcodeCanvasSetupException.
@@ -33,5 +34,4 @@ public class BarcodeCanvasSetupException extends BarcodeException {
     public BarcodeCanvasSetupException(String message) {
         super(message);
     }
-
 }

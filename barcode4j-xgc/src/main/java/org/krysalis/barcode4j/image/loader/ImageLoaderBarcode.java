@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.image.loader;
 
 import java.io.IOException;
@@ -47,12 +45,12 @@ public class ImageLoaderBarcode extends AbstractImageLoader {
         this.targetFlavor = targetFlavor;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public ImageFlavor getTargetFlavor() {
         return this.targetFlavor;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public Image loadImage(ImageInfo info, Map hints, ImageSessionContext session)
                 throws ImageException, IOException {
         Image img = info.getOriginalImage();
@@ -63,5 +61,4 @@ public class ImageLoaderBarcode extends AbstractImageLoader {
         ImageBarcode barcodeImage = (ImageBarcode)img;
         return barcodeImage;
     }
-
 }

@@ -55,5 +55,4 @@ public abstract class AbstractXMLGeneratingCanvasProvider
     protected String addUnit(double value) {
         return getDecimalFormat().format(value) + "mm"; //was mm
     }
-
 }

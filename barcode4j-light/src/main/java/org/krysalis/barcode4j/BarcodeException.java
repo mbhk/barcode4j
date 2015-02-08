@@ -19,9 +19,10 @@ package org.krysalis.barcode4j;
  * Base exception class for Barcodes.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
 public class BarcodeException extends Exception {
+    private static final long serialVersionUID = -4645736260697815885L;
 
     /**
      * Constructor for BarcodeException.
@@ -31,5 +32,4 @@ public class BarcodeException extends Exception {
     public BarcodeException(String message) {
         super(message);
     }
-
 }

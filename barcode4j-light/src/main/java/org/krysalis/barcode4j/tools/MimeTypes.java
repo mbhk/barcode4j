@@ -94,5 +94,4 @@ public class MimeTypes {
             || fmt.equals(MIME_GIF)
             || fmt.equals(MIME_BMP));
     }
-
 }

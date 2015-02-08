@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.image.loader;
 
 import java.io.IOException;
@@ -53,7 +51,7 @@ public class ImageConverterBarcodeXML2Barcode extends AbstractImageConverter {
             ImageFlavor.XML_DOM, BarcodeConstants.NAMESPACE.toString());
 
 
-    /** {@inheritDoc} */
+    @Override
     public Image convert(Image src, Map hints) throws ImageException, IOException {
         checkSourceFlavor(src);
         ImageXMLDOM barcodeXML = (ImageXMLDOM)src;
@@ -82,14 +80,13 @@ public class ImageConverterBarcodeXML2Barcode extends AbstractImageConverter {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public ImageFlavor getSourceFlavor() {
         return BARCODE_XML_FLAVOR;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public ImageFlavor getTargetFlavor() {
         return ImageBarcode.BARCODE_IMAGE_FLAVOR;
     }
-
 }

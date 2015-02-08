@@ -95,6 +95,7 @@ public class BarcodeArea extends Area {
      *
      * @param renderer the Renderer to use
      */
+    @Override
     public void render(Renderer renderer) {
         renderBarcodeUsingSVG(renderer);
     }

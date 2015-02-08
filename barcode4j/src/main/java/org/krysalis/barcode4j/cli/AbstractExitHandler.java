@@ -25,12 +25,12 @@ import org.apache.avalon.framework.ExceptionUtil;
  */
 public abstract class AbstractExitHandler implements ExitHandler {
 
-    /** @see org.krysalis.barcode4j.cli.ExitHandler */
+    @Override
     public void successfulExit(Main app) {
         //nop
     }
 
-    /** @see org.krysalis.barcode4j.cli.ExitHandler */
+    @Override
     public void failureExit(Main app, String msg, Throwable t, int exitCode) {
         if (msg == null) {
             throw new NullPointerException("msg must not be null");

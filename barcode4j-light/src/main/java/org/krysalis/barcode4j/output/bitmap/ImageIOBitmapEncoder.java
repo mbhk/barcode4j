@@ -48,12 +48,12 @@ public class ImageIOBitmapEncoder implements BitmapEncoder {
         Class.forName("javax.imageio.ImageIO");
     }
 
-    /** {@inheritDoc} */
+    @Override
     public String[] getSupportedMIMETypes() {
         return ImageIO.getWriterMIMETypes();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void encode(BufferedImage image, OutputStream out,
                 String mime, int resolution) throws IOException {
 

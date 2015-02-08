@@ -68,6 +68,4 @@ public class TextAlignment {
                 "Invalid TextAlignment: " + name);
         }
     }
-    
-
 }

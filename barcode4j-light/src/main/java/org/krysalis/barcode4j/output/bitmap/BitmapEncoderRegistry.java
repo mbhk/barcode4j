@@ -49,7 +49,7 @@ public class BitmapEncoderRegistry {
             this.priority = priority;
         }
 
-        /** {@inheritDoc} */
+        @Override
         public int compareTo(Object o) {
             Entry e = (Entry)o;
             return e.priority - this.priority; //highest priority first

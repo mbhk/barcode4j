@@ -20,7 +20,7 @@ import org.krysalis.barcode4j.ChecksumMode;
 /**
  * This class is an implementation of the ITF-14 barcode.
  *
- * @version $Id$
+ * @version 1.1
  */
 public class ITF14LogicImpl extends Interleaved2Of5LogicImpl {
 
@@ -65,5 +65,4 @@ public class ITF14LogicImpl extends Interleaved2Of5LogicImpl {
                         + actualLength + " characters.");
         }
     }
-
 }

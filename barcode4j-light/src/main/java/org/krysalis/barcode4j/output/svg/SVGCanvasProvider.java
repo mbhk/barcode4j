@@ -173,7 +173,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
         return frag;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void establishDimensions(BarcodeDimension dim) {
         super.establishDimensions(dim);
         int orientation = BarcodeDimension.normalizeOrientation(getOrientation());
@@ -202,7 +202,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void deviceFillRect(double x, double y, double w, double h) {
         Element el = createElement("rect");
         el.setAttribute("x", getDecimalFormat().format(x));
@@ -212,7 +212,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
         detailGroup.appendChild(el);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void deviceText(String text, double x1, double x2, double y1,
                             String fontName, double fontSize, TextAlignment textAlign) {
         Element el = createElement("text");
@@ -240,5 +240,4 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
         detailGroup.appendChild(el);
 
     }
-
 }

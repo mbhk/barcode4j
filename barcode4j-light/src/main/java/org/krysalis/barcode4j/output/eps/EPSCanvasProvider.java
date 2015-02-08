@@ -159,7 +159,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
         writer.flush();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void establishDimensions(BarcodeDimension dim) {
         super.establishDimensions(dim);
         int orientation = BarcodeDimension.normalizeOrientation(getOrientation());
@@ -190,7 +190,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void deviceFillRect(double x, double y, double w, double h) {
         if (firstError != null) {
             return;
@@ -203,7 +203,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void deviceText(
                 String text,
                 double x1,
@@ -247,5 +247,4 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
                     + "'). Please use the PostScript name of the font!");
         }
     }
-
 }

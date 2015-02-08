@@ -105,9 +105,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         }
     }
 
-    /**
-     * @see org.krysalis.barcode4j.BarcodeClassResolver#resolve(String)
-     */
+    @Override
     public Class resolve(String name) throws ClassNotFoundException {
         String clazz = null;
         if (this.classes != null) {
@@ -133,9 +131,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         return cl;
     }
 
-    /**
-     * @see org.krysalis.barcode4j.BarcodeClassResolver#getBarcodeNames()
-     */
+    @Override
     public Collection getBarcodeNames() {
         return Collections.unmodifiableCollection(this.mainIDs);
     }

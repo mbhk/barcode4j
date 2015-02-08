@@ -67,9 +67,14 @@ public class BarcodeElement extends BarcodeObj {
          *
          * @param parent the parent formatting object
          * @param propertyList the explicit properties of this object
+         * @param systemId
+         * @param line
+         * @param column
          *
          * @return the SVG object
+         * @throws org.apache.fop.apps.FOPException
          */
+        @Override
         public FObj make(FObj parent, PropertyList propertyList,
                          String systemId, int line, int column)
                         throws FOPException {

@@ -145,5 +145,4 @@ public class Canvas {
                 x1, x2, y1, 
                 fontName, fontSize, textAlign);
     }
-
 }

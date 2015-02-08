@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.qr;
 
 /**
  * High-level encoder for QR Code.
  *
- * @version $Id$
+ * @version 1.2
  */
 public class QRHighLevelEncoder implements QRConstants {
 
     private final String msg;
-    private int encodingMode;
+    private final int encodingMode;
 
     public QRHighLevelEncoder(String msg) {
         this.msg = msg;
@@ -53,12 +51,11 @@ public class QRHighLevelEncoder implements QRConstants {
         return mode;
     }
 
-    private static final boolean isDigit(char ch) {
+    private static boolean isDigit(char ch) {
         return ch >= '0' && ch <= '9';
     }
 
-    private static final boolean isAlphanumeric(char ch) {
+    private static boolean isAlphanumeric(char ch) {
         return ALPHANUMERIC_TABLE[ch] >= 0;
     }
-
 }

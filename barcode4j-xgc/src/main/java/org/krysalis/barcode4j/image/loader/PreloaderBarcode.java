@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.image.loader;
 
 import java.io.IOException;
@@ -58,7 +56,7 @@ import org.apache.xmlgraphics.util.io.SubInputStream;
  */
 public class PreloaderBarcode extends AbstractImagePreloader {
 
-    /** {@inheritDoc} */
+    @Override
     public ImageInfo preloadImage(String uri, Source src, ImageContext context)
             throws IOException {
         ImageInfo info = null;
@@ -178,14 +176,17 @@ public class PreloaderBarcode extends AbstractImagePreloader {
         DocumentBuilder db = dbf.newDocumentBuilder();
         db.setErrorHandler(new ErrorHandler() {
 
+            @Override
             public void error(SAXParseException exception) throws SAXException {
                 throw exception;
             }
 
+            @Override
             public void fatalError(SAXParseException exception) throws SAXException {
                 throw exception;
             }
 
+            @Override
             public void warning(SAXParseException exception) throws SAXException {
                 throw exception;
             }
@@ -194,5 +195,4 @@ public class PreloaderBarcode extends AbstractImagePreloader {
         Document doc = db.parse(in);
         return doc;
     }
-
 }

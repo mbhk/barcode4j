@@ -50,7 +50,7 @@ public class FourStateLogicHandler
         return y;
     }            
 
-    /** {@inheritDoc} */
+    @Override
     public void addBar(boolean black, int height) {
         final double w = bcBean.getBarWidth(1);
         final double h = bcBean.getBarHeight(height);
@@ -73,5 +73,4 @@ public class FourStateLogicHandler
         canvas.drawRectWH(x, getStartY() + y1, w, h);
         x += w + bcBean.getBarWidth(-1);
     }
-
 }

@@ -67,6 +67,4 @@ public class HumanReadablePlacement {
                 "Invalid HumanReadablePlacement: " + name);
         }
     }
-    
-
 }

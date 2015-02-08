@@ -26,7 +26,7 @@ package org.krysalis.barcode4j;
  * and painting/rendering logic.
  *
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.1
  */
 public interface BarcodeLogicHandler {
 
@@ -38,11 +38,11 @@ public interface BarcodeLogicHandler {
      *      human-readable part
      */
     void startBarcode(String msg, String formattedMsg);
-    
+
     /**
      * This is always the last method called. It is called to inform the 
      * logic handler that the generation of barcode logic has stopped.
      */
     void endBarcode();
-    
+
 }

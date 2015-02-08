@@ -55,7 +55,10 @@ public abstract class AbstractFourStateBean extends HeightVariableBarcodeBean {
         return this.checksumMode;
     }
 
-    /** @return the height of the vertical quiet zone (in mm) */
+    /**
+     * @return the height of the vertical quiet zone (in mm)
+     */
+    @Override
     public double getVerticalQuietZone() {
         return getQuietZone(); //Same as horizontal
     }
@@ -117,7 +120,7 @@ public abstract class AbstractFourStateBean extends HeightVariableBarcodeBean {
         setBarHeight(getTrackHeight() + (2 * getAscenderHeight()));
     }
     
-    /** {@inheritDoc} */
+    @Override
     public double getBarWidth(int width) {
         if (width == 1) {
             return moduleWidth;
@@ -128,7 +131,7 @@ public abstract class AbstractFourStateBean extends HeightVariableBarcodeBean {
         }
     }
     
-    /** {@inheritDoc} */
+    @Override
     public double getBarHeight(int height) {
         switch (height) {
         case 0: return trackHeight;
@@ -138,5 +141,4 @@ public abstract class AbstractFourStateBean extends HeightVariableBarcodeBean {
         default: throw new IllegalArgumentException("Only height 0-3 allowed");
         }
     }
-    
 }

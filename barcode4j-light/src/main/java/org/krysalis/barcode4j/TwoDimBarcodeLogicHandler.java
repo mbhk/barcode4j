@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j;
 
 /**
  * This interface provides an interface to generate basic 2D barcodes like PDF417 and DataMatrix.
  * 
- * @version $Id$
+ * @version 1.1
  */
 public interface TwoDimBarcodeLogicHandler extends ClassicBarcodeLogicHandler {
 
@@ -34,5 +32,5 @@ public interface TwoDimBarcodeLogicHandler extends ClassicBarcodeLogicHandler {
      * Signals the end of a row in the barcode.
      */
     void endRow();
-    
+
 }

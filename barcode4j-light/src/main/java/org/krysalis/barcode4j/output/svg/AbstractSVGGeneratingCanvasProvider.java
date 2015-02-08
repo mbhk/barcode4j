@@ -108,5 +108,4 @@ public abstract class AbstractSVGGeneratingCanvasProvider
             return prefix + ':' + localName;
         }
     }
-
 }

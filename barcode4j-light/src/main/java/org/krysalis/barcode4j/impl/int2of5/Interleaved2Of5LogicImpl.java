@@ -225,5 +225,4 @@ public class Interleaved2Of5LogicImpl {
 
         logic.endBarcode();
     }
-
 }

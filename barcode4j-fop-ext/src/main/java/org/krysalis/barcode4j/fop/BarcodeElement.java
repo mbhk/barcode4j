@@ -44,14 +44,11 @@ import org.apache.fop.fo.PropertyList;
  */
 public class BarcodeElement extends BarcodeObj {
 
-    /** @see org.apache.fop.fo.FONode#FONode(FONode) */
     public BarcodeElement(FONode parent) {
         super(parent);
     }
 
-    /**
-     * @see org.apache.fop.fo.FONode#processNode
-     */
+    @Override
     public void processNode(String elementName,
                             Locator locator,
                             Attributes attlist,
@@ -64,6 +61,7 @@ public class BarcodeElement extends BarcodeObj {
         createBasicDocument();
     }
 
+    @Override
     public Point2D getDimension(Point2D view) {
         Configuration cfg = ConfigurationUtil.buildConfiguration(this.doc);
         try {
@@ -87,6 +85,4 @@ public class BarcodeElement extends BarcodeObj {
         }
         return null;
     }
-
-
 }

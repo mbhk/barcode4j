@@ -94,7 +94,7 @@ public class EAN8LogicImpl extends UPCEANLogicImpl {
         }
     }
     
-    /** @see org.krysalis.barcode4j.impl.upcean.UPCEANLogicImpl */
+    @Override
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
         String supp = retrieveSupplemental(msg);
         String s = removeSupplemental(msg); 
