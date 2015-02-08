@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.pdf417;
 
 import java.io.IOException;
@@ -30,7 +28,7 @@ import org.krysalis.barcode4j.tools.URLUtil;
  * PDF417 high-level encoder following the algorithm described in ISO/IEC 15438:2001(E) in
  * annex P.
  *
- * @version $Id$
+ * @version 1.1
  */
 public class PDF417HighLevelEncoder implements PDF417Constants {
 
@@ -77,7 +75,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
      * @return the encoded message (the char values range from 0 to 928)
      */
     public static String encodeHighLevel(byte[] data) {
-        StringBuffer sb = new StringBuffer(data.length);
+        StringBuilder sb = new StringBuilder(data.length);
         encodeBinary(null, data, 0, data.length, TEXT_COMPACTION, sb);
         return sb.toString();
     }
@@ -96,11 +94,13 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
      * Performs high-level encoding of a PDF417 message using the algorithm described in annex P
      * of ISO/IEC 15438:2001(E).
      * @param msg the message
+     * @param encoding
+     * @param enableECI
      * @return the encoded message (the char values range from 0 to 928)
      */
     public static String encodeHighLevel(String msg, String encoding, boolean enableECI) {
         //the codewords 0..928 are encoded as Unicode characters
-        StringBuffer sb = new StringBuffer(msg.length());
+        StringBuilder sb = new StringBuilder(msg.length());
 
         if (enableECI) {
             int eci = ECIUtil.getECIForEncoding(encoding);
@@ -183,9 +183,9 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
      * @param initialSubmode should normally be SUBMODE_ALPHA
      * @return the text submode in which this method ends
      */
-    public static int encodeText(String msg, int startpos, int count, StringBuffer sb,
+    public static int encodeText(String msg, int startpos, int count, StringBuilder sb,
             int initialSubmode) {
-        StringBuffer tmp = new StringBuffer(count);
+        StringBuilder tmp = new StringBuilder(count);
         int submode = initialSubmode;
         int idx = 0;
         while (true) {
@@ -307,7 +307,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
      * @param sb receives the encoded codewords
      */
     public static void encodeBinary(String msg, byte[] bytes, int startpos, int count,
-            int startmode, StringBuffer sb) {
+            int startmode, StringBuilder sb) {
         if (count == 1 && startmode == TEXT_COMPACTION) {
             sb.append((char)SHIFT_TO_BYTE);
         } else {
@@ -343,9 +343,9 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
         }
     }
 
-    public static void encodeNumeric(String msg, int startpos, int count, StringBuffer sb) {
+    public static void encodeNumeric(String msg, int startpos, int count, StringBuilder sb) {
         int idx = 0;
-        StringBuffer tmp = new StringBuffer(count / 3 + 1);
+        StringBuilder tmp = new StringBuilder(count / 3 + 1);
         final BigInteger num900 = BigInteger.valueOf(900);
         final BigInteger num0 = BigInteger.valueOf(0);
         while (idx < count - 1) {
@@ -367,8 +367,9 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
         }
     }
 
+    @Deprecated
     private static boolean isDigit(char ch) {
-        return ch >= '0' && ch <= '9';
+        return Character.isDigit(ch); //ch >= '0' && ch <= '9';
     }
 
     private static boolean isAlphaUpper(char ch) {
@@ -520,7 +521,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
         return idx - startpos;
     }
 
-    private static void encodingECI(int eci, StringBuffer sb) {
+    private static void encodingECI(int eci, StringBuilder sb) {
         if (eci >= 0 && eci < 900) {
             sb.append((char)ECI_CHARSET);
             sb.append((char)eci);
@@ -536,5 +537,4 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
                     "ECI number not in valid range from 0..811799, but was " + eci);
         }
     }
-
 }

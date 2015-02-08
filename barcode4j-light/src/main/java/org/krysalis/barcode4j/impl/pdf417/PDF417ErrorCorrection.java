@@ -84,7 +84,7 @@ public class PDF417ErrorCorrection implements PDF417Constants {
             e[0] = (char)(t3 % 929);
             //System.out.println(HighLevelEncoderTest.visualize(new String(e)));
         }
-        StringBuffer sb = new StringBuffer(k);
+        StringBuilder sb = new StringBuilder(k);
         for (int j = k - 1; j >= 0; j--) {
             if (e[j] != 0) {
                 e[j] = (char)(929 - e[j]);

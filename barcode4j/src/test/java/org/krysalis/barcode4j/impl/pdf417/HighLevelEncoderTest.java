@@ -83,7 +83,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
 
     public void testEncodeText() throws Exception {
         String msg = "PDF417";
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         PDF417HighLevelEncoder.encodeText(msg, 0, msg.length(), sb, SUBMODE_ALPHA);
         String expected = "\u01c5\u00b2\u0079\u00ef";
         assertEquals(expected, sb.toString());
@@ -127,7 +127,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
 
     public void testEncodeNumeric() throws Exception {
         String msg = "000213298174000";
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         PDF417HighLevelEncoder.encodeNumeric(msg, 0, msg.length(), sb);
         String expected = "\u0001\u0270\u01b2\u0278\u011a\u00c8";
         assertEquals(expected, sb.toString());
@@ -144,7 +144,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         //Example from Annex C
         byte[] bytes = new byte[] {(byte)231, 101, 11, 97, (byte)205, 2};
         String msg = new String(bytes, "cp437");
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         PDF417HighLevelEncoder.encodeBinary(msg, bytes, 0, msg.length(), TEXT_COMPACTION, sb);
         String expected = "924 387 700 208 213 302";
         log(expected, TestHelper.visualize(sb.toString()));

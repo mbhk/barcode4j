@@ -122,15 +122,15 @@ public class Code39LogicImpl {
         }
     }
 
-    StringBuffer prepareMessage(String msg) {
+    StringBuilder prepareMessage(String msg) {
         if (this.extendedCharSet) {
             return escapeExtended(msg, null);
         } else {
             //Remove start/stop in standard mode if present
             if (msg.startsWith("*") && msg.endsWith("*")) {
-                return new StringBuffer(msg.substring(1, msg.length() - 1));
+                return new StringBuilder(msg.substring(1, msg.length() - 1));
             } else {
-                return new StringBuffer(msg);
+                return new StringBuilder(msg);
             }
         }
     }
@@ -138,13 +138,12 @@ public class Code39LogicImpl {
     /**
      * Escapes US-ASCII characters as required for the extended character set for Code 39.
      * @param msg the original message
-     * @param sb the StringBuffer to write the escaped message to (or null)
-     * @return a StringBuffer containing the escaped message
+     * @param sbIn the StringBuilder to write the escaped message to (or null)
+     * @return a StringBuilder containing the escaped message
      */
-    public static StringBuffer escapeExtended(String msg, StringBuffer sb) {
-        if (sb == null) {
-            sb = new StringBuffer(msg.length());
-        }
+    public static StringBuilder escapeExtended(String msg, StringBuilder sbIn) {
+        StringBuilder sb = sbIn == null ? new StringBuilder(msg.length()) : sbIn;
+        
         for (int i = 0, c = msg.length(); i < c; i++) {
             char ch = msg.charAt(i);
             if (ch == 0) {
@@ -267,7 +266,7 @@ public class Code39LogicImpl {
         logic.addBar(false, -1); //-1 is special
     }
 
-    private String handleChecksum(StringBuffer sb) {
+    private String handleChecksum(StringBuilder sb) {
         if (getChecksumMode() == ChecksumMode.CP_ADD) {
             if (displayChecksum) {
                 sb.append(calcChecksum(sb.toString()));
@@ -304,7 +303,7 @@ public class Code39LogicImpl {
      * @param msg the message to encode
      */
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
-        StringBuffer sb = prepareMessage(msg);
+        StringBuilder sb = prepareMessage(msg);
 
         //Checksum handling as requested
         String formattedMsg = handleChecksum(sb);
@@ -344,6 +343,4 @@ public class Code39LogicImpl {
 
         logic.endBarcode();
     }
-
-
 }

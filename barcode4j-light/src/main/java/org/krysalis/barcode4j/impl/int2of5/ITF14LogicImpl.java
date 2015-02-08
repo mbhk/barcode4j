@@ -33,8 +33,8 @@ public class ITF14LogicImpl extends Interleaved2Of5LogicImpl {
         super(mode, displayChecksum);
     }
 
-    /** {@inheritDoc} */
-    protected String handleChecksum(StringBuffer sb) {
+    @Override
+    protected String handleChecksum(StringBuilder sb) {
         int msgLen = sb.length();
         if (getChecksumMode() == ChecksumMode.CP_AUTO) {
             switch (msgLen) {

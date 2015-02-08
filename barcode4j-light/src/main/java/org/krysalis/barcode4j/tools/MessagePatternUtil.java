@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.tools;
 
 /**
  * Helper class to apply custom message pattern (i.e. message characters grouping) to barcode
  * messages.
  * @author Dimitar Vlasev
- * @version $Id$
+ * @version 1.2
  */
 public class MessagePatternUtil {
 
@@ -41,11 +39,11 @@ public class MessagePatternUtil {
      */
     public static String applyCustomMessagePattern(String msg, String pattern) {
 
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
 
         // if there is no pattern then return the original message
-        if ((pattern == null) || "".equals(pattern)
-                || msg == null || "".equals(msg)) {
+        if ((pattern == null) || pattern.isEmpty()
+                || msg == null || msg.isEmpty()) {
             return msg;
         }
 
@@ -109,13 +107,7 @@ public class MessagePatternUtil {
      * @return boolean
      */
     private static boolean isPlaceholder(char c) {
-      boolean result = false;
-
-      char placeholderChar = '_';
-
-      result = (placeholderChar == c);
-
-      return result;
+        return '_' == c;
     }
 
     /**
@@ -125,13 +117,7 @@ public class MessagePatternUtil {
      * @author Dimitar Vlasev
      */
     private static boolean isEscapeChar(char c) {
-        boolean result = false;
-
-        char escapeChar = '\\';
-
-        result = (c == escapeChar);
-
-        return result;
+        return '\\' == c;
     }
 
     /**
@@ -140,10 +126,6 @@ public class MessagePatternUtil {
      * @return true if the input character is a position to be deleted
      */
     private static boolean isDeleteholder(char c) {
-        boolean result = false;
-        char placeholderChar = '#';
-        result = (placeholderChar == c);
-        return result;
+        return '#' == c;
     }
-
 }

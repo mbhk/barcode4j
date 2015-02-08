@@ -44,7 +44,7 @@ public class Code128EncoderTest extends TestCase {
         }
     }
 
-    private void visualizeCodesetA(StringBuffer sb, int idx) {
+    private void visualizeCodesetA(StringBuilder sb, int idx) {
         if (idx < 64) {
             sb.append(visualizeChar((char) (idx + 32)));
         } else if ((idx >= 64) && (idx <= 95)) {
@@ -60,7 +60,7 @@ public class Code128EncoderTest extends TestCase {
         }
     }
 
-    private void visualizeCodesetB(StringBuffer sb, int idx) {
+    private void visualizeCodesetB(StringBuilder sb, int idx) {
         if (idx <= 95) {
             sb.append(visualizeChar((char) (idx + 32)));
         } else if (idx == 96) {
@@ -74,7 +74,7 @@ public class Code128EncoderTest extends TestCase {
         }
     }
 
-    private void visualizeCodesetC(StringBuffer sb, int idx) {
+    private void visualizeCodesetC(StringBuilder sb, int idx) {
         if (idx < 100) {
             sb.append("[");
             sb.append(Integer.toString(idx));
@@ -85,7 +85,7 @@ public class Code128EncoderTest extends TestCase {
     }
 
     private String visualize(int[] encodedMsg) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         char codeset;
         if (encodedMsg[0] == 103) {
             codeset = 'A';
@@ -96,7 +96,7 @@ public class Code128EncoderTest extends TestCase {
         } else {
             throw new RuntimeException("Invalid start character");
         }
-        sb.append("->" + codeset);
+        sb.append("->").append(codeset);
         int pos = 1;
         while (pos < encodedMsg.length) {
             int idx = encodedMsg[pos];
@@ -107,10 +107,10 @@ public class Code128EncoderTest extends TestCase {
                     visualizeCodesetB(sb, encodedMsg[pos]);
                 } else if (idx == 99) {
                     codeset = 'C';
-                    sb.append("->" + codeset);
+                    sb.append("->").append(codeset);
                 } else if (idx == 100) {
                     codeset = 'B';
-                    sb.append("->" + codeset);
+                    sb.append("->").append(codeset);
                 } else {
                     visualizeCodesetA(sb, idx);
                 }
@@ -121,20 +121,20 @@ public class Code128EncoderTest extends TestCase {
                     visualizeCodesetA(sb, encodedMsg[pos]);
                 } else if (idx == 99) {
                     codeset = 'C';
-                    sb.append("->" + codeset);
+                    sb.append("->").append(codeset);
                 } else if (idx == 101) {
                     codeset = 'A';
-                    sb.append("->" + codeset);
+                    sb.append("->").append(codeset);
                 } else {
                     visualizeCodesetB(sb, idx);
                 }
             } else if (codeset == 'C') {
                 if (idx == 100) {
                     codeset = 'B';
-                    sb.append("->" + codeset);
+                    sb.append("->").append(codeset);
                 } else if (idx == 101) {
                     codeset = 'A';
-                    sb.append("->" + codeset);
+                    sb.append("->").append(codeset);
                 } else {
                     visualizeCodesetC(sb, idx);
                 }

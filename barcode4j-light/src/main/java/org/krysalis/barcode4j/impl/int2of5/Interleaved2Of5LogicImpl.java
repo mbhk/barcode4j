@@ -139,7 +139,7 @@ public class Interleaved2Of5LogicImpl {
      * @param mode the checksum mode
      * @return the updated string after checksum processing (for the human-readable part)
      */
-    protected String doHandleChecksum(StringBuffer sb, ChecksumMode mode) {
+    protected String doHandleChecksum(StringBuilder sb, ChecksumMode mode) {
         if (mode == ChecksumMode.CP_ADD) {
             if (displayChecksum) {
                 sb.append(calcChecksum(sb.toString()));
@@ -175,7 +175,7 @@ public class Interleaved2Of5LogicImpl {
      * @param sb the string buffer containing the message
      * @return the updated string after checksum processing (for the human-readable part)
      */
-    protected String handleChecksum(StringBuffer sb) {
+    protected String handleChecksum(StringBuilder sb) {
         if (getChecksumMode() == ChecksumMode.CP_AUTO) {
             //auto = ignore
             return doHandleChecksum(sb, ChecksumMode.CP_IGNORE);
@@ -191,7 +191,7 @@ public class Interleaved2Of5LogicImpl {
      */
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
         //Checksum handling as requested
-        StringBuffer sb = new StringBuffer(msg);
+        StringBuilder sb = new StringBuilder(msg);
         String formattedMsg = handleChecksum(sb);
 
         //Length must be even

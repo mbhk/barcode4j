@@ -20,12 +20,19 @@ import java.text.NumberFormat;
 
 /**
  * Helper class to replace certain variables in the barcode message.
+ * 
+ * @version 1.1
  */
 public class VariableUtil {
 
+    private static final String PAGE_NUMBER = "#page-number#";
+    private static final String PAGE_NUMBER_WITH_FORMAT = "#page-number:";
+    private static final String FORMATTED_PAGE_NUMBER = "#formatted-page-number#";
+
     private static String replace(String text, String repl, String with) {
-        StringBuffer buf = new StringBuffer(text.length());
-        int start = 0, end = 0;
+        StringBuilder buf = new StringBuilder(text.length());
+        int start = 0;
+        int end;
         while ((end = text.indexOf(repl, start)) != -1) {
             buf.append(text.substring(start, end)).append(with);
             start = end + repl.length();
@@ -33,10 +40,6 @@ public class VariableUtil {
         buf.append(text.substring(start));
         return buf.toString();
     }
-
-    private static final String PAGE_NUMBER = "#page-number#";
-    private static final String PAGE_NUMBER_WITH_FORMAT = "#page-number:";
-    private static final String FORMATTED_PAGE_NUMBER = "#formatted-page-number#";
 
     /**
      * Method to replace page number variables in the message.
@@ -53,13 +56,13 @@ public class VariableUtil {
                 break;
             }
             String fmt = s.substring(idx + PAGE_NUMBER_WITH_FORMAT.length(), endidx);
-            StringBuffer sb = new StringBuffer(s);
+            StringBuilder sb = new StringBuilder(s);
             String value;
             if (page != null) {
                 NumberFormat nf = new DecimalFormat(fmt);
                 value = nf.format(page.getPageNumber());
             } else {
-                StringBuffer blanks = new StringBuffer(fmt.length());
+                StringBuilder blanks = new StringBuilder(fmt.length());
                 blanks.setLength(fmt.length());
                 for (int i = 0; i < blanks.length(); i++) {
                     blanks.setCharAt(i, '0');
@@ -78,5 +81,4 @@ public class VariableUtil {
         }
         return s;
     }
-
 }

@@ -101,7 +101,7 @@ public class RoyalMailCBCLogicImpl extends AbstractRMCBCKIXLogicImpl {
      * @return the modified message
      */
     public static String removeStartStop(String msg) {
-        StringBuffer sb = new StringBuffer(msg.length());
+        StringBuilder sb = new StringBuilder(msg.length());
         for (int i = 0, c = msg.length(); i < c; i++) {
             char ch = msg.charAt(i);
             switch (ch) {

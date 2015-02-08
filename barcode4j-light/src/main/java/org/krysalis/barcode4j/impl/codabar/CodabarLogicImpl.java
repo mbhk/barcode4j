@@ -154,7 +154,7 @@ public class CodabarLogicImpl {
         logic.endBarGroup();
     }
 
-    private void handleChecksum(StringBuffer sb) {
+    private void handleChecksum(StringBuilder sb) {
         if ((getChecksumMode() == ChecksumMode.CP_ADD)
                 || (getChecksumMode() == ChecksumMode.CP_CHECK)) {
             throw new UnsupportedOperationException(
@@ -162,12 +162,12 @@ public class CodabarLogicImpl {
         }
     }
 
-    private StringBuffer prepareMessage(String msg) {
+    private StringBuilder prepareMessage(String msg) {
         //Remove start/stop in standard mode if present
         if (isStartStopChar(msg.charAt(0)) && isStartStopChar(msg.charAt(msg.length() - 1))) {
-            return new StringBuffer(msg.substring(1, msg.length() - 1));
+            return new StringBuilder(msg.substring(1, msg.length() - 1));
         } else {
-            return new StringBuffer(msg);
+            return new StringBuilder(msg);
         }
     }
 
@@ -177,7 +177,7 @@ public class CodabarLogicImpl {
      * @param msg the message to encode
      */
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
-        StringBuffer sb = new StringBuffer(msg);
+        StringBuilder sb = new StringBuilder(msg);
 
         handleChecksum(sb);
 

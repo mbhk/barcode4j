@@ -154,7 +154,7 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public char calcChecksum(String msg) {
         return 0; //Not used
     }
@@ -307,7 +307,7 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
     }
 
     static String convertToBars(char[] chars) {
-        StringBuffer bars = new StringBuffer(65);
+        StringBuilder bars = new StringBuilder(65);
         bars.setLength(65);
         for (int i = 0; i < bars.length(); i++) {
             BarToCharacterMapping mapping = TABLE_BAR_TO_CHARACTER[i];
@@ -329,7 +329,7 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
         return bars.toString();
     }
 
-    /** {@inheritDoc} */
+    @Override
     protected String[] encodeHighLevel(String msg) {
         BigInteger binary = convertToBinary(msg);
         int fcs = calcFCS(to13ByteArray(binary));
@@ -340,9 +340,9 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
         return new String[] {bars};
     }
 
-    /** {@inheritDoc} */
+    @Override
     protected String normalizeMessage(String msg) {
-        StringBuffer sb = new StringBuffer(msg.length());
+        StringBuilder sb = new StringBuilder(msg.length());
         for (int i = 0, c = msg.length(); i < c; i++) {
             char ch = msg.charAt(i);
             if (Character.isDigit(ch)) {
@@ -352,7 +352,7 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
         return sb.toString();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
         //slightly specialized version of this method for USPS 4BC:
         //-> there's no direct correlation between the original msg chars and the effective chars

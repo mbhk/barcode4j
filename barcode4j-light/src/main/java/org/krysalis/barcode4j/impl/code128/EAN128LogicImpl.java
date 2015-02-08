@@ -44,8 +44,8 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
     private boolean omitBrackets = false;
 
     private String msgCache = null;
-    private final StringBuffer code128Msg;
-    private final StringBuffer humanReadableMsg;
+    private final StringBuilder code128Msg;
+    private final StringBuilder humanReadableMsg;
     private int[] encodedMsg = new int[]{};
     private IllegalArgumentException exception = null;
 
@@ -53,16 +53,16 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
     private boolean checksumCHECK = true;
 
     public EAN128LogicImpl(ChecksumMode mode, String template, char fnc1) {
-        this.humanReadableMsg = new StringBuffer(MAX_LENGTH);
-        this.code128Msg = new StringBuffer(MAX_LENGTH);
+        this.humanReadableMsg = new StringBuilder(MAX_LENGTH);
+        this.code128Msg = new StringBuilder(MAX_LENGTH);
         setChecksumMode(mode);
         setTemplate(template);
         this.groupSeparator = fnc1;
     }
 
     public EAN128LogicImpl(ChecksumMode mode, String template) {
-        this.humanReadableMsg = new StringBuffer(MAX_LENGTH);
-        this.code128Msg = new StringBuffer(MAX_LENGTH);
+        this.humanReadableMsg = new StringBuilder(MAX_LENGTH);
+        this.code128Msg = new StringBuilder(MAX_LENGTH);
         setChecksumMode(mode);
         setTemplate(template);
     }

@@ -215,7 +215,7 @@ public class PDF417LogicImpl {
                             + msg.length() + " bytes)");
         }
 
-        StringBuffer sb = new StringBuffer(n);
+        StringBuilder sb = new StringBuilder(n);
         sb.append((char)n);
         sb.append(highLevel);
         for (int i = 0; i < pad; i++) {

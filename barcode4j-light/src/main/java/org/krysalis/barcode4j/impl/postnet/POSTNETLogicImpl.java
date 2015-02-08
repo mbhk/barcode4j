@@ -114,7 +114,7 @@ public class POSTNETLogicImpl {
      * @return the message but without ignored characters
      */
     public static String removeIgnoredCharacters(final String msg) {
-        StringBuffer sb = new StringBuffer(msg.length());
+        StringBuilder sb = new StringBuilder(msg.length());
         for (int i = 0; i < msg.length(); i++) {
             final char ch = msg.charAt(i);
             if (!isValidChar(ch)) {
@@ -159,7 +159,7 @@ public class POSTNETLogicImpl {
         logic.addBar(false, -1); //-1 is special
     }
         
-    private String handleChecksum(StringBuffer sb) {
+    private String handleChecksum(StringBuilder sb) {
         if (getChecksumMode() == ChecksumMode.CP_ADD) {
             if (displayChecksum) {
                 sb.append(calcChecksum(sb.toString()));
@@ -197,7 +197,7 @@ public class POSTNETLogicImpl {
      * @param msg the message to encode
      */
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
-        StringBuffer sb = new StringBuffer(msg);
+        StringBuilder sb = new StringBuilder(msg);
         String formattedMsg = handleChecksum(sb);
 
         logic.startBarcode(sb.toString(), formattedMsg);

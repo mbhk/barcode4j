@@ -30,12 +30,12 @@ public class MessageUtil {
      * @return the processed message
      */
     public static String unescapeUnicode(String message) {
-       StringBuffer sb = new StringBuffer();
+       StringBuilder sb = new StringBuilder();
        if (message == null) {
            return null;
        }
        int sz = message.length();
-       StringBuffer unicode = new StringBuffer(4);
+       StringBuilder unicode = new StringBuilder(4);
        boolean hadSlash = false;
        boolean inUnicode = false;
        for (int i = 0; i < sz; i++) {
@@ -82,7 +82,7 @@ public class MessageUtil {
      */
     public static String filterNonPrintableCharacters(String text) {
         int len = text.length();
-        StringBuffer sb = new StringBuffer(len);
+        StringBuilder sb = new StringBuilder(len);
         for (int i = 0; i < len; i++) {
             final char ch = text.charAt(i);
             if (ch < 32 || ch == 127) {

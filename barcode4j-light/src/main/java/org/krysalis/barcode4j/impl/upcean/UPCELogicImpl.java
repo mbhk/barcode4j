@@ -69,7 +69,7 @@ public class UPCELogicImpl extends UPCEANLogicImpl {
             return null;
         }
         final byte check = Byte.parseByte(upca.substring(11, 12));
-        StringBuffer upce = new StringBuffer();
+        StringBuilder upce = new StringBuilder();
         upce.append(Byte.toString(numberSystem));
         try {
             String manufacturer = substring(upca, 1, 5);
@@ -136,7 +136,7 @@ public class UPCELogicImpl extends UPCEANLogicImpl {
         if ((numberSystem != 0) && (numberSystem != 1)) {
             throw new IllegalArgumentException("Invalid UPC-E message: " + msg);
         }
-        StringBuffer upca = new StringBuffer();
+        StringBuilder upca = new StringBuilder();
         upca.append(Byte.toString(numberSystem));
         byte mode = Byte.parseByte(substring(upce, 6, 1));
         if ((mode >= 0) && (mode <= 2)) {
@@ -276,7 +276,7 @@ public class UPCELogicImpl extends UPCEANLogicImpl {
         logic.endBarGroup();
     }
 
-    /** @see org.krysalis.barcode4j.impl.upcean.UPCEANLogicImpl */
+    @Override
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
         String supp = retrieveSupplemental(msg);
         String s = removeSupplemental(msg); 
