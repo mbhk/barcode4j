@@ -31,7 +31,7 @@ import org.krysalis.barcode4j.output.Canvas;
  * implementation for UPC and EAN barcodes.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
 public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
     
@@ -44,7 +44,7 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
     private double groupx;
     private boolean inMsgGroup;
     private boolean inSupplemental;
-    private Stack groupStack = new Stack();
+    private final Stack groupStack = new Stack();
     
     /**
      * Main constructor.
@@ -68,7 +68,7 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
         }
     }            
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void startBarcode(String msg, String formattedMsg) {
         this.msg = msg;
         //Calculate extents
@@ -81,7 +81,7 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
         
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void startBarGroup(BarGroup type, String submsg) {
         if (type == BarGroup.UPC_EAN_GUARD) {
             //nop
@@ -103,7 +103,7 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
         groupStack.push(type);
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void addBar(boolean black, int width) {
         final double w = bcBean.getBarWidth(width);
         if (black) {
@@ -157,7 +157,7 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
         return (bcBean instanceof EAN13Bean) || (bcBean instanceof EAN8Bean);
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void endBarGroup() {
         BarGroup group = (BarGroup)groupStack.pop();
 
@@ -260,9 +260,7 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
         }
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void endBarcode() {
     }
-
 }
-

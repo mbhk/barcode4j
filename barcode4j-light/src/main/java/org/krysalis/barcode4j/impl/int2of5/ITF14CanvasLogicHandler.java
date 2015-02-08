@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.int2of5;
 
 import org.krysalis.barcode4j.HumanReadablePlacement;
@@ -25,7 +23,7 @@ import org.krysalis.barcode4j.output.Canvas;
 /**
  * Specialized logic handler for ITF-14 (to paint the bearer bar).
  *
- * @version $Id$
+ * @version 1.1
  */
 public class ITF14CanvasLogicHandler extends DefaultCanvasLogicHandler {
 
@@ -42,7 +40,7 @@ public class ITF14CanvasLogicHandler extends DefaultCanvasLogicHandler {
         return (ITF14Bean)this.bcBean;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void startBarcode(String msg, String formattedMsg) {
         super.startBarcode(msg, formattedMsg);
         ITF14Bean bean = getITF14Bean();
@@ -62,19 +60,19 @@ public class ITF14CanvasLogicHandler extends DefaultCanvasLogicHandler {
         //canvas.drawRect(getStartX(), 2 * bbw, getStartX() + dimensions.getWidth(), 3 * bbw);
     }
 
-    /** {@inheritDoc} */
+    @Override
     protected double getStartX() {
         ITF14Bean bean = getITF14Bean();
         return super.getStartX() + (bean.isBearerBox() ? bean.getBearerBarWidth() : 0);
     }
 
-    /** {@inheritDoc} */
+    @Override
     protected double getStartY() {
         double y = super.getStartY() + getITF14Bean().getBearerBarWidth();
         return y;
     }
 
-    /** {@inheritDoc} */
+    @Override
     protected double getTextBaselinePosition() {
         if (bcBean.getMsgPosition() == HumanReadablePlacement.HRP_BOTTOM) {
             double ty = super.getTextBaselinePosition();
@@ -84,5 +82,4 @@ public class ITF14CanvasLogicHandler extends DefaultCanvasLogicHandler {
             return super.getTextBaselinePosition();
         }
     }
-
 }

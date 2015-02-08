@@ -77,7 +77,7 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
         return y;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void startBarcode(String msg, String formattedMsg) {
         this.formattedMsg = MessagePatternUtil.applyCustomMessagePattern(
                 formattedMsg, bcBean.getPattern());
@@ -90,12 +90,12 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
         y = getStartY();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void startBarGroup(BarGroup type, String submsg) {
         //nop
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void addBar(boolean black, int width) {
         final double w = bcBean.getBarWidth(width);
         if (black) {
@@ -104,11 +104,11 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
         x += w;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void endBarGroup() {
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void endBarcode() {
         if (bcBean.getMsgPosition() == HumanReadablePlacement.HRP_NONE) {
             //nop

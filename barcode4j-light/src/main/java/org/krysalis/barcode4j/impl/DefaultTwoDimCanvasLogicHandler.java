@@ -24,12 +24,12 @@ import org.krysalis.barcode4j.output.Canvas;
  * Default 2D Logic Handler implementation for painting on a Canvas.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
 public class DefaultTwoDimCanvasLogicHandler implements TwoDimBarcodeLogicHandler {
     
-    private AbstractBarcodeBean bcBean;
-    private Canvas canvas;
+    private final AbstractBarcodeBean bcBean;
+    private final Canvas canvas;
     private double x = 0.0;
     private double y = 0.0;
     
@@ -59,7 +59,7 @@ public class DefaultTwoDimCanvasLogicHandler implements TwoDimBarcodeLogicHandle
         }
     }            
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void startBarcode(String msg, String formattedMsg) {
         //Calculate extents
         BarcodeDimension dim = bcBean.calcDimensions(msg);
@@ -68,17 +68,17 @@ public class DefaultTwoDimCanvasLogicHandler implements TwoDimBarcodeLogicHandle
         y = getStartY();
     }
 
-    /** @see org.krysalis.barcode4j.TwoDimBarcodeLogicHandler#startRow() */
+    @Override
     public void startRow() {
         x = getStartX();
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void startBarGroup(BarGroup type, String submsg) {
         //nop
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void addBar(boolean black, int width) {
         final double w = bcBean.getBarWidth(width);
         if (black) {
@@ -87,20 +87,18 @@ public class DefaultTwoDimCanvasLogicHandler implements TwoDimBarcodeLogicHandle
         x += w;
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void endBarGroup() {
         //nop
     }
 
-    /** @see org.krysalis.barcode4j.TwoDimBarcodeLogicHandler#endRow() */
+    @Override
     public void endRow() {
         y += bcBean.getBarHeight(); //=row height
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void endBarcode() {
         //nop
     }
-
 }
-

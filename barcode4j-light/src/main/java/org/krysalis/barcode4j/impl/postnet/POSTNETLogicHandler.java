@@ -47,15 +47,13 @@ public class POSTNETLogicHandler
         }
     }            
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void startBarcode(String msg, String formattedMsg) {
         super.startBarcode(msg, formattedMsg);
         y = getStartY();
     }
 
-    /**
-     * @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler#addBar(boolean, int)
-     */
+    @Override
     public void addBar(boolean black, int height) {
         POSTNETBean pnBean = (POSTNETBean)bcBean;
         final double w = black ? bcBean.getBarWidth(1) : bcBean.getBarWidth(-1);
@@ -79,5 +77,4 @@ public class POSTNETLogicHandler
         }
         x += w;
     }
-
 }

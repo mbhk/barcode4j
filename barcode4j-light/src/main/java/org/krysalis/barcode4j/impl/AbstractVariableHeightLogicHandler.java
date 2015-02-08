@@ -73,7 +73,7 @@ public abstract class AbstractVariableHeightLogicHandler
         }
     }            
 
-    /** {@inheritDoc} */
+    @Override
     public void startBarcode(String msg, String formattedMsg) {
         this.formattedMsg = MessagePatternUtil.applyCustomMessagePattern(
                 formattedMsg, bcBean.getPattern());
@@ -102,7 +102,7 @@ public abstract class AbstractVariableHeightLogicHandler
         return texty;
     }
     
-    /** {@inheritDoc} */
+    @Override
     public void endBarcode() {
         if (bcBean.getMsgPosition() != HumanReadablePlacement.HRP_NONE) {
             double texty = getTextY();
@@ -111,12 +111,11 @@ public abstract class AbstractVariableHeightLogicHandler
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void startBarGroup(BarGroup barGroup, String string) {
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void endBarGroup() {
     }
-
 }

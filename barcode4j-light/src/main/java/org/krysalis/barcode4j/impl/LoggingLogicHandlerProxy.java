@@ -22,7 +22,7 @@ import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
  * Proxy class for logging.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.1
  */
 public class LoggingLogicHandlerProxy implements ClassicBarcodeLogicHandler {
 
@@ -36,34 +36,33 @@ public class LoggingLogicHandlerProxy implements ClassicBarcodeLogicHandler {
         this.delegate = delegate;
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void startBarGroup(BarGroup type, String submsg) {
         System.out.println("startBarGroup(" + type + ", " + submsg + ")");
         delegate.startBarGroup(type, submsg);
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void endBarGroup() {
         System.out.println("endBarGroup()");
         delegate.endBarGroup();
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void addBar(boolean black, int weight) {
         System.out.println("addBar(" + black + ", " + weight + ")");
         delegate.addBar(black, weight);
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void startBarcode(String msg, String formattedMsg) {
         System.out.println("startBarcode(" + msg + ", " + formattedMsg + ")");
         delegate.startBarcode(msg, formattedMsg);
     }
 
-    /** @see org.krysalis.barcode4j.ClassicBarcodeLogicHandler */
+    @Override
     public void endBarcode() {
         System.out.println("endBarcode()");
         delegate.endBarcode();
     }
-
 }
