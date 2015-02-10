@@ -33,7 +33,7 @@ public class IOUtil {
      * @throws IOException if an I/O error occurs
      */
     public static void copy(InputStream in, OutputStream out) throws IOException {
-        byte[] buf = new byte[1024];
+        final byte[] buf = new byte[1024];
         int n = 0;
         while (-1 != (n = in.read(buf))) {
             out.write(buf, 0, n);

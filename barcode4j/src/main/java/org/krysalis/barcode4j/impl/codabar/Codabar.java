@@ -40,7 +40,7 @@ public class Codabar extends ConfigurableBarcodeGenerator
     @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
-        Length mw = new Length(cfg.getChild("module-width").getValue("0.21mm"), "mm");
+        final Length mw = new Length(cfg.getChild("module-width").getValue("0.21mm"), "mm");
         getBean().setModuleWidth(mw.getValueAsMillimeter());
 
         super.configure(cfg);
@@ -53,7 +53,7 @@ public class Codabar extends ConfigurableBarcodeGenerator
         getCodabarBean().setWideFactor(
             cfg.getChild("wide-factor").getValueAsFloat((float)CodabarBean.DEFAULT_WIDE_FACTOR));
 
-        Configuration hr = cfg.getChild("human-readable", false);
+        final Configuration hr = cfg.getChild("human-readable", false);
         if (hr != null) {
             //Display start/stop character and checksum in hr-message or not
             getCodabarBean().setDisplayStartStop(

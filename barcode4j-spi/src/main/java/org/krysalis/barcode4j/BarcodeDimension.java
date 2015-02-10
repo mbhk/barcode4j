@@ -156,21 +156,21 @@ public class BarcodeDimension {
 
     /** @return a bounding rectangle (including quiet zone if applicable) */
     public Rectangle2D getBoundingRect() {
-        Rectangle2D.Double r = new Rectangle2D.Double(
+        final Rectangle2D.Double r = new Rectangle2D.Double(
                 0, 0, getWidthPlusQuiet(), getHeightPlusQuiet());
         return r;
     }
     
     /** @return a content rectangle (excluding quiet zone) */
     public Rectangle2D getContentRect() {
-        Rectangle2D.Double r = new Rectangle2D.Double(
+        final Rectangle2D.Double r = new Rectangle2D.Double(
                 getXOffset(), getYOffset(), getWidth(), getHeight());
         return r;
     }
     
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(super.toString());
+        final StringBuilder sb = new StringBuilder(super.toString());
         sb.append("[width=");
         sb.append(getWidth());
         sb.append("(");

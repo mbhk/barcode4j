@@ -81,7 +81,7 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
             }
 
             //if the reverse is less than count, we have already visited this pair before
-            int reverse = reverseUnsignedShort(count) >> 3;
+            final int reverse = reverseUnsignedShort(count) >> 3;
             if (reverse < count) {
                 continue;
             }
@@ -111,13 +111,13 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
                 = "usps-4bc-bar-to-character-table.csv";
 
     private static void initializeBarToCharacterTable() {
-        InputStream in = USPSIntelligentMailLogicImpl.class.getResourceAsStream(
+        final InputStream in = USPSIntelligentMailLogicImpl.class.getResourceAsStream(
                 BAR_TO_CHARACTER_TABLE_FILENAME);
         if (in == null) {
             throw new MissingResourceException(
                     "Resource " + BAR_TO_CHARACTER_TABLE_FILENAME + " not found!", null, null);
         }
-        BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(in));
+        final BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(in));
         try {
             int idx = 0;
             String line;
@@ -143,7 +143,7 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
         private int ascBitMap;
 
         private BarToCharacterMapping(int index, String line) {
-            StringTokenizer tokenizer = new StringTokenizer(line, ";");
+            final StringTokenizer tokenizer = new StringTokenizer(line, ";");
             if (Integer.parseInt(tokenizer.nextToken()) != (index + 1)) {
                 throw new IllegalStateException("Encountered the wrong line number");
             }
@@ -168,8 +168,8 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
             throw new IllegalArgumentException(
                     "Message must not be longer than 31 digits");
         }
-        String routingCode = msg.substring(20);
-        int routingLength = routingCode.length();
+        final String routingCode = msg.substring(20);
+        final int routingLength = routingCode.length();
         BigInteger routingBig;
         switch (routingLength) {
         case 0:
@@ -196,7 +196,7 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
 
         final BigInteger five = BigInteger.valueOf(5);
         final BigInteger ten = BigInteger.valueOf(10);
-        String trackingCode = msg.substring(0, 20);
+        final String trackingCode = msg.substring(0, 20);
 
         //First tracking code digit
         binary = binary.multiply(ten);
@@ -216,8 +216,8 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
     }
 
     static byte[] to13ByteArray(BigInteger binary) {
-        byte[] result = new byte[13];
-        byte[] bin = binary.toByteArray();
+        final byte[] result = new byte[13];
+        final byte[] bin = binary.toByteArray();
         System.arraycopy(bin, 0, result, 13 - bin.length, bin.length);
         return result;
     }
@@ -290,10 +290,10 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
     }
 
     static char[] convertToCharacters(int[] codewords, int fcs) {
-        int c = codewords.length;
-        char[] chars = new char[c];
+        final int c = codewords.length;
+        final char[] chars = new char[c];
         for (int i = 0; i < c; i++) {
-            int codeword = codewords[i];
+            final int codeword = codewords[i];
             if (codeword < TABLE5OF13.length) {
                 chars[i] = TABLE5OF13[codeword];
             } else {
@@ -307,10 +307,10 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
     }
 
     static String convertToBars(char[] chars) {
-        StringBuilder bars = new StringBuilder(65);
+        final StringBuilder bars = new StringBuilder(65);
         bars.setLength(65);
         for (int i = 0; i < bars.length(); i++) {
-            BarToCharacterMapping mapping = TABLE_BAR_TO_CHARACTER[i];
+            final BarToCharacterMapping mapping = TABLE_BAR_TO_CHARACTER[i];
             int resultBits = 0;
             char c;
 
@@ -331,20 +331,20 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
 
     @Override
     protected String[] encodeHighLevel(String msg) {
-        BigInteger binary = convertToBinary(msg);
-        int fcs = calcFCS(to13ByteArray(binary));
-        int[] codewords = convertToCodewords(binary);
-        int[] modified = modifyCodewords(codewords, fcs);
-        char[] chars = convertToCharacters(modified, fcs);
-        String bars = convertToBars(chars);
+        final BigInteger binary = convertToBinary(msg);
+        final int fcs = calcFCS(to13ByteArray(binary));
+        final int[] codewords = convertToCodewords(binary);
+        final int[] modified = modifyCodewords(codewords, fcs);
+        final char[] chars = convertToCharacters(modified, fcs);
+        final String bars = convertToBars(chars);
         return new String[] {bars};
     }
 
     @Override
     protected String normalizeMessage(String msg) {
-        StringBuilder sb = new StringBuilder(msg.length());
-        for (int i = 0, c = msg.length(); i < c; i++) {
-            char ch = msg.charAt(i);
+        final StringBuilder sb = new StringBuilder(msg.length());
+        for (int i = 0; i < msg.length(); i++) {
+            final char ch = msg.charAt(i);
             if (Character.isDigit(ch)) {
                 sb.append(ch);
             }
@@ -356,16 +356,16 @@ public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
         //slightly specialized version of this method for USPS 4BC:
         //-> there's no direct correlation between the original msg chars and the effective chars
-        String normalizedMsg = normalizeMessage(msg);
-        String[] encodedMsg = encodeHighLevel(normalizedMsg);
+        final String normalizedMsg = normalizeMessage(msg);
+        final String[] encodedMsg = encodeHighLevel(normalizedMsg);
         //encodedMsg.length will always be 1
 
         logic.startBarcode(msg, normalizedMsg);
 
         // encode message
-        String codeword = encodedMsg[0];
-        for (int i = 0, count = codeword.length(); i < count; i++) {
-            int height = Integer.parseInt(codeword.substring(i, i + 1));
+        final String codeword = encodedMsg[0];
+        for (int i = 0; i < codeword.length(); i++) {
+            final int height = Integer.parseInt(codeword.substring(i, i + 1));
             logic.addBar(true, height);
         }
 

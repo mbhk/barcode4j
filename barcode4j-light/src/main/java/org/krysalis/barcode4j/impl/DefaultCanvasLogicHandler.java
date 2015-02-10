@@ -113,7 +113,7 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
         if (bcBean.getMsgPosition() == HumanReadablePlacement.HRP_NONE) {
             //nop
         } else {
-            double ty = getTextBaselinePosition();
+            final double ty = getTextBaselinePosition();
             DrawingUtil.drawText(canvas, bcBean, formattedMsg,
                     getStartX(), x, ty, TextAlignment.TA_CENTER);
         }

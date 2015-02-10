@@ -76,11 +76,11 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        ClassicBarcodeLogicHandler handler = 
+        final ClassicBarcodeLogicHandler handler = 
                 new DefaultCanvasLogicHandler(this, new Canvas(canvas));
         //handler = new LoggingLogicHandlerProxy(handler);
 
-        Interleaved2Of5LogicImpl impl = new Interleaved2Of5LogicImpl(
+        final Interleaved2Of5LogicImpl impl = new Interleaved2Of5LogicImpl(
                 getChecksumMode(), isDisplayChecksum());
         impl.generateBarcodeLogic(handler, msg);
     }
@@ -148,7 +148,7 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        Collection<String> res = new ArrayList<String>(1);
+        final Collection<String> res = new ArrayList<String>(1);
         res.add("2of5");
         res.add("interleaved2of5");
         return res;

@@ -68,7 +68,7 @@ public class BarcodeGeneratorProvider {
      * @return Set of available BarcodeGenerator names
      */
     public Collection<String> getAvailableBarcodeGenerators() {
-        Set<String> res = new TreeSet<String>();
+        final Set<String> res = new TreeSet<String>();
         res.addAll(barcodeGenerators.keySet());
         return res;
     }
@@ -81,7 +81,7 @@ public class BarcodeGeneratorProvider {
      * @throws BarcodeException if barcode with {@code id} is not available 
      */
     public BarcodeGenerator getBarcodeGenerator(String id) throws BarcodeException {
-        Class<BarcodeGenerator> clazz = barcodeGenerators.get(id);
+        final Class<BarcodeGenerator> clazz = barcodeGenerators.get(id);
 
         if (clazz == null) {
             throw new BarcodeException("BarcodeGenerator with " + id + " is not available.");
@@ -102,16 +102,16 @@ public class BarcodeGeneratorProvider {
      * Loads all implementing Classes through ServiceLoader interface.
      */
     private void initialize() {
-        Iterator<BarcodeGenerator> iterator = loader.iterator();
+        final Iterator<BarcodeGenerator> iterator = loader.iterator();
         while (iterator.hasNext()) {
             try {
-                BarcodeGenerator bg = iterator.next();
-                String id = bg.getId();
-                Class<BarcodeGenerator> clazz = (Class<BarcodeGenerator>) bg.getClass();
+                final BarcodeGenerator bg = iterator.next();
+                final String id = bg.getId();
+                final Class<BarcodeGenerator> clazz = (Class<BarcodeGenerator>) bg.getClass();
                 barcodeGenerators.put(id, clazz);
-                Collection<String> addIds = bg.getAdditionalNames();
+                final Collection<String> addIds = bg.getAdditionalNames();
                 if (addIds != null) {
-                    for (String addId : addIds) {
+                    for (final String addId : addIds) {
                         barcodeGenerators.putIfAbsent(addId, clazz);
                     }
                 }
@@ -121,9 +121,9 @@ public class BarcodeGeneratorProvider {
         }
         if (LOGGER.isLoggable(Level.INFO)) {
             LOGGER.info("Available BarcodeGenerators: ");
-            for (Map.Entry<String, Class<BarcodeGenerator>> entrySet : barcodeGenerators.entrySet()) {
-                String key = entrySet.getKey();
-                Class<BarcodeGenerator> value = entrySet.getValue();
+            for (final Map.Entry<String, Class<BarcodeGenerator>> entrySet : barcodeGenerators.entrySet()) {
+                final String key = entrySet.getKey();
+                final Class<BarcodeGenerator> value = entrySet.getValue();
                 LOGGER.log(Level.INFO, "{0} -> {1}", new Object[]{key, value.getName()});
             }
         }

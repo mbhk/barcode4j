@@ -106,7 +106,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
 
     private void init() {
         doc = createDocument();
-        Element svg = doc.getDocumentElement();
+        final Element svg = doc.getDocumentElement();
 
         detailGroup = createElement("g");
         svg.appendChild(detailGroup);
@@ -129,15 +129,15 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
     private Document createDocument() {
         try {
             if (this.domImpl == null) {
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 dbf.setNamespaceAware(true);
                 dbf.setValidating(false);
-                DocumentBuilder db = dbf.newDocumentBuilder();
+                final DocumentBuilder db = dbf.newDocumentBuilder();
                 this.domImpl = db.getDOMImplementation();
             }
 
             if (isNamespaceEnabled()) {
-                Document doc = this.domImpl.createDocument(
+                final Document doc = this.domImpl.createDocument(
                         SVG_NAMESPACE, getQualifiedName("svg"), null);
                 /*
                 if (getNamespacePrefix() == null) {
@@ -169,7 +169,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
      * @return the DOM fragment
      */
     public org.w3c.dom.DocumentFragment getDOMFragment() {
-        DocumentFragment frag = doc.createDocumentFragment();
+        final DocumentFragment frag = doc.createDocumentFragment();
         frag.appendChild(doc.importNode(doc.getFirstChild(), true));
         return frag;
     }
@@ -177,12 +177,12 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
     @Override
     public void establishDimensions(BarcodeDimension dim) {
         super.establishDimensions(dim);
-        Orientation orientation = getOrientation();
-        Element svg = (Element)doc.getDocumentElement();
+        final Orientation orientation = getOrientation();
+        final Element svg = (Element)doc.getDocumentElement();
         svg.setAttribute("width", addUnit(dim.getWidthPlusQuiet(orientation)));
         svg.setAttribute("height", addUnit(dim.getHeightPlusQuiet(orientation)));
-        String w = getDecimalFormat().format(dim.getWidthPlusQuiet(orientation));
-        String h = getDecimalFormat().format(dim.getHeightPlusQuiet(orientation));
+        final String w = getDecimalFormat().format(dim.getWidthPlusQuiet(orientation));
+        final String h = getDecimalFormat().format(dim.getHeightPlusQuiet(orientation));
         svg.setAttribute("viewBox", "0 0 " + w + " " + h);
         String transform;
         switch (orientation) {
@@ -205,7 +205,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
 
     @Override
     public void deviceFillRect(double x, double y, double w, double h) {
-        Element el = createElement("rect");
+        final Element el = createElement("rect");
         el.setAttribute("x", getDecimalFormat().format(x));
         el.setAttribute("y", getDecimalFormat().format(y));
         el.setAttribute("width", getDecimalFormat().format(w));
@@ -216,7 +216,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
     @Override
     public void deviceText(String text, double x1, double x2, double y1,
                             String fontName, double fontSize, TextAlignment textAlign) {
-        Element el = createElement("text");
+        final Element el = createElement("text");
         String anchor;
         double tx;
         if (textAlign == TextAlignment.TA_LEFT) {

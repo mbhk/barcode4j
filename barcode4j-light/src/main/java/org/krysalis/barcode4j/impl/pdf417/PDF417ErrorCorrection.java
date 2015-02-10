@@ -68,9 +68,9 @@ public class PDF417ErrorCorrection implements PDF417Constants {
      * @return the String representing the error correction codewords
      */
     public static String generateErrorCorrection(String dataCodewords, int errorCorrectionLevel) {
-        int k = getErrorCorrectionCodewordCount(errorCorrectionLevel);
+        final int k = getErrorCorrectionCodewordCount(errorCorrectionLevel);
         char[] e = new char[k];
-        int sld = dataCodewords.length();
+        final int sld = dataCodewords.length();
         int t1, t2, t3;
         for (int i = 0; i < sld; i++) {
             t1 = (dataCodewords.charAt(i) + e[e.length - 1]) % 929;
@@ -84,7 +84,7 @@ public class PDF417ErrorCorrection implements PDF417Constants {
             e[0] = (char)(t3 % 929);
             //System.out.println(HighLevelEncoderTest.visualize(new String(e)));
         }
-        StringBuilder sb = new StringBuilder(k);
+        final StringBuilder sb = new StringBuilder(k);
         for (int j = k - 1; j >= 0; j--) {
             if (e[j] != 0) {
                 e[j] = (char)(929 - e[j]);

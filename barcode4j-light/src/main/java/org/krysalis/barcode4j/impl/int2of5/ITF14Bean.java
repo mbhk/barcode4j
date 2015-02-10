@@ -116,10 +116,10 @@ public class ITF14Bean extends Interleaved2Of5Bean {
         }
         validate();
 
-        ClassicBarcodeLogicHandler handler =
+        final ClassicBarcodeLogicHandler handler =
                 new ITF14CanvasLogicHandler(this, new Canvas(canvas));
 
-        ITF14LogicImpl impl = new ITF14LogicImpl(
+        final ITF14LogicImpl impl = new ITF14LogicImpl(
                 getChecksumMode(), isDisplayChecksum());
         impl.generateBarcodeLogic(handler, msg);
     }
@@ -144,7 +144,7 @@ public class ITF14Bean extends Interleaved2Of5Bean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        Collection<String> res = new ArrayList<String>(1);
+        final Collection<String> res = new ArrayList<String>(1);
         res.add("iftf14");
         return res;
     }

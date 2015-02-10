@@ -79,7 +79,7 @@ public class PDF417Bean extends AbstractBarcodeBean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        TwoDimBarcodeLogicHandler handler = new DefaultTwoDimCanvasLogicHandler(
+        final TwoDimBarcodeLogicHandler handler = new DefaultTwoDimCanvasLogicHandler(
                 this, new Canvas(canvas));
 
         PDF417LogicImpl.generateBarcodeLogic(handler, msg, this);
@@ -89,19 +89,19 @@ public class PDF417Bean extends AbstractBarcodeBean {
     @Override
     public BarcodeDimension calcDimensions(String msg) {
 
-        int sourceCodeWords = PDF417HighLevelEncoder.encodeHighLevel(msg,
+        final int sourceCodeWords = PDF417HighLevelEncoder.encodeHighLevel(msg,
                 getEncoding(), isECIEnabled()).length();
-        Dimension dimension = PDF417LogicImpl.determineDimensions(this,
+        final Dimension dimension = PDF417LogicImpl.determineDimensions(this,
                 sourceCodeWords);
 
         if (dimension == null) {
             throw new IllegalArgumentException("Unable to fit message in columns");
         }
 
-        double width = (17 * dimension.width + 69) * getModuleWidth();
-        double height = (getBarHeight() * dimension.height);
-        double qzh = (hasQuietZone() ? getQuietZone() : 0);
-        double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);
+        final double width = (17 * dimension.width + 69) * getModuleWidth();
+        final double height = (getBarHeight() * dimension.height);
+        final double qzh = (hasQuietZone() ? getQuietZone() : 0);
+        final double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);
         return new BarcodeDimension(width, height,
                 width + (2 * qzh), height + (2 * qzv),
                 qzh, qzv);
@@ -298,7 +298,7 @@ public class PDF417Bean extends AbstractBarcodeBean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        Collection<String> res = new ArrayList<String>(0);
+        final Collection<String> res = new ArrayList<String>(0);
         return res;
     }
 

@@ -60,9 +60,9 @@ public class PlaygroundFrame extends JFrame implements ActionListener, ChangeLis
     private JComboBox<String> getBarcodeNames() {
         if (barcodeNames == null) {
             barcodeNames = new JComboBox<String>();
-            Collection<String> names = BarcodeGeneratorProvider.getInstance()
+            final Collection<String> names = BarcodeGeneratorProvider.getInstance()
                     .getAvailableBarcodeGenerators();
-            for (String name : names) {
+            for (final String name : names) {
                 barcodeNames.addItem(name);
             }
             barcodeNames.setSelectedItem("qr");
@@ -94,9 +94,9 @@ public class PlaygroundFrame extends JFrame implements ActionListener, ChangeLis
         setTitle(TITLE);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(600, 400));
-        Container contentPane = getContentPane();
+        final Container contentPane = getContentPane();
 
-        JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        final JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         northPanel.add(new JLabel("Choose Barcode: "));
         northPanel.add(getBarcodeNames());
         northPanel.add(new JLabel("Message: "));

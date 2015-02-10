@@ -129,9 +129,9 @@ public class CodabarLogicImpl {
 
     private int widthAt(char ch, int index) throws IllegalArgumentException {
         ch = Character.toLowerCase(ch);
-        int chidx = getCharIndex(ch);
+        final int chidx = getCharIndex(ch);
         if (chidx >= 0) {
-            int binary = CHARSET[chidx][index];
+            final int binary = CHARSET[chidx][index];
             return binary + 1;
         } else {
             throw new IllegalArgumentException("Invalid character: " + ch);
@@ -177,12 +177,12 @@ public class CodabarLogicImpl {
      * @param msg the message to encode
      */
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
-        StringBuilder sb = new StringBuilder(msg);
+        final StringBuilder sb = new StringBuilder(msg);
 
         handleChecksum(sb);
 
         //Checksum handling as requested
-        String effMsg = sb.toString();
+        final String effMsg = sb.toString();
         String displayMsg;
 
         if (displayStartStop) {

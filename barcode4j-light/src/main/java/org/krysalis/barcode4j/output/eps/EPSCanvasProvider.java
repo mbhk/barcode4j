@@ -67,7 +67,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
      */
     protected DecimalFormat getDecimalFormat() {
         if (this.df == null) {
-            DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+            final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
             dfs.setDecimalSeparator('.');
             this.df = new DecimalFormat("0.####", dfs);
         }
@@ -88,8 +88,8 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
 
     private void writeHeader(double width, double height) throws IOException {
         writer.write("%!PS-Adobe-3.0 EPSF-3.0\n");
-        double widthpt = UnitConv.mm2pt(width);
-        double heightpt = UnitConv.mm2pt(height);
+        final double widthpt = UnitConv.mm2pt(width);
+        final double heightpt = UnitConv.mm2pt(height);
         writer.write("%%BoundingBox: 0 0 "
                 + Math.round(Math.ceil(widthpt)) + " "
                 + Math.round(Math.ceil(heightpt)) + "\n");
@@ -167,7 +167,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
     @Override
     public void establishDimensions(BarcodeDimension dim) {
         super.establishDimensions(dim);
-        Orientation orientation = getOrientation();
+        final Orientation orientation = getOrientation();
         if (firstError != null) {
             return;
         }
@@ -175,8 +175,8 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
         try {
             writeHeader(dim.getWidthPlusQuiet(orientation),
                     dim.getHeightPlusQuiet(orientation));
-            String w = formatmm(dim.getWidthPlusQuiet());
-            String h = formatmm(dim.getHeightPlusQuiet());
+            final String w = formatmm(dim.getWidthPlusQuiet());
+            final String h = formatmm(dim.getHeightPlusQuiet());
             switch (orientation) {
             case NINETY:
                 writer.write("90 rotate 0" + " -" + h + " translate\n");

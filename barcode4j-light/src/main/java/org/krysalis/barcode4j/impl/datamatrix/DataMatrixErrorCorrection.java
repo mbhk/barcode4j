@@ -55,11 +55,11 @@ public class DataMatrixErrorCorrection implements DataMatrixReedSolomonFactors {
             throw new IllegalArgumentException(
                     "The number of codewords does not match the selected symbol");
         }
-        StringBuilder sb = new StringBuilder(symbolInfo.dataCapacity + symbolInfo.errorCodewords);
+        final StringBuilder sb = new StringBuilder(symbolInfo.dataCapacity + symbolInfo.errorCodewords);
         sb.append(codewords);
-        int blockCount = symbolInfo.getInterleavedBlockCount();
+        final int blockCount = symbolInfo.getInterleavedBlockCount();
         if (blockCount == 1) {
-            String ecc = createECCBlock(codewords, symbolInfo.errorCodewords);
+            final String ecc = createECCBlock(codewords, symbolInfo.errorCodewords);
             sb.append(ecc);
         } else {
             sb.setLength(sb.capacity());
@@ -75,11 +75,11 @@ public class DataMatrixErrorCorrection implements DataMatrixReedSolomonFactors {
                 }
             }
             for (int block = 0; block < blockCount; block++) {
-                StringBuilder temp = new StringBuilder(dataSizes[block]);
+                final StringBuilder temp = new StringBuilder(dataSizes[block]);
                 for (int d = block; d < symbolInfo.dataCapacity; d += blockCount) {
                     temp.append(codewords.charAt(d));
                 }
-                String ecc = createECCBlock(temp.toString(), errorSizes[block]);
+                final String ecc = createECCBlock(temp.toString(), errorSizes[block]);
                 int pos = 0;
                 for (int e = block; e < errorSizes[block] * blockCount; e += blockCount) {
                     sb.setCharAt(symbolInfo.dataCapacity + e, ecc.charAt(pos++));
@@ -106,13 +106,13 @@ public class DataMatrixErrorCorrection implements DataMatrixReedSolomonFactors {
             throw new IllegalArgumentException(
                     "Illegal number of error correction codewords specified: " + numECWords);
         }
-        int[] poly = DataMatrixReedSolomonFactors.FACTORS[table];
+        final int[] poly = DataMatrixReedSolomonFactors.FACTORS[table];
         char[] ecc = new char[numECWords];
         for (int i = 0; i < numECWords; i++) {
             ecc[i] = 0;
         }
         for (int i = start; i < start + len; i++) {
-            int m = ecc[numECWords - 1] ^ codewords.charAt(i);
+            final int m = ecc[numECWords - 1] ^ codewords.charAt(i);
             for (int k = numECWords - 1; k > 0; k--) {
                 if (m != 0 && poly[k] != 0) {
                     ecc[k] = (char)(ecc[k - 1] ^ ALOG[(LOG[m] + LOG[poly[k]]) % 255]);

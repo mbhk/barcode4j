@@ -69,7 +69,7 @@ public class ECIUtil {
      * @return the corresponding ECI code
      */
     public static int getECIForEncoding(String encoding) {
-        Integer code = (Integer)encodingToECI.get(encoding);
+        final Integer code = (Integer)encodingToECI.get(encoding);
         if (code != null) {
             return code.intValue();
         } else {

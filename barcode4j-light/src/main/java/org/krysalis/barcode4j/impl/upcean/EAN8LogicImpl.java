@@ -79,8 +79,8 @@ public class EAN8LogicImpl extends UPCEANLogicImpl {
                 throw new IllegalArgumentException(
                     "Message must be 8 characters long");
             }
-            char check = msg.charAt(7);
-            char expected = calcChecksum(msg.substring(0, 7));
+            final char check = msg.charAt(7);
+            final char expected = calcChecksum(msg.substring(0, 7));
             if (check != expected) {
                 throw new IllegalArgumentException(
                     "Checksum is bad (" + check + "). Expected: " + expected);
@@ -96,7 +96,7 @@ public class EAN8LogicImpl extends UPCEANLogicImpl {
     
     @Override
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
-        String supp = retrieveSupplemental(msg);
+        final String supp = retrieveSupplemental(msg);
         String s = removeSupplemental(msg); 
         validateMessage(s);
         s = handleChecksum(s);

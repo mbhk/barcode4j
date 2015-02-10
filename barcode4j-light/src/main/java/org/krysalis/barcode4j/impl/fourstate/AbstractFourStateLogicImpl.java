@@ -61,8 +61,8 @@ public abstract class AbstractFourStateLogicImpl {
      * @return boolean True, if the checksum is correct
      */
     public boolean validateChecksum(String msg) {
-        char actual = msg.charAt(msg.length() - 1);
-        char expected = calcChecksum(msg.substring(0, msg.length() - 1));
+        final char actual = msg.charAt(msg.length() - 1);
+        final char expected = calcChecksum(msg.substring(0, msg.length() - 1));
         return (actual == expected);
     }
 
@@ -98,8 +98,8 @@ public abstract class AbstractFourStateLogicImpl {
      */
     protected void encodeCodeword(ClassicBarcodeLogicHandler logic, char c, String codeword) {
         logic.startBarGroup(BarGroup.MSG_CHARACTER, String.valueOf(c));
-        for (int i = 0, count = codeword.length(); i < count; i++) {
-            int height = Integer.parseInt(codeword.substring(i, i + 1));
+        for (int i = 0; i < codeword.length(); i++) {
+            final int height = Integer.parseInt(codeword.substring(i, i + 1));
             logic.addBar(true, height);
         }
         logic.endBarGroup();
@@ -111,8 +111,8 @@ public abstract class AbstractFourStateLogicImpl {
      * @param msg the message to encode
      */
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
-        String normalizedMsg = normalizeMessage(msg);
-        String[] encodedMsg = encodeHighLevel(normalizedMsg);
+        final String normalizedMsg = normalizeMessage(msg);
+        final String[] encodedMsg = encodeHighLevel(normalizedMsg);
 
         logic.startBarcode(msg, normalizedMsg);
         

@@ -68,19 +68,19 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
     @Override
     public void handleXML(RendererContext context,
             Document doc, String ns) throws Exception {
-        Configuration cfg = ConfigurationUtil.buildConfiguration(doc);
-        String msg = ConfigurationUtil.getMessage(cfg);
+        final Configuration cfg = ConfigurationUtil.buildConfiguration(doc);
+        final String msg = ConfigurationUtil.getMessage(cfg);
         if (DEBUG) {
             System.out.println("Barcode message: " + msg);
         }
-        String renderMode = cfg.getAttribute("render-mode", "native");
-        Orientation orientation = Orientation.fromInt(cfg.getAttributeAsInteger("orientation", 0));
+        final String renderMode = cfg.getAttribute("render-mode", "native");
+        final Orientation orientation = Orientation.fromInt(cfg.getAttributeAsInteger("orientation", 0));
 
-        PageViewport page = (PageViewport)context.getProperty(PAGE_VIEWPORT);
+        final PageViewport page = (PageViewport)context.getProperty(PAGE_VIEWPORT);
 
-        BarcodeGenerator bargen = BarcodeUtil.getInstance().
+        final BarcodeGenerator bargen = BarcodeUtil.getInstance().
                 createBarcodeGenerator(cfg);
-        String expandedMsg = VariableUtil.getExpandedMessage(
+        final String expandedMsg = VariableUtil.getExpandedMessage(
                 page, msg);
 
         boolean handled = false;
@@ -115,20 +115,20 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
 
     private void renderUsingEPS(RendererContext context, BarcodeGenerator bargen,
                 String msg, Orientation orientation) throws IOException {
-        PSGenerator gen = (PSGenerator)context.getProperty(PS_GENERATOR);
-        ByteArrayOutputStream baout = new ByteArrayOutputStream(1024);
-        EPSCanvasProvider canvas = new EPSCanvasProvider(baout, orientation);
+        final PSGenerator gen = (PSGenerator)context.getProperty(PS_GENERATOR);
+        final ByteArrayOutputStream baout = new ByteArrayOutputStream(1024);
+        final EPSCanvasProvider canvas = new EPSCanvasProvider(baout, orientation);
         bargen.generateBarcode(canvas, msg);
         canvas.finish();
 
         final BarcodeDimension barDim = canvas.getDimensions();
-        float bw = (float)UnitConv.mm2pt(barDim.getWidthPlusQuiet(orientation));
-        float bh = (float)UnitConv.mm2pt(barDim.getHeightPlusQuiet(orientation));
+        final float bw = (float)UnitConv.mm2pt(barDim.getWidthPlusQuiet(orientation));
+        final float bh = (float)UnitConv.mm2pt(barDim.getHeightPlusQuiet(orientation));
 
-        float width = ((Integer)context.getProperty(WIDTH)).intValue() / 1000f;
-        float height = ((Integer)context.getProperty(HEIGHT)).intValue() / 1000f;
-        float x = ((Integer)context.getProperty(XPOS)).intValue() / 1000f;
-        float y = ((Integer)context.getProperty(YPOS)).intValue() / 1000f;
+        final float width = ((Integer)context.getProperty(WIDTH)).intValue() / 1000f;
+        final float height = ((Integer)context.getProperty(HEIGHT)).intValue() / 1000f;
+        final float x = ((Integer)context.getProperty(XPOS)).intValue() / 1000f;
+        final float y = ((Integer)context.getProperty(YPOS)).intValue() / 1000f;
 
         if (DEBUG) {
             System.out.println(" --> EPS");
@@ -144,7 +144,7 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
             final BarcodeGenerator bargen,
             final String msg, final Orientation orientation) throws IOException {
 
-        Graphics2DAdapter g2dAdapter = context.getRenderer().getGraphics2DAdapter();
+        final Graphics2DAdapter g2dAdapter = context.getRenderer().getGraphics2DAdapter();
         if (g2dAdapter != null) {
             final BarcodeDimension barDim = bargen.calcDimensions(msg);
 
@@ -152,7 +152,7 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
             final int w = (int)Math.ceil(UnitConv.mm2pt(barDim.getWidthPlusQuiet())) * 1000;
             final int h = (int)Math.ceil(UnitConv.mm2pt(barDim.getHeightPlusQuiet())) * 1000;
 
-            Graphics2DImagePainter painter = new Graphics2DImagePainter() {
+            final Graphics2DImagePainter painter = new Graphics2DImagePainter() {
 
                 @Override
                 public void paint(Graphics2D g2d, Rectangle2D area) {
@@ -189,10 +189,10 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
     private boolean renderUsingBitmap(RendererContext context,
             final BarcodeGenerator bargen,
             final String msg, final Orientation orientation) throws IOException {
-        ImageAdapter imgAdapter = context.getRenderer().getImageAdapter();
+        final ImageAdapter imgAdapter = context.getRenderer().getImageAdapter();
         if (imgAdapter != null) {
 
-            BitmapCanvasProvider canvas = new BitmapCanvasProvider(
+            final BitmapCanvasProvider canvas = new BitmapCanvasProvider(
                     300, BufferedImage.TYPE_BYTE_BINARY, false, orientation);
             bargen.generateBarcode(canvas, msg);
 
@@ -222,11 +222,11 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
     private void convertToSVG(RendererContext context,
             BarcodeGenerator bargen, String msg, Orientation orientation)
                 throws BarcodeCanvasSetupException {
-        DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
+        final DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
 
-        SVGCanvasProvider canvas = new SVGCanvasProvider(impl, true, orientation);
+        final SVGCanvasProvider canvas = new SVGCanvasProvider(impl, true, orientation);
         bargen.generateBarcode(canvas, msg);
-        Document svg = canvas.getDOM();
+        final Document svg = canvas.getDOM();
 
         //Call the renderXML() method of the renderer to render the SVG
         if (DEBUG) {

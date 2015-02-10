@@ -40,7 +40,7 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                PlaygroundFrame mf = new PlaygroundFrame();
+                final PlaygroundFrame mf = new PlaygroundFrame();
                 mf.createAndShowGUI();
             }
         });

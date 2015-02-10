@@ -82,7 +82,7 @@ public class Base64InputStream extends InputStream {
     private boolean readNextTriple() throws IOException {
         int offset = 0;
         while (offset < 4) {
-            int ch = source.read();
+            final int ch = source.read();
             if (ch < 0) {
                 return false;
             } else if (ch == '\r' || ch == '\n' || ch == ' ') {
@@ -94,7 +94,7 @@ public class Base64InputStream extends InputStream {
         tripleFilled = 3;
         for (int i = 0; i < 4; i++) {
             byte b = -1;
-            char ch = quadBuffer[i];
+            final char ch = quadBuffer[i];
             if ('=' == ch) {
                 if (i < 2) {
                     throw new IOException("Padding character at invalid position");

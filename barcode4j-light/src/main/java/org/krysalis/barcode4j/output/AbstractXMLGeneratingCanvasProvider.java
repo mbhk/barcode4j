@@ -40,7 +40,7 @@ public abstract class AbstractXMLGeneratingCanvasProvider
      */
     protected DecimalFormat getDecimalFormat() {
         if (this.df == null) {
-            DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+            final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
             dfs.setDecimalSeparator('.');
             this.df = new DecimalFormat("0.####", dfs);
         }

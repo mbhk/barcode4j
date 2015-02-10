@@ -123,8 +123,8 @@ public abstract class UPCEANLogicImpl {
     
     private int widthAt(char ch, int index) {
         if (Character.isDigit(ch)) {
-            int digit = Character.digit(ch, 10);
-            int width = CHARSET[digit][index];
+            final int digit = Character.digit(ch, 10);
+            final int width = CHARSET[digit][index];
             return width;
         } else {
             throw new IllegalArgumentException("Invalid character '" + ch + "'. Expected a digit.");
@@ -215,8 +215,8 @@ public abstract class UPCEANLogicImpl {
      * @param supp the two characters
      */
     private void drawSupplemental2(ClassicBarcodeLogicHandler logic, String supp) {
-        int suppValue = Integer.parseInt(supp);
-        int remainder = suppValue % 4;
+        final int suppValue = Integer.parseInt(supp);
+        final int remainder = suppValue % 4;
         logic.startBarGroup(BarGroup.UPC_EAN_SUPP, supp);
         drawSuppLeftGuard(logic);
         encodeChar(logic, supp.charAt(0), SUPP2_PARITY[remainder][0]);
@@ -231,14 +231,14 @@ public abstract class UPCEANLogicImpl {
      * @param supp the five characters
      */
     private void drawSupplemental5(ClassicBarcodeLogicHandler logic, String supp) {
-        int suppValue = Integer.parseInt(supp);
-        int weightedSum = 
+        final int suppValue = Integer.parseInt(supp);
+        final int weightedSum = 
               3 * ((suppValue / 10000) % 10)
             + 9 * ((suppValue / 1000) % 10)
             + 3 * ((suppValue / 100) % 10)
             + 9 * ((suppValue / 10) % 10)
             + 3 * (suppValue % 10);
-        byte checksum = (byte)(weightedSum % 10);
+        final byte checksum = (byte)(weightedSum % 10);
         logic.startBarGroup(BarGroup.UPC_EAN_SUPP, supp);
         drawSuppLeftGuard(logic);
         for (byte i = 0; i < 5; i++) {
@@ -277,7 +277,7 @@ public abstract class UPCEANLogicImpl {
      * @return 2 or 5 if there is a supplemental, 0 if there's none.
      */
     protected static int getSupplementalLength(String msg) {
-        String supp = retrieveSupplemental(msg);
+        final String supp = retrieveSupplemental(msg);
         if (supp == null) {
             return 0;
         } else if (supp.length() == 2) {
@@ -296,7 +296,7 @@ public abstract class UPCEANLogicImpl {
      * @return the message without the supplemental
      */
     protected static String removeSupplemental(String msg) {
-        int pos = msg.indexOf('+');
+        final int pos = msg.indexOf('+');
         if (pos >= 0) {
             return msg.substring(0, pos);
         } else {
@@ -311,7 +311,7 @@ public abstract class UPCEANLogicImpl {
      * @return the supplemental part, null if there is none
      */
     protected static String retrieveSupplemental(String msg) {
-        int pos = msg.indexOf('+');
+        final int pos = msg.indexOf('+');
         if (pos >= 0) {
             return msg.substring(pos + 1);
         } else {

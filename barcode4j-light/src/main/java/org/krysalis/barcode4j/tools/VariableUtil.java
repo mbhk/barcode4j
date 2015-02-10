@@ -30,7 +30,7 @@ public class VariableUtil {
     private static final String FORMATTED_PAGE_NUMBER = "#formatted-page-number#";
 
     private static String replace(String text, String repl, String with) {
-        StringBuilder buf = new StringBuilder(text.length());
+        final StringBuilder buf = new StringBuilder(text.length());
         int start = 0;
         int end;
         while ((end = text.indexOf(repl, start)) != -1) {
@@ -51,18 +51,18 @@ public class VariableUtil {
         String s = msg;
         int idx;
         while ((idx = s.indexOf(PAGE_NUMBER_WITH_FORMAT)) >= 0) {
-            int endidx = s.indexOf('#', idx + PAGE_NUMBER_WITH_FORMAT.length());
+            final int endidx = s.indexOf('#', idx + PAGE_NUMBER_WITH_FORMAT.length());
             if (endidx < 0) {
                 break;
             }
-            String fmt = s.substring(idx + PAGE_NUMBER_WITH_FORMAT.length(), endidx);
-            StringBuilder sb = new StringBuilder(s);
+            final String fmt = s.substring(idx + PAGE_NUMBER_WITH_FORMAT.length(), endidx);
+            final StringBuilder sb = new StringBuilder(s);
             String value;
             if (page != null) {
-                NumberFormat nf = new DecimalFormat(fmt);
+                final NumberFormat nf = new DecimalFormat(fmt);
                 value = nf.format(page.getPageNumber());
             } else {
-                StringBuilder blanks = new StringBuilder(fmt.length());
+                final StringBuilder blanks = new StringBuilder(fmt.length());
                 blanks.setLength(fmt.length());
                 for (int i = 0; i < blanks.length(); i++) {
                     blanks.setCharAt(i, '0');

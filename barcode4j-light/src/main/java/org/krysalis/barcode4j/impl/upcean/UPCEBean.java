@@ -46,7 +46,7 @@ public class UPCEBean extends UPCEANBean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        Collection<String> res = new ArrayList<String>(1);
+        final Collection<String> res = new ArrayList<String>(1);
         res.add("upce");
         return res;
     }

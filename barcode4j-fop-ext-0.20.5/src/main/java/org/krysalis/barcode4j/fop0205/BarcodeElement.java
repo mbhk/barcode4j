@@ -109,7 +109,7 @@ public class BarcodeElement extends BarcodeObj {
 
     protected void init() {
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
             this.doc = factory.newDocumentBuilder().newDocument();
         } catch (ParserConfigurationException pce) {
@@ -122,17 +122,18 @@ public class BarcodeElement extends BarcodeObj {
         buildTopLevel(this.doc, this.element);
     }
 
+    @Override
     public void buildTopLevel(Document doc, Element svgRoot) {
         // build up the info for the top level element
         if(this.properties instanceof DirectPropertyListBuilder.AttrPropertyList) {
-            Attributes attr = ((DirectPropertyListBuilder.AttrPropertyList)this.properties).getAttributes();
+            final Attributes attr = ((DirectPropertyListBuilder.AttrPropertyList)this.properties).getAttributes();
             for (int count = 0; count < attr.getLength(); count++) {
-                String rf = attr.getValue(count);
-                String qname = attr.getQName(count);
+                final String rf = attr.getValue(count);
+                final String qname = attr.getQName(count);
                 if (qname.indexOf(":") == -1) {
                     element.setAttribute(qname, rf);
                 } else {
-                    String pref =
+                    final String pref =
                        qname.substring(0, qname.indexOf(":"));
                     ns.put("xlink", "http://www.w3.org/1999/xlink");
                     if (pref.equals("xmlns")) {
@@ -186,32 +187,32 @@ public class BarcodeElement extends BarcodeObj {
         /* if width and height are zero, get the bounds of the content. */
         final ForeignObjectArea foa = (ForeignObjectArea)area;
 
-        Element e = this.doc.getDocumentElement();
+        final Element e = this.doc.getDocumentElement();
 
         //if(!e.hasAttributeNS(XMLSupport.XMLNS_NAMESPACE_URI, "xmlns")) {
             e.setAttributeNS(XMLNS_NAMESPACE_URI, "xmlns", BarcodeConstants.NAMESPACE.toString());
         //}
 
-        Configuration cfg = ConfigurationUtil.buildConfiguration(this.doc);
+        final Configuration cfg = ConfigurationUtil.buildConfiguration(this.doc);
         try {
             String msg = ConfigurationUtil.getMessage(cfg);
             msg = MessageUtil.unescapeUnicode(msg);
 
-            Orientation orientation = Orientation.fromInt(cfg.getAttributeAsInteger("orientation", 0));
+            final Orientation orientation = Orientation.fromInt(cfg.getAttributeAsInteger("orientation", 0));
 
             //MessageHandler.logln("Barcode message: " + msg);
             final String renderMode = cfg.getAttribute("render-mode", "native");
             //MessageHandler.logln("Render mode: " + renderMode);
 
-            BarcodeGenerator bargen = BarcodeUtil.getInstance().
+            final BarcodeGenerator bargen = BarcodeUtil.getInstance().
                     createBarcodeGenerator(cfg);
-            String expandedMsg = VariableUtil.getExpandedMessage(foa.getPage(), msg);
-            BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
+            final String expandedMsg = VariableUtil.getExpandedMessage(foa.getPage(), msg);
+            final BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
             final float w = (float)UnitConv.mm2pt(bardim.getWidthPlusQuiet(orientation)) * 1000;
             final float h = (float)UnitConv.mm2pt(bardim.getHeightPlusQuiet(orientation)) * 1000;
 
 
-            BarcodeArea barcodeArea = createArea(fs, w, h);
+            final BarcodeArea barcodeArea = createArea(fs, w, h);
             barcodeArea.setParent(foa);
             barcodeArea.setPage(foa.getPage());
             barcodeArea.setBarcode(bargen, expandedMsg, renderMode, orientation);

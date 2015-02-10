@@ -41,7 +41,7 @@ public class POSTNET extends ConfigurableBarcodeGenerator
     @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
-        Length mw = new Length(cfg.getChild("module-width").getValue(
+        final Length mw = new Length(cfg.getChild("module-width").getValue(
                 POSTNETBean.DEFAULT_MODULE_WIDTH + Length.INCH), Length.MM);
         getPOSTNETBean().setModuleWidth(mw.getValueAsMillimeter());
 
@@ -52,22 +52,22 @@ public class POSTNET extends ConfigurableBarcodeGenerator
             cfg.getChild("checksum").getValue(ChecksumMode.CP_AUTO.getName())));
     
         //Inter-character gap width    
-        Length igw = new Length(cfg.getChild("interchar-gap-width").getValue(
+        final Length igw = new Length(cfg.getChild("interchar-gap-width").getValue(
                 POSTNETBean.DEFAULT_MODULE_WIDTH + Length.INCH), Length.MM);
         getPOSTNETBean().setIntercharGapWidth(igw.getValueAsMillimeter());
 
-        Length h = new Length(cfg.getChild("tall-bar-height").getValue(
+        final Length h = new Length(cfg.getChild("tall-bar-height").getValue(
                 POSTNETBean.DEFAULT_TALL_BAR_HEIGHT + Length.INCH), Length.MM);
         getPOSTNETBean().setBarHeight(h.getValueAsMillimeter());
         
-        Length hbh = new Length(cfg.getChild("short-bar-height").getValue(
+        final Length hbh = new Length(cfg.getChild("short-bar-height").getValue(
                 POSTNETBean.DEFAULT_SHORT_BAR_HEIGHT + Length.INCH), Length.MM);
         getPOSTNETBean().setShortBarHeight(hbh.getValueAsMillimeter());
 
         getPOSTNETBean().setBaselinePosition(BaselineAlignment.byName(
             cfg.getChild("baseline-alignment").getValue(BaselineAlignment.ALIGN_BOTTOM.getName())));
 
-        Configuration hr = cfg.getChild("human-readable", false);
+        final Configuration hr = cfg.getChild("human-readable", false);
         if (hr != null) {
             //Display checksum in hr-message or not
             getPOSTNETBean().setDisplayChecksum(

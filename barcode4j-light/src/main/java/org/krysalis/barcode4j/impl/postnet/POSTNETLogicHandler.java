@@ -55,7 +55,7 @@ public class POSTNETLogicHandler
 
     @Override
     public void addBar(boolean black, int height) {
-        POSTNETBean pnBean = (POSTNETBean)bcBean;
+        final POSTNETBean pnBean = (POSTNETBean)bcBean;
         final double w = black ? bcBean.getBarWidth(1) : bcBean.getBarWidth(-1);
         final double h = bcBean.getBarHeight(height);
         final BaselineAlignment baselinePosition = pnBean.getBaselinePosition();

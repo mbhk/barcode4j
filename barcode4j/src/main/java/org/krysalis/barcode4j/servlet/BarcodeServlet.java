@@ -89,39 +89,39 @@ public class BarcodeServlet extends HttpServlet {
                 throws ServletException, IOException {
 
         try {
-            String format = determineFormat(request);
-            Orientation orientation = Orientation.ZERO;
+            final String format = determineFormat(request);
+            final Orientation orientation = Orientation.ZERO;
 
-            Configuration cfg = buildCfg(request);
+            final Configuration cfg = buildCfg(request);
 
             String msg = request.getParameter(BARCODE_MSG);
             if (msg == null) {
                 msg = "0123456789";
             }
 
-            BarcodeUtil util = BarcodeUtil.getInstance();
-            BarcodeGenerator gen = util.createBarcodeGenerator(cfg);
+            final BarcodeUtil util = BarcodeUtil.getInstance();
+            final BarcodeGenerator gen = util.createBarcodeGenerator(cfg);
 
-            ByteArrayOutputStream bout = new ByteArrayOutputStream(4096);
+            final ByteArrayOutputStream bout = new ByteArrayOutputStream(4096);
             try {
                 if (format.equals(MimeTypes.MIME_SVG)) {
                     //Create Barcode and render it to SVG
-                    SVGCanvasProvider svg = new SVGCanvasProvider(false, orientation);
+                    final SVGCanvasProvider svg = new SVGCanvasProvider(false, orientation);
                     gen.generateBarcode(svg, msg);
-                    org.w3c.dom.DocumentFragment frag = svg.getDOMFragment();
+                    final org.w3c.dom.DocumentFragment frag = svg.getDOMFragment();
 
                     //Serialize SVG barcode
-                    TransformerFactory factory = TransformerFactory.newInstance();
-                    Transformer trans = factory.newTransformer();
-                    Source src = new javax.xml.transform.dom.DOMSource(frag);
-                    Result res = new javax.xml.transform.stream.StreamResult(bout);
+                    final TransformerFactory factory = TransformerFactory.newInstance();
+                    final Transformer trans = factory.newTransformer();
+                    final Source src = new javax.xml.transform.dom.DOMSource(frag);
+                    final Result res = new javax.xml.transform.stream.StreamResult(bout);
                     trans.transform(src, res);
                 } else if (format.equals(MimeTypes.MIME_EPS)) {
-                    EPSCanvasProvider eps = new EPSCanvasProvider(bout, orientation);
+                    final EPSCanvasProvider eps = new EPSCanvasProvider(bout, orientation);
                     gen.generateBarcode(eps, msg);
                     eps.finish();
                 } else {
-                    String resText = request.getParameter(BARCODE_IMAGE_RESOLUTION);
+                    final String resText = request.getParameter(BARCODE_IMAGE_RESOLUTION);
                     int resolution = 300; //dpi
                     if (resText != null) {
                         resolution = Integer.parseInt(resText);
@@ -134,8 +134,8 @@ public class BarcodeServlet extends HttpServlet {
                         throw new IllegalArgumentException(
                             "Minimum resolution must be 10dpi");
                     }
-                    String gray = request.getParameter(BARCODE_IMAGE_GRAYSCALE);
-                    BitmapCanvasProvider bitmap = ("true".equalsIgnoreCase(gray)
+                    final String gray = request.getParameter(BARCODE_IMAGE_GRAYSCALE);
+                    final BitmapCanvasProvider bitmap = ("true".equalsIgnoreCase(gray)
                         ? new BitmapCanvasProvider(
                                 bout, format, resolution,
                                 BufferedImage.TYPE_BYTE_GRAY, true, orientation)
@@ -191,35 +191,35 @@ public class BarcodeServlet extends HttpServlet {
      * @todo Change to bean API
      */
     protected Configuration buildCfg(HttpServletRequest request) {
-        DefaultConfiguration cfg = new DefaultConfiguration("barcode");
+        final DefaultConfiguration cfg = new DefaultConfiguration("barcode");
         //Get type
         String type = request.getParameter(BARCODE_TYPE);
         if (type == null) {
             type = "code128";
         }
-        DefaultConfiguration child = new DefaultConfiguration(type);
+        final DefaultConfiguration child = new DefaultConfiguration(type);
         cfg.addChild(child);
         //Get additional attributes
         DefaultConfiguration attr;
-        String height = request.getParameter(BARCODE_HEIGHT);
+        final String height = request.getParameter(BARCODE_HEIGHT);
         if (height != null) {
             attr = new DefaultConfiguration("height");
             attr.setValue(height);
             child.addChild(attr);
         }
-        String moduleWidth = request.getParameter(BARCODE_MODULE_WIDTH);
+        final String moduleWidth = request.getParameter(BARCODE_MODULE_WIDTH);
         if (moduleWidth != null) {
             attr = new DefaultConfiguration("module-width");
             attr.setValue(moduleWidth);
             child.addChild(attr);
         }
-        String wideFactor = request.getParameter(BARCODE_WIDE_FACTOR);
+        final String wideFactor = request.getParameter(BARCODE_WIDE_FACTOR);
         if (wideFactor != null) {
             attr = new DefaultConfiguration("wide-factor");
             attr.setValue(wideFactor);
             child.addChild(attr);
         }
-        String quietZone = request.getParameter(BARCODE_QUIET_ZONE);
+        final String quietZone = request.getParameter(BARCODE_QUIET_ZONE);
         if (quietZone != null) {
             attr = new DefaultConfiguration("quiet-zone");
             if (quietZone.startsWith("disable")) {
@@ -233,10 +233,10 @@ public class BarcodeServlet extends HttpServlet {
         // creating human readable configuration according to the new Barcode Element Mappings
         // where the human-readable has children for font name, font size, placement and
         // custom pattern.
-        String humanReadablePosition = request.getParameter(BARCODE_HUMAN_READABLE_POS);
-        String pattern = request.getParameter(BARCODE_HUMAN_READABLE_PATTERN);
-        String humanReadableSize = request.getParameter(BARCODE_HUMAN_READABLE_SIZE);
-        String humanReadableFont = request.getParameter(BARCODE_HUMAN_READABLE_FONT);
+        final String humanReadablePosition = request.getParameter(BARCODE_HUMAN_READABLE_POS);
+        final String pattern = request.getParameter(BARCODE_HUMAN_READABLE_PATTERN);
+        final String humanReadableSize = request.getParameter(BARCODE_HUMAN_READABLE_SIZE);
+        final String humanReadableFont = request.getParameter(BARCODE_HUMAN_READABLE_FONT);
 
         if (!((humanReadablePosition == null)
                 && (pattern == null)

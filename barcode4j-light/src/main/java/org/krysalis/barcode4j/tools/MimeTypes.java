@@ -84,7 +84,7 @@ public class MimeTypes {
      * @return true if format is a bitmap format
      */
     public static boolean isBitmapFormat(String format) {
-        String fmt = expandFormat(format);
+        final String fmt = expandFormat(format);
         if (fmt == null) {
             return false;
         }

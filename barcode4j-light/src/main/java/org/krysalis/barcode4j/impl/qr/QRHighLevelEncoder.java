@@ -37,8 +37,8 @@ public class QRHighLevelEncoder implements QRConstants {
 
     private int analyzeMessage(String msg) {
         int mode = NUMERIC;
-        for (int i = 0, c = msg.length(); i < c; i++) {
-            char ch = msg.charAt(i);
+        for (int i = 0; i < msg.length(); i++) {
+            final char ch = msg.charAt(i);
             if (isDigit(ch)) {
                 //nop
             } else if (mode == NUMERIC && isAlphanumeric(ch)) {

@@ -43,10 +43,10 @@ public class ITF14CanvasLogicHandler extends DefaultCanvasLogicHandler {
     @Override
     public void startBarcode(String msg, String formattedMsg) {
         super.startBarcode(msg, formattedMsg);
-        ITF14Bean bean = getITF14Bean();
-        double bbw = bean.getBearerBarWidth();
-        double w = dimensions.getWidthPlusQuiet();
-        double h = bean.getBarHeight();
+        final ITF14Bean bean = getITF14Bean();
+        final double bbw = bean.getBearerBarWidth();
+        final double w = dimensions.getWidthPlusQuiet();
+        final double h = bean.getBarHeight();
         double top = 0;
         if (bcBean.getMsgPosition() == HumanReadablePlacement.HRP_TOP) {
             top += bcBean.getHumanReadableHeight();
@@ -62,13 +62,13 @@ public class ITF14CanvasLogicHandler extends DefaultCanvasLogicHandler {
 
     @Override
     protected double getStartX() {
-        ITF14Bean bean = getITF14Bean();
+        final ITF14Bean bean = getITF14Bean();
         return super.getStartX() + (bean.isBearerBox() ? bean.getBearerBarWidth() : 0);
     }
 
     @Override
     protected double getStartY() {
-        double y = super.getStartY() + getITF14Bean().getBearerBarWidth();
+        final double y = super.getStartY() + getITF14Bean().getBearerBarWidth();
         return y;
     }
 

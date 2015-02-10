@@ -64,19 +64,19 @@ public class BarcodeElement extends BarcodeObj {
 
     @Override
     public Point2D getDimension(Point2D view) {
-        Configuration cfg = ConfigurationUtil.buildConfiguration(this.doc);
+        final Configuration cfg = ConfigurationUtil.buildConfiguration(this.doc);
         try {
             String msg = ConfigurationUtil.getMessage(cfg);
             msg = MessageUtil.unescapeUnicode(msg);
 
-            Orientation orientation = Orientation.fromInt(cfg.getAttributeAsInteger("orientation", 0));
+            final Orientation orientation = Orientation.fromInt(cfg.getAttributeAsInteger("orientation", 0));
 
-            BarcodeGenerator bargen = BarcodeUtil.getInstance().
+            final BarcodeGenerator bargen = BarcodeUtil.getInstance().
                     createBarcodeGenerator(cfg);
-            String expandedMsg = VariableUtil.getExpandedMessage((PageInfo)null, msg);
-            BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
-            float w = (float)UnitConv.mm2pt(bardim.getWidthPlusQuiet(orientation));
-            float h = (float)UnitConv.mm2pt(bardim.getHeightPlusQuiet(orientation));
+            final String expandedMsg = VariableUtil.getExpandedMessage((PageInfo)null, msg);
+            final BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
+            final float w = (float)UnitConv.mm2pt(bardim.getWidthPlusQuiet(orientation));
+            final float h = (float)UnitConv.mm2pt(bardim.getHeightPlusQuiet(orientation));
             return new Point2D.Float(w, h);
         } catch (ConfigurationException ce) {
             ce.printStackTrace();

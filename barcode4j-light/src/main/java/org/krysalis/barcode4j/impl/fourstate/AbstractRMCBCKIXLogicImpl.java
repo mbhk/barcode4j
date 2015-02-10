@@ -84,10 +84,10 @@ public abstract class AbstractRMCBCKIXLogicImpl extends AbstractFourStateLogicIm
 
     @Override
     protected String[] encodeHighLevel(String msg) {
-        List codewords = new java.util.ArrayList(msg.length());
-        for (int i = 0, c = msg.length(); i < c; i++) {
-            String ch = msg.substring(i, i + 1);
-            String code = (String)CHARSET.get(ch);
+        final List codewords = new java.util.ArrayList(msg.length());
+        for (int i = 0; i < msg.length(); i++) {
+            final String ch = msg.substring(i, i + 1);
+            final String code = (String)CHARSET.get(ch);
             if (code == null) {
                 throw new IllegalArgumentException("Illegal character: " + ch);
             }

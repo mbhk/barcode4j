@@ -159,7 +159,7 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
 
     @Override
     public void endBarGroup() {
-        BarGroup group = (BarGroup)groupStack.pop();
+        final BarGroup group = (BarGroup)groupStack.pop();
 
         if (group == BarGroup.UPC_EAN_GROUP) {
             inMsgGroup = false;
@@ -167,10 +167,10 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
                 //Guards don't set the lastgroup variable
                 return;
             }
-            int colonPos = lastgroup.indexOf(":");
+            final int colonPos = lastgroup.indexOf(":");
             String grouptext = lastgroup;
             if (colonPos >= 0) {
-                String lead = String.valueOf(grouptext.charAt(0));
+                final String lead = String.valueOf(grouptext.charAt(0));
                 drawLeadChar(lead);
                 grouptext = grouptext.substring(colonPos + 1);
             }

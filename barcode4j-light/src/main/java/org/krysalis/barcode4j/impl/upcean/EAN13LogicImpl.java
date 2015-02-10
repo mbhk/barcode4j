@@ -93,8 +93,8 @@ public class EAN13LogicImpl extends UPCEANLogicImpl {
                 throw new IllegalArgumentException(
                     "Message must be 13 characters long");
             }
-            char check = msg.charAt(12);
-            char expected = calcChecksum(msg.substring(0, 12));
+            final char check = msg.charAt(12);
+            final char expected = calcChecksum(msg.substring(0, 12));
             if (check != expected) {
                 throw new IllegalArgumentException(
                     "Checksum is bad (" + check + "). Expected: " + expected);
@@ -110,7 +110,7 @@ public class EAN13LogicImpl extends UPCEANLogicImpl {
     
     @Override
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
-        String supp = retrieveSupplemental(msg);
+        final String supp = retrieveSupplemental(msg);
         String s = removeSupplemental(msg); 
         validateMessage(s);
         s = handleChecksum(s);
@@ -130,7 +130,7 @@ public class EAN13LogicImpl extends UPCEANLogicImpl {
         encodeChar(logic, s.charAt(1), LEFT_HAND_A);
 
         //First five data characters
-        byte flag = (byte)Character.digit(s.charAt(0), 10);
+        final byte flag = (byte)Character.digit(s.charAt(0), 10);
         for (int i = 2; i < 7; i++) {
             encodeChar(logic, s.charAt(i), 
                     FIRSTFLAG[flag][i - 2]);

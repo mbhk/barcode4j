@@ -76,8 +76,8 @@ public class UPCALogicImpl extends UPCEANLogicImpl {
                 throw new IllegalArgumentException(
                     "Message must be 12 characters long");
             }
-            char check = msg.charAt(11);
-            char expected = calcChecksum(msg.substring(0, 11));
+            final char check = msg.charAt(11);
+            final char expected = calcChecksum(msg.substring(0, 11));
             if (check != expected) {
                 throw new IllegalArgumentException(
                     "Checksum is bad (" + check + "). Expected: " + expected);
@@ -101,7 +101,7 @@ public class UPCALogicImpl extends UPCEANLogicImpl {
     
     @Override
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
-        String supp = retrieveSupplemental(msg);
+        final String supp = retrieveSupplemental(msg);
         String s = removeSupplemental(msg); 
         validateMessage(s);
         s = handleChecksum(s);

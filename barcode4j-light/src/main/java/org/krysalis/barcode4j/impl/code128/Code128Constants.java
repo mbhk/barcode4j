@@ -59,7 +59,7 @@ public enum Code128Constants {
 
     public static Code128Constants fromInt(int i) {
         Code128Constants res = null;
-        for (Code128Constants v : Code128Constants.values()) {
+        for (final Code128Constants v : Code128Constants.values()) {
             if (v.value == i) {
                 res = v;
             }

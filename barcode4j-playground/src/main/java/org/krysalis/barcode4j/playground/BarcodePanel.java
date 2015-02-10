@@ -93,7 +93,7 @@ public class BarcodePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        Rectangle rect = new Rectangle(30, 30, getWidth() - 60, getHeight() - 60);
+        final Rectangle rect = new Rectangle(30, 30, getWidth() - 60, getHeight() - 60);
         try {
             paintBarcode(graphics, rect);
         } catch (Exception e) {
@@ -137,21 +137,21 @@ public class BarcodePanel extends JPanel {
      * @param rect usable painting area
      */
     private void paintBarcode(Graphics graphics, Rectangle rect) {
-        BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+        final BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         final Dimension dim = rect.getSize();
         final Graphics2D g2d = img.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
-        CanvasProvider provider = new Java2DCanvasProvider(g2d, orientation);
+        final CanvasProvider provider = new Java2DCanvasProvider(g2d, orientation);
 
-        AffineTransform baktrans = g2d.getTransform();
+        final AffineTransform baktrans = g2d.getTransform();
         g2d.translate(rect.getX(), rect.getY());
 
-        BarcodeDimension barDim = getBarcode().calcDimensions(msg);
+        final BarcodeDimension barDim = getBarcode().calcDimensions(msg);
         LOGGER.log(Level.INFO, "bardim: {0}", barDim);
-        double sc1 = dim.getWidth() / barDim.getWidthPlusQuiet(provider.getOrientation());
-        double sc2 = dim.getHeight() / barDim.getHeightPlusQuiet(provider.getOrientation());
+        final double sc1 = dim.getWidth() / barDim.getWidthPlusQuiet(provider.getOrientation());
+        final double sc2 = dim.getHeight() / barDim.getHeightPlusQuiet(provider.getOrientation());
         g2d.scale(sc1, sc2);
 
         g2d.setColor(Color.black);
@@ -168,7 +168,7 @@ public class BarcodePanel extends JPanel {
      * @param e exception to show
      */
     private void paintError(Graphics g, Exception e) {
-        String exceptionMsg = e.getMessage();
+        final String exceptionMsg = e.getMessage();
         g.setColor(Color.RED);
         g.setFont(new Font("sans-serif", Font.BOLD, 13));
         g.drawString(exceptionMsg, getWidth() / 2 - g.getFontMetrics().stringWidth(exceptionMsg) / 2,

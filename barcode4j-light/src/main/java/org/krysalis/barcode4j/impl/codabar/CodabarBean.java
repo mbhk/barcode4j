@@ -124,10 +124,10 @@ public class CodabarBean extends AbstractBarcodeBean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        ClassicBarcodeLogicHandler handler =
+        final ClassicBarcodeLogicHandler handler =
                 new DefaultCanvasLogicHandler(this, new Canvas(canvas));
 
-        CodabarLogicImpl impl = new CodabarLogicImpl(getChecksumMode(), isDisplayStartStop());
+        final CodabarLogicImpl impl = new CodabarLogicImpl(getChecksumMode(), isDisplayStartStop());
         impl.generateBarcodeLogic(handler, msg);
     }
 

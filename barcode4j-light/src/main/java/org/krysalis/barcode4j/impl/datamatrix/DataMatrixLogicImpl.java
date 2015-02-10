@@ -51,16 +51,16 @@ public class DataMatrixLogicImpl {
             throw new IllegalArgumentException("Cannot fetch data: " + e.getLocalizedMessage());
         }
 
-        DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(),
+        final DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(),
                 shape, minSize, maxSize, true);
         LOGGER.log(Level.FINE, symbolInfo.toString());
 
         //2. step: ECC generation
-        String codewords = DataMatrixErrorCorrection.encodeECC200(
+        final String codewords = DataMatrixErrorCorrection.encodeECC200(
                 encoded, symbolInfo);
 
         //3. step: Module placement in Matrix
-        DefaultDataMatrixPlacement placement = new DefaultDataMatrixPlacement(
+        final DefaultDataMatrixPlacement placement = new DefaultDataMatrixPlacement(
                     codewords,
                     symbolInfo.getSymbolDataWidth(), symbolInfo.getSymbolDataHeight());
         placement.place();
@@ -73,8 +73,8 @@ public class DataMatrixLogicImpl {
 
     private void encodeLowLevel(TwoDimBarcodeLogicHandler logic,
             DataMatrixPlacement placement, DataMatrixSymbolInfo symbolInfo) {
-        int symbolWidth = symbolInfo.getSymbolDataWidth();
-        int symbolHeight = symbolInfo.getSymbolDataHeight();
+        final int symbolWidth = symbolInfo.getSymbolDataWidth();
+        final int symbolHeight = symbolInfo.getSymbolDataHeight();
         for (int y = 0; y < symbolHeight; y++) {
             if ((y % symbolInfo.matrixHeight) == 0) {
                 logic.startRow();

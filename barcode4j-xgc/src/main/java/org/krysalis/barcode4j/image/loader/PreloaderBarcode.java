@@ -77,11 +77,11 @@ public class PreloaderBarcode extends AbstractImagePreloader {
         try {
             Document doc;
             if (src instanceof DOMSource) {
-                DOMSource domSrc = (DOMSource)src;
+                final DOMSource domSrc = (DOMSource)src;
                 doc = (Document)domSrc.getNode();
             } else {
                 in = ImageUtil.needInputStream(src);
-                int length = in.available();
+                final int length = in.available();
                 in.mark(length + 1);
                 try {
                     doc = getDocument(new SubInputStream(in, Long.MAX_VALUE, false));
@@ -129,22 +129,22 @@ public class PreloaderBarcode extends AbstractImagePreloader {
 
     private ImageInfo createImageInfo(String uri, ImageContext context, Document doc)
                 throws ConfigurationException, BarcodeException {
-        Configuration cfg = ConfigurationUtil.buildConfiguration(doc);
+        final Configuration cfg = ConfigurationUtil.buildConfiguration(doc);
         String msg = ConfigurationUtil.getMessage(cfg);
         msg = MessageUtil.unescapeUnicode(msg);
 
-        Orientation orientation = Orientation.fromInt(cfg.getAttributeAsInteger("orientation", 0));
+        final Orientation orientation = Orientation.fromInt(cfg.getAttributeAsInteger("orientation", 0));
 
-        BarcodeGenerator bargen = BarcodeUtil.getInstance().
+        final BarcodeGenerator bargen = BarcodeUtil.getInstance().
                 createBarcodeGenerator(cfg);
         //Expand with null information and hope the size will match the actual barcode
-        String expandedMsg = VariableUtil.getExpandedMessage((PageInfo)null, msg);
-        BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
-        int widthMpt = (int)Math.ceil(UnitConv.mm2mpt(bardim.getWidthPlusQuiet(orientation)));
-        int heightMpt = (int)Math.ceil(UnitConv.mm2mpt(bardim.getHeightPlusQuiet(orientation)));
+        final String expandedMsg = VariableUtil.getExpandedMessage((PageInfo)null, msg);
+        final BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
+        final int widthMpt = (int)Math.ceil(UnitConv.mm2mpt(bardim.getWidthPlusQuiet(orientation)));
+        final int heightMpt = (int)Math.ceil(UnitConv.mm2mpt(bardim.getHeightPlusQuiet(orientation)));
 
-        ImageInfo info = new ImageInfo(uri, ImageLoaderFactoryBarcode.MIME_TYPE);
-        ImageSize size = new ImageSize();
+        final ImageInfo info = new ImageInfo(uri, ImageLoaderFactoryBarcode.MIME_TYPE);
+        final ImageSize size = new ImageSize();
         size.setSizeInMillipoints(widthMpt, heightMpt);
         //Set the resolution to that of the FOUserAgent
         size.setResolution(context.getSourceResolution());
@@ -152,7 +152,7 @@ public class PreloaderBarcode extends AbstractImagePreloader {
         info.setSize(size);
 
         //The whole image had to be loaded to determine the image size, so keep that information
-        ImageBarcode barcodeImage = new ImageBarcode(info, cfg, bardim);
+        final ImageBarcode barcodeImage = new ImageBarcode(info, cfg, bardim);
         info.getCustomObjects().put(ImageInfo.ORIGINAL_IMAGE, barcodeImage);
         //Add the non-expanded message!
         info.getCustomObjects().put(ImageBarcode.MESSAGE, msg);
@@ -161,7 +161,7 @@ public class PreloaderBarcode extends AbstractImagePreloader {
 
     private boolean isSupportedSource(Source src) {
         if (src instanceof DOMSource) {
-            DOMSource domSrc = (DOMSource)src;
+            final DOMSource domSrc = (DOMSource)src;
             return (domSrc.getNode() instanceof Document);
         } else {
             return ImageUtil.hasInputStream(src);
@@ -170,10 +170,10 @@ public class PreloaderBarcode extends AbstractImagePreloader {
 
     private Document getDocument(InputStream in)
             throws IOException, SAXException, ParserConfigurationException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         dbf.setValidating(false);
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        final DocumentBuilder db = dbf.newDocumentBuilder();
         db.setErrorHandler(new ErrorHandler() {
 
             @Override
@@ -192,7 +192,7 @@ public class PreloaderBarcode extends AbstractImagePreloader {
             }
 
         });
-        Document doc = db.parse(in);
+        final Document doc = db.parse(in);
         return doc;
     }
 }

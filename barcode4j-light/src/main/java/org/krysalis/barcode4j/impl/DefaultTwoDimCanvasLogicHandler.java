@@ -62,7 +62,7 @@ public class DefaultTwoDimCanvasLogicHandler implements TwoDimBarcodeLogicHandle
     @Override
     public void startBarcode(String msg, String formattedMsg) {
         //Calculate extents
-        BarcodeDimension dim = bcBean.calcDimensions(msg);
+        final BarcodeDimension dim = bcBean.calcDimensions(msg);
         
         canvas.establishDimensions(dim);
         y = getStartY();

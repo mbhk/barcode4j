@@ -45,20 +45,20 @@ public class MessageUtil {
             return null;
         }
 
-        StringBuilder res = new StringBuilder();
+        final StringBuilder res = new StringBuilder();
         int processedUntil = 0;
 
-        Matcher m = UNESCAPE_UNICODE_PATTERN.matcher(message);
+        final Matcher m = UNESCAPE_UNICODE_PATTERN.matcher(message);
         while (m.find()) {
             res.append(message.substring(processedUntil, m.start()));
             if (m.group(1) != null) {
                 res.append('\\');
             } else {
-                String substr = message.substring(m.start(3), m.end(3));
+                final String substr = message.substring(m.start(3), m.end(3));
                 if (m.end(3) - m.start(3) != 4) {
                     throw new IllegalArgumentException("Unfinished Unicode-Sequence in `" + message + "` (" + substr + ")");
                 }
-                char c = (char) Integer.parseUnsignedInt(substr, 16);
+                final char c = (char) Integer.parseUnsignedInt(substr, 16);
                 res.append(c);
             }
             processedUntil = m.end();
@@ -77,8 +77,8 @@ public class MessageUtil {
      * @return the filtered text
      */
     public static String filterNonPrintableCharacters(String text) {
-        int len = text.length();
-        StringBuilder sb = new StringBuilder(len);
+        final int len = text.length();
+        final StringBuilder sb = new StringBuilder(len);
         for (int i = 0; i < len; i++) {
             final char ch = text.charAt(i);
             if (ch < 32 || ch == 127) {

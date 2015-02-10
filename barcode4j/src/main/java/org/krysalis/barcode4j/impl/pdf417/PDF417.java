@@ -38,9 +38,9 @@ public class PDF417 extends ConfigurableBarcodeGenerator
     @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
-        String mws = cfg.getChild("module-width").getValue(null);
+        final String mws = cfg.getChild("module-width").getValue(null);
         if (mws != null) {
-            Length mw = new Length(mws, "mm");
+            final Length mw = new Length(mws, "mm");
             getPDF417Bean().setModuleWidth(mw.getValueAsMillimeter());
         }
 
@@ -73,9 +73,9 @@ public class PDF417 extends ConfigurableBarcodeGenerator
         getPDF417Bean().setErrorCorrectionLevel(cfg.getChild("ec-level").getValueAsInteger(
                 PDF417Bean.DEFAULT_ERROR_CORRECTION_LEVEL));
 
-        String rhs = cfg.getChild("row-height").getValue(null);
+        final String rhs = cfg.getChild("row-height").getValue(null);
         if (rhs != null) {
-            Length rh = new Length(rhs, "mw");
+            final Length rh = new Length(rhs, "mw");
             if (rh.getUnit().equalsIgnoreCase("mw")) {
                 getPDF417Bean().setRowHeight(rh.getValue() * getBean().getModuleWidth());
             } else {

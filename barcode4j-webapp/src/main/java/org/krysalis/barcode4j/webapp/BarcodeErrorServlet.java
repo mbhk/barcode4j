@@ -53,14 +53,14 @@ public class BarcodeErrorServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
                 throws ServletException, IOException {
 
-        Throwable t = (Throwable)request.getAttribute("javax.servlet.error.exception");
+        final Throwable t = (Throwable)request.getAttribute("javax.servlet.error.exception");
         try {
-            SAXTransformerFactory factory = (SAXTransformerFactory)TransformerFactory.newInstance();
-            java.net.URL xslt = getServletContext().getResource("/WEB-INF/exception2svg.xslt");
+            final SAXTransformerFactory factory = (SAXTransformerFactory)TransformerFactory.newInstance();
+            final java.net.URL xslt = getServletContext().getResource("/WEB-INF/exception2svg.xslt");
             TransformerHandler thandler;
             if (xslt != null) {
                 LOGGER.log(Level.FINE, xslt.toExternalForm());
-                Source xsltSource = new StreamSource(xslt.toExternalForm());
+                final Source xsltSource = new StreamSource(xslt.toExternalForm());
                 thandler = factory.newTransformerHandler(xsltSource);
                 response.setContentType("image/svg+xml");
             } else {
@@ -69,9 +69,9 @@ public class BarcodeErrorServlet extends HttpServlet {
                 response.setContentType("application/xml");
             }
 
-            ByteArrayOutputStream bout = new ByteArrayOutputStream(4096);
+            final ByteArrayOutputStream bout = new ByteArrayOutputStream(4096);
             try {
-                Result res = new javax.xml.transform.stream.StreamResult(bout);
+                final Result res = new javax.xml.transform.stream.StreamResult(bout);
                 thandler.setResult(res);
                 generateSAX(t, thandler);
             } finally {
@@ -102,17 +102,17 @@ public class BarcodeErrorServlet extends HttpServlet {
 
     private void generateSAXForException(Throwable t,
                 ContentHandler handler, String elName) throws SAXException {
-        AttributesImpl attr = new AttributesImpl();
+        final AttributesImpl attr = new AttributesImpl();
         attr.addAttribute(null, "classname", "classname", "CDATA", t.getClass().getName());
         handler.startElement(null, elName, elName, attr);
         attr.clear();
         handler.startElement(null, "msg", "msg", attr);
-        char[] chars = t.getMessage().toCharArray();
+        final char[] chars = t.getMessage().toCharArray();
         handler.characters(chars, 0, chars.length);
         handler.endElement(null, "msg", "msg");
 
         if (t instanceof CascadingException) {
-            Throwable nested = ((CascadingException)t).getCause();
+            final Throwable nested = ((CascadingException)t).getCause();
             generateSAXForException(nested, handler, "nested");
         }
 

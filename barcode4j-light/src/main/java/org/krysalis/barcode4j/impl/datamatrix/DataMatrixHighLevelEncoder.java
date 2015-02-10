@@ -68,8 +68,8 @@ public class DataMatrixHighLevelEncoder {
     }
 
     private static char randomize253State(char ch, int codewordPosition) {
-        int pseudoRandom = ((149 * codewordPosition) % 253) + 1;
-        int tempVariable = ch + pseudoRandom;
+        final int pseudoRandom = ((149 * codewordPosition) % 253) + 1;
+        final int tempVariable = ch + pseudoRandom;
         if (tempVariable <= 254) {
             return (char)tempVariable;
         } else {
@@ -78,8 +78,8 @@ public class DataMatrixHighLevelEncoder {
     }
 
     private static char randomize255State(char ch, int codewordPosition) {
-        int pseudoRandom = ((149 * codewordPosition) % 255) + 1;
-        int tempVariable = ch + pseudoRandom;
+        final int pseudoRandom = ((149 * codewordPosition) % 255) + 1;
+        final int tempVariable = ch + pseudoRandom;
         if (tempVariable <= 255) {
             return (char)tempVariable;
         } else {
@@ -112,7 +112,7 @@ public class DataMatrixHighLevelEncoder {
     public static String encodeHighLevel(String msg,
             SymbolShapeHint shape, Dimension minSize, Dimension maxSize) throws IOException {
         //the codewords 0..255 are encoded as Unicode characters
-        Encoder[] encoders = new Encoder[] {new ASCIIEncoder(),
+        final Encoder[] encoders = new Encoder[] {new ASCIIEncoder(),
                 new C40Encoder(), new TextEncoder(), new X12Encoder(), new EdifactEncoder(),
                 new Base256Encoder()};
 
@@ -138,9 +138,9 @@ public class DataMatrixHighLevelEncoder {
                 context.resetEncoderSignal();
             }
         }
-        int len = context.codewords.length();
+        final int len = context.codewords.length();
         context.updateSymbolInfo();
-        int capacity = context.symbolInfo.dataCapacity;
+        final int capacity = context.symbolInfo.dataCapacity;
         if (len < capacity) {
             if (encodingMode != ASCII_ENCODATION && encodingMode != BASE256_ENCODATION) {
                 LOGGER.log(Level.FINE, "Unlatch because symbol isn't filled up");
@@ -148,7 +148,7 @@ public class DataMatrixHighLevelEncoder {
             }
         }
         //Padding
-        StringBuilder codewords = context.codewords;
+        final StringBuilder codewords = context.codewords;
         if (codewords.length() < capacity) {
             codewords.append(DataMatrixConstants.PAD);
         }
@@ -160,10 +160,10 @@ public class DataMatrixHighLevelEncoder {
     }
 
     private static EncoderContext createEncoderContext(String msg) throws IOException {
-        String url = URLUtil.getURL(msg);
+        final String url = URLUtil.getURL(msg);
         if (url != null) {
             //URL processing
-            byte[] data = URLUtil.getData(url, DEFAULT_ASCII_ENCODING);
+            final byte[] data = URLUtil.getData(url, DEFAULT_ASCII_ENCODING);
             return new EncoderContext(data);
         } else {
             return new EncoderContext(msg);
@@ -190,9 +190,9 @@ public class DataMatrixHighLevelEncoder {
             } catch (UnsupportedEncodingException e) {
                 throw new UnsupportedOperationException("Unsupported encoding: " + e.getMessage());
             }
-            StringBuilder sb = new StringBuilder(msgBinary.length);
-            for (int i = 0, c = msgBinary.length; i < c; i++) {
-                char ch = (char)(msgBinary[i] & 0xff);
+            final StringBuilder sb = new StringBuilder(msgBinary.length);
+            for (int i = 0; i < msgBinary.length; i++) {
+                final char ch = (char)(msgBinary[i] & 0xff);
                 if (ch == '?' && msg.charAt(i) != '?') {
                     throw new IllegalArgumentException("Message contains characters outside "
                             + DEFAULT_ASCII_ENCODING + " encoding.");
@@ -205,9 +205,9 @@ public class DataMatrixHighLevelEncoder {
 
         public EncoderContext(byte[] data) {
             //From this point on Strings are not Unicode anymore!
-            StringBuilder sb = new StringBuilder(data.length);
-            for (int i = 0, c = data.length; i < c; i++) {
-                char ch = (char)(data[i] & 0xff);
+            final StringBuilder sb = new StringBuilder(data.length);
+            for (int i = 0; i < data.length; i++) {
+                final char ch = (char)(data[i] & 0xff);
                 sb.append(ch);
             }
             this.msg = sb.toString(); //Not Unicode here!
@@ -301,14 +301,14 @@ public class DataMatrixHighLevelEncoder {
         @Override
         public void encode(EncoderContext context) {
             //step B
-            int n = determineConsecutiveDigitCount(context.msg, context.pos);
+            final int n = determineConsecutiveDigitCount(context.msg, context.pos);
             if (n >= 2) {
                 context.writeCodeword(encodeASCIIDigits(context.msg.charAt(context.pos),
                         context.msg.charAt(context.pos + 1)));
                 context.pos += 2;
             } else {
-                char c = context.getCurrentChar();
-                int newMode = lookAheadTest(context.msg, context.pos, getEncodingMode());
+                final char c = context.getCurrentChar();
+                final int newMode = lookAheadTest(context.msg, context.pos, getEncodingMode());
                 if (newMode != getEncodingMode()) {
                     switch (newMode) {
                     case BASE256_ENCODATION:
@@ -364,22 +364,22 @@ public class DataMatrixHighLevelEncoder {
         public void encode(EncoderContext context) {
             //step C
             int lastCharSize = -1;
-            StringBuilder buffer = new StringBuilder();
+            final StringBuilder buffer = new StringBuilder();
             outerloop: while (context.hasMoreCharacters()) {
-                char c = context.getCurrentChar();
+                final char c = context.getCurrentChar();
                 context.pos++;
 
                 lastCharSize = encodeChar(c, buffer);
 
-                int unwritten = (buffer.length() / 3) * 2;
+                final int unwritten = (buffer.length() / 3) * 2;
 
-                int curCodewordCount = context.getCodewordCount() + unwritten;
+                final int curCodewordCount = context.getCodewordCount() + unwritten;
                 context.updateSymbolInfo(curCodewordCount);
-                int available = context.symbolInfo.dataCapacity - curCodewordCount;
+                final int available = context.symbolInfo.dataCapacity - curCodewordCount;
 
                 if (!context.hasMoreCharacters()) {
                     //Avoid having a single C40 value in the last triplet
-                    StringBuilder removed = new StringBuilder();
+                    final StringBuilder removed = new StringBuilder();
                     if ((buffer.length() % 3) == 2) {
                         if (available < 2 || available > 2) {
                             lastCharSize = backtrackOneCharacter(context, buffer, removed,
@@ -394,9 +394,9 @@ public class DataMatrixHighLevelEncoder {
                     break outerloop;
                 }
 
-                int count = buffer.length();
+                final int count = buffer.length();
                 if ((count % 3) == 0) {
-                    int newMode = lookAheadTest(context.msg, context.pos, getEncodingMode());
+                    final int newMode = lookAheadTest(context.msg, context.pos, getEncodingMode());
                     if (newMode != getEncodingMode()) {
                         context.signalEncoderChange(newMode);
                         break;
@@ -408,10 +408,10 @@ public class DataMatrixHighLevelEncoder {
 
         private int backtrackOneCharacter(EncoderContext context,
                 StringBuilder buffer, StringBuilder removed, int lastCharSize) {
-            int count = buffer.length();
+            final int count = buffer.length();
             buffer.delete(count - lastCharSize, count);
             context.pos--;
-            char c = context.getCurrentChar();
+            final char c = context.getCurrentChar();
             lastCharSize = encodeChar(c, removed);
             context.resetSymbolInfo(); //Deal with possible reduction in symbol size
             return lastCharSize;
@@ -428,12 +428,12 @@ public class DataMatrixHighLevelEncoder {
          * @param buffer the buffer with the remaining encoded characters
          */
         protected void handleEOD(EncoderContext context, StringBuilder buffer, int lastCharSize) {
-            int unwritten = (buffer.length() / 3) * 2;
-            int rest = buffer.length() % 3;
+            final int unwritten = (buffer.length() / 3) * 2;
+            final int rest = buffer.length() % 3;
 
-            int curCodewordCount = context.getCodewordCount() + unwritten;
+            final int curCodewordCount = context.getCodewordCount() + unwritten;
             context.updateSymbolInfo(curCodewordCount);
-            int available = context.symbolInfo.dataCapacity - curCodewordCount;
+            final int available = context.symbolInfo.dataCapacity - curCodewordCount;
 
             if (rest == 2) {
                 buffer.append('\0'); //Shift 1
@@ -507,12 +507,12 @@ public class DataMatrixHighLevelEncoder {
         }
 
         protected String encodeToCodewords(StringBuilder sb, int startPos) {
-            char c1 = sb.charAt(startPos);
-            char c2 = sb.charAt(startPos + 1);
-            char c3 = sb.charAt(startPos + 2);
-            int v = (1600 * c1) + (40 * c2) + c3 + 1;
-            char cw1 = (char)(v / 256);
-            char cw2 = (char)(v % 256);
+            final char c1 = sb.charAt(startPos);
+            final char c2 = sb.charAt(startPos + 1);
+            final char c3 = sb.charAt(startPos + 2);
+            final int v = (1600 * c1) + (40 * c2) + c3 + 1;
+            final char cw1 = (char)(v / 256);
+            final char cw2 = (char)(v % 256);
             return "" + cw1 + cw2;
         }
 
@@ -587,18 +587,18 @@ public class DataMatrixHighLevelEncoder {
         @Override
         public void encode(EncoderContext context) {
             //step C
-            StringBuilder buffer = new StringBuilder();
+            final StringBuilder buffer = new StringBuilder();
             while (context.hasMoreCharacters()) {
-                char c = context.getCurrentChar();
+                final char c = context.getCurrentChar();
                 context.pos++;
 
                 encodeChar(c, buffer);
 
-                int count = buffer.length();
+                final int count = buffer.length();
                 if ((count % 3) == 0) {
                     writeNextTriplet(context, buffer);
 
-                    int newMode = lookAheadTest(context.msg, context.pos, getEncodingMode());
+                    final int newMode = lookAheadTest(context.msg, context.pos, getEncodingMode());
                     if (newMode != getEncodingMode()) {
                         context.signalEncoderChange(newMode);
                         break;
@@ -630,8 +630,8 @@ public class DataMatrixHighLevelEncoder {
 
         protected void handleEOD(EncoderContext context, StringBuilder buffer) {
             context.updateSymbolInfo();
-            int available = context.symbolInfo.dataCapacity - context.getCodewordCount();
-            int count = buffer.length();
+            final int available = context.symbolInfo.dataCapacity - context.getCodewordCount();
+            final int count = buffer.length();
             if (count == 2) {
                 context.writeCodeword(X12_UNLATCH);
                 context.pos -= 2;
@@ -658,18 +658,18 @@ public class DataMatrixHighLevelEncoder {
         @Override
         public void encode(EncoderContext context) {
             //step F
-            StringBuilder buffer = new StringBuilder();
+            final StringBuilder buffer = new StringBuilder();
             while (context.hasMoreCharacters()) {
-                char c = context.getCurrentChar();
+                final char c = context.getCurrentChar();
                 encodeChar(c, buffer);
                 context.pos++;
 
-                int count = buffer.length();
+                final int count = buffer.length();
                 if (count >= 4) {
                     context.writeCodewords(encodeToCodewords(buffer, 0));
                     buffer.delete(0, 4);
 
-                    int newMode = lookAheadTest(context.msg, context.pos, getEncodingMode());
+                    final int newMode = lookAheadTest(context.msg, context.pos, getEncodingMode());
                     if (newMode != getEncodingMode()) {
                         context.signalEncoderChange(ASCII_ENCODATION);
                         break;
@@ -687,14 +687,14 @@ public class DataMatrixHighLevelEncoder {
          */
         protected void handleEOD(EncoderContext context, StringBuilder buffer) {
             try {
-                int count = buffer.length();
+                final int count = buffer.length();
                 if (count == 0) {
                     return; //Already finished
                 } else if (count == 1) {
                     //Only an unlatch at the end
                     context.updateSymbolInfo();
-                    int available = context.symbolInfo.dataCapacity - context.getCodewordCount();
-                    int remaining = context.getRemainingCharacters();
+                    final int available = context.symbolInfo.dataCapacity - context.getCodewordCount();
+                    final int remaining = context.getRemainingCharacters();
                     if (remaining == 0 && available <= 2) {
                         return; //No unlatch
                     }
@@ -703,9 +703,9 @@ public class DataMatrixHighLevelEncoder {
                 if (count > 4) {
                     throw new IllegalStateException("Count must not exceed 4");
                 }
-                int restChars = count - 1;
-                String encoded = encodeToCodewords(buffer, 0);
-                boolean endOfSymbolReached = !context.hasMoreCharacters();
+                final int restChars = count - 1;
+                final String encoded = encodeToCodewords(buffer, 0);
+                final boolean endOfSymbolReached = !context.hasMoreCharacters();
                 boolean restInAscii = endOfSymbolReached && restChars <= 2;
 
                 int available;
@@ -742,20 +742,20 @@ public class DataMatrixHighLevelEncoder {
         }
 
         protected String encodeToCodewords(StringBuilder sb, int startPos) {
-            int len = sb.length() - startPos;
+            final int len = sb.length() - startPos;
             if (len == 0) {
                 throw new IllegalStateException("StringBuilder must not be empty");
             }
-            char c1 = sb.charAt(startPos);
-            char c2 = (len >= 2 ? sb.charAt(startPos + 1) : 0);
-            char c3 = (len >= 3 ? sb.charAt(startPos + 2) : 0);
-            char c4 = (len >= 4 ? sb.charAt(startPos + 3) : 0);
+            final char c1 = sb.charAt(startPos);
+            final char c2 = (len >= 2 ? sb.charAt(startPos + 1) : 0);
+            final char c3 = (len >= 3 ? sb.charAt(startPos + 2) : 0);
+            final char c4 = (len >= 4 ? sb.charAt(startPos + 3) : 0);
 
-            int v = (c1 << 18) + (c2 << 12) + (c3 << 6) + c4;
-            char cw1 = (char)((v >> 16) & 255);
-            char cw2 = (char)((v >> 8) & 255);
-            char cw3 = (char)(v & 255);
-            StringBuilder res = new StringBuilder(3);
+            final int v = (c1 << 18) + (c2 << 12) + (c3 << 6) + c4;
+            final char cw1 = (char)((v >> 16) & 255);
+            final char cw2 = (char)((v >> 8) & 255);
+            final char cw3 = (char)(v & 255);
+            final StringBuilder res = new StringBuilder(3);
             res.append(cw1);
             if (len >= 2) {
                 res.append(cw2);
@@ -777,25 +777,25 @@ public class DataMatrixHighLevelEncoder {
 
         @Override
         public void encode(EncoderContext context) {
-            StringBuilder buffer = new StringBuilder();
+            final StringBuilder buffer = new StringBuilder();
             buffer.append('\0'); //Initialize length field
             while (context.hasMoreCharacters()) {
-                char c = context.getCurrentChar();
+                final char c = context.getCurrentChar();
                 buffer.append(c);
 
                 context.pos++;
 
-                int newMode = lookAheadTest(context.msg, context.pos, getEncodingMode());
+                final int newMode = lookAheadTest(context.msg, context.pos, getEncodingMode());
                 if (newMode != getEncodingMode()) {
                     context.signalEncoderChange(newMode);
                     break;
                 }
             }
-            int dataCount = buffer.length() - 1;
-            int lengthFieldSize = 1;
-            int currentSize = (context.getCodewordCount() + dataCount + lengthFieldSize);
+            final int dataCount = buffer.length() - 1;
+            final int lengthFieldSize = 1;
+            final int currentSize = (context.getCodewordCount() + dataCount + lengthFieldSize);
             context.updateSymbolInfo(currentSize);
-            boolean mustPad = ((context.symbolInfo.dataCapacity - currentSize) > 0);
+            final boolean mustPad = ((context.symbolInfo.dataCapacity - currentSize) > 0);
             if (context.hasMoreCharacters() || mustPad) {
                 if (dataCount <= 249) {
                     buffer.setCharAt(0, (char)dataCount);
@@ -807,7 +807,7 @@ public class DataMatrixHighLevelEncoder {
                             "Message length not in valid ranges: " + dataCount);
                 }
             }
-            for (int i = 0, c = buffer.length(); i < c; i++) {
+            for (int i = 0; i < buffer.length(); i++) {
                 context.writeCodeword(randomize255State(
                         buffer.charAt(i), context.getCodewordCount() + 1));
             }
@@ -817,7 +817,7 @@ public class DataMatrixHighLevelEncoder {
 
     private static char encodeASCIIDigits(char digit1, char digit2) {
         if (isDigit(digit1) && isDigit(digit2)) {
-            int num = (digit1 - 48) * 10 + (digit2 - 48);
+            final int num = (digit1 - 48) * 10 + (digit2 - 48);
             return (char)(num + 130);
         } else {
             throw new IllegalArgumentException("not digits: " + digit1 + digit2);
@@ -842,10 +842,10 @@ public class DataMatrixHighLevelEncoder {
             //step K
             if ((startpos + charsProcessed) == msg.length()) {
                 int min = Integer.MAX_VALUE;
-                byte[] mins = new byte[6];
-                int[] intCharCounts = new int[6];
+                final byte[] mins = new byte[6];
+                final int[] intCharCounts = new int[6];
                 min = findMinimums(charCounts, intCharCounts, min, mins);
-                int minCount = getMinimumCount(mins);
+                final int minCount = getMinimumCount(mins);
 
                 if (intCharCounts[ASCII_ENCODATION] == min) {
                     return ASCII_ENCODATION;
@@ -862,7 +862,7 @@ public class DataMatrixHighLevelEncoder {
                 }
             }
 
-            char c = msg.charAt(startpos + charsProcessed);
+            final char c = msg.charAt(startpos + charsProcessed);
             charsProcessed++;
 
             //step L
@@ -926,11 +926,11 @@ public class DataMatrixHighLevelEncoder {
                     System.out.println(a + " " + ENCODATION_NAMES[a] + " " + charCounts[a]);
                 }*/
 
-                int min = Integer.MAX_VALUE;
-                int[] intCharCounts = new int[6];
-                byte[] mins = new byte[6];
+                final int min = Integer.MAX_VALUE;
+                final int[] intCharCounts = new int[6];
+                final byte[] mins = new byte[6];
                 findMinimums(charCounts, intCharCounts, min, mins);
-                int minCount = getMinimumCount(mins);
+                final int minCount = getMinimumCount(mins);
 
                 if (intCharCounts[ASCII_ENCODATION] + 1 <= intCharCounts[BASE256_ENCODATION]
                         && intCharCounts[ASCII_ENCODATION] + 1 <= intCharCounts[C40_ENCODATION]
@@ -959,7 +959,7 @@ public class DataMatrixHighLevelEncoder {
                     } else if (intCharCounts[C40_ENCODATION] == intCharCounts[X12_ENCODATION]) {
                         int p = startpos + charsProcessed + 1;
                         while (p < msg.length()) {
-                            char tc = msg.charAt(p);
+                            final char tc = msg.charAt(p);
                             if (isX12TermSep(tc)) {
                                 return X12_ENCODATION;
                             } else if (!isNativeX12(tc)) {
@@ -979,7 +979,7 @@ public class DataMatrixHighLevelEncoder {
         Arrays.fill(mins, (byte)0);
         for (int i = 0; i < 6; i++) {
             intCharCounts[i] = (int)Math.ceil(charCounts[i]);
-            int current = intCharCounts[i];
+            final int current = intCharCounts[i];
             if (min > current) {
                 min = current;
                 Arrays.fill(mins, (byte)0);
@@ -1077,7 +1077,7 @@ public class DataMatrixHighLevelEncoder {
      */
     public static int determineConsecutiveDigitCount(String msg, int startpos) {
         int count = 0;
-        int len = msg.length();
+        final int len = msg.length();
         int idx = startpos;
         if (idx < len) {
             char ch = msg.charAt(idx);

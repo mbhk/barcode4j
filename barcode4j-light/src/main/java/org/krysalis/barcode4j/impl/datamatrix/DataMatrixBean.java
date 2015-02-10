@@ -123,10 +123,10 @@ public class DataMatrixBean extends AbstractBarcodeBean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        TwoDimBarcodeLogicHandler handler =
+        final TwoDimBarcodeLogicHandler handler =
                 new DefaultTwoDimCanvasLogicHandler(this, new Canvas(canvas));
 
-        DataMatrixLogicImpl impl = new DataMatrixLogicImpl();
+        final DataMatrixLogicImpl impl = new DataMatrixLogicImpl();
         impl.generateBarcodeLogic(handler, msg, getShape(), getMinSize(), getMaxSize());
     }
 
@@ -139,12 +139,12 @@ public class DataMatrixBean extends AbstractBarcodeBean {
         } catch (IOException e) {
             throw new IllegalArgumentException("Cannot fetch data: " + e.getLocalizedMessage());
         }
-        DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(), shape);
+        final DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(), shape);
 
-        double symbolWidth = symbolInfo.getSymbolWidth() * getModuleWidth();
-        double symbolHeight = symbolInfo.getSymbolHeight() * getBarHeight();
-        double qzh = (hasQuietZone() ? getQuietZone() : 0);
-        double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);
+        final double symbolWidth = symbolInfo.getSymbolWidth() * getModuleWidth();
+        final double symbolHeight = symbolInfo.getSymbolHeight() * getBarHeight();
+        final double qzh = (hasQuietZone() ? getQuietZone() : 0);
+        final double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);
         return new BarcodeDimension(symbolWidth, symbolHeight,
                 symbolWidth + (2 * qzh), symbolHeight + (2 * qzv),
                 qzh, qzv);
@@ -167,7 +167,7 @@ public class DataMatrixBean extends AbstractBarcodeBean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        Collection<String> res = new ArrayList<String>(0);
+        final Collection<String> res = new ArrayList<String>(0);
         return res;
     }
 

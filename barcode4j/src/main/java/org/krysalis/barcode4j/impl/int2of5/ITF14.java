@@ -46,7 +46,7 @@ public class ITF14 extends Interleaved2Of5 {
         //Bearer bar width
         Configuration c = cfg.getChild("bearer-bar-width", false);
         if (c != null) {
-            Length w = new Length(c.getValue(), "mw");
+            final Length w = new Length(c.getValue(), "mw");
             if (w.getUnit().equalsIgnoreCase("mw")) {
                 getITFBean().setBearerBarWidth(w.getValue() * getBean().getModuleWidth());
             } else {

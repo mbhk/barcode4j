@@ -90,8 +90,8 @@ public class POSTNETLogicImpl {
      * @return boolean True, if the checksum is correct
      */
     public static boolean validateChecksum(String msg) {
-        char actual = msg.charAt(msg.length() - 1);
-        char expected = calcChecksum(msg.substring(0, msg.length() - 1));
+        final char actual = msg.charAt(msg.length() - 1);
+        final char expected = calcChecksum(msg.substring(0, msg.length() - 1));
         return (actual == expected);
     }
 
@@ -114,7 +114,7 @@ public class POSTNETLogicImpl {
      * @return the message but without ignored characters
      */
     public static String removeIgnoredCharacters(final String msg) {
-        StringBuilder sb = new StringBuilder(msg.length());
+        final StringBuilder sb = new StringBuilder(msg.length());
         for (int i = 0; i < msg.length(); i++) {
             final char ch = msg.charAt(i);
             if (!isValidChar(ch)) {
@@ -128,9 +128,9 @@ public class POSTNETLogicImpl {
     }
 
     private int heightAt(char ch, int index) {
-        int chidx = Character.digit(ch, 10);
+        final int chidx = Character.digit(ch, 10);
         if (chidx >= 0) {
-            int height = CHARSET[chidx][index];
+            final int height = CHARSET[chidx][index];
             return height;
         } else {
             throw new IllegalArgumentException("Invalid character: " + ch);
@@ -148,7 +148,7 @@ public class POSTNETLogicImpl {
         }
         logic.startBarGroup(BarGroup.MSG_CHARACTER, String.valueOf(c));
         for (byte i = 0; i < 5; i++) {
-            int height = heightAt(c, i);
+            final int height = heightAt(c, i);
             logic.addBar(true, height);
             addIntercharacterGap(logic);
         }
@@ -165,7 +165,7 @@ public class POSTNETLogicImpl {
                 sb.append(calcChecksum(sb.toString()));
                 return sb.toString();
             } else {
-                String msg = sb.toString();
+                final String msg = sb.toString();
                 sb.append(calcChecksum(msg));
                 return msg;
             }
@@ -197,8 +197,8 @@ public class POSTNETLogicImpl {
      * @param msg the message to encode
      */
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
-        StringBuilder sb = new StringBuilder(msg);
-        String formattedMsg = handleChecksum(sb);
+        final StringBuilder sb = new StringBuilder(msg);
+        final String formattedMsg = handleChecksum(sb);
 
         logic.startBarcode(sb.toString(), formattedMsg);
         

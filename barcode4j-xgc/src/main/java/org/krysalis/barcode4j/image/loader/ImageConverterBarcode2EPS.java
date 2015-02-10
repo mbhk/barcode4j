@@ -48,28 +48,28 @@ public class ImageConverterBarcode2EPS extends AbstractImageConverter {
     @Override
     public Image convert(Image src, Map hints) throws ImageException, IOException {
         checkSourceFlavor(src);
-        ImageBarcode barcodeImage = (ImageBarcode)src;
+        final ImageBarcode barcodeImage = (ImageBarcode)src;
 
-        Configuration cfg = barcodeImage.getBarcodeXML();
-        Orientation orientation = Orientation.fromInt(
+        final Configuration cfg = barcodeImage.getBarcodeXML();
+        final Orientation orientation = Orientation.fromInt(
                 cfg.getAttributeAsInteger("orientation", 0));
 
         try {
-            String msg = barcodeImage.getMessage();
-            PageInfo pageInfo = PageInfo.fromProcessingHints(hints);
-            String expandedMsg = VariableUtil.getExpandedMessage(pageInfo, msg);
+            final String msg = barcodeImage.getMessage();
+            final PageInfo pageInfo = PageInfo.fromProcessingHints(hints);
+            final String expandedMsg = VariableUtil.getExpandedMessage(pageInfo, msg);
 
             final BarcodeGenerator bargen = BarcodeUtil.getInstance().
                         createBarcodeGenerator(cfg);
 
-            ByteArrayOutputStream bout = new ByteArrayOutputStream();
-            EPSCanvasProvider canvas = new EPSCanvasProvider(bout, orientation);
+            final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            final EPSCanvasProvider canvas = new EPSCanvasProvider(bout, orientation);
             bargen.generateBarcode(canvas, expandedMsg);
             canvas.finish();
 
             //Create EPS immediately rather than delaying, but create a cacheable EPS image
             final byte[] eps = bout.toByteArray();
-            ImageRawEPS epsImage = new ImageRawEPS(src.getInfo(),
+            final ImageRawEPS epsImage = new ImageRawEPS(src.getInfo(),
                     new ImageRawStream.ByteArrayStreamFactory(eps));
             return epsImage;
         } catch (ConfigurationException ce) {

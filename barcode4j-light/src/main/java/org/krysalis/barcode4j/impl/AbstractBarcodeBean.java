@@ -81,7 +81,7 @@ public abstract class AbstractBarcodeBean
      */
     public double getHumanReadableHeight() {
         if (getMsgPosition() != HumanReadablePlacement.HRP_NONE) {
-            double textHeight = this.fontSize;
+            final double textHeight = this.fontSize;
             if (hasFontDescender()) {
                 return 1.3 * textHeight;
                 //1.3 is the factor for the font descender

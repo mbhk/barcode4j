@@ -53,12 +53,12 @@ public class ImageLoaderBarcode extends AbstractImageLoader {
     @Override
     public Image loadImage(ImageInfo info, Map hints, ImageSessionContext session)
                 throws ImageException, IOException {
-        Image img = info.getOriginalImage();
+        final Image img = info.getOriginalImage();
         if (!(img instanceof ImageBarcode)) {
             throw new IllegalArgumentException(
                     "ImageInfo was expected to contain the Barcode document");
         }
-        ImageBarcode barcodeImage = (ImageBarcode)img;
+        final ImageBarcode barcodeImage = (ImageBarcode)img;
         return barcodeImage;
     }
 }

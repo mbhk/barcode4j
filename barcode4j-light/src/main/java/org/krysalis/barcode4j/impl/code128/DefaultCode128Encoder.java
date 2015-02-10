@@ -126,10 +126,10 @@ public class DefaultCode128Encoder implements Code128Encoder {
     public int[] encode(String message) {
 
         // Allocate enough space
-        int[] encoded = new int[message.length() * 2];
+        final int[] encoded = new int[message.length() * 2];
         int encodedPos = 0;
         int startAorBPos = 0;
-        int messageLength = message.length();
+        final int messageLength = message.length();
         int messagePos = 0;
 
         // iterate over all characters in message
@@ -178,7 +178,7 @@ public class DefaultCode128Encoder implements Code128Encoder {
                 if (extraDigitAtEnd) {
 
                     // section should not contain FNC_1
-                    int fnc1Pos = message.indexOf(Code128LogicImpl.FNC_1, messagePos);
+                    final int fnc1Pos = message.indexOf(Code128LogicImpl.FNC_1, messagePos);
                     if (fnc1Pos < 0 || fnc1Pos > messagePos + countC) {
                         messagePos++;
                     }
@@ -205,7 +205,7 @@ public class DefaultCode128Encoder implements Code128Encoder {
         encodedPos += encodeAordB(message, startAorBPos, messageLength,
                 encoded, encodedPos);
 
-        int[] result = new int[encodedPos];
+        final int[] result = new int[encodedPos];
         System.arraycopy(encoded, 0, result, 0, result.length);
 
         return result;
@@ -235,7 +235,7 @@ public class DefaultCode128Encoder implements Code128Encoder {
         int messagePos = start;
 
         while (messagePos < finish) {
-            char character = message.charAt(messagePos);
+            final char character = message.charAt(messagePos);
 
             if (character == Code128LogicImpl.FNC_1) {
                 encoded[encodedPos++] = FNC_1;
@@ -279,7 +279,7 @@ public class DefaultCode128Encoder implements Code128Encoder {
             inB = true;
             for (int messagePos = start; messagePos < finish; messagePos++) {
 
-                char character = message.charAt(messagePos);
+                final char character = message.charAt(messagePos);
 
                 if (needA(character)) {
                     inB = false;
@@ -311,7 +311,7 @@ public class DefaultCode128Encoder implements Code128Encoder {
         // iterate over characters in message
         for (int messagePos = start; messagePos < finish; messagePos++) {
 
-            char character = message.charAt(messagePos);
+            final char character = message.charAt(messagePos);
 
             if (inB) {
                 // check if current character is not in code set B
