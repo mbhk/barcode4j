@@ -38,14 +38,16 @@ public abstract class AbstractSVGGeneratingCanvasProvider
      * Creates a new AbstractSVGCanvasProvider.
      * @param useNamespace Controls whether namespaces should be used
      * @param namespacePrefix the namespace prefix to use, null for no prefix
+     * @param orientation
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
     public AbstractSVGGeneratingCanvasProvider(boolean useNamespace, String namespacePrefix, 
                     Orientation orientation) 
                 throws BarcodeCanvasSetupException {
         super(orientation);
-        if (!useNamespace && namespacePrefix != null) 
+        if (!useNamespace && namespacePrefix != null) {
             throw new IllegalArgumentException("No prefix allow when namespaces are enabled");
+        }
         this.useNamespace = true;
         this.prefix = namespacePrefix;
     }

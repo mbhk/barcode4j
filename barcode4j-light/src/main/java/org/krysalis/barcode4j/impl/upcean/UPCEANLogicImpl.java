@@ -117,7 +117,9 @@ public abstract class UPCEANLogicImpl {
             }
         }
         int check = 10 - ((evensum + 3 * oddsum) % 10);
-        if (check >= 10) check = 0;
+        if (check >= 10) {
+            check = 0;
+        }
         return Character.forDigit(check, 10);
     }
     

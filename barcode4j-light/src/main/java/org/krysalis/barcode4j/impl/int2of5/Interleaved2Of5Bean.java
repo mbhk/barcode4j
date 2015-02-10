@@ -108,7 +108,9 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
             return moduleWidth;
         } else if (width == 2) {
             return moduleWidth * wideFactor;
-        } else throw new IllegalArgumentException("Only widths 1 and 2 allowed");
+        } else {
+            throw new IllegalArgumentException("Only widths 1 and 2 allowed");
+        }
     }
     
     /**

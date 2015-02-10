@@ -103,7 +103,9 @@ public class EAN128AI {
     }
     
     public static synchronized void loadProperties() throws Exception {
-        if (propertiesLoaded) return;
+        if (propertiesLoaded) {
+            return;
+        }
 
         final String bundlename = "EAN128AIs"; 
         final String filename = bundlename + ".properties"; 
@@ -151,15 +153,18 @@ public class EAN128AI {
         for (int i = 0; i < type.length; i++) {
             lenMinAll += lenMin[i];
             lenMaxAll += lenMax[i];
-            if (i > idxVarLen) 
-                minLenAfterVariableLen += lenMin[i];  
+            if (i > idxVarLen) {
+                minLenAfterVariableLen += lenMin[i];
+            }
             if (lenMin[i] != lenMax[i]) {
-                if (idxVarLen < type.length) 
+                if (idxVarLen < type.length) {
                     throw new IllegalArgumentException("Only one Part with var len!"); //TODO
+                }
                 idxVarLen = i;
             }
-            if (idxFirstChecksum == -1 && type[i] == TYPECD)
+            if (idxFirstChecksum == -1 && type[i] == TYPECD) {
                 idxFirstChecksum = i;
+            }
         }
         canDoChecksumADD = (idxFirstChecksum == type.length - 1 && lenMinAll == lenMaxAll);
     }
