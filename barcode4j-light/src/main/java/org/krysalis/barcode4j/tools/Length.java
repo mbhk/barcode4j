@@ -62,14 +62,14 @@ public class Length {
      * @param defaultUnit the default unit to assume
      */
     public Length(String text, String defaultUnit) {
-        Builder b = new Builder();
+        final Builder b = new Builder();
         try {
             b.fromString(text);
         } catch (Exception e) {
             LOGGER.log(Level.FINEST, "Length not buildable fromString.", e);
             b.reset().withValue(text).withUnit(defaultUnit);
         }
-        Length l = b.build();
+        final Length l = b.build();
         this.unit = l.unit;
         this.value = l.value;
     }
@@ -123,7 +123,7 @@ public class Length {
      * @return List of supported unit
      */
     public static Set<String> getSupportedUnits() {
-        Set<String> res = new TreeSet<String>();
+        final Set<String> res = new TreeSet<String>();
         res.add(CM);
         res.add(INCH);
         res.add(POINT);
@@ -187,8 +187,8 @@ public class Length {
                 throw new IllegalArgumentException("argument must not be null");
             }
 
-            String tmp = valueWithUnit.trim();
-            String tmpUnit = checkUnit(extractUnit(tmp));
+            final String tmp = valueWithUnit.trim();
+            final String tmpUnit = checkUnit(extractUnit(tmp));
             this.value = parseValue(extractValue(tmp));
             this.unit = tmpUnit;
             return this;
@@ -212,7 +212,7 @@ public class Length {
         }
 
         private String extractUnit(String valueWithUnit) {
-            Matcher m = UNIT_PATTERN.matcher(valueWithUnit);
+            final Matcher m = UNIT_PATTERN.matcher(valueWithUnit);
             if (m.find()) {
                 return m.group(1);
             } else {
@@ -221,7 +221,7 @@ public class Length {
         }
 
         private String extractValue(String valueWithUnit) {
-            Matcher m = VALUE_PATTERN.matcher(valueWithUnit);
+            final Matcher m = VALUE_PATTERN.matcher(valueWithUnit);
             if (m.find()) {
                 return m.group(1);
             } else {
@@ -233,7 +233,7 @@ public class Length {
             if(unit == null) {
                 throw new IllegalArgumentException("unit must not be null");
             }
-            String tmp = unit.trim().toLowerCase();
+            final String tmp = unit.trim().toLowerCase();
             if (!supportedUnits.contains(tmp)) {
                 throw new IllegalArgumentException("Unsupported unit " + tmp);
             }

@@ -40,7 +40,7 @@ public class USPSIntelligentMail extends ConfigurableBarcodeGenerator
     @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
-        Length mw = new Length(cfg.getChild("module-width").getValue(
+        final Length mw = new Length(cfg.getChild("module-width").getValue(
                 USPSIntelligentMailBean.DEFAULT_MODULE_WIDTH_INCH + Length.INCH), Length.INCH);
         getUSPSIntelligentMailBean().setModuleWidth(mw.getValueAsMillimeter());
 
@@ -51,7 +51,7 @@ public class USPSIntelligentMail extends ConfigurableBarcodeGenerator
             cfg.getChild("checksum").getValue(ChecksumMode.CP_AUTO.getName())));
     
         //Inter-character gap width    
-        Length igw = new Length(cfg.getChild("interchar-gap-width").getValue(
+        final Length igw = new Length(cfg.getChild("interchar-gap-width").getValue(
                 USPSIntelligentMailBean.DEFAULT_INTERCHAR_GAP_WIDTH_INCH + Length.INCH),
                     Length.INCH);
         if (igw.getUnit().equalsIgnoreCase("mw")) {
@@ -61,11 +61,11 @@ public class USPSIntelligentMail extends ConfigurableBarcodeGenerator
             getUSPSIntelligentMailBean().setIntercharGapWidth(igw.getValueAsMillimeter());
         }
 
-        Length ah = new Length(cfg.getChild("ascender-height").getValue(
+        final Length ah = new Length(cfg.getChild("ascender-height").getValue(
                 USPSIntelligentMailBean.DEFAULT_ASCENDER_HEIGHT_INCH + Length.INCH), Length.INCH);
         getUSPSIntelligentMailBean().setAscenderHeight(ah.getValueAsMillimeter());
         
-        Length th = new Length(cfg.getChild("track-height").getValue(
+        final Length th = new Length(cfg.getChild("track-height").getValue(
                 USPSIntelligentMailBean.DEFAULT_TRACK_HEIGHT_INCH + Length.INCH), Length.INCH);
         getUSPSIntelligentMailBean().setTrackHeight(th.getValueAsMillimeter());
     }

@@ -90,32 +90,32 @@ public class BarcodeTask extends Task {
         }
 
         try {
-            OutputStream out = new java.io.FileOutputStream(output);
+            final OutputStream out = new java.io.FileOutputStream(output);
 
             format = MimeTypes.expandFormat(format);
 
-            Orientation orientation = Orientation.ZERO;
+            final Orientation orientation = Orientation.ZERO;
             log("Generating " + symbol + " in " + format + "...");
-            BarcodeUtil util = BarcodeUtil.getInstance();
-            BarcodeGenerator gen = util.createBarcodeGenerator(getConfiguration());
+            final BarcodeUtil util = BarcodeUtil.getInstance();
+            final BarcodeGenerator gen = util.createBarcodeGenerator(getConfiguration());
 
             if (MimeTypes.MIME_SVG.equals(format)) {
                 // Create Barcode and render it to SVG
-                SVGCanvasProvider svg = new SVGCanvasProvider(false, orientation);
+                final SVGCanvasProvider svg = new SVGCanvasProvider(false, orientation);
                 gen.generateBarcode(svg, message);
 
                 // Serialize SVG barcode
                 try {
-                    TransformerFactory factory = TransformerFactory.newInstance();
-                    Transformer trans = factory.newTransformer();
-                    Source src = new javax.xml.transform.dom.DOMSource(svg.getDOMFragment());
-                    Result res = new javax.xml.transform.stream.StreamResult(out);
+                    final TransformerFactory factory = TransformerFactory.newInstance();
+                    final Transformer trans = factory.newTransformer();
+                    final Source src = new javax.xml.transform.dom.DOMSource(svg.getDOMFragment());
+                    final Result res = new javax.xml.transform.stream.StreamResult(out);
                     trans.transform(src, res);
                 } catch (TransformerException te) {
                     throw new BuildException("XML/XSLT library error", te);
                 }
             } else if (MimeTypes.MIME_EPS.equals(format)) {
-                EPSCanvasProvider eps = new EPSCanvasProvider(out, orientation);
+                final EPSCanvasProvider eps = new EPSCanvasProvider(out, orientation);
                 gen.generateBarcode(eps, message);
                 eps.finish();
             } else {
@@ -143,8 +143,8 @@ public class BarcodeTask extends Task {
 
     private Configuration getConfiguration() {
         if (symbol != null) {
-            DefaultConfiguration cfg = new DefaultConfiguration("cfg");
-            DefaultConfiguration child = new DefaultConfiguration(symbol);
+            final DefaultConfiguration cfg = new DefaultConfiguration("cfg");
+            final DefaultConfiguration child = new DefaultConfiguration(symbol);
             cfg.addChild(child);
             return cfg;
         }
@@ -155,7 +155,7 @@ public class BarcodeTask extends Task {
                 }
                 log("Using configuration: " + configurationFile);
 
-                DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
+                final DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
                 return builder.buildFromFile(configurationFile);
             } catch (Exception e) {
                 throw new BuildException("Error reading configuration file: " + e.getMessage());
@@ -229,10 +229,10 @@ public class BarcodeTask extends Task {
      * @param message the message
      */
     public void setMessage(String message) {
-        if (this.message != null) {
-            this.message += message;
-        } else {
+        if (this.message == null) {
             this.message = message;
+        } else {
+            this.message += message;
         }
     }
 
@@ -241,10 +241,10 @@ public class BarcodeTask extends Task {
      * @param text the text to add to the message
      */
     public void addText(String text) {
-        if (this.message != null) {
-            this.message += text;
-        } else {
+        if (this.message == null) {
             this.message = text;
+        } else {
+            this.message += text;
         }
     }
 }

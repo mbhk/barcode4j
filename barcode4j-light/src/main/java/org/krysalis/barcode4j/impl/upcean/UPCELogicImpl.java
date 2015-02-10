@@ -63,17 +63,17 @@ public class UPCELogicImpl extends UPCEANLogicImpl {
      */
     public static String compactMessage(String msg) {
         UPCALogicImpl.validateMessage(msg);
-        String upca = UPCALogicImpl.handleChecksum(msg, ChecksumMode.CP_AUTO);
+        final String upca = UPCALogicImpl.handleChecksum(msg, ChecksumMode.CP_AUTO);
         final byte numberSystem = extractNumberSystem(upca);
         if ((numberSystem != 0) && (numberSystem != 1)) {
             return null;
         }
         final byte check = Byte.parseByte(upca.substring(11, 12));
-        StringBuilder upce = new StringBuilder();
+        final StringBuilder upce = new StringBuilder();
         upce.append(Byte.toString(numberSystem));
         try {
-            String manufacturer = substring(upca, 1, 5);
-            String product = substring(upca, 6, 5);
+            final String manufacturer = substring(upca, 1, 5);
+            final String product = substring(upca, 6, 5);
             String mtemp, ptemp;
             //Rule 1
             mtemp = substring(manufacturer, 2, 3);
@@ -131,14 +131,14 @@ public class UPCELogicImpl extends UPCEANLogicImpl {
         if (msg.length() == 8) {
             check = msg.charAt(7);
         }
-        String upce = substring(msg, 0, 7);
+        final String upce = substring(msg, 0, 7);
         final byte numberSystem = extractNumberSystem(upce);
         if ((numberSystem != 0) && (numberSystem != 1)) {
             throw new IllegalArgumentException("Invalid UPC-E message: " + msg);
         }
-        StringBuilder upca = new StringBuilder();
+        final StringBuilder upca = new StringBuilder();
         upca.append(Byte.toString(numberSystem));
-        byte mode = Byte.parseByte(substring(upce, 6, 1));
+        final byte mode = Byte.parseByte(substring(upce, 6, 1));
         if ((mode >= 0) && (mode <= 2)) {
             upca.append(substring(upce, 1, 2));
             upca.append(Byte.toString(mode));
@@ -160,8 +160,8 @@ public class UPCELogicImpl extends UPCEANLogicImpl {
             //Shouldn't happen
             throw new RuntimeException("Internal error");
         }
-        String upcaFinished = upca.toString();
-        char expectedCheck = calcChecksum(upcaFinished);
+        final String upcaFinished = upca.toString();
+        final char expectedCheck = calcChecksum(upcaFinished);
         if ((check != '\u0000') && (check != expectedCheck)) {
             throw new IllegalArgumentException("Invalid checksum. Expected "
                 + expectedCheck + " but was " + check);
@@ -197,7 +197,7 @@ public class UPCELogicImpl extends UPCEANLogicImpl {
             throw new IllegalArgumentException(
                 "Message must be 7 or 8 characters long. Message: " + msg);
         }
-        byte numberSystem = extractNumberSystem(msg);
+        final byte numberSystem = extractNumberSystem(msg);
         if ((numberSystem < 0) || (numberSystem > 1)) {
             throw new IllegalArgumentException(
                 "Valid number systems for UPC-E are 0 or 1. Found: " 
@@ -228,8 +228,8 @@ public class UPCELogicImpl extends UPCEANLogicImpl {
                 throw new IllegalArgumentException(
                     "Message must be 8 characters long");
             }
-            char check = msg.charAt(7);
-            char expected = expandMessage(msg).charAt(11);
+            final char check = msg.charAt(7);
+            final char expected = expandMessage(msg).charAt(11);
             if (check != expected) {
                 throw new IllegalArgumentException(
                     "Checksum is bad (" + check + "). Expected: " + expected);
@@ -278,7 +278,7 @@ public class UPCELogicImpl extends UPCEANLogicImpl {
 
     @Override
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
-        String supp = retrieveSupplemental(msg);
+        final String supp = retrieveSupplemental(msg);
         String s = removeSupplemental(msg); 
         s = convertUPCAtoUPCE(s);
         validateMessage(s);

@@ -39,7 +39,7 @@ public class MessagePatternUtil {
      */
     public static String applyCustomMessagePattern(String msg, String pattern) {
 
-        StringBuilder result = new StringBuilder();
+        final StringBuilder result = new StringBuilder();
 
         // if there is no pattern then return the original message
         if ((pattern == null) || pattern.isEmpty()

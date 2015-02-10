@@ -84,11 +84,11 @@ public class USPSIntelligentMailBean extends AbstractFourStateBean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        FourStateLogicHandler handler = 
+        final FourStateLogicHandler handler = 
                 new FourStateLogicHandler(this, new Canvas(canvas));
         handler.setTextAlignment(TextAlignment.TA_LEFT);
 
-        USPSIntelligentMailLogicImpl impl = new USPSIntelligentMailLogicImpl();
+        final USPSIntelligentMailLogicImpl impl = new USPSIntelligentMailLogicImpl();
         impl.generateBarcodeLogic(handler, msg);
     }
 
@@ -130,8 +130,8 @@ public class USPSIntelligentMailBean extends AbstractFourStateBean {
             throw new IllegalArgumentException("Space between bars is larger than 0.040in!");
         }
         
-        double pitch = UnitConv.mm2in(getModuleWidth() + getIntercharGapWidth());
-        double barsPerInch = 1 / pitch;
+        final double pitch = UnitConv.mm2in(getModuleWidth() + getIntercharGapWidth());
+        final double barsPerInch = 1 / pitch;
         if (barsPerInch < 20) {
             throw new IllegalArgumentException(
                     "Resulting barcode pitch is smaller than 20 bars per inch!");
@@ -144,7 +144,7 @@ public class USPSIntelligentMailBean extends AbstractFourStateBean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        Collection<String> res = new ArrayList<String>(0);
+        final Collection<String> res = new ArrayList<String>(0);
         return res;
     }
 

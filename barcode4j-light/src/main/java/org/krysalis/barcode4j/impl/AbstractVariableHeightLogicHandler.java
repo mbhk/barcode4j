@@ -78,7 +78,7 @@ public abstract class AbstractVariableHeightLogicHandler
         this.formattedMsg = MessagePatternUtil.applyCustomMessagePattern(
                 formattedMsg, bcBean.getPattern());
         //Calculate extents
-        BarcodeDimension dim = bcBean.calcDimensions(msg);       
+        final BarcodeDimension dim = bcBean.calcDimensions(msg);       
         canvas.establishDimensions(dim);        
         x = getStartX();
     }
@@ -105,7 +105,7 @@ public abstract class AbstractVariableHeightLogicHandler
     @Override
     public void endBarcode() {
         if (bcBean.getMsgPosition() != HumanReadablePlacement.HRP_NONE) {
-            double texty = getTextY();
+            final double texty = getTextY();
             DrawingUtil.drawText(canvas, bcBean, formattedMsg, 
                     getStartX(), x, texty, this.textAlignment);
         }

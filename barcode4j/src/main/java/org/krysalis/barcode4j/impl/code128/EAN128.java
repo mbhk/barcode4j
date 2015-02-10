@@ -46,7 +46,7 @@ public class EAN128 extends Code128
     @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
-        Length mw = new Length(cfg.getChild("module-width").getValue("0.21mm"), "mm");
+        final Length mw = new Length(cfg.getChild("module-width").getValue("0.21mm"), "mm");
         getEAN128Bean().setModuleWidth(mw.getValueAsMillimeter());
 
         super.configure(cfg);
@@ -63,7 +63,7 @@ public class EAN128 extends Code128
         getEAN128Bean().setGroupSeparator(getFirstChar(
                 cfg.getChild("group-separator").getValue("\u00f1")));
 
-        Configuration hr = cfg.getChild("human-readable", false);
+        final Configuration hr = cfg.getChild("human-readable", false);
         if (hr != null) {
             //omit Brackets for AI
             getEAN128Bean().setOmitBrackets(

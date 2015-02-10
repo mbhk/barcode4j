@@ -43,7 +43,7 @@ public abstract class ConfigurableBarcodeGenerator
     public static final String[] BARCODE_ELEMENTS;
 
     static {
-        List elements = new java.util.ArrayList();
+        final List elements = new java.util.ArrayList();
         //All barcode names
         elements.addAll(BarcodeUtil.getInstance().getClassResolver().getBarcodeNames());
         //All configuration element names
@@ -97,15 +97,15 @@ public abstract class ConfigurableBarcodeGenerator
         //Height (must be evaluated after the font size because of setHeight())
         Configuration c = cfg.getChild("height", false);
         if (c != null) {
-            Length h = new Length(c.getValue(), "mm");
+            final Length h = new Length(c.getValue(), "mm");
             getBean().setHeight(h.getValueAsMillimeter());
         }
 
         //Quiet zone
         getBean().doQuietZone(cfg.getChild("quiet-zone").getAttributeAsBoolean("enabled", true));
-        String qzs = cfg.getChild("quiet-zone").getValue(null);
+        final String qzs = cfg.getChild("quiet-zone").getValue(null);
         if (qzs != null) {
-            Length qz = new Length(qzs, "mw");
+            final Length qz = new Length(qzs, "mw");
             if (qz.getUnit().equalsIgnoreCase("mw")) {
                 getBean().setQuietZone(qz.getValue() * getBean().getModuleWidth());
             } else {
@@ -114,9 +114,9 @@ public abstract class ConfigurableBarcodeGenerator
         }
 
         //Vertical quiet zone
-        String qzvs = cfg.getChild("vertical-quiet-zone").getValue(null);
+        final String qzvs = cfg.getChild("vertical-quiet-zone").getValue(null);
         if (qzvs != null) {
-            Length qz = new Length(qzvs, Length.INCH);
+            final Length qz = new Length(qzvs, Length.INCH);
             if (qz.getUnit().equalsIgnoreCase("mw")) {
                 getBean().setVerticalQuietZone(
                         qz.getValue() * getBean().getModuleWidth());
@@ -126,17 +126,17 @@ public abstract class ConfigurableBarcodeGenerator
             }
         }
 
-        Configuration hr = cfg.getChild("human-readable", false);
+        final Configuration hr = cfg.getChild("human-readable", false);
         if ((hr != null) && (hr.getChildren().length > 0)) {
             //Human-readable placement
-            String v = hr.getChild("placement").getValue(null);
+            final String v = hr.getChild("placement").getValue(null);
             if (v != null) {
                 getBean().setMsgPosition(HumanReadablePlacement.byName(v));
             }
 
             c = hr.getChild("font-size", false);
             if (c != null) {
-                Length fs = new Length(c.getValue());
+                final Length fs = new Length(c.getValue());
                 getBean().setFontSize(fs.getValueAsMillimeter());
             }
 
@@ -147,14 +147,14 @@ public abstract class ConfigurableBarcodeGenerator
             //Legacy code for compatibility
 
             //Human-readable placement
-            String v = cfg.getChild("human-readable").getValue(null);
+            final String v = cfg.getChild("human-readable").getValue(null);
             if (v != null) {
                 getBean().setMsgPosition(HumanReadablePlacement.byName(v));
             }
 
             c = cfg.getChild("human-readable-size", false);
             if (c != null) {
-                Length fs = new Length(c.getValue());
+                final Length fs = new Length(c.getValue());
                 getBean().setFontSize(fs.getValueAsMillimeter());
             }
 

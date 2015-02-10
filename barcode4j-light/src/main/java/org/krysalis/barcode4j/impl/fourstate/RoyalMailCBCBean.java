@@ -58,18 +58,18 @@ public class RoyalMailCBCBean extends AbstractFourStateBean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        FourStateLogicHandler handler = 
+        final FourStateLogicHandler handler = 
                 new FourStateLogicHandler(this, new Canvas(canvas));
 
-        RoyalMailCBCLogicImpl impl = new RoyalMailCBCLogicImpl(
+        final RoyalMailCBCLogicImpl impl = new RoyalMailCBCLogicImpl(
                 getChecksumMode());
         impl.generateBarcodeLogic(handler, msg);
     }
 
     @Override
     public BarcodeDimension calcDimensions(String msg) {
-        String modMsg = RoyalMailCBCLogicImpl.removeStartStop(msg);
-        int additional = (getChecksumMode() == ChecksumMode.CP_ADD 
+        final String modMsg = RoyalMailCBCLogicImpl.removeStartStop(msg);
+        final int additional = (getChecksumMode() == ChecksumMode.CP_ADD 
                 || getChecksumMode() == ChecksumMode.CP_AUTO) ? 1 : 0;
         final int len = modMsg.length() + additional;
         final double width = (((len * 4) + 2) * moduleWidth) 
@@ -83,7 +83,7 @@ public class RoyalMailCBCBean extends AbstractFourStateBean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        Collection<String> res = new ArrayList<String>(0);
+        final Collection<String> res = new ArrayList<String>(0);
         return res;
     }
 

@@ -48,9 +48,9 @@ public class Interleaved2Of5 extends ConfigurableBarcodeGenerator
 
     @Override
     public void configure(Configuration cfg) throws ConfigurationException {
-        Interleaved2Of5Bean bean = getInterleaved2Of5Bean();
+        final Interleaved2Of5Bean bean = getInterleaved2Of5Bean();
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
-        Length mw = new Length(cfg.getChild("module-width")
+        final Length mw = new Length(cfg.getChild("module-width")
                         .getValue(bean.getModuleWidth() + "mm"), "mm");
         bean.setModuleWidth(mw.getValueAsMillimeter());
 
@@ -64,7 +64,7 @@ public class Interleaved2Of5 extends ConfigurableBarcodeGenerator
         bean.setWideFactor(
             cfg.getChild("wide-factor").getValueAsFloat((float)bean.getWideFactor()));
 
-        Configuration hr = cfg.getChild("human-readable", false);
+        final Configuration hr = cfg.getChild("human-readable", false);
         if (hr != null) {
             //Display checksum in hr-message or not
             bean.setDisplayChecksum(

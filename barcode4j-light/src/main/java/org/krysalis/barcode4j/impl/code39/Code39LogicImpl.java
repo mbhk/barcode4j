@@ -113,12 +113,12 @@ public class Code39LogicImpl {
     }
 
     private static void invalidCharacter(char c) {
-        if (c != STARTSTOP) {
-            throw new IllegalArgumentException("Invalid character: " + c);
-        } else {
+        if (c == STARTSTOP) {
             throw new IllegalArgumentException("You may not include '*' as "
                     + "part of the message. This start/stop character is "
                     + "automatically added before and after the message.");
+        } else {
+            throw new IllegalArgumentException("Invalid character: " + c);
         }
     }
 
@@ -142,10 +142,11 @@ public class Code39LogicImpl {
      * @return a StringBuilder containing the escaped message
      */
     public static StringBuilder escapeExtended(String msg, StringBuilder sbIn) {
-        StringBuilder sb = sbIn == null ? new StringBuilder(msg.length()) : sbIn;
+        final StringBuilder sb = sbIn == null ? new StringBuilder(msg.length()) : sbIn;
         
-        for (int i = 0, c = msg.length(); i < c; i++) {
-            char ch = msg.charAt(i);
+        final int c = msg.length();
+        for (int i = 0; i < c; i++) {
+            final char ch = msg.charAt(i);
             if (ch == 0) {
                 sb.append("%U");
             } else if (ch >= 1 && ch <= 26) {
@@ -208,8 +209,8 @@ public class Code39LogicImpl {
      * @return boolean True, if the checksum is correct
      */
     public static boolean validateChecksum(String msg) {
-        char actual = msg.charAt(msg.length() - 1);
-        char expected = calcChecksum(msg.substring(0, msg.length() - 1));
+        final char actual = msg.charAt(msg.length() - 1);
+        final char expected = calcChecksum(msg.substring(0, msg.length() - 1));
         return (actual == expected);
     }
 
@@ -238,7 +239,7 @@ public class Code39LogicImpl {
     private int widthAt(char ch, int index) {
         final int chidx = getCharIndex(ch);
         if (chidx >= 0) {
-            int binary = CHARSET[chidx][index];
+            final int binary = CHARSET[chidx][index];
             return binary + 1;
         } else {
             invalidCharacter(ch);
@@ -254,8 +255,8 @@ public class Code39LogicImpl {
     protected void encodeChar(ClassicBarcodeLogicHandler logic, char c) {
         logic.startBarGroup(BarGroup.MSG_CHARACTER, String.valueOf(c));
         for (byte i = 0; i < 9; i++) {
-            int width = widthAt(c, i);
-            boolean black = (i % 2 == 0);
+            final int width = widthAt(c, i);
+            final boolean black = (i % 2 == 0);
             logic.addBar(black, width);
         }
         logic.endBarGroup();
@@ -272,7 +273,7 @@ public class Code39LogicImpl {
                 sb.append(calcChecksum(sb.toString()));
                 return sb.toString();
             } else {
-                String msg = sb.toString();
+                final String msg = sb.toString();
                 sb.append(calcChecksum(msg));
                 return msg;
             }
@@ -303,10 +304,10 @@ public class Code39LogicImpl {
      * @param msg the message to encode
      */
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
-        StringBuilder sb = prepareMessage(msg);
+        final StringBuilder sb = prepareMessage(msg);
 
         //Checksum handling as requested
-        String formattedMsg = handleChecksum(sb);
+        final String formattedMsg = handleChecksum(sb);
         String displayMsg;
         if (extendedCharSet) {
             displayMsg = msg;

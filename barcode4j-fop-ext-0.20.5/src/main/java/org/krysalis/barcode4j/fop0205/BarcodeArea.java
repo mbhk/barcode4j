@@ -102,12 +102,12 @@ public class BarcodeArea extends Area {
     }
     
     protected SVGArea createSVGArea() throws BarcodeCanvasSetupException {
-        DOMImplementation domImpl = SVGDOMImplementation.getDOMImplementation();
+        final DOMImplementation domImpl = SVGDOMImplementation.getDOMImplementation();
         //TODO Implement orientation feature
-        SVGCanvasProvider svgout = new SVGCanvasProvider(domImpl, true, getOrientation());
+        final SVGCanvasProvider svgout = new SVGCanvasProvider(domImpl, true, getOrientation());
         getBarcodeGenerator().generateBarcode(svgout, getMessage());
-        Document dom = svgout.getDOM();
-        SVGArea svgarea = new SVGArea(getFontState(), getWidth(), getHeight());
+        final Document dom = svgout.getDOM();
+        final SVGArea svgarea = new SVGArea(getFontState(), getWidth(), getHeight());
         svgarea.setSVGDocument(dom);
         return svgarea;
     }

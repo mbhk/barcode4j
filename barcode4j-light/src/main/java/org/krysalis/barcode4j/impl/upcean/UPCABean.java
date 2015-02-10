@@ -33,7 +33,7 @@ public class UPCABean extends UPCEANBean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        Collection<String> res = new ArrayList<String>(1);
+        final Collection<String> res = new ArrayList<String>(1);
         res.add("upca");
         return res;
     }

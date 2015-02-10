@@ -27,7 +27,7 @@ import org.apache.fop.layout.Page;
 public class VariableUtil {
 
     private static String replace(String text, String repl, String with) {
-        StringBuilder buf = new StringBuilder(text.length());
+        final StringBuilder buf = new StringBuilder(text.length());
         int start = 0;
         int end;
         while ((end = text.indexOf(repl, start)) != -1) {
@@ -46,13 +46,13 @@ public class VariableUtil {
         String s = msg;
         int idx;
         while ((idx = s.indexOf(PAGE_NUMBER_WITH_FORMAT)) >= 0) {
-            int endidx = s.indexOf('#', idx + PAGE_NUMBER_WITH_FORMAT.length());
+            final int endidx = s.indexOf('#', idx + PAGE_NUMBER_WITH_FORMAT.length());
             if (endidx < 0) {
                 break;
             }
-            String fmt = s.substring(idx + PAGE_NUMBER_WITH_FORMAT.length(), endidx);
-            NumberFormat nf = new DecimalFormat(fmt);
-            StringBuilder sb = new StringBuilder(s);
+            final String fmt = s.substring(idx + PAGE_NUMBER_WITH_FORMAT.length(), endidx);
+            final NumberFormat nf = new DecimalFormat(fmt);
+            final StringBuilder sb = new StringBuilder(s);
             sb.replace(idx, endidx + 1, nf.format(page.getNumber()));
             s = sb.toString();
         }

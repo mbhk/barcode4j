@@ -90,7 +90,7 @@ public class BarcodeUtil {
             Configuration child = null;
             if (cl == null) {
                 //Second, check children
-                Configuration[] children = cfg.getChildren();
+                final Configuration[] children = cfg.getChildren();
                 if (children.length == 0) {
                     throw new BarcodeException("Barcode configuration element expected");
                 }
@@ -114,9 +114,9 @@ public class BarcodeUtil {
             }
 
             //Instantiate the BarcodeGenerator
-            BarcodeGenerator gen = (BarcodeGenerator)cl.newInstance();
+            final BarcodeGenerator gen = (BarcodeGenerator)cl.newInstance();
             try {
-                ContainerUtil.configure(gen, (child != null ? child : cfg));
+                ContainerUtil.configure(gen, (child == null ? cfg : child));
             } catch (IllegalArgumentException iae) {
                 throw new ConfigurationException("Cannot configure barcode generator", iae);
             }
@@ -159,8 +159,8 @@ public class BarcodeUtil {
     public DocumentFragment generateSVGBarcode(Configuration cfg,
                                                String msg)
                     throws ConfigurationException, BarcodeException {
-        BarcodeGenerator gen = createBarcodeGenerator(cfg);
-        SVGCanvasProvider svg = new SVGCanvasProvider(false, Orientation.ZERO);
+        final BarcodeGenerator gen = createBarcodeGenerator(cfg);
+        final SVGCanvasProvider svg = new SVGCanvasProvider(false, Orientation.ZERO);
 
         //Create Barcode and render it to SVG
         gen.generateBarcode(svg, msg);

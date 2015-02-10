@@ -40,15 +40,15 @@ public class DataMatrix extends ConfigurableBarcodeGenerator
     @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
-        String mws = cfg.getChild("module-width").getValue(null);
+        final String mws = cfg.getChild("module-width").getValue(null);
         if (mws != null) {
-            Length mw = new Length(mws, "mm");
+            final Length mw = new Length(mws, "mm");
             getDataMatrixBean().setModuleWidth(mw.getValueAsMillimeter());
         }
 
         super.configure(cfg);
 
-        String shape = cfg.getChild("shape").getValue(null);
+        final String shape = cfg.getChild("shape").getValue(null);
         if (shape != null) {
             getDataMatrixBean().setShape(SymbolShapeHint.byName(shape));
         }
@@ -65,13 +65,13 @@ public class DataMatrix extends ConfigurableBarcodeGenerator
     }
 
     private Dimension parseSymbolSize(String size) {
-        int idx = size.indexOf('x');
+        final int idx = size.indexOf('x');
         Dimension dim;
         if (idx > 0) {
             dim = new Dimension(Integer.parseInt(size.substring(0, idx)),
                     Integer.parseInt(size.substring(idx + 1)));
         } else {
-            int extent = Integer.parseInt(size);
+            final int extent = Integer.parseInt(size);
             dim = new Dimension(extent, extent);
         }
         return dim;

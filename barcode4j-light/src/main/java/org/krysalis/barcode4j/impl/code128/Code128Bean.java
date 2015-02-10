@@ -84,8 +84,8 @@ public class Code128Bean extends AbstractBarcodeBean {
 
     @Override
     public BarcodeDimension calcDimensions(String msg) {
-        Code128LogicImpl impl = createLogicImpl();
-        int msgLen = impl.createEncodedMessage(msg).length + 1;
+        final Code128LogicImpl impl = createLogicImpl();
+        final int msgLen = impl.createEncodedMessage(msg).length + 1;
 
         final double width = ((msgLen * 11) + 13) * getModuleWidth();
         final double qz = (hasQuietZone() ? quietZone : 0);
@@ -106,11 +106,11 @@ public class Code128Bean extends AbstractBarcodeBean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        ClassicBarcodeLogicHandler handler =
+        final ClassicBarcodeLogicHandler handler =
                 new DefaultCanvasLogicHandler(this, new Canvas(canvas));
         //handler = new LoggingLogicHandlerProxy(handler);
 
-        Code128LogicImpl impl = createLogicImpl();
+        final Code128LogicImpl impl = createLogicImpl();
         impl.generateBarcodeLogic(handler, msg);
     }
 

@@ -109,7 +109,7 @@ public class DataMatrixSymbolInfo {
 
     public static DataMatrixSymbolInfo lookup(int dataCodewords,
                 boolean allowRectangular, boolean fail) {
-        SymbolShapeHint shape = allowRectangular
+        final SymbolShapeHint shape = allowRectangular
                 ? SymbolShapeHint.FORCE_NONE : SymbolShapeHint.FORCE_SQUARE;
         return lookup(dataCodewords, shape, fail);
     }
@@ -121,8 +121,8 @@ public class DataMatrixSymbolInfo {
 
     public static DataMatrixSymbolInfo lookup(int dataCodewords,
             SymbolShapeHint shape, Dimension minSize, Dimension maxSize, boolean fail) {
-        for (int i = 0, c = symbols.length; i < c; i++) {
-            DataMatrixSymbolInfo symbol = symbols[i];
+        for (int i = 0; i < symbols.length; i++) {
+            final DataMatrixSymbolInfo symbol = symbols[i];
             if (shape == SymbolShapeHint.FORCE_SQUARE && symbol.rectangular) {
                 continue;
             }
@@ -209,7 +209,7 @@ public class DataMatrixSymbolInfo {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append(rectangular ? "Rectangular Symbol:" : "Square Symbol:");
         sb.append(" data region ").append(matrixWidth).append("x").append(matrixHeight);
         sb.append(", symbol size ").append(getSymbolWidth()).append("x").append(getSymbolHeight());

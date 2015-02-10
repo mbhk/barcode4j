@@ -35,7 +35,7 @@ public class ITF14LogicImpl extends Interleaved2Of5LogicImpl {
 
     @Override
     protected String handleChecksum(StringBuilder sb) {
-        int msgLen = sb.length();
+        final int msgLen = sb.length();
         if (getChecksumMode() == ChecksumMode.CP_AUTO) {
             switch (msgLen) {
             case 13:

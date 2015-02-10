@@ -43,8 +43,8 @@ public class PageInfo {
      */
     public static PageInfo fromProcessingHints(Map hints) {
         if (hints.containsKey("page-number")) {
-            int pageNumber = ((Number)hints.get("page-number")).intValue();
-            String pageName = (String)hints.get("page-name");
+            final int pageNumber = ((Number)hints.get("page-number")).intValue();
+            final String pageName = (String)hints.get("page-name");
             return new PageInfo(pageNumber, pageName);
         }
         return null;

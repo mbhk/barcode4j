@@ -66,9 +66,9 @@ public class BitmapBuilder {
     public static BufferedImage prepareImage(BarcodeDimension dim,
                         Orientation orientation,
                         int resolution, int imageType) {
-        int bmw = UnitConv.mm2px(dim.getWidthPlusQuiet(orientation), resolution);
-        int bmh = UnitConv.mm2px(dim.getHeightPlusQuiet(orientation), resolution);
-        BufferedImage bi = new BufferedImage(
+        final int bmw = UnitConv.mm2px(dim.getWidthPlusQuiet(orientation), resolution);
+        final int bmh = UnitConv.mm2px(dim.getHeightPlusQuiet(orientation), resolution);
+        final BufferedImage bi = new BufferedImage(
                 bmw,
                 bmh,
                 imageType);
@@ -87,7 +87,7 @@ public class BitmapBuilder {
     public static Graphics2D prepareGraphics2D(BufferedImage image, 
                 BarcodeDimension dim, Orientation orientation,
                 boolean antiAlias) {
-        Graphics2D g2d = image.createGraphics();
+        final Graphics2D g2d = image.createGraphics();
         if (antiAlias) {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON);
@@ -112,11 +112,11 @@ public class BitmapBuilder {
      * @return the requested BufferedImage
      */
     public static BufferedImage getImage(BarcodeGenerator bargen, String msg, int resolution) {
-        BarcodeDimension dim = bargen.calcDimensions(msg);
-        BufferedImage bi = prepareImage(dim, resolution, BufferedImage.TYPE_BYTE_GRAY);
-        Orientation orientation = Orientation.ZERO;
-        Graphics2D g2d = prepareGraphics2D(bi, dim, orientation, true);
-        Java2DCanvasProvider provider = new Java2DCanvasProvider(g2d, orientation);
+        final BarcodeDimension dim = bargen.calcDimensions(msg);
+        final BufferedImage bi = prepareImage(dim, resolution, BufferedImage.TYPE_BYTE_GRAY);
+        final Orientation orientation = Orientation.ZERO;
+        final Graphics2D g2d = prepareGraphics2D(bi, dim, orientation, true);
+        final Java2DCanvasProvider provider = new Java2DCanvasProvider(g2d, orientation);
         bargen.generateBarcode(provider, msg);
         bi.flush();
         return bi;
@@ -134,7 +134,7 @@ public class BitmapBuilder {
      */
     public static void saveImage(BufferedImage image, 
                 OutputStream out, String mime, int resolution) throws IOException {
-        BitmapEncoder encoder = BitmapEncoderRegistry.getInstance(mime);
+        final BitmapEncoder encoder = BitmapEncoderRegistry.getInstance(mime);
         /* DEBUG
         String[] mimes = encoder.getSupportedMIMETypes();
         for (int i = 0; i < mimes.length; i++) {
@@ -158,8 +158,7 @@ public class BitmapBuilder {
                                             String mime,
                                             int resolution)
                 throws IOException {
-        BufferedImage image = getImage(bargen, msg, resolution);
+        final BufferedImage image = getImage(bargen, msg, resolution);
         saveImage(image, out, mime, resolution);
     }
-
 }

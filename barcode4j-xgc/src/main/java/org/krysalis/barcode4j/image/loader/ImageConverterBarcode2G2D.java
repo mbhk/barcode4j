@@ -51,24 +51,24 @@ public class ImageConverterBarcode2G2D extends AbstractImageConverter {
     @Override
     public Image convert(Image src, Map hints) throws ImageException {
         checkSourceFlavor(src);
-        ImageBarcode barcodeImage = (ImageBarcode)src;
+        final ImageBarcode barcodeImage = (ImageBarcode)src;
 
-        Configuration cfg = barcodeImage.getBarcodeXML();
-        Orientation orientation = Orientation.fromInt(
+        final Configuration cfg = barcodeImage.getBarcodeXML();
+        final Orientation orientation = Orientation.fromInt(
                 cfg.getAttributeAsInteger("orientation", 0));
 
         try {
-            String msg = barcodeImage.getMessage();
-            PageInfo pageInfo = PageInfo.fromProcessingHints(hints);
-            String expandedMsg = VariableUtil.getExpandedMessage(pageInfo, msg);
+            final String msg = barcodeImage.getMessage();
+            final PageInfo pageInfo = PageInfo.fromProcessingHints(hints);
+            final String expandedMsg = VariableUtil.getExpandedMessage(pageInfo, msg);
 
             final BarcodeGenerator bargen = BarcodeUtil.getInstance().
                         createBarcodeGenerator(cfg);
 
-            Graphics2DImagePainter painter = new Graphics2DImagePainterBarcode(
+            final Graphics2DImagePainter painter = new Graphics2DImagePainterBarcode(
                     barcodeImage, bargen, expandedMsg, orientation);
 
-            ImageGraphics2D g2dImage = new ImageGraphics2D(src.getInfo(), painter);
+            final ImageGraphics2D g2dImage = new ImageGraphics2D(src.getInfo(), painter);
             return g2dImage;
         } catch (ConfigurationException ce) {
             throw new ImageException("Error in Barcode XML", ce);
@@ -109,19 +109,19 @@ public class ImageConverterBarcode2G2D extends AbstractImageConverter {
 
         @Override
         public void paint(Graphics2D g2d, Rectangle2D area) {
-            double w = area.getWidth();
-            double h = area.getHeight();
+            final double w = area.getWidth();
+            final double h = area.getHeight();
 
             //Fit in paint area and
             //set up for the CanvasProvider's internal coordinate system (mm-based)
             g2d.translate(area.getX(), area.getY());
-            BarcodeDimension bardim = barcodeImage.getBarcodeDimension();
-            double bsx = w / bardim.getWidthPlusQuiet(orientation);
-            double bsy = h / bardim.getHeightPlusQuiet(orientation);
+            final BarcodeDimension bardim = barcodeImage.getBarcodeDimension();
+            final double bsx = w / bardim.getWidthPlusQuiet(orientation);
+            final double bsy = h / bardim.getHeightPlusQuiet(orientation);
             g2d.scale(bsx, bsy);
 
             g2d.setColor(Color.BLACK);
-            Java2DCanvasProvider canvas = new Java2DCanvasProvider(g2d, orientation);
+            final Java2DCanvasProvider canvas = new Java2DCanvasProvider(g2d, orientation);
             bargen.generateBarcode(canvas, msg);
         }
     }

@@ -178,21 +178,21 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        POSTNETLogicHandler handler = 
+        final POSTNETLogicHandler handler = 
                 new POSTNETLogicHandler(this, new Canvas(canvas));
 
-        POSTNETLogicImpl impl = new POSTNETLogicImpl(
+        final POSTNETLogicImpl impl = new POSTNETLogicImpl(
                 getChecksumMode(), isDisplayChecksum());
         impl.generateBarcodeLogic(handler, msg);
     }
 
     @Override
     public BarcodeDimension calcDimensions(String msg) {
-        String modMsg = POSTNETLogicImpl.removeIgnoredCharacters(msg);
+        final String modMsg = POSTNETLogicImpl.removeIgnoredCharacters(msg);
         final double width = (((modMsg.length() * 5) + 2) * moduleWidth) 
                 + (((modMsg.length() * 5) + 1) * intercharGapWidth);
         final double qz = (hasQuietZone() ? quietZone : 0);
-        double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);        
+        final double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);        
         double height = getHeight();
         if (getMsgPosition() == HumanReadablePlacement.HRP_NONE) {
             height -= getHumanReadableHeight();
@@ -220,7 +220,7 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        Collection<String> res = new ArrayList<String>(0);
+        final Collection<String> res = new ArrayList<String>(0);
         return res;
     }
 

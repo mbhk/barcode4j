@@ -82,8 +82,8 @@ public class Java2DCanvasProvider extends AbstractCanvasProvider {
     @Override
     public void establishDimensions(BarcodeDimension dim) {
         super.establishDimensions(dim);
-        double w = dim.getWidthPlusQuiet(getOrientation());
-        double h = dim.getHeightPlusQuiet(getOrientation());
+        final double w = dim.getWidthPlusQuiet(getOrientation());
+        final double h = dim.getHeightPlusQuiet(getOrientation());
         this.g2d = (Graphics2D)this.g2d.create();
         switch (getOrientation()) {
         case NINETY:
@@ -127,10 +127,10 @@ public class Java2DCanvasProvider extends AbstractCanvasProvider {
             System.out.println("fontSize: " 
                     + fontSize + "mm (" + UnitConv.mm2pt(fontSize) + "pt)");
         }
-        Font font = new Font(fontName, Font.PLAIN, 
+        final Font font = new Font(fontName, Font.PLAIN, 
             (int)Math.round(fontSize));
-        FontRenderContext frc = g2d.getFontRenderContext();
-        GlyphVector gv = font.createGlyphVector(frc, text);
+        final FontRenderContext frc = g2d.getFontRenderContext();
+        final GlyphVector gv = font.createGlyphVector(frc, text);
         
         final float textwidth = (float)gv.getLogicalBounds().getWidth();
         final float distributableSpace = (float)((x2 - x1) - textwidth);
@@ -161,12 +161,12 @@ public class Java2DCanvasProvider extends AbstractCanvasProvider {
         } else {
             indent = 0.0f;
         }
-        Font oldFont = g2d.getFont();
+        final Font oldFont = g2d.getFont();
         g2d.setFont(font);
         if (textAlign == TextAlignment.TA_JUSTIFY) {
             //move the individual glyphs
             for (int i = 0; i < gv.getNumGlyphs(); i++) {
-                Point2D point = gv.getGlyphPosition(i);
+                final Point2D point = gv.getGlyphPosition(i);
                 point.setLocation(point.getX() + i * intercharSpace, point.getY());
                 gv.setGlyphPosition(i, point);
                 if (DEBUG) {

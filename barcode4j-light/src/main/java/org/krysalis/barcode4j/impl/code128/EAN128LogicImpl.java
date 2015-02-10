@@ -80,7 +80,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
                 code128Msg.append(Code128LogicImpl.FNC_1);
                 addAIs(msg);
 
-                Code128Encoder encoder = new DefaultCode128Encoder();
+                final Code128Encoder encoder = new DefaultCode128Encoder();
                 encodedMsg = encoder.encode(getCode128Msg());
             }
         } else if (exception != null) {
@@ -112,7 +112,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
         setMessage(msg);
 
-        Code128LogicImpl c128 = new Code128LogicImpl();
+        final Code128LogicImpl c128 = new Code128LogicImpl();
         logic.startBarcode(msg, getHumanReadableMsg());
         for (int i = 0; i < encodedMsg.length; i++) {
             c128.encodeChar(logic, encodedMsg[i]);
@@ -152,11 +152,11 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
     }
 
     private int findGroupSeparator(String msg, int start) {
-        int retGS = msg.indexOf(groupSeparator, start);
+        final int retGS = msg.indexOf(groupSeparator, start);
         if (groupSeparator == Code128LogicImpl.FNC_1) {
             return retGS;
         }
-        int retF = msg.indexOf(Code128LogicImpl.FNC_1, start);
+        final int retF = msg.indexOf(Code128LogicImpl.FNC_1, start);
         if (retGS <= 0) {
             return retF;
         }
@@ -177,10 +177,10 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
         } catch (Exception e) {
             throw getException(e.getMessage());
         }
-        byte lenID = ai.lenID;
+        final byte lenID = ai.lenID;
 //        byte type = ai.type[0];
-        byte lenMin = ai.lenMinAll;
-        byte lenMax = ai.lenMaxAll;
+        final byte lenMin = ai.lenMinAll;
+        final byte lenMax = ai.lenMaxAll;
 
         if (!omitBrackets) {
             humanReadableMsg.append('(');
@@ -239,7 +239,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
 //                code128Msg.append(cd1);
 //            } else if (ai.checkDigit[i] == CheckDigit.CDNone || !doChecksumADD) {
             if (doChecksumADD && i == ai.type.length - 1) { //ai.checkDigit[i] != CheckDigit.CDNone) {
-                char c = CheckDigit.calcCheckdigit(msg,
+                final char c = CheckDigit.calcCheckdigit(msg,
                         startA[ai.checkDigitStart[i]], start, CheckDigit.CD31);
                 humanReadableMsg.append(c);
                 code128Msg.append(c);
@@ -282,7 +282,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
     }
 
     private void checkType(EAN128AI ai, byte idx, String msg, int start, int end, int cdStart) {
-        byte type = ai.type[idx];
+        final byte type = ai.type[idx];
         if (type == EAN128AI.TYPEError) {
             throw getException("This AI is not allowed by configuration! ("
                 + ai.toString() + ")");
@@ -305,7 +305,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
             }
         } else {
             if (ai.isCheckDigit(idx) && checksumCHECK) {
-                char cd1 = CheckDigit.calcCheckdigit(msg, cdStart, start, CheckDigit.CD31);
+                final char cd1 = CheckDigit.calcCheckdigit(msg, cdStart, start, CheckDigit.CD31);
                 char cd2 = msg.charAt(start);
                 if (cd2 == checkDigitMarker) {
                     cd2 = cd1;
@@ -326,8 +326,10 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
                 }
             }
             if (type == EAN128AI.TYPENumDate) {
-                char cm1 = msg.charAt(start + 2), cm2 = msg.charAt(start + 3);
-                char cd1 = msg.charAt(start + 4), cd2 = msg.charAt(start + 5);
+                final char cm1 = msg.charAt(start + 2);
+                final char cm2 = msg.charAt(start + 3);
+                final char cd1 = msg.charAt(start + 4);
+                final char cd2 = msg.charAt(start + 5);
                 if ((cm1 == '0' && cm2 == '0')
                         || (cm1 == '1' && cm2 > '2')
                         || cm1 > '1') {
@@ -426,7 +428,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
         if (string == null || string.trim().length() == 0) {
             return;
         }
-        StringTokenizer st = new StringTokenizer(string, "()", false);
+        final StringTokenizer st = new StringTokenizer(string, "()", false);
         int count = st.countTokens();
         if (count % 2 != 0) {
             throw new IllegalArgumentException("Cannot parse template: \"" + string);

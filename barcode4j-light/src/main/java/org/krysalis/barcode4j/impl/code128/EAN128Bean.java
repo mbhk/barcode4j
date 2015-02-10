@@ -53,7 +53,7 @@ public class EAN128Bean extends Code128Bean {
     
     @Override
     public BarcodeDimension calcDimensions(String msg) {
-        int msgLen = impl.getEncodedMessage(msg).length + 1; 
+        final int msgLen = impl.getEncodedMessage(msg).length + 1; 
         //TODO If the output is able to calculate text lenghts (e.g. awt, fop), and 
         //the human readable part is longer then barcode the size should be enlarged!
         final double width = ((msgLen * 11) + 13) * getModuleWidth();
@@ -69,7 +69,7 @@ public class EAN128Bean extends Code128Bean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        ClassicBarcodeLogicHandler handler = 
+        final ClassicBarcodeLogicHandler handler = 
                 new DefaultCanvasLogicHandler(this, new Canvas(canvas));
         //handler = new LoggingLogicHandlerProxy(handler);
         
@@ -175,7 +175,7 @@ public class EAN128Bean extends Code128Bean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        Collection<String> res = new ArrayList<String>(1);
+        final Collection<String> res = new ArrayList<String>(1);
         res.add("ean128");
         return res;
     }

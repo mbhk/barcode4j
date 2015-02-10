@@ -98,7 +98,7 @@ public abstract class DataMatrixPlacement {
             col += numcols;
             row += 4 - ((numcols + 4) % 8);
         }
-        char c = codewords.charAt(pos);
+        final char c = codewords.charAt(pos);
         int v = (int)c;
         v &= 1 << (8 - bit);
         setBit(col, row, v != 0);

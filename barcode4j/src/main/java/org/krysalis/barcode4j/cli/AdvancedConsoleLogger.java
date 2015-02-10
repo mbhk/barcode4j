@@ -80,7 +80,7 @@ public class AdvancedConsoleLogger implements Logger {
 
     private void logMessage(String msg, Throwable t, int logLevel) {
         if (logLevel >= this.logLevel) {
-            PrintStream stream = (logLevel >= LEVEL_ERROR ? err : out);
+            final PrintStream stream = (logLevel >= LEVEL_ERROR ? err : out);
             if (prefix) {
                 stream.print(LEVEL_STRINGS[logLevel]);
             }

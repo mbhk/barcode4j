@@ -39,7 +39,7 @@ public class Code39 extends ConfigurableBarcodeGenerator
     @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
-        Length mw = new Length(cfg.getChild("module-width").getValue("0.19mm"), "mm");
+        final Length mw = new Length(cfg.getChild("module-width").getValue("0.19mm"), "mm");
         getCode39Bean().setModuleWidth(mw.getValueAsMillimeter());
 
         super.configure(cfg);
@@ -53,7 +53,7 @@ public class Code39 extends ConfigurableBarcodeGenerator
             cfg.getChild("wide-factor").getValueAsFloat((float)Code39Bean.DEFAULT_WIDE_FACTOR));
     
         //Inter-character gap width    
-        Length igw = new Length(cfg.getChild("interchar-gap-width").getValue("1mw"), "mw");
+        final Length igw = new Length(cfg.getChild("interchar-gap-width").getValue("1mw"), "mw");
         if (igw.getUnit().equalsIgnoreCase("mw")) {
             getCode39Bean().setIntercharGapWidth(
                     igw.getValue() * getCode39Bean().getModuleWidth());
@@ -66,7 +66,7 @@ public class Code39 extends ConfigurableBarcodeGenerator
                     cfg.getChild("extended-charset").getValueAsBoolean());
         }
         
-        Configuration hr = cfg.getChild("human-readable", false);
+        final Configuration hr = cfg.getChild("human-readable", false);
         if (hr != null) {
             //Display start/stop character and checksum in hr-message or not
             getCode39Bean().setDisplayStartStop(

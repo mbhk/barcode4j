@@ -83,7 +83,7 @@ public class Main {
      * @param args commandline arguments
      */
     public static void main(String[] args) {
-        Main app = new Main();
+        final Main app = new Main();
         app.handleCommandLine(args);
     }
 
@@ -104,7 +104,7 @@ public class Main {
         CommandLine cl;
         String[] msg;
         try {
-            CommandLineParser clp = new PosixParser();
+            final CommandLineParser clp = new PosixParser();
             cl = clp.parse(getOptions(), args);
 
             //Message
@@ -129,58 +129,58 @@ public class Main {
         }
         try {
             OutputStream out;
-            if (!cl.hasOption("o")) {
-                log = new AdvancedConsoleLogger(AdvancedConsoleLogger.LEVEL_ERROR,
-                    false, stderr, stderr);
-                printAppHeader();
-                out = stdout;
-            } else {
+            if (cl.hasOption("o")) {
                 int logLevel = AdvancedConsoleLogger.LEVEL_INFO;
                 if (cl.hasOption('v')) {
                     logLevel = AdvancedConsoleLogger.LEVEL_DEBUG;
                 }
                 log = new AdvancedConsoleLogger(logLevel, false, stdout, stderr);
                 printAppHeader();
-                File outFile = new File(cl.getOptionValue("o"));
+                final File outFile = new File(cl.getOptionValue("o"));
                 if (log.isDebugEnabled()) {
                     log.debug("Output to: " + outFile.getCanonicalPath());
                 }
                 out = new java.io.FileOutputStream(outFile);
+            } else {
+                log = new AdvancedConsoleLogger(AdvancedConsoleLogger.LEVEL_ERROR,
+                        false, stderr, stderr);
+                printAppHeader();
+                out = stdout;
             }
 
             log.debug("Message: " + msg[0]);
 
             //Output format
-            String format = MimeTypes.expandFormat(
+            final String format = MimeTypes.expandFormat(
                     cl.getOptionValue("f", MimeTypes.MIME_SVG));
-            Orientation orientation = Orientation.ZERO;
+            final Orientation orientation = Orientation.ZERO;
             log.info("Generating " + format + "...");
-            BarcodeUtil util = BarcodeUtil.getInstance();
-            BarcodeGenerator gen = util.createBarcodeGenerator(
+            final BarcodeUtil util = BarcodeUtil.getInstance();
+            final BarcodeGenerator gen = util.createBarcodeGenerator(
                     getConfiguration(cl));
 
             if (MimeTypes.MIME_SVG.equals(format)) {
                 //Create Barcode and render it to SVG
-                SVGCanvasProvider svg = new SVGCanvasProvider(false, orientation);
+                final SVGCanvasProvider svg = new SVGCanvasProvider(false, orientation);
                 gen.generateBarcode(svg, msg[0]);
 
                 //Serialize SVG barcode
                 try {
-                    TransformerFactory factory = TransformerFactory.newInstance();
-                    Transformer trans = factory.newTransformer();
-                    Source src = new javax.xml.transform.dom.DOMSource(
+                    final TransformerFactory factory = TransformerFactory.newInstance();
+                    final Transformer trans = factory.newTransformer();
+                    final Source src = new javax.xml.transform.dom.DOMSource(
                         svg.getDOMFragment());
-                    Result res = new javax.xml.transform.stream.StreamResult(out);
+                    final Result res = new javax.xml.transform.stream.StreamResult(out);
                     trans.transform(src, res);
                 } catch (TransformerException te) {
                     exitHandler.failureExit(this, "XML/XSLT library error", te, -6);
                 }
             } else if (MimeTypes.MIME_EPS.equals(format)) {
-                EPSCanvasProvider eps = new EPSCanvasProvider(out, orientation);
+                final EPSCanvasProvider eps = new EPSCanvasProvider(out, orientation);
                 gen.generateBarcode(eps, msg[0]);
                 eps.finish();
             } else {
-                int dpi = Integer.parseInt(cl.getOptionValue('d', "300"));
+                final int dpi = Integer.parseInt(cl.getOptionValue('d', "300"));
                 log.debug("Resolution: " + dpi + "dpi");
                 BitmapCanvasProvider bitmap;
                 if (cl.hasOption("bw")) {
@@ -214,7 +214,7 @@ public class Main {
     private Options getOptions() {
         if (options == null) {
             this.options = new Options();
-            Option opt;
+            final Option opt;
 
             this.options.addOption(OptionBuilder
                 .withLongOpt("verbose")
@@ -230,7 +230,7 @@ public class Main {
                 .create('o'));
 
             //Group: config file/barcode type
-            OptionGroup group = new OptionGroup();
+            final OptionGroup group = new OptionGroup();
             group.setRequired(true);
             group.addOption(OptionBuilder
                 .withArgName("file")
@@ -276,23 +276,23 @@ public class Main {
 
     private Configuration getConfiguration(CommandLine cl) {
         if (cl.hasOption("s")) {
-            String sym = cl.getOptionValue("s");
-            DefaultConfiguration cfg = new DefaultConfiguration("cfg");
-            DefaultConfiguration child = new DefaultConfiguration(sym);
+            final String sym = cl.getOptionValue("s");
+            final DefaultConfiguration cfg = new DefaultConfiguration("cfg");
+            final DefaultConfiguration child = new DefaultConfiguration(sym);
             cfg.addChild(child);
             return cfg;
         }
         if (cl.hasOption("c")) {
             try {
-                String filename = cl.getOptionValue("c");
-                File cfgFile = new File(filename);
+                final String filename = cl.getOptionValue("c");
+                final File cfgFile = new File(filename);
                 if (!cfgFile.exists() || !cfgFile.isFile()) {
                     throw new FileNotFoundException(
                         "Config file not found: " + cfgFile);
                 }
                 log.info("Using configuration: " + cfgFile);
 
-                DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
+                final DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
                 return builder.buildFromFile(cfgFile);
             } catch (Exception e) {
                 exitHandler.failureExit(this,
@@ -305,7 +305,7 @@ public class Main {
     /** @return the Barcode4J version */
     public static String getVersion() {
         String version = null;
-        Package jarinfo = Main.class.getPackage();
+        final Package jarinfo = Main.class.getPackage();
         if (jarinfo != null) {
             version = jarinfo.getImplementationVersion();
         }
@@ -322,13 +322,13 @@ public class Main {
      */
     public void printAppHeader() {
         if (!headerPrinted) {
-            if (log != null) {
-                for (int i = 0; i < APP_HEADER.length; i++) {
-                    log.info(APP_HEADER[i]);
-                }
-            } else {
+            if (log == null) {
                 for (int i = 0; i < APP_HEADER.length; i++) {
                     stdout.println(APP_HEADER[i]);
+                }                
+            } else {
+                for (int i = 0; i < APP_HEADER.length; i++) {
+                    log.info(APP_HEADER[i]);
                 }
             }
             headerPrinted = true;
@@ -339,7 +339,7 @@ public class Main {
         printAppHeader();
 
         //Get a list of additional supported MIME types
-        Set knownMimes = new java.util.HashSet();
+        final Set knownMimes = new java.util.HashSet();
         knownMimes.add(null);
         knownMimes.add("");
         knownMimes.add(MimeTypes.MIME_PNG);
@@ -348,10 +348,10 @@ public class Main {
         knownMimes.add(MimeTypes.MIME_TIFF);
         knownMimes.add(MimeTypes.MIME_GIF);
         knownMimes.add(MimeTypes.MIME_BMP);
-        Set additionalMimes = BitmapEncoderRegistry.getSupportedMIMETypes();
+        final Set additionalMimes = BitmapEncoderRegistry.getSupportedMIMETypes();
         additionalMimes.removeAll(knownMimes);
 
-        HelpFormatter help = new HelpFormatter();
+        final HelpFormatter help = new HelpFormatter();
         final String unavailable = " (unavailable)";
         help.printHelp(writer, HelpFormatter.DEFAULT_WIDTH,
             "java -jar barcode4j.jar "

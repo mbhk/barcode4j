@@ -73,7 +73,7 @@ public class ConfigurationUtil {
         } else if (node.getNodeType() == Node.DOCUMENT_NODE) {
             return processElement(findDocumentElement((Document)node));
         } else if (node.getNodeType() == Node.DOCUMENT_FRAGMENT_NODE) {
-            DocumentFragment df = (DocumentFragment)node;
+            final DocumentFragment df = (DocumentFragment)node;
             return processNode(df.getFirstChild());
         } else {
             return null;
@@ -85,21 +85,21 @@ public class ConfigurationUtil {
         if (name == null) {
             name = el.getTagName();
         }
-        DefaultConfiguration cfg = new DefaultConfiguration(name);
-        NamedNodeMap atts = el.getAttributes();
+        final DefaultConfiguration cfg = new DefaultConfiguration(name);
+        final NamedNodeMap atts = el.getAttributes();
         for (int i = 0; i < atts.getLength(); i++) {
-            Attr attr = (Attr)atts.item(i);
+            final Attr attr = (Attr)atts.item(i);
             cfg.setAttribute(attr.getName(), attr.getValue());
         }
         for (int i = 0; i < el.getChildNodes().getLength(); i++) {
-            Node node = el.getChildNodes().item(i);
+            final Node node = el.getChildNodes().item(i);
             if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
-                Attr attr = (Attr)node;
+                final Attr attr = (Attr)node;
                 cfg.setAttribute(attr.getName(), attr.getNodeValue());
             } else if (node.getNodeType() == Node.ELEMENT_NODE) {
                 cfg.addChild(processElement((Element)node));
             } else if (node.getNodeType() == Node.TEXT_NODE) {
-                String s = cfg.getValue("") + ((Text)node).getData();
+                final String s = cfg.getValue("") + ((Text)node).getData();
                 cfg.setValue(s.trim());
             } else {
                 //ignore

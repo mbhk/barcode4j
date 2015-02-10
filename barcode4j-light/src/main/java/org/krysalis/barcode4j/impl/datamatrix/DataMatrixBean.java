@@ -79,7 +79,7 @@ public class DataMatrixBean extends AbstractBarcodeBean {
      * @param minSize the minimum size (in pixels), or null for no constraint
      */
     public void setMinSize(Dimension minSize) {
-        this.minSize = (minSize != null ? new Dimension(minSize) : null);
+        this.minSize = minSize == null ? null : new Dimension(minSize);
     }
 
     /**
@@ -88,11 +88,7 @@ public class DataMatrixBean extends AbstractBarcodeBean {
      * @return the minimum symbol size (in pixels), or null if there's no size constraint
      */
     public Dimension getMinSize() {
-        if (this.minSize != null) {
-            return new Dimension(this.minSize);
-        } else {
-            return null;
-        }
+        return this.minSize == null ? null : new Dimension(this.minSize);
     }
 
     /**
@@ -100,7 +96,7 @@ public class DataMatrixBean extends AbstractBarcodeBean {
      * @param maxSize the maximum size (in pixels), or null for no constraint
      */
     public void setMaxSize(Dimension maxSize) {
-        this.maxSize = (maxSize != null ? new Dimension(maxSize) : null);
+        this.maxSize = maxSize == null ? null : new Dimension(maxSize);
     }
 
     /**
@@ -109,11 +105,7 @@ public class DataMatrixBean extends AbstractBarcodeBean {
      * @return the maximum symbol size (in pixels), or null if there's no size constraint
      */
     public Dimension getMaxSize() {
-        if (this.maxSize != null) {
-            return new Dimension(this.maxSize);
-        } else {
-            return null;
-        }
+        return this.maxSize == null ? null : new Dimension(this.maxSize);
     }
 
     @Override
@@ -123,10 +115,10 @@ public class DataMatrixBean extends AbstractBarcodeBean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        TwoDimBarcodeLogicHandler handler =
+        final TwoDimBarcodeLogicHandler handler =
                 new DefaultTwoDimCanvasLogicHandler(this, new Canvas(canvas));
 
-        DataMatrixLogicImpl impl = new DataMatrixLogicImpl();
+        final DataMatrixLogicImpl impl = new DataMatrixLogicImpl();
         impl.generateBarcodeLogic(handler, msg, getShape(), getMinSize(), getMaxSize());
     }
 
@@ -139,12 +131,12 @@ public class DataMatrixBean extends AbstractBarcodeBean {
         } catch (IOException e) {
             throw new IllegalArgumentException("Cannot fetch data: " + e.getLocalizedMessage());
         }
-        DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(), shape);
+        final DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(), shape);
 
-        double symbolWidth = symbolInfo.getSymbolWidth() * getModuleWidth();
-        double symbolHeight = symbolInfo.getSymbolHeight() * getBarHeight();
-        double qzh = (hasQuietZone() ? getQuietZone() : 0);
-        double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);
+        final double symbolWidth = symbolInfo.getSymbolWidth() * getModuleWidth();
+        final double symbolHeight = symbolInfo.getSymbolHeight() * getBarHeight();
+        final double qzh = (hasQuietZone() ? getQuietZone() : 0);
+        final double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);
         return new BarcodeDimension(symbolWidth, symbolHeight,
                 symbolWidth + (2 * qzh), symbolHeight + (2 * qzv),
                 qzh, qzv);
@@ -167,7 +159,7 @@ public class DataMatrixBean extends AbstractBarcodeBean {
 
     @Override
     public Collection<String> getAdditionalNames() {
-        Collection<String> res = new ArrayList<String>(0);
+        final Collection<String> res = new ArrayList<String>(0);
         return res;
     }
 

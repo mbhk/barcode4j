@@ -186,10 +186,10 @@ public class Code39Bean extends AbstractBarcodeBean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        ClassicBarcodeLogicHandler handler =
+        final ClassicBarcodeLogicHandler handler =
                 new DefaultCanvasLogicHandler(this, new Canvas(canvas));
 
-        Code39LogicImpl impl = createLogicImpl();
+        final Code39LogicImpl impl = createLogicImpl();
         impl.generateBarcodeLogic(handler, msg);
     }
 
@@ -200,8 +200,8 @@ public class Code39Bean extends AbstractBarcodeBean {
 
     @Override
     public BarcodeDimension calcDimensions(String msg) {
-        Code39LogicImpl impl = createLogicImpl();
-        int msglen = impl.prepareMessage(msg).length();
+        final Code39LogicImpl impl = createLogicImpl();
+        final int msglen = impl.prepareMessage(msg).length();
         final double width = ((msglen + 2) * (3 * wideFactor + 6) * moduleWidth)
                 + ((msglen + 1) * intercharGapWidth);
         final double qz = (hasQuietZone() ? quietZone : 0);

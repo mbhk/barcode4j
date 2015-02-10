@@ -73,7 +73,7 @@ public class EAN128AI {
         private static final long serialVersionUID = -3183436317318245881L;
         @Override
         public synchronized Object put(Object arg0, Object arg1) {
-            EAN128AI ai = parseSpecPrivate((String)arg0, (String)arg1);
+            final EAN128AI ai = parseSpecPrivate((String)arg0, (String)arg1);
             try { 
                 setAI((String)arg0, ai);
             } catch (Exception e) {
@@ -84,8 +84,8 @@ public class EAN128AI {
     }
     
     private static void initFixedLen(String aiName, byte aiLen) {
-        byte lenID = (byte)aiName.length();
-        EAN128AI ai = new EAN128AI(aiName, "an" + aiLen, lenID, TYPEAlphaNum, aiLen);
+        final byte lenID = (byte)aiName.length();
+        final EAN128AI ai = new EAN128AI(aiName, "an" + aiLen, lenID, TYPEAlphaNum, aiLen);
         try { 
             setAI(aiName, ai);
         } catch (Exception e) {
@@ -103,29 +103,31 @@ public class EAN128AI {
     }
     
     public static synchronized void loadProperties() throws Exception {
-        if (propertiesLoaded) return;
+        if (propertiesLoaded) {
+            return;
+        }
 
         final String bundlename = "EAN128AIs"; 
         final String filename = bundlename + ".properties"; 
-        Properties p = new AIProperties();
+        final Properties p = new AIProperties();
         try {
             InputStream is = EAN128AI.class.getResourceAsStream(filename);
             if (is == null) {
                is = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
             }
-            if (is != null) {
+            if (is == null) {
+                final String rbName = EAN128AI.class.getPackage().getName() + "." + bundlename;
+                final ResourceBundle rb = ResourceBundle.getBundle(rbName);
+                final Enumeration keys = rb.getKeys();
+                while (keys.hasMoreElements()){
+                    final String key = (String) keys.nextElement();
+                    p.put(key, rb.getObject(key));
+                }
+            } else {
                 try {
                     p.load(is);
                 } finally {
                     is.close();
-                }
-            } else {
-                String rbName = EAN128AI.class.getPackage().getName() + "." + bundlename;
-                ResourceBundle rb = ResourceBundle.getBundle(rbName);
-                Enumeration keys = rb.getKeys();
-                while (keys.hasMoreElements()){
-                    String key = (String) keys.nextElement();
-                    p.put(key, rb.getObject(key));
                 }
             }
         } catch (Exception e) {
@@ -151,15 +153,18 @@ public class EAN128AI {
         for (int i = 0; i < type.length; i++) {
             lenMinAll += lenMin[i];
             lenMaxAll += lenMax[i];
-            if (i > idxVarLen) 
-                minLenAfterVariableLen += lenMin[i];  
+            if (i > idxVarLen) {
+                minLenAfterVariableLen += lenMin[i];
+            }
             if (lenMin[i] != lenMax[i]) {
-                if (idxVarLen < type.length) 
+                if (idxVarLen < type.length) {
                     throw new IllegalArgumentException("Only one Part with var len!"); //TODO
+                }
                 idxVarLen = i;
             }
-            if (idxFirstChecksum == -1 && type[i] == TYPECD)
+            if (idxFirstChecksum == -1 && type[i] == TYPECD) {
                 idxFirstChecksum = i;
+            }
         }
         canDoChecksumADD = (idxFirstChecksum == type.length - 1 && lenMinAll == lenMaxAll);
     }
@@ -189,9 +194,9 @@ public class EAN128AI {
         }
     }
     private static void SetAIHere(EAN128AI aiNew, Object[] aitParent, int idx) {
-        Object tmp = aitParent[idx];
+        final Object tmp = aitParent[idx];
         if (tmp instanceof EAN128AI) {
-            EAN128AI aiOld = (EAN128AI)tmp;
+            final EAN128AI aiOld = (EAN128AI)tmp;
             if (aiNew.type[0] == TYPEError) {
                 aiOld.type[0] = TYPEError;
             } else {
@@ -212,7 +217,7 @@ public class EAN128AI {
         }
         Object tmp;
         for (int i = 0; i <= aiLastRelevantIdx; i++) {
-            int idx = aiName.charAt(i) - '0';
+            final int idx = aiName.charAt(i) - '0';
             if (i == aiLastRelevantIdx) {
                 SetAIHere(ai, aitParent, idx);
             } else {
@@ -227,7 +232,7 @@ public class EAN128AI {
     }
 
     public static EAN128AI parseSpec(String ai, String spec) {
-        EAN128AI  ret = parseSpecPrivate(ai, spec);
+        final EAN128AI  ret = parseSpecPrivate(ai, spec);
         checkAI(ret);
         return ret;
     }
@@ -265,7 +270,7 @@ public class EAN128AI {
             throw new IllegalArgumentException("Unknown type!");
         }
 
-        int hyphenIdx = spec.indexOf('-', startLen);
+        final int hyphenIdx = spec.indexOf('-', startLen);
         if (hyphenIdx < 0) {
             lenMin[i] = lenMax[i] = parseByte(spec.substring(startLen), lenMin[i], spec);
         } else if (hyphenIdx == startLen) {
@@ -295,14 +300,14 @@ public class EAN128AI {
     }
     private static EAN128AI parseSpecPrivate(String ai, String spec) {
         try {
-            byte lenID = (byte) ai.trim().length();
+            final byte lenID = (byte) ai.trim().length();
             spec = spec.trim();
-            StringTokenizer st = new StringTokenizer(spec, "+", false);
-            int count = st.countTokens();
-            byte[] type = new byte[count];
-            byte[] checkDigitStart = new byte[count];
-            byte[] lenMin = new byte[count];
-            byte[] lenMax = new byte[count];
+            final StringTokenizer st = new StringTokenizer(spec, "+", false);
+            final int count = st.countTokens();
+            final byte[] type = new byte[count];
+            final byte[] checkDigitStart = new byte[count];
+            final byte[] lenMin = new byte[count];
+            final byte[] lenMax = new byte[count];
             for (int i = 0; i < count; i++) {
                 parseSpecPrivate(i, st.nextToken(), type, lenMin, lenMax, checkDigitStart);
             }
@@ -316,7 +321,7 @@ public class EAN128AI {
     }
 
     public static boolean checkAI(EAN128AI ai) {
-        EAN128AI aiCompare = getAIPrivate(ai.id + "0000", 0);
+        final EAN128AI aiCompare = getAIPrivate(ai.id + "0000", 0);
         checkFixed(ai, aiCompare);
         return true;
     }
@@ -376,7 +381,7 @@ public class EAN128AI {
 
     @Override
     public String toString() {
-        StringBuilder ret = new StringBuilder();
+        final StringBuilder ret = new StringBuilder();
         ret.append('(').append(id).append(")");
         for (int i = 0; i < lenMin.length; i++) {
             if (i != 0) {

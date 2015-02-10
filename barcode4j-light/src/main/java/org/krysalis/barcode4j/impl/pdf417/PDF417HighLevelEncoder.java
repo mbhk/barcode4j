@@ -39,14 +39,14 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
         //Construct inverse lookups
         Arrays.fill(MIXED, (byte)-1);
         for (byte i = 0; i < TEXT_MIXED_RAW.length; i++) {
-            byte b = TEXT_MIXED_RAW[i];
+            final byte b = TEXT_MIXED_RAW[i];
             if (b > 0) {
                 MIXED[b] = i;
             }
         }
         Arrays.fill(PUNCTUATION, (byte)-1);
         for (byte i = 0; i < TEXT_PUNCTUATION_RAW.length; i++) {
-            byte b = TEXT_PUNCTUATION_RAW[i];
+            final byte b = TEXT_PUNCTUATION_RAW[i];
             if (b > 0) {
                 PUNCTUATION[b] = i;
             }
@@ -75,7 +75,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
      * @return the encoded message (the char values range from 0 to 928)
      */
     public static String encodeHighLevel(byte[] data) {
-        StringBuilder sb = new StringBuilder(data.length);
+        final StringBuilder sb = new StringBuilder(data.length);
         encodeBinary(null, data, 0, data.length, TEXT_COMPACTION, sb);
         return sb.toString();
     }
@@ -100,17 +100,17 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
      */
     public static String encodeHighLevel(String msg, String encoding, boolean enableECI) {
         //the codewords 0..928 are encoded as Unicode characters
-        StringBuilder sb = new StringBuilder(msg.length());
+        final StringBuilder sb = new StringBuilder(msg.length());
 
         if (enableECI) {
-            int eci = ECIUtil.getECIForEncoding(encoding);
+            final int eci = ECIUtil.getECIForEncoding(encoding);
             if (eci < 0) {
                 throw new IllegalArgumentException("No ECI supported for encoding: " + encoding);
             }
             encodingECI(eci, sb);
         }
 
-        String url = URLUtil.getURL(msg);
+        final String url = URLUtil.getURL(msg);
         if (url != null) {
             byte[] data;
             try {
@@ -126,12 +126,12 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
         byte[] bytes = null; //Fill later and only if needed
 
 
-        int len = msg.length();
+        final int len = msg.length();
         int p = 0;
         int encodingMode = TEXT_COMPACTION; //Default mode, see 4.4.2.1
         int textSubMode = SUBMODE_ALPHA;
         while (p < len) {
-            int n = determineConsecutiveDigitCount(msg, p);
+            final int n = determineConsecutiveDigitCount(msg, p);
             if (n >= 13) {
                 sb.append((char)LATCH_TO_NUMERIC);
                 encodingMode = NUMERIC_COMPACTION;
@@ -139,7 +139,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
                 encodeNumeric(msg, p, n, sb);
                 p += n;
             } else {
-                int t = determineConsecutiveTextCount(msg, p);
+                final int t = determineConsecutiveTextCount(msg, p);
                 if (t >= 5 || n == len) {
                     if (encodingMode != TEXT_COMPACTION) {
                         sb.append((char)LATCH_TO_TEXT);
@@ -185,11 +185,11 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
      */
     public static int encodeText(String msg, int startpos, int count, StringBuilder sb,
             int initialSubmode) {
-        StringBuilder tmp = new StringBuilder(count);
+        final StringBuilder tmp = new StringBuilder(count);
         int submode = initialSubmode;
         int idx = 0;
         while (true) {
-            char ch = msg.charAt(startpos + idx);
+            final char ch = msg.charAt(startpos + idx);
             switch (submode) {
             case SUBMODE_ALPHA:
                 if (isAlphaUpper(ch)) {
@@ -252,7 +252,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
                         continue;
                     } else {
                         if (startpos + idx + 1 < count) {
-                            char next = msg.charAt(startpos + idx + 1);
+                            final char next = msg.charAt(startpos + idx + 1);
                             if (isPunctuation(next)) {
                                 submode = SUBMODE_PUNCTUATION;
                                 tmp.append((char)25); //pl
@@ -279,9 +279,9 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
             }
         }
         char h = 0;
-        int len = tmp.length();
+        final int len = tmp.length();
         for (int i = 0; i < len; i++) {
-            boolean odd = (i % 2) != 0;
+            final boolean odd = (i % 2) != 0;
             if (odd) {
                 h = (char)((h * 30) + tmp.charAt(i));
                 sb.append(h);
@@ -311,7 +311,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
         if (count == 1 && startmode == TEXT_COMPACTION) {
             sb.append((char)SHIFT_TO_BYTE);
         } else {
-            boolean sixpack = ((count % 6) == 0);
+            final boolean sixpack = ((count % 6) == 0);
             if (sixpack) {
                 sb.append((char)LATCH_TO_BYTE);
             } else {
@@ -338,23 +338,23 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
         }
         //Encode rest (remaining n<5 bytes if any)
         for (int i = idx; i < startpos + count; i++) {
-            int ch = bytes[i] & 0xff;
+            final int ch = bytes[i] & 0xff;
             sb.append((char)ch);
         }
     }
 
     public static void encodeNumeric(String msg, int startpos, int count, StringBuilder sb) {
         int idx = 0;
-        StringBuilder tmp = new StringBuilder(count / 3 + 1);
+        final StringBuilder tmp = new StringBuilder(count / 3 + 1);
         final BigInteger num900 = BigInteger.valueOf(900);
         final BigInteger num0 = BigInteger.valueOf(0);
         while (idx < count - 1) {
             tmp.setLength(0);
-            int len = Math.min(44, count - idx);
-            String part = "1" + msg.substring(startpos + idx, startpos + idx + len);
+            final int len = Math.min(44, count - idx);
+            final String part = "1" + msg.substring(startpos + idx, startpos + idx + len);
             BigInteger bigint = new BigInteger(part);
             do {
-                BigInteger c = bigint.mod(num900);
+                final BigInteger c = bigint.mod(num900);
                 tmp.append((char)(c.intValue()));
                 bigint = bigint.divide(num900);
             } while (!bigint.equals(num0));
@@ -415,7 +415,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
      */
     public static int determineConsecutiveDigitCount(String msg, int startpos) {
         int count = 0;
-        int len = msg.length();
+        final int len = msg.length();
         int idx = startpos;
         if (idx < len) {
             char ch = msg.charAt(idx);
@@ -437,7 +437,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
      * @return the requested character count
      */
     public static int determineConsecutiveTextCount(String msg, int startpos) {
-        int len = msg.length();
+        final int len = msg.length();
         int idx = startpos;
         while (idx < len) {
             char ch = msg.charAt(idx);
@@ -475,7 +475,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
      * @return the requested character count
      */
     public static int determineConsecutiveBinaryCount(String msg, byte[] bytes, int startpos) {
-        int len = msg.length();
+        final int len = msg.length();
         int idx = startpos;
         while (idx < len) {
             char ch = msg.charAt(idx);
@@ -485,7 +485,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
             while (numericCount < 13 && isDigit(ch)) {
                 numericCount++;
                 //textCount++;
-                int i = idx + numericCount;
+                final int i = idx + numericCount;
                 if (i < len) {
                     ch = msg.charAt(i);
                 } else {
@@ -497,7 +497,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
             }
             while (textCount < 5 && isText(ch)) {
                 textCount++;
-                int i = idx + textCount;
+                final int i = idx + textCount;
                 if (i < len) {
                     ch = msg.charAt(i);
                 } else {

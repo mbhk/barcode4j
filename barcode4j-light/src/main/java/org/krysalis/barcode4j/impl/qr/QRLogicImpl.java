@@ -52,8 +52,8 @@ public class QRLogicImpl implements QRConstants {
 
         //TODO ZXing doesn't allow to set minSize/maxSize through its API
 
-        ErrorCorrectionLevel zxingErrLevel = getZXingErrorLevel(errorCorrectionLevel);
-        Map<EncodeHintType, ?> hints = createHints(encoding);
+        final ErrorCorrectionLevel zxingErrLevel = getZXingErrorLevel(errorCorrectionLevel);
+        final Map<EncodeHintType, ?> hints = createHints(encoding);
 
         QRCode code = null;
         try {
@@ -61,7 +61,7 @@ public class QRLogicImpl implements QRConstants {
         } catch (WriterException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
-        ByteMatrix matrix = code.getMatrix();
+        final ByteMatrix matrix = code.getMatrix();
 
         //finally, paint the barcode
         logic.startBarcode(msg, msg);
@@ -101,8 +101,8 @@ public class QRLogicImpl implements QRConstants {
     }
 
     private void encodeLowLevel(TwoDimBarcodeLogicHandler logic, ByteMatrix matrix) {
-        int symbolWidth = matrix.getWidth();
-        int symbolHeight = matrix.getHeight();
+        final int symbolWidth = matrix.getWidth();
+        final int symbolHeight = matrix.getHeight();
         for (int y = 0; y < symbolHeight; y++) {
             logic.startRow();
             for (int x = 0; x < symbolWidth; x++) {

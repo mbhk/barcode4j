@@ -51,8 +51,9 @@ public class CheckDigit {
             even = !even;
         }
         int check = 10 - ((evenMult * evenSum + oddMult * oddSum) % 10);
-        if (check >= 10) check = 0;
+        if (check >= 10) {
+            check = 0;
+        }
         return Character.forDigit(check, 10);
     }
-
 }

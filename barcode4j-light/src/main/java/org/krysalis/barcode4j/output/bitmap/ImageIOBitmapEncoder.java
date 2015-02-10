@@ -58,18 +58,18 @@ public class ImageIOBitmapEncoder implements BitmapEncoder {
                 String mime, int resolution) throws IOException {
 
         //Simply get first offered writer
-        Iterator i = ImageIO.getImageWritersByMIMEType(mime);
-        ImageWriter writer = (ImageWriter)i.next();
+        final Iterator i = ImageIO.getImageWritersByMIMEType(mime);
+        final ImageWriter writer = (ImageWriter)i.next();
 
         //Prepare output
-        ImageOutputStream imout = ImageIO.createImageOutputStream(out);
+        final ImageOutputStream imout = ImageIO.createImageOutputStream(out);
         writer.setOutput(imout);
 
         //Prepare metadata
-        IIOMetadata iiometa = setupMetadata(image, writer, mime, resolution);
+        final IIOMetadata iiometa = setupMetadata(image, writer, mime, resolution);
 
         //Write image
-        IIOImage iioimage = new IIOImage(image, null, iiometa);
+        final IIOImage iioimage = new IIOImage(image, null, iiometa);
         writer.write(iioimage);
         writer.dispose();
         imout.close();
@@ -106,11 +106,11 @@ public class ImageIOBitmapEncoder implements BitmapEncoder {
 
                 checkWritable(iiometa);
 
-                IIOMetadataNode rootnode = (IIOMetadataNode)iiometa.getAsTree(jpegmeta);
-                IIOMetadataNode variety = (IIOMetadataNode)rootnode.
+                final IIOMetadataNode rootnode = (IIOMetadataNode)iiometa.getAsTree(jpegmeta);
+                final IIOMetadataNode variety = (IIOMetadataNode)rootnode.
                         getElementsByTagName("JPEGvariety").item(0);
 
-                IIOMetadataNode jfif = (IIOMetadataNode)variety.
+                final IIOMetadataNode jfif = (IIOMetadataNode)variety.
                         getElementsByTagName("app0JFIF").item(0);
                 jfif.setAttribute("resUnits", "1"); //dots per inch
                 jfif.setAttribute("Xdensity", Integer.toString(resolution));
@@ -126,18 +126,18 @@ public class ImageIOBitmapEncoder implements BitmapEncoder {
             } else if (iiometa.isStandardMetadataFormatSupported()) {
                 checkWritable(iiometa);
 
-                IIOMetadataNode rootnode = new IIOMetadataNode(stdmeta);
+                final IIOMetadataNode rootnode = new IIOMetadataNode(stdmeta);
 
-                IIOMetadataNode imagedim = new IIOMetadataNode("Dimension");
+                final IIOMetadataNode imagedim = new IIOMetadataNode("Dimension");
                 IIOMetadataNode child = new IIOMetadataNode("HorizontalPixelSize");
-                double effResolution = 1 / (UnitConv.in2mm(1) / resolution);
+                final double effResolution = 1 / (UnitConv.in2mm(1) / resolution);
                 child.setAttribute("value", Double.toString(effResolution));
                 imagedim.appendChild(child);
                 child = new IIOMetadataNode("VerticalPixelSize");
                 child.setAttribute("value", Double.toString(effResolution));
                 imagedim.appendChild(child);
 
-                IIOMetadataNode textNode = new IIOMetadataNode("Text");
+                final IIOMetadataNode textNode = new IIOMetadataNode("Text");
                 child = new IIOMetadataNode("TextEntry");
                 child.setAttribute("keyword", "Software");
                 child.setAttribute("value", "Barcode4J");

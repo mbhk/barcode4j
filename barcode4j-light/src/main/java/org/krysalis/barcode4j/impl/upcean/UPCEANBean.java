@@ -82,10 +82,10 @@ public abstract class UPCEANBean extends AbstractBarcodeBean {
             throw new NullPointerException("Parameter msg must not be empty");
         }
 
-        ClassicBarcodeLogicHandler handler = new UPCEANCanvasLogicHandler(this, new Canvas(canvas));
+        final ClassicBarcodeLogicHandler handler = new UPCEANCanvasLogicHandler(this, new Canvas(canvas));
         //handler = new LoggingLogicHandlerProxy(handler);
 
-        UPCEANLogicImpl impl = createLogicImpl();
+        final UPCEANLogicImpl impl = createLogicImpl();
         impl.generateBarcodeLogic(handler, msg);
     }
 
@@ -96,7 +96,7 @@ public abstract class UPCEANBean extends AbstractBarcodeBean {
      */
     protected double supplementalWidth(String msg) {
         double width = 0;
-        int suppLen = UPCEANLogicImpl.getSupplementalLength(msg);
+        final int suppLen = UPCEANLogicImpl.getSupplementalLength(msg);
         if (suppLen > 0) {
             //Supplemental
             width += quietZone;

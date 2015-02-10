@@ -45,10 +45,10 @@ public class URLUtil {
         if (url.startsWith(DATA_PROTOCOL)) {
             return parseDataURL(url, encoding);
         } else {
-            URL u = new URL(url);
-            InputStream in = u.openStream();
+            final URL u = new URL(url);
+            final InputStream in = u.openStream();
             try {
-                ByteArrayOutputStream baout = new ByteArrayOutputStream();
+                final ByteArrayOutputStream baout = new ByteArrayOutputStream();
                 IOUtil.copy(in, baout);
                 return baout.toByteArray();
             } finally {
@@ -63,21 +63,21 @@ public class URLUtil {
      * @return encoding text as a string
      */
     public static String getDataEncoding(String url){
-        int commaPos = url.indexOf(',');
+        final int commaPos = url.indexOf(',');
         // header is of the form data:[<mediatype>][;charset=<encoding>][;base64]
-        String header = url.substring(0, commaPos);
+        final String header = url.substring(0, commaPos);
         return getEncoding(header);
     }
 
     private static byte[] parseDataURL(String url, String encoding) throws IOException {
-        int commaPos = url.indexOf(',');
+        final int commaPos = url.indexOf(',');
         // header is of the form data:[<mediatype>][;charset=<encoding>][;base64]
-        String header = url.substring(0, commaPos);
-        String data = url.substring(commaPos + 1);
+        final String header = url.substring(0, commaPos);
+        final String data = url.substring(commaPos + 1);
         if (header.endsWith(";base64")) {
-            Base64InputStream in = new Base64InputStream(
+            final Base64InputStream in = new Base64InputStream(
                     new java.io.StringReader(data));
-            ByteArrayOutputStream baout = new ByteArrayOutputStream();
+            final ByteArrayOutputStream baout = new ByteArrayOutputStream();
             IOUtil.copy(in, baout);
             IOUtil.closeQuietly(in);
             return baout.toByteArray();
@@ -87,7 +87,7 @@ public class URLUtil {
                 urlEncoding = "US-ASCII";
             }
             final String unescapedString = URLDecoder.decode(data, urlEncoding);
-            byte[] bytes = unescapedString.getBytes(encoding);
+            final byte[] bytes = unescapedString.getBytes(encoding);
             return bytes;
         }
     }
@@ -97,7 +97,7 @@ public class URLUtil {
         final int charsetpos = header.indexOf(";charset=");
         if (charsetpos > 0) {
             urlEncoding = header.substring(charsetpos + 9);
-            int pos = urlEncoding.indexOf(';');
+            final int pos = urlEncoding.indexOf(';');
             if (pos > 0) {
                 urlEncoding = urlEncoding.substring(0, pos);
             }
@@ -111,7 +111,7 @@ public class URLUtil {
 
     public static String getURL(String message) {
         if (URLUtil.isURL(message)) {
-            String url = message.substring(URLUtil.URL_START.length(),
+            final String url = message.substring(URLUtil.URL_START.length(),
                     message.length() - URLUtil.URL_END.length());
             return url;
         } else {

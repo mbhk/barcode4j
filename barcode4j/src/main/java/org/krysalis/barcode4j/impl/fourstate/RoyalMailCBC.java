@@ -40,7 +40,7 @@ public class RoyalMailCBC extends ConfigurableBarcodeGenerator
     @Override
     public void configure(Configuration cfg) throws ConfigurationException {
         //Module width (MUST ALWAYS BE FIRST BECAUSE QUIET ZONE MAY DEPEND ON IT)
-        Length mw = new Length(cfg.getChild("module-width").getValue("0.53mm"), "mm");
+        final Length mw = new Length(cfg.getChild("module-width").getValue("0.53mm"), "mm");
         getRoyalMailCBCBean().setModuleWidth(mw.getValueAsMillimeter());
 
         super.configure(cfg);
@@ -50,7 +50,7 @@ public class RoyalMailCBC extends ConfigurableBarcodeGenerator
             cfg.getChild("checksum").getValue(ChecksumMode.CP_AUTO.getName())));
     
         //Inter-character gap width    
-        Length igw = new Length(cfg.getChild("interchar-gap-width").getValue("1mw"), "mw");
+        final Length igw = new Length(cfg.getChild("interchar-gap-width").getValue("1mw"), "mw");
         if (igw.getUnit().equalsIgnoreCase("mw")) {
             getRoyalMailCBCBean().setIntercharGapWidth(
                     igw.getValue() * getRoyalMailCBCBean().getModuleWidth());
@@ -58,10 +58,10 @@ public class RoyalMailCBC extends ConfigurableBarcodeGenerator
             getRoyalMailCBCBean().setIntercharGapWidth(igw.getValueAsMillimeter());
         }
 
-        Length h = new Length(cfg.getChild("ascender-height").getValue("1.8mm"), "mm");
+        final Length h = new Length(cfg.getChild("ascender-height").getValue("1.8mm"), "mm");
         getRoyalMailCBCBean().setAscenderHeight(h.getValueAsMillimeter());
         
-        Length hbh = new Length(cfg.getChild("track-height").getValue("1.25mm"), "mm");
+        final Length hbh = new Length(cfg.getChild("track-height").getValue("1.25mm"), "mm");
         getRoyalMailCBCBean().setTrackHeight(hbh.getValueAsMillimeter());
 
     }

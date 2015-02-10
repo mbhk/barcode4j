@@ -34,7 +34,7 @@ public class RoyalMailCBCLogicImpl extends AbstractRMCBCKIXLogicImpl {
 
     @Override
     public char calcChecksum(String msg) {
-        String[] codewords = encodeHighLevel(removeStartStop(msg));
+        final String[] codewords = encodeHighLevel(removeStartStop(msg));
         final int[] multiplier = new int[] {4, 2, 1, 0};
         int upperSum = 0;
         int lowerSum = 0;
@@ -42,7 +42,7 @@ public class RoyalMailCBCLogicImpl extends AbstractRMCBCKIXLogicImpl {
             int upper = 0;
             int lower = 0;
             for (int j = 0; j < 4; j++) {
-                int v = codewords[i].charAt(j) - '0';
+                final int v = codewords[i].charAt(j) - '0';
                 upper += (v & 1) * multiplier[j];
                 lower += ((v & 2) >> 1) * multiplier[j];
             }
@@ -61,7 +61,7 @@ public class RoyalMailCBCLogicImpl extends AbstractRMCBCKIXLogicImpl {
         } else {
             col -= 1;
         }
-        int idx = row * 6 + col;
+        final int idx = row * 6 + col;
         if (idx < 10) {
             return (char)('0' + idx);
         } else {
@@ -101,9 +101,9 @@ public class RoyalMailCBCLogicImpl extends AbstractRMCBCKIXLogicImpl {
      * @return the modified message
      */
     public static String removeStartStop(String msg) {
-        StringBuilder sb = new StringBuilder(msg.length());
-        for (int i = 0, c = msg.length(); i < c; i++) {
-            char ch = msg.charAt(i);
+        final StringBuilder sb = new StringBuilder(msg.length());
+        for (int i = 0; i < msg.length(); i++) {
+            final char ch = msg.charAt(i);
             switch (ch) {
             case '(':
             case '[':

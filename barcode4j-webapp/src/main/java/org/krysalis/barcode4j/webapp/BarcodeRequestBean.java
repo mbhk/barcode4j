@@ -171,7 +171,7 @@ public class BarcodeRequestBean {
     }
 
     public String toURL() {
-        StringBuffer sb = new StringBuffer(64);
+        final StringBuilder sb = new StringBuilder(64);
         sb.append("genbc?");
 
         //Type
@@ -194,7 +194,7 @@ public class BarcodeRequestBean {
         sb.append(encode(msg));
 
         //Height
-        String height = getHeight();
+        final String height = getHeight();
         if (height != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_HEIGHT);
@@ -203,7 +203,7 @@ public class BarcodeRequestBean {
         }
 
         //Module Width
-        String moduleWidth = getModuleWidth();
+        final String moduleWidth = getModuleWidth();
         if (moduleWidth != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_MODULE_WIDTH);
@@ -212,7 +212,7 @@ public class BarcodeRequestBean {
         }
 
         //Wide Factor
-        String wideFactor = getWideFactor();
+        final String wideFactor = getWideFactor();
         if (wideFactor != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_WIDE_FACTOR);
@@ -221,7 +221,7 @@ public class BarcodeRequestBean {
         }
 
         //Quiet Zone
-        String quietZone = getQuietZone();
+        final String quietZone = getQuietZone();
         if (quietZone != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_QUIET_ZONE);
@@ -230,7 +230,7 @@ public class BarcodeRequestBean {
         }
 
         //Human Readable Part
-        String humanReadable = getHumanReadable();
+        final String humanReadable = getHumanReadable();
         if (humanReadable != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_HUMAN_READABLE_POS);
@@ -239,7 +239,7 @@ public class BarcodeRequestBean {
         }
 
         //Output Format
-        String fmt = getFormat();
+        final String fmt = getFormat();
         if (fmt != null && !isSVG()) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_FORMAT);
@@ -247,7 +247,7 @@ public class BarcodeRequestBean {
             sb.append(fmt);
         }
 
-        String humanReadableSize = getHumanReadableSize();
+        final String humanReadableSize = getHumanReadableSize();
         if (humanReadableSize != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_HUMAN_READABLE_SIZE);
@@ -255,7 +255,7 @@ public class BarcodeRequestBean {
             sb.append(humanReadableSize);
         }
 
-        String humanReadableFont = getHumanReadableFont();
+        final String humanReadableFont = getHumanReadableFont();
         if (humanReadableFont != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_HUMAN_READABLE_FONT);
@@ -263,7 +263,7 @@ public class BarcodeRequestBean {
             sb.append(encode(humanReadableFont));
         }
 
-        String hrPattern = getHumanReadablePattern();
+        final String hrPattern = getHumanReadablePattern();
         if (hrPattern != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_HUMAN_READABLE_PATTERN);
@@ -272,7 +272,7 @@ public class BarcodeRequestBean {
         }
 
         //Output Format
-        String res = getResolution();
+        final String res = getResolution();
         if (res != null && isBitmap()) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_IMAGE_RESOLUTION);
@@ -281,7 +281,7 @@ public class BarcodeRequestBean {
         }
 
         //Output Format
-        boolean gray = isGray();
+        final boolean gray = isGray();
         if (gray && isBitmap()) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_IMAGE_GRAYSCALE);

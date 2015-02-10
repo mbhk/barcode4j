@@ -114,7 +114,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         if (clazz == null) {
             clazz = name;
         }
-        Class cl = Class.forName(clazz);
+        final Class cl = Class.forName(clazz);
         return cl;
     }
 
@@ -127,7 +127,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         if (clazz == null) {
             clazz = name;
         }
-        Class cl = Class.forName(clazz + "Bean");
+        final Class cl = Class.forName(clazz + "Bean");
         return cl;
     }
 

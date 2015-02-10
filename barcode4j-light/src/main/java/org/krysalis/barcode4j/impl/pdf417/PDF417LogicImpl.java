@@ -41,7 +41,7 @@ public class PDF417LogicImpl {
      * @return the number of rows in the symbol (r)
      */
     public static int getNumberOfRows(int m, int k, int c) {
-        int r = calculateNumberOfRows(m, k, c);
+        final int r = calculateNumberOfRows(m, k, c);
         if (r > 90) {
             throw new IllegalArgumentException(
                     "The message doesn't fit in the configured symbol size."
@@ -87,7 +87,7 @@ public class PDF417LogicImpl {
      * @return the number of pad codewords
      */
     public static int getNumberOfPadCodewords(int m, int k, int c, int r) {
-        int n = c * r - k;
+        final int n = c * r - k;
         if (n > m + 1) {
             return (n - m) - 1;
         } else {
@@ -105,8 +105,8 @@ public class PDF417LogicImpl {
      * @return the number of data codewords
      */
     public static int getNumberOfDataCodewords(int m, int errorCorrectionLevel, int c) {
-        int k = PDF417ErrorCorrection.getErrorCorrectionCodewordCount(errorCorrectionLevel);
-        int r = getNumberOfRows(m, k, c);
+        final int k = PDF417ErrorCorrection.getErrorCorrectionCodewordCount(errorCorrectionLevel);
+        final int r = getNumberOfRows(m, k, c);
         return c * r - k;
     }
 
@@ -115,7 +115,7 @@ public class PDF417LogicImpl {
         boolean last = (pattern & map) != 0; //Initialize to inverse of first bit
         int width = 0;
         for (int i = 0; i < len; i++) {
-            boolean black = (pattern & map) != 0;
+            final boolean black = (pattern & map) != 0;
             if (last == black) {
                 width++;
             } else {
@@ -132,7 +132,7 @@ public class PDF417LogicImpl {
             int errorCorrectionLevel, TwoDimBarcodeLogicHandler logic) {
         int idx = 0;
         for (int y = 0; y < r; y++) {
-            int cluster = (y % 3);
+            final int cluster = (y % 3);
             logic.startRow();
             logic.startBarGroup(BarGroup.START_CHARACTER, null);
             encodeChar(PDF417Constants.START_PATTERN, 17, logic);
@@ -185,29 +185,29 @@ public class PDF417LogicImpl {
     public static void generateBarcodeLogic(TwoDimBarcodeLogicHandler logic,
             String msg, PDF417Bean pdf417Bean) {
 
-        int errorCorrectionLevel = pdf417Bean.getErrorCorrectionLevel();
+        final int errorCorrectionLevel = pdf417Bean.getErrorCorrectionLevel();
 
         //1. step: High-level encoding
-        int errorCorrectionCodeWords = PDF417ErrorCorrection.getErrorCorrectionCodewordCount(
+        final int errorCorrectionCodeWords = PDF417ErrorCorrection.getErrorCorrectionCodewordCount(
                 errorCorrectionLevel);
-        String highLevel = PDF417HighLevelEncoder.encodeHighLevel(msg,
+        final String highLevel = PDF417HighLevelEncoder.encodeHighLevel(msg,
                 pdf417Bean.getEncoding(), pdf417Bean.isECIEnabled());
-        int sourceCodeWords = highLevel.length();
+        final int sourceCodeWords = highLevel.length();
 
-        Dimension dimension = determineDimensions(pdf417Bean, sourceCodeWords);
+        final Dimension dimension = determineDimensions(pdf417Bean, sourceCodeWords);
 
         if (dimension == null) {
             throw new IllegalArgumentException(
                     "Unable to fit message in columns");
         }
 
-        int rows = dimension.height;
-        int cols = dimension.width;
-        int pad = getNumberOfPadCodewords(sourceCodeWords,
+        final int rows = dimension.height;
+        final int cols = dimension.width;
+        final int pad = getNumberOfPadCodewords(sourceCodeWords,
                 errorCorrectionCodeWords, cols, rows);
 
         //2. step: construct data codewords
-        int n = getNumberOfDataCodewords(sourceCodeWords, errorCorrectionLevel,
+        final int n = getNumberOfDataCodewords(sourceCodeWords, errorCorrectionLevel,
                 cols);
         if (n > 929) {
             throw new IllegalArgumentException(
@@ -215,18 +215,18 @@ public class PDF417LogicImpl {
                             + msg.length() + " bytes)");
         }
 
-        StringBuilder sb = new StringBuilder(n);
+        final StringBuilder sb = new StringBuilder(n);
         sb.append((char)n);
         sb.append(highLevel);
         for (int i = 0; i < pad; i++) {
             sb.append((char)900); //PAD characters
         }
-        String dataCodewords = sb.toString();
+        final String dataCodewords = sb.toString();
 
         //3. step: Error correction
-        String ec = PDF417ErrorCorrection.generateErrorCorrection(
+        final String ec = PDF417ErrorCorrection.generateErrorCorrection(
                 dataCodewords, errorCorrectionLevel);
-        String fullCodewords = dataCodewords + ec;
+        final String fullCodewords = dataCodewords + ec;
 
         //4. step: low-level encoding
         logic.startBarcode(msg, msg);
@@ -244,20 +244,20 @@ public class PDF417LogicImpl {
     public static Dimension determineDimensions(PDF417Bean pdf417Bean,
             int sourceCodeWords) {
 
-        int minCols = pdf417Bean.getMinCols();
-        int maxCols = pdf417Bean.getMaxCols();
-        int maxRows = pdf417Bean.getMaxRows();
-        int minRows = pdf417Bean.getMinRows();
-        double preferredRatio = pdf417Bean.getWidthToHeightRatio();
+        final int minCols = pdf417Bean.getMinCols();
+        final int maxCols = pdf417Bean.getMaxCols();
+        final int maxRows = pdf417Bean.getMaxRows();
+        final int minRows = pdf417Bean.getMinRows();
+        final double preferredRatio = pdf417Bean.getWidthToHeightRatio();
 
         double ratio = 0;
         Dimension dimension = null;
-        int errorCorrectionCodeWords = PDF417ErrorCorrection.getErrorCorrectionCodewordCount(
+        final int errorCorrectionCodeWords = PDF417ErrorCorrection.getErrorCorrectionCodewordCount(
                 pdf417Bean.getErrorCorrectionLevel());
 
         for (int cols = minCols; cols <= maxCols; cols++) {
 
-            int rows = calculateNumberOfRows(sourceCodeWords,
+            final int rows = calculateNumberOfRows(sourceCodeWords,
                     errorCorrectionCodeWords, cols);
 
             if (rows < minRows) {
@@ -268,7 +268,7 @@ public class PDF417LogicImpl {
                 continue;
             }
 
-            double newRatio = ((17 * cols + 69) * pdf417Bean.getModuleWidth())
+            final double newRatio = ((17 * cols + 69) * pdf417Bean.getModuleWidth())
                     / (rows * pdf417Bean.getBarHeight());
 
             // ignore if previous ratio is closer to preferred ratio

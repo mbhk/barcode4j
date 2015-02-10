@@ -102,15 +102,15 @@ public class Interleaved2Of5LogicImpl {
      * @return boolean True, if the checksum is correct
      */
     public static boolean validateChecksum(String msg) {
-        char actual = msg.charAt(msg.length() - 1);
-        char expected = calcChecksum(msg.substring(0, msg.length() - 1));
+        final char actual = msg.charAt(msg.length() - 1);
+        final char expected = calcChecksum(msg.substring(0, msg.length() - 1));
         return (actual == expected);
     }
 
     private int widthAt(char ch, int index) {
         if (Character.isDigit(ch)) {
-            int digit = Character.digit(ch, 10);
-            int width = CHARSET[digit][index];
+            final int digit = Character.digit(ch, 10);
+            final int width = CHARSET[digit][index];
             return width;
         } else {
             throw new IllegalArgumentException("Invalid character '" + ch
@@ -145,7 +145,7 @@ public class Interleaved2Of5LogicImpl {
                 sb.append(calcChecksum(sb.toString()));
                 return sb.toString();
             } else {
-                String msg = sb.toString();
+                final String msg = sb.toString();
                 sb.append(calcChecksum(msg));
                 return msg;
             }
@@ -191,8 +191,8 @@ public class Interleaved2Of5LogicImpl {
      */
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
         //Checksum handling as requested
-        StringBuilder sb = new StringBuilder(msg);
-        String formattedMsg = handleChecksum(sb);
+        final StringBuilder sb = new StringBuilder(msg);
+        final String formattedMsg = handleChecksum(sb);
 
         //Length must be even
         if ((sb.length() % 2) != 0) {

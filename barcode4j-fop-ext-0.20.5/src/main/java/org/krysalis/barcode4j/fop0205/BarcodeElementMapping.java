@@ -45,9 +45,9 @@ public class BarcodeElementMapping implements ElementMapping {
     private synchronized void setupBarcodeElements() {
         if (foObjs == null) {
             foObjs = new HashMap();
-            String[] elements = ConfigurableBarcodeGenerator.BARCODE_ELEMENTS;
+            final String[] elements = ConfigurableBarcodeGenerator.BARCODE_ELEMENTS;
             foObjs.put("barcode", getBarcodeElementMaker());
-            for (String element : elements) {
+            for (final String element : elements) {
                 foObjs.put(element, getBarcodeObjMaker(element));
             }
         }

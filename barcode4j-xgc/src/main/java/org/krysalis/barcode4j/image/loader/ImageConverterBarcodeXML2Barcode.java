@@ -54,24 +54,24 @@ public class ImageConverterBarcodeXML2Barcode extends AbstractImageConverter {
     @Override
     public Image convert(Image src, Map hints) throws ImageException, IOException {
         checkSourceFlavor(src);
-        ImageXMLDOM barcodeXML = (ImageXMLDOM)src;
+        final ImageXMLDOM barcodeXML = (ImageXMLDOM)src;
 
-        Document doc = barcodeXML.getDocument();
+        final Document doc = barcodeXML.getDocument();
 
         try {
-            Configuration cfg = ConfigurationUtil.buildConfiguration(doc);
-            String msg = ConfigurationUtil.getMessage(cfg);
+            final Configuration cfg = ConfigurationUtil.buildConfiguration(doc);
+            final String msg = ConfigurationUtil.getMessage(cfg);
 
             //int orientation = cfg.getAttributeAsInteger("orientation", 0);
             //orientation = BarcodeDimension.normalizeOrientation(orientation);
 
-            BarcodeGenerator bargen = BarcodeUtil.getInstance().
+            final BarcodeGenerator bargen = BarcodeUtil.getInstance().
                     createBarcodeGenerator(cfg);
-            PageInfo pageInfo = PageInfo.fromProcessingHints(hints);
-            String expandedMsg = VariableUtil.getExpandedMessage(pageInfo, msg);
-            BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
+            final PageInfo pageInfo = PageInfo.fromProcessingHints(hints);
+            final String expandedMsg = VariableUtil.getExpandedMessage(pageInfo, msg);
+            final BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
 
-            ImageBarcode imageBarcode = new ImageBarcode(src.getInfo(), cfg, bardim);
+            final ImageBarcode imageBarcode = new ImageBarcode(src.getInfo(), cfg, bardim);
             return imageBarcode;
         } catch (ConfigurationException ce) {
             throw new ImageException("Error building configuration object for barcode", ce);
