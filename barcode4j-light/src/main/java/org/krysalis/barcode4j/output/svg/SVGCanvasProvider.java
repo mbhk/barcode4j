@@ -15,6 +15,8 @@
  */
 package org.krysalis.barcode4j.output.svg;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -32,9 +34,10 @@ import org.w3c.dom.Element;
  * Implementation that outputs to a W3C DOM.
  *
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
 public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
+    private static final Logger LOGGER = Logger.getLogger(SVGCanvasProvider.class.getName());
 
     private DOMImplementation domImpl;
     private Document doc;
@@ -105,15 +108,15 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
     }
 
     private void init() {
+        initDOMImplementation();
         doc = createDocument();
         final Element svg = doc.getDocumentElement();
 
         detailGroup = createElement("g");
-        svg.appendChild(detailGroup);
         detailGroup.setAttribute("fill", "black");
         detailGroup.setAttribute("stroke", "none");
+        svg.appendChild(detailGroup);
     }
-
 
     private Element createElement(String localName) {
         Element el;
@@ -125,34 +128,12 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
         return el;
     }
 
-
     private Document createDocument() {
-        try {
-            if (this.domImpl == null) {
-                final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                dbf.setNamespaceAware(true);
-                dbf.setValidating(false);
-                final DocumentBuilder db = dbf.newDocumentBuilder();
-                this.domImpl = db.getDOMImplementation();
-            }
-
-            if (isNamespaceEnabled()) {
-                final Document doc = this.domImpl.createDocument(
-                        SVG_NAMESPACE, getQualifiedName("svg"), null);
-                /*
-                if (getNamespacePrefix() == null) {
-                    doc.getDocumentElement().setAttribute(
-                            "xmlns", SVG_NAMESPACE);
-                } else {
-                    doc.getDocumentElement().setAttribute(
-                            "xmlns:" + getNamespacePrefix(), SVG_NAMESPACE);
-                }*/
-                return doc;
-            } else {
-                return this.domImpl.createDocument(null, "svg", null);
-            }
-        } catch (ParserConfigurationException pce) {
-            throw new RuntimeException(pce.getMessage());
+        if (isNamespaceEnabled()) {
+            return this.domImpl.createDocument(
+                    SVG_NAMESPACE, getQualifiedName("svg"), null);
+        } else {
+            return this.domImpl.createDocument(null, "svg", null);
         }
     }
 
@@ -160,7 +141,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
      * Returns the DOM document containing the SVG barcode.
      * @return the DOM document
      */
-    public org.w3c.dom.Document getDOM() {
+    public Document getDOM() {
         return this.doc;
     }
 
@@ -168,7 +149,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
      * Returns the DOM fragment containing the SVG barcode.
      * @return the DOM fragment
      */
-    public org.w3c.dom.DocumentFragment getDOMFragment() {
+    public DocumentFragment getDOMFragment() {
         final DocumentFragment frag = doc.createDocumentFragment();
         frag.appendChild(doc.importNode(doc.getFirstChild(), true));
         return frag;
@@ -178,7 +159,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
     public void establishDimensions(BarcodeDimension dim) {
         super.establishDimensions(dim);
         final Orientation orientation = getOrientation();
-        final Element svg = (Element)doc.getDocumentElement();
+        final Element svg = doc.getDocumentElement();
         svg.setAttribute("width", addUnit(dim.getWidthPlusQuiet(orientation)));
         svg.setAttribute("height", addUnit(dim.getHeightPlusQuiet(orientation)));
         final String w = getDecimalFormat().format(dim.getWidthPlusQuiet(orientation));
@@ -239,6 +220,20 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
         }
         el.appendChild(doc.createTextNode(text));
         detailGroup.appendChild(el);
+    }
 
+    private void initDOMImplementation() {
+        try {
+            if (this.domImpl == null) {
+                final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                dbf.setNamespaceAware(true);
+                dbf.setValidating(false);
+                final DocumentBuilder db = dbf.newDocumentBuilder();
+                this.domImpl = db.getDOMImplementation();
+            }
+        } catch (ParserConfigurationException pce) {
+            LOGGER.log(Level.SEVERE, "Error while creating SVG Document", pce);
+            throw new IllegalStateException("Error while creating SVG Document", pce);
+        }
     }
 }

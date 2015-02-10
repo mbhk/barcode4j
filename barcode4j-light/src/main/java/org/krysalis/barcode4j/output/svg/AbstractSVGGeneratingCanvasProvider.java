@@ -55,6 +55,7 @@ public abstract class AbstractSVGGeneratingCanvasProvider
     /**
      * Creates a new AbstractSVGCanvasProvider with namespaces enabled.
      * @param namespacePrefix the namespace prefix to use, null for no prefix
+     * @param orientation
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
     public AbstractSVGGeneratingCanvasProvider(String namespacePrefix, Orientation orientation) 
@@ -65,6 +66,7 @@ public abstract class AbstractSVGGeneratingCanvasProvider
     /**
      * Creates a new AbstractSVGCanvasProvider.
      * @param useNamespace Controls whether namespaces should be used
+     * @param orientation
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
     public AbstractSVGGeneratingCanvasProvider(boolean useNamespace, Orientation orientation) 
@@ -75,6 +77,7 @@ public abstract class AbstractSVGGeneratingCanvasProvider
     /**
      * Creates a new AbstractSVGCanvasProvider with default settings (with 
      * namespaces, but without namespace prefix).
+     * @param orientation
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
     public AbstractSVGGeneratingCanvasProvider(Orientation orientation) 
