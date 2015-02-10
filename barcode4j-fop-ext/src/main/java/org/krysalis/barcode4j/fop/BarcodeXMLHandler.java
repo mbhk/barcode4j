@@ -145,7 +145,10 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
             final String msg, final Orientation orientation) throws IOException {
 
         final Graphics2DAdapter g2dAdapter = context.getRenderer().getGraphics2DAdapter();
-        if (g2dAdapter != null) {
+        if (g2dAdapter == null) {
+            //We can't paint the barcode
+            return false;
+        } else {
             final BarcodeDimension barDim = bargen.calcDimensions(msg);
 
             // get the 'width' and 'height' attributes of the barcode
@@ -174,15 +177,11 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
                 System.out.println(" --> Java2D");
             }
             g2dAdapter.paintImage(painter,
-                    context,
-                    ((Integer)context.getProperty("xpos")).intValue(),
-                    ((Integer)context.getProperty("ypos")).intValue(),
-                    ((Integer)context.getProperty("width")).intValue(),
-                    ((Integer)context.getProperty("height")).intValue());
+                    context, ((Integer) context.getProperty("xpos"))
+                    , ((Integer) context.getProperty("ypos"))
+                    , ((Integer) context.getProperty("width"))
+                    , ((Integer) context.getProperty("height")));
             return true;
-        } else {
-            //We can't paint the barcode
-            return false;
         }
     }
 
@@ -190,8 +189,10 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
             final BarcodeGenerator bargen,
             final String msg, final Orientation orientation) throws IOException {
         final ImageAdapter imgAdapter = context.getRenderer().getImageAdapter();
-        if (imgAdapter != null) {
-
+        if (imgAdapter == null) {
+            //We can't paint the barcode
+            return false;
+        } else {
             final BitmapCanvasProvider canvas = new BitmapCanvasProvider(
                     300, BufferedImage.TYPE_BYTE_BINARY, false, orientation);
             bargen.generateBarcode(canvas, msg);
@@ -206,9 +207,6 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
                     ((Integer)context.getProperty("width")).intValue(),
                     ((Integer)context.getProperty("height")).intValue());
             return true;
-        } else {
-            //We can't paint the barcode
-            return false;
         }
     }
 

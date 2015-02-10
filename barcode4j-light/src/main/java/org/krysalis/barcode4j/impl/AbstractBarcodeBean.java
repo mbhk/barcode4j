@@ -15,7 +15,6 @@
  */
 package org.krysalis.barcode4j.impl;
 
-import java.util.Collection;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.HumanReadablePlacement;
@@ -80,7 +79,9 @@ public abstract class AbstractBarcodeBean
      * @return the height of the human-readable part (in mm)
      */
     public double getHumanReadableHeight() {
-        if (getMsgPosition() != HumanReadablePlacement.HRP_NONE) {
+        if (getMsgPosition() == HumanReadablePlacement.HRP_NONE) {
+            return 0.0;
+        } else {
             final double textHeight = this.fontSize;
             if (hasFontDescender()) {
                 return 1.3 * textHeight;
@@ -89,8 +90,6 @@ public abstract class AbstractBarcodeBean
             } else {
                 return textHeight;
             }
-        } else {
-            return 0.0;
         }
     }
 
@@ -176,10 +175,10 @@ public abstract class AbstractBarcodeBean
      * @return the height of the vertical quiet zone (in mm)
      */
     public double getVerticalQuietZone() {
-        if (this.quietZoneVertical != null) {
-            return this.quietZoneVertical.doubleValue();
-        } else {
+        if (this.quietZoneVertical == null) {
             return getQuietZone();
+        } else {
+            return this.quietZoneVertical;
         }
     }
 
@@ -197,7 +196,7 @@ public abstract class AbstractBarcodeBean
      * @param height the height of the vertical quiet zone (in mm)
      */
     public void setVerticalQuietZone(double height) {
-        this.quietZoneVertical = new Double(height);
+        this.quietZoneVertical = height;
     }
 
     /**
@@ -248,10 +247,10 @@ public abstract class AbstractBarcodeBean
         this.fontName = name;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public abstract void generateBarcode(CanvasProvider canvas, String msg);
 
-    /** {@inheritDoc} */
+    @Override
     public BarcodeDimension calcDimensions(String msg) {
         throw new UnsupportedOperationException("NYI");
     }

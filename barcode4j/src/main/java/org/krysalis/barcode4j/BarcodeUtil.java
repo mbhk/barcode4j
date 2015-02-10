@@ -116,7 +116,7 @@ public class BarcodeUtil {
             //Instantiate the BarcodeGenerator
             final BarcodeGenerator gen = (BarcodeGenerator)cl.newInstance();
             try {
-                ContainerUtil.configure(gen, (child != null ? child : cfg));
+                ContainerUtil.configure(gen, (child == null ? cfg : child));
             } catch (IllegalArgumentException iae) {
                 throw new ConfigurationException("Cannot configure barcode generator", iae);
             }

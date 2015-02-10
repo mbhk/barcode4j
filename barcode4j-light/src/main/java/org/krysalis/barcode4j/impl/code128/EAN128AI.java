@@ -113,19 +113,19 @@ public class EAN128AI {
             if (is == null) {
                is = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
             }
-            if (is != null) {
-                try {
-                    p.load(is);
-                } finally {
-                    is.close();
-                }
-            } else {
+            if (is == null) {
                 final String rbName = EAN128AI.class.getPackage().getName() + "." + bundlename;
                 final ResourceBundle rb = ResourceBundle.getBundle(rbName);
                 final Enumeration keys = rb.getKeys();
                 while (keys.hasMoreElements()){
                     final String key = (String) keys.nextElement();
                     p.put(key, rb.getObject(key));
+                }
+            } else {
+                try {
+                    p.load(is);
+                } finally {
+                    is.close();
                 }
             }
         } catch (Exception e) {

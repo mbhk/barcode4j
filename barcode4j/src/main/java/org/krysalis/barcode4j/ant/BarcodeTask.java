@@ -229,10 +229,10 @@ public class BarcodeTask extends Task {
      * @param message the message
      */
     public void setMessage(String message) {
-        if (this.message != null) {
-            this.message += message;
-        } else {
+        if (this.message == null) {
             this.message = message;
+        } else {
+            this.message += message;
         }
     }
 
@@ -241,10 +241,10 @@ public class BarcodeTask extends Task {
      * @param text the text to add to the message
      */
     public void addText(String text) {
-        if (this.message != null) {
-            this.message += text;
-        } else {
+        if (this.message == null) {
             this.message = text;
+        } else {
+            this.message += text;
         }
     }
 }

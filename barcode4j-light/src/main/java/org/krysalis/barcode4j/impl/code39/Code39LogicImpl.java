@@ -113,12 +113,12 @@ public class Code39LogicImpl {
     }
 
     private static void invalidCharacter(char c) {
-        if (c != STARTSTOP) {
-            throw new IllegalArgumentException("Invalid character: " + c);
-        } else {
+        if (c == STARTSTOP) {
             throw new IllegalArgumentException("You may not include '*' as "
                     + "part of the message. This start/stop character is "
                     + "automatically added before and after the message.");
+        } else {
+            throw new IllegalArgumentException("Invalid character: " + c);
         }
     }
 

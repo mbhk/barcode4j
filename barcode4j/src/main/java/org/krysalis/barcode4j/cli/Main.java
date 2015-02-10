@@ -129,12 +129,7 @@ public class Main {
         }
         try {
             OutputStream out;
-            if (!cl.hasOption("o")) {
-                log = new AdvancedConsoleLogger(AdvancedConsoleLogger.LEVEL_ERROR,
-                    false, stderr, stderr);
-                printAppHeader();
-                out = stdout;
-            } else {
+            if (cl.hasOption("o")) {
                 int logLevel = AdvancedConsoleLogger.LEVEL_INFO;
                 if (cl.hasOption('v')) {
                     logLevel = AdvancedConsoleLogger.LEVEL_DEBUG;
@@ -146,6 +141,11 @@ public class Main {
                     log.debug("Output to: " + outFile.getCanonicalPath());
                 }
                 out = new java.io.FileOutputStream(outFile);
+            } else {
+                log = new AdvancedConsoleLogger(AdvancedConsoleLogger.LEVEL_ERROR,
+                        false, stderr, stderr);
+                printAppHeader();
+                out = stdout;
             }
 
             log.debug("Message: " + msg[0]);
@@ -322,13 +322,13 @@ public class Main {
      */
     public void printAppHeader() {
         if (!headerPrinted) {
-            if (log != null) {
-                for (int i = 0; i < APP_HEADER.length; i++) {
-                    log.info(APP_HEADER[i]);
-                }
-            } else {
+            if (log == null) {
                 for (int i = 0; i < APP_HEADER.length; i++) {
                     stdout.println(APP_HEADER[i]);
+                }                
+            } else {
+                for (int i = 0; i < APP_HEADER.length; i++) {
+                    log.info(APP_HEADER[i]);
                 }
             }
             headerPrinted = true;
