@@ -42,6 +42,7 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
 import org.krysalis.barcode4j.BarcodeException;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * Simple barcode servlet.
@@ -89,7 +90,7 @@ public class BarcodeServlet extends HttpServlet {
 
         try {
             String format = determineFormat(request);
-            int orientation = 0;
+            Orientation orientation = Orientation.ZERO;
 
             Configuration cfg = buildCfg(request);
 

@@ -21,6 +21,7 @@ import org.w3c.dom.DocumentFragment;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.container.ContainerUtil;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * This is a convenience class to generate barcodes. It is implemented as
@@ -159,7 +160,7 @@ public class BarcodeUtil {
                                                String msg)
                     throws ConfigurationException, BarcodeException {
         BarcodeGenerator gen = createBarcodeGenerator(cfg);
-        SVGCanvasProvider svg = new SVGCanvasProvider(false, 0);
+        SVGCanvasProvider svg = new SVGCanvasProvider(false, Orientation.ZERO);
 
         //Create Barcode and render it to SVG
         gen.generateBarcode(svg, msg);

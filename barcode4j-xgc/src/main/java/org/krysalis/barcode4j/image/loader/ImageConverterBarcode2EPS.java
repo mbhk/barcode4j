@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
-import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
@@ -39,6 +38,7 @@ import org.apache.xmlgraphics.image.loader.ImageFlavor;
 import org.apache.xmlgraphics.image.loader.impl.AbstractImageConverter;
 import org.apache.xmlgraphics.image.loader.impl.ImageRawEPS;
 import org.apache.xmlgraphics.image.loader.impl.ImageRawStream;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * This ImageConverter converts barcodes to EPS.
@@ -51,7 +51,7 @@ public class ImageConverterBarcode2EPS extends AbstractImageConverter {
         ImageBarcode barcodeImage = (ImageBarcode)src;
 
         Configuration cfg = barcodeImage.getBarcodeXML();
-        int orientation = BarcodeDimension.normalizeOrientation(
+        Orientation orientation = Orientation.fromInt(
                 cfg.getAttributeAsInteger("orientation", 0));
 
         try {

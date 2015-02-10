@@ -35,6 +35,7 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.fop.apps.FOPException;
 import org.apache.fop.fo.FONode;
 import org.apache.fop.fo.PropertyList;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * Class representing bc:barcode extension element object.
@@ -68,8 +69,7 @@ public class BarcodeElement extends BarcodeObj {
             String msg = ConfigurationUtil.getMessage(cfg);
             msg = MessageUtil.unescapeUnicode(msg);
 
-            int orientation = cfg.getAttributeAsInteger("orientation", 0);
-            orientation = BarcodeDimension.normalizeOrientation(orientation);
+            Orientation orientation = Orientation.fromInt(cfg.getAttributeAsInteger("orientation", 0));
 
             BarcodeGenerator bargen = BarcodeUtil.getInstance().
                     createBarcodeGenerator(cfg);

@@ -39,6 +39,7 @@ import org.apache.xmlgraphics.image.loader.ImageFlavor;
 import org.apache.xmlgraphics.image.loader.XMLNamespaceEnabledImageFlavor;
 import org.apache.xmlgraphics.image.loader.impl.AbstractImageConverter;
 import org.apache.xmlgraphics.image.loader.impl.ImageXMLDOM;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * This ImageConverter converts barcodes to SVG.
@@ -57,7 +58,7 @@ public class ImageConverterBarcode2SVG extends AbstractImageConverter {
         ImageBarcode barcodeImage = (ImageBarcode)src;
 
         Configuration cfg = barcodeImage.getBarcodeXML();
-        int orientation = BarcodeDimension.normalizeOrientation(
+        Orientation orientation = Orientation.fromInt(
                 cfg.getAttributeAsInteger("orientation", 0));
 
         try {

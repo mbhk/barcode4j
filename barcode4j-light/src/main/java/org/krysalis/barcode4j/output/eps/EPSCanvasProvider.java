@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.TextAlignment;
 import org.krysalis.barcode4j.output.AbstractCanvasProvider;
+import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.tools.UnitConv;
 
 /**
@@ -46,7 +47,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
      * @param orientation the barcode orientation (0, 90, 180, 270)
      * @throws IOException in case of an I/O problem
      */
-    public EPSCanvasProvider(OutputStream out, int orientation) throws IOException {
+    public EPSCanvasProvider(OutputStream out, Orientation orientation) throws IOException {
         super(orientation);
         try {
             this.writer = new java.io.OutputStreamWriter(out, "US-ASCII");
@@ -54,6 +55,10 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
             throw new RuntimeException(
                     "Incompatible VM: Need US-ASCII encoding. " + uee.getMessage());
         }
+    }
+    
+    public EPSCanvasProvider(OutputStream out, int orientation) throws IOException {
+        this(out, Orientation.fromInt(orientation));
     }
 
     /**
@@ -162,7 +167,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
     @Override
     public void establishDimensions(BarcodeDimension dim) {
         super.establishDimensions(dim);
-        int orientation = BarcodeDimension.normalizeOrientation(getOrientation());
+        Orientation orientation = getOrientation();
         if (firstError != null) {
             return;
         }
@@ -173,13 +178,13 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
             String w = formatmm(dim.getWidthPlusQuiet());
             String h = formatmm(dim.getHeightPlusQuiet());
             switch (orientation) {
-            case 90:
+            case NINETY:
                 writer.write("90 rotate 0" + " -" + h + " translate\n");
                 break;
-            case 180:
+            case ONEHUNDRED_EIGHTY:
                 writer.write("180 rotate -" + w + " -" + h + " translate\n");
                 break;
-            case 270:
+            case TWOHUNDRED_SEVENTY:
                 writer.write("270 rotate -" + w + " 0 translate\n");
                 break;
             default:

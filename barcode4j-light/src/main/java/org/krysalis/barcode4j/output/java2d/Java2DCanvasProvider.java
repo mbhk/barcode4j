@@ -26,6 +26,7 @@ import java.awt.geom.Rectangle2D;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.TextAlignment;
 import org.krysalis.barcode4j.output.AbstractCanvasProvider;
+import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.tools.UnitConv;
 
 /**
@@ -57,7 +58,7 @@ public class Java2DCanvasProvider extends AbstractCanvasProvider {
      * </code>
      * @param g2d Graphics2D object to paint on
      */
-    public Java2DCanvasProvider(Graphics2D g2d, int orientation) {
+    public Java2DCanvasProvider(Graphics2D g2d, Orientation orientation) {
         super(orientation);
         setGraphics2D(g2d);
     }
@@ -66,7 +67,7 @@ public class Java2DCanvasProvider extends AbstractCanvasProvider {
      * Sets the Graphics2D instance to paint on
      * @param g2d the Graphics2D instance
      */
-    public void setGraphics2D(Graphics2D g2d) {
+    public final void setGraphics2D(Graphics2D g2d) {
         this.g2d = g2d;
     }
 
@@ -81,20 +82,19 @@ public class Java2DCanvasProvider extends AbstractCanvasProvider {
     @Override
     public void establishDimensions(BarcodeDimension dim) {
         super.establishDimensions(dim);
-        int orientation = BarcodeDimension.normalizeOrientation(getOrientation());
-        double w = dim.getWidthPlusQuiet(orientation);
-        double h = dim.getHeightPlusQuiet(orientation);
+        double w = dim.getWidthPlusQuiet(getOrientation());
+        double h = dim.getHeightPlusQuiet(getOrientation());
         this.g2d = (Graphics2D)this.g2d.create();
-        switch (orientation) {
-        case 90:
+        switch (getOrientation()) {
+        case NINETY:
             g2d.rotate(-Math.PI / 2);
             g2d.translate(-h, 0);
             break;
-        case 180:
+        case ONEHUNDRED_EIGHTY:
             g2d.rotate(-Math.PI);
             g2d.translate(-w, -h);
             break;
-        case 270:
+        case TWOHUNDRED_SEVENTY:
             g2d.rotate(-Math.PI * 1.5);
             g2d.translate(0, -w);
             break;

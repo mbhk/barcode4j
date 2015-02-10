@@ -16,6 +16,7 @@
 package org.krysalis.barcode4j;
 
 import java.awt.geom.Rectangle2D;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * This class provides information on the dimensions of a barcode. It makes a
@@ -79,8 +80,8 @@ public class BarcodeDimension {
         return height;
     }
 
-    public double getHeight(int orientation) {
-        if (haveToSwitchOrientation(orientation)) {
+    public double getHeight(Orientation orientation) {
+        if (orientation.isSwitched()) {
             return getWidth();
         } else {
             return getHeight();
@@ -95,8 +96,8 @@ public class BarcodeDimension {
         return heightPlusQuiet;
     }
 
-    public double getHeightPlusQuiet(int orientation) {
-        if (haveToSwitchOrientation(orientation)) {
+    public double getHeightPlusQuiet(Orientation orientation) {
+        if (orientation.isSwitched()) {
             return getWidthPlusQuiet();
         } else {
             return getHeightPlusQuiet();
@@ -110,32 +111,9 @@ public class BarcodeDimension {
     public double getWidth() {
         return width;
     }
-
-    public static int normalizeOrientation(int orientation) {
-        switch (orientation) {
-        case 0:
-            return 0;
-        case 90:
-        case -270:
-            return 90;
-        case 180:
-        case -180:
-            return 180;
-        case 270:
-        case -90:
-            return 270;
-        default:
-            throw new IllegalArgumentException(
-                    "Orientation must be 0, 90, 180, 270, -90, -180 or -270");
-        }
-    }
-
-    public static boolean haveToSwitchOrientation(int orientation) {
-        return normalizeOrientation(orientation) % 180 != 0;
-    }
     
-    public double getWidth(int orientation) {
-        if (haveToSwitchOrientation(orientation)) {
+    public double getWidth(Orientation orientation) {
+        if (orientation.isSwitched()) {
             return getHeight();
         } else {
             return getWidth();
@@ -150,8 +128,8 @@ public class BarcodeDimension {
         return widthPlusQuiet;
     }
 
-    public double getWidthPlusQuiet(int orientation) {
-        if (haveToSwitchOrientation(orientation)) {
+    public double getWidthPlusQuiet(Orientation orientation) {
+        if (orientation.isSwitched()) {
             return getHeightPlusQuiet();
         } else {
             return getWidthPlusQuiet();

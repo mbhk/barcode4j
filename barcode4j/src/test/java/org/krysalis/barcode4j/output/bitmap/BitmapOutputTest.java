@@ -27,6 +27,7 @@ import org.krysalis.barcode4j.BarcodeUtil;
 
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * Test class for basic bitmap output functionality.
@@ -64,7 +65,7 @@ public class BitmapOutputTest extends TestCase {
 
         ByteArrayOutputStream baout = new ByteArrayOutputStream();
         BitmapCanvasProvider provider = new BitmapCanvasProvider(baout,
-                "image/jpeg", 200, BufferedImage.TYPE_BYTE_GRAY, true, 0);
+                "image/jpeg", 200, BufferedImage.TYPE_BYTE_GRAY, true, Orientation.ZERO);
 
         //Create Barcode and render it to a bitmap
         gen.generateBarcode(provider, "123");
@@ -77,7 +78,7 @@ public class BitmapOutputTest extends TestCase {
         BarcodeGenerator gen = getGenerator();
 
         BitmapCanvasProvider provider =
-            new BitmapCanvasProvider(200, BufferedImage.TYPE_BYTE_GRAY, true, 0);
+            new BitmapCanvasProvider(200, BufferedImage.TYPE_BYTE_GRAY, true, Orientation.ZERO);
 
         //Create Barcode and render it to a bitmap
         gen.generateBarcode(provider, "123");

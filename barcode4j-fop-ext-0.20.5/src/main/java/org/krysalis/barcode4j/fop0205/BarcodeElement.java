@@ -44,6 +44,7 @@ import org.apache.fop.layout.Area;
 import org.apache.fop.layout.FontState;
 import org.apache.fop.layout.inline.ForeignObjectArea;
 import org.apache.fop.messaging.MessageHandler;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * Class representing bc:barcode pseudo flow object.
@@ -196,7 +197,7 @@ public class BarcodeElement extends BarcodeObj {
             String msg = ConfigurationUtil.getMessage(cfg);
             msg = MessageUtil.unescapeUnicode(msg);
 
-            int orientation = cfg.getAttributeAsInteger("orientation", 0);
+            Orientation orientation = Orientation.fromInt(cfg.getAttributeAsInteger("orientation", 0));
 
             //MessageHandler.logln("Barcode message: " + msg);
             final String renderMode = cfg.getAttribute("render-mode", "native");

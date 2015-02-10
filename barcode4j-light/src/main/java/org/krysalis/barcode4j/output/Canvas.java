@@ -57,7 +57,7 @@ public class Canvas {
     /**
      * @return the orientation of the barcode (0, 90, 180, 270, -90, -180, -270)
      */
-    public int getOrientation() {
+    public Orientation getOrientation() {
         return getCanvasImp().getOrientation();
     }
 

@@ -24,6 +24,7 @@ import java.io.OutputStream;
 
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeGenerator;
+import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider;
 import org.krysalis.barcode4j.tools.UnitConv;
 
@@ -51,7 +52,7 @@ public class BitmapBuilder {
      */
     public static BufferedImage prepareImage(BarcodeDimension dim,
                         int resolution, int imageType) {
-        return prepareImage(dim, 0, resolution, imageType);
+        return prepareImage(dim, Orientation.ZERO, resolution, imageType);
     }
     
     /**
@@ -63,7 +64,7 @@ public class BitmapBuilder {
      * @return the requested BufferedImage
      */
     public static BufferedImage prepareImage(BarcodeDimension dim,
-                        int orientation,
+                        Orientation orientation,
                         int resolution, int imageType) {
         int bmw = UnitConv.mm2px(dim.getWidthPlusQuiet(orientation), resolution);
         int bmh = UnitConv.mm2px(dim.getHeightPlusQuiet(orientation), resolution);
@@ -84,7 +85,7 @@ public class BitmapBuilder {
      * @return the Graphics2D object to paint on
      */
     public static Graphics2D prepareGraphics2D(BufferedImage image, 
-                BarcodeDimension dim, int orientation,
+                BarcodeDimension dim, Orientation orientation,
                 boolean antiAlias) {
         Graphics2D g2d = image.createGraphics();
         if (antiAlias) {
@@ -113,7 +114,7 @@ public class BitmapBuilder {
     public static BufferedImage getImage(BarcodeGenerator bargen, String msg, int resolution) {
         BarcodeDimension dim = bargen.calcDimensions(msg);
         BufferedImage bi = prepareImage(dim, resolution, BufferedImage.TYPE_BYTE_GRAY);
-        int orientation = 0;
+        Orientation orientation = Orientation.ZERO;
         Graphics2D g2d = prepareGraphics2D(bi, dim, orientation, true);
         Java2DCanvasProvider provider = new Java2DCanvasProvider(g2d, orientation);
         bargen.generateBarcode(provider, msg);

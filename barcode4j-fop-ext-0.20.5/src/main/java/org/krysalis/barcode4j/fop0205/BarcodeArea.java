@@ -23,6 +23,7 @@ import org.apache.fop.render.Renderer;
 import org.apache.fop.svg.SVGArea;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.output.BarcodeCanvasSetupException;
+import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.krysalis.barcode4j.tools.UnitConv;
 import org.w3c.dom.DOMImplementation;
@@ -38,7 +39,7 @@ public class BarcodeArea extends Area {
     private BarcodeGenerator bargen;
     private String msg;
     private String renderMode;
-    private int orientation;
+    private Orientation orientation;
 
     /**
      * Construct an Barcode area
@@ -55,11 +56,11 @@ public class BarcodeArea extends Area {
 
     public void setBarcode(BarcodeGenerator bargen, 
             String msg, String renderMode) {
-        setBarcode(bargen, msg, renderMode, 0);
+        setBarcode(bargen, msg, renderMode, Orientation.ZERO);
     }
     
     public void setBarcode(BarcodeGenerator bargen, 
-                String msg, String renderMode, int orientation) {
+                String msg, String renderMode, Orientation orientation) {
         this.bargen = bargen;
         this.msg = msg;
         this.renderMode = renderMode;
@@ -78,7 +79,7 @@ public class BarcodeArea extends Area {
         return this.renderMode;
     }
 
-    public int getOrientation() {
+    public Orientation getOrientation() {
         return this.orientation;
     }
         

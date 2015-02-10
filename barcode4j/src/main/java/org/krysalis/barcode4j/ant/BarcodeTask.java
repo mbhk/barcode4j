@@ -40,6 +40,7 @@ import org.apache.avalon.framework.configuration.DefaultConfiguration;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * Ant task for Barcode4J.
@@ -93,7 +94,7 @@ public class BarcodeTask extends Task {
 
             format = MimeTypes.expandFormat(format);
 
-            int orientation = 0;
+            Orientation orientation = Orientation.ZERO;
             log("Generating " + symbol + " in " + format + "...");
             BarcodeUtil util = BarcodeUtil.getInstance();
             BarcodeGenerator gen = util.createBarcodeGenerator(getConfiguration());

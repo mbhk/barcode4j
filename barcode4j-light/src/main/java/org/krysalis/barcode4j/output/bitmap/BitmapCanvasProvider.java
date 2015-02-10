@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.TextAlignment;
 import org.krysalis.barcode4j.output.AbstractCanvasProvider;
+import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider;
 
 /**
@@ -50,7 +51,7 @@ public class BitmapCanvasProvider extends AbstractCanvasProvider {
      * @param antiAlias true if anti-aliasing should be enabled
      */
     public BitmapCanvasProvider(OutputStream out, String mime, 
-                    int resolution, int imageType, boolean antiAlias, int orientation) {
+                    int resolution, int imageType, boolean antiAlias, Orientation orientation) {
         super(orientation);
         this.out = out;
         this.mime = mime;
@@ -66,7 +67,7 @@ public class BitmapCanvasProvider extends AbstractCanvasProvider {
      * @param antiAlias true if anti-aliasing should be enabled
      */
     public BitmapCanvasProvider(int resolution, int imageType, boolean antiAlias, 
-                    int orientation) {
+                    Orientation orientation) {
         this(null, null, resolution, imageType, antiAlias, orientation);
     }
 

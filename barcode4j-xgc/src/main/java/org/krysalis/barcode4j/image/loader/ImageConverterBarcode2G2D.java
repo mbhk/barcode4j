@@ -39,6 +39,7 @@ import org.apache.xmlgraphics.image.loader.ImageFlavor;
 import org.apache.xmlgraphics.image.loader.impl.AbstractImageConverter;
 import org.apache.xmlgraphics.image.loader.impl.ImageGraphics2D;
 import org.apache.xmlgraphics.java2d.Graphics2DImagePainter;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * This ImageConverter converts barcodes to Java2D.
@@ -53,7 +54,7 @@ public class ImageConverterBarcode2G2D extends AbstractImageConverter {
         ImageBarcode barcodeImage = (ImageBarcode)src;
 
         Configuration cfg = barcodeImage.getBarcodeXML();
-        int orientation = BarcodeDimension.normalizeOrientation(
+        Orientation orientation = Orientation.fromInt(
                 cfg.getAttributeAsInteger("orientation", 0));
 
         try {
@@ -90,11 +91,11 @@ public class ImageConverterBarcode2G2D extends AbstractImageConverter {
 
         private ImageBarcode barcodeImage;
         private BarcodeGenerator bargen;
-        private int orientation;
+        private Orientation orientation;
         private String msg;
 
         public Graphics2DImagePainterBarcode(ImageBarcode barcodeImage, BarcodeGenerator bargen,
-                String msg, int orientation) {
+                String msg, Orientation orientation) {
             this.barcodeImage = barcodeImage;
             this.bargen = bargen;
             this.msg = msg;

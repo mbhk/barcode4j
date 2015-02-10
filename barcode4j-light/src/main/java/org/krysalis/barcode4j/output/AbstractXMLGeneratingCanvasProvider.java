@@ -30,7 +30,7 @@ public abstract class AbstractXMLGeneratingCanvasProvider
 
     private DecimalFormat df;
 
-    public AbstractXMLGeneratingCanvasProvider(int orientation) {
+    public AbstractXMLGeneratingCanvasProvider(Orientation orientation) {
         super(orientation);
     }
     

@@ -17,55 +17,54 @@ package org.krysalis.barcode4j;
 
 /**
  * Enumeration for horizontal alignment of the human readable part of a barcode.
- * 
+ *
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class TextAlignment {
+public enum TextAlignment {
 
-    /** The human-readable part is left-aligned. */
-    public static final TextAlignment TA_LEFT = new TextAlignment("left");
-    /** The human-readable part is centered. */
-    public static final TextAlignment TA_CENTER = new TextAlignment("center");
-    /** The human-readable part is right-aligned. */
-    public static final TextAlignment TA_RIGHT = new TextAlignment("right");
-    /** The human-readable part is justified. */
-    public static final TextAlignment TA_JUSTIFY = new TextAlignment("justify");
-
-    private String name;
-    
     /**
-     * Creates a new TextAlignment instance.
-     * @param name the name for the instance
+     * The human-readable part is left-aligned.
      */
-    protected TextAlignment(String name) {
+    TA_LEFT("left"),
+    /**
+     * The human-readable part is centered.
+     */
+    TA_CENTER("center"),
+    /**
+     * The human-readable part is right-aligned.
+     */
+    TA_RIGHT("right"),
+    /**
+     * The human-readable part is justified.
+     */
+    TA_JUSTIFY("justify");
+
+    private final String name;
+
+    private TextAlignment(String name) {
         this.name = name;
     }
-    
+
     /**
      * @return the name of the instance.
      */
     public String getName() {
         return this.name;
     }
-    
+
     /**
-     * Returns a TextAlignment instance by name.
-     * @param name the name of the instance
+     * Returns a TextAlignment by name.
+     *
+     * @param name the name
      * @return the requested instance
      */
     public static TextAlignment byName(String name) {
-        if (name.equalsIgnoreCase(TextAlignment.TA_LEFT.getName())) {
-            return TextAlignment.TA_LEFT;
-        } else if (name.equalsIgnoreCase(TextAlignment.TA_CENTER.getName())) {
-            return TextAlignment.TA_CENTER;
-        } else if (name.equalsIgnoreCase(TextAlignment.TA_RIGHT.getName())) {
-            return TextAlignment.TA_RIGHT;
-        } else if (name.equalsIgnoreCase(TextAlignment.TA_JUSTIFY.getName())) {
-            return TextAlignment.TA_JUSTIFY;
-        } else {
-            throw new IllegalArgumentException(
-                "Invalid TextAlignment: " + name);
+        for (final TextAlignment ta : TextAlignment.values()) {
+            if (ta.name.equalsIgnoreCase(name)) {
+                return ta;
+            }
         }
+        throw new IllegalArgumentException("Invalid TextAlignment: " + name);
     }
 }

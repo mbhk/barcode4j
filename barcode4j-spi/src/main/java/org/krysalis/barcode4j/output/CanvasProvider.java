@@ -43,7 +43,7 @@ public interface CanvasProvider {
      * Returns the orientation of the barcode.
      * @return the orientation (0, 90, 180 or 270)
      */
-    int getOrientation();
+    Orientation getOrientation();
     
     /**
      * Paints a filled rectangle.

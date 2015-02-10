@@ -49,6 +49,7 @@ import org.apache.fop.render.Renderer;
 import org.apache.fop.render.RendererContext;
 import org.apache.fop.render.RendererContextConstants;
 import org.apache.fop.render.XMLHandler;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * XMLHandler for Apache FOP that handles the Barcode XML by converting it to
@@ -73,8 +74,7 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
             System.out.println("Barcode message: " + msg);
         }
         String renderMode = cfg.getAttribute("render-mode", "native");
-        int orientation = cfg.getAttributeAsInteger("orientation", 0);
-        orientation = BarcodeDimension.normalizeOrientation(orientation);
+        Orientation orientation = Orientation.fromInt(cfg.getAttributeAsInteger("orientation", 0));
 
         PageViewport page = (PageViewport)context.getProperty(PAGE_VIEWPORT);
 
@@ -114,7 +114,7 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
     }
 
     private void renderUsingEPS(RendererContext context, BarcodeGenerator bargen,
-                String msg, int orientation) throws IOException {
+                String msg, Orientation orientation) throws IOException {
         PSGenerator gen = (PSGenerator)context.getProperty(PS_GENERATOR);
         ByteArrayOutputStream baout = new ByteArrayOutputStream(1024);
         EPSCanvasProvider canvas = new EPSCanvasProvider(baout, orientation);
@@ -142,7 +142,7 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
 
     private boolean renderUsingGraphics2D(RendererContext context,
             final BarcodeGenerator bargen,
-            final String msg, final int orientation) throws IOException {
+            final String msg, final Orientation orientation) throws IOException {
 
         Graphics2DAdapter g2dAdapter = context.getRenderer().getGraphics2DAdapter();
         if (g2dAdapter != null) {
@@ -188,7 +188,7 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
 
     private boolean renderUsingBitmap(RendererContext context,
             final BarcodeGenerator bargen,
-            final String msg, final int orientation) throws IOException {
+            final String msg, final Orientation orientation) throws IOException {
         ImageAdapter imgAdapter = context.getRenderer().getImageAdapter();
         if (imgAdapter != null) {
 
@@ -220,7 +220,7 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
      * @throws BarcodeCanvasSetupException In case of an error while generating the barcode
      */
     private void convertToSVG(RendererContext context,
-            BarcodeGenerator bargen, String msg, int orientation)
+            BarcodeGenerator bargen, String msg, Orientation orientation)
                 throws BarcodeCanvasSetupException {
         DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
 

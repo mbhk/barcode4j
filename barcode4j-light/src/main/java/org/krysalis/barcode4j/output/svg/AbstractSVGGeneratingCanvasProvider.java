@@ -17,6 +17,7 @@ package org.krysalis.barcode4j.output.svg;
 
 import org.krysalis.barcode4j.output.AbstractXMLGeneratingCanvasProvider;
 import org.krysalis.barcode4j.output.BarcodeCanvasSetupException;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * Abstract base class for implementations that generate SVG.
@@ -40,7 +41,7 @@ public abstract class AbstractSVGGeneratingCanvasProvider
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
     public AbstractSVGGeneratingCanvasProvider(boolean useNamespace, String namespacePrefix, 
-                    int orientation) 
+                    Orientation orientation) 
                 throws BarcodeCanvasSetupException {
         super(orientation);
         if (!useNamespace && namespacePrefix != null) 
@@ -54,7 +55,7 @@ public abstract class AbstractSVGGeneratingCanvasProvider
      * @param namespacePrefix the namespace prefix to use, null for no prefix
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public AbstractSVGGeneratingCanvasProvider(String namespacePrefix, int orientation) 
+    public AbstractSVGGeneratingCanvasProvider(String namespacePrefix, Orientation orientation) 
                 throws BarcodeCanvasSetupException {
         this(true, namespacePrefix, orientation);
     }
@@ -64,7 +65,7 @@ public abstract class AbstractSVGGeneratingCanvasProvider
      * @param useNamespace Controls whether namespaces should be used
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public AbstractSVGGeneratingCanvasProvider(boolean useNamespace, int orientation) 
+    public AbstractSVGGeneratingCanvasProvider(boolean useNamespace, Orientation orientation) 
                 throws BarcodeCanvasSetupException {
         this(useNamespace, null, orientation);
     }
@@ -74,7 +75,7 @@ public abstract class AbstractSVGGeneratingCanvasProvider
      * namespaces, but without namespace prefix).
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public AbstractSVGGeneratingCanvasProvider(int orientation) 
+    public AbstractSVGGeneratingCanvasProvider(Orientation orientation) 
                 throws BarcodeCanvasSetupException {
         this(true, null, orientation);
     }

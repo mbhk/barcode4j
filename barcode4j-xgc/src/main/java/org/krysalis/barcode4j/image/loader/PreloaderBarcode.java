@@ -50,6 +50,7 @@ import org.apache.xmlgraphics.image.loader.impl.AbstractImagePreloader;
 import org.apache.xmlgraphics.image.loader.util.ImageUtil;
 import org.apache.xmlgraphics.util.UnitConv;
 import org.apache.xmlgraphics.util.io.SubInputStream;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * Image preloader for barcodes (barcode XML).
@@ -132,8 +133,7 @@ public class PreloaderBarcode extends AbstractImagePreloader {
         String msg = ConfigurationUtil.getMessage(cfg);
         msg = MessageUtil.unescapeUnicode(msg);
 
-        int orientation = cfg.getAttributeAsInteger("orientation", 0);
-        orientation = BarcodeDimension.normalizeOrientation(orientation);
+        Orientation orientation = Orientation.fromInt(cfg.getAttributeAsInteger("orientation", 0));
 
         BarcodeGenerator bargen = BarcodeUtil.getInstance().
                 createBarcodeGenerator(cfg);

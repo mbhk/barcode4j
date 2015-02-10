@@ -30,14 +30,22 @@ public abstract class AbstractCanvasProvider implements CanvasProvider {
     protected BarcodeDimension bardim;
 
     /** the barcode orientation (0, 90, 180, 270) */
-    private int orientation;
+    private Orientation orientation;
     
     /**
      * Main constructor.
      * @param orientation the orientation of the barcode
      */
+    public AbstractCanvasProvider(Orientation orientation) {
+        this.orientation = orientation;
+    }
+    
+    /**
+     * Help Constructor.
+     * @param orientation orientation in degrees 
+     */
     public AbstractCanvasProvider(int orientation) {
-        this.orientation = BarcodeDimension.normalizeOrientation(orientation);
+        this(Orientation.fromInt(orientation));
     }
     
     @Override
@@ -51,7 +59,7 @@ public abstract class AbstractCanvasProvider implements CanvasProvider {
     }
     
     @Override
-    public int getOrientation() {
+    public Orientation getOrientation() {
         return this.orientation;
     }
 

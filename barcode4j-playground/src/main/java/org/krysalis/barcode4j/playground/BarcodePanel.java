@@ -34,6 +34,7 @@ import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeGeneratorProvider;
 import org.krysalis.barcode4j.output.CanvasProvider;
+import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider;
 
 /**
@@ -51,7 +52,7 @@ public class BarcodePanel extends JPanel {
     private transient BarcodeGenerator bargen = null;
     private String barcodeName = null;
     private String msg = "";
-    private int orientation = 0;
+    private Orientation orientation = Orientation.ZERO;
 
     /**
      * Sets the Barcode type-name and tries to load the corresponding
@@ -85,7 +86,7 @@ public class BarcodePanel extends JPanel {
      * @param orientation rotation in degrees
      */
     public void setOrientation(int orientation) {
-        this.orientation = orientation;
+        this.orientation = Orientation.fromInt(orientation);
         repaint();
     }
 

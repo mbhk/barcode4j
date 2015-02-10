@@ -54,6 +54,7 @@ import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * Command-line interface.
@@ -152,7 +153,7 @@ public class Main {
             //Output format
             String format = MimeTypes.expandFormat(
                     cl.getOptionValue("f", MimeTypes.MIME_SVG));
-            int orientation = 0;
+            Orientation orientation = Orientation.ZERO;
             log.info("Generating " + format + "...");
             BarcodeUtil util = BarcodeUtil.getInstance();
             BarcodeGenerator gen = util.createBarcodeGenerator(

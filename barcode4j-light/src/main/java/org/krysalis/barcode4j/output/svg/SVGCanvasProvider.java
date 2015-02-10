@@ -22,6 +22,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.TextAlignment;
 import org.krysalis.barcode4j.output.BarcodeCanvasSetupException;
+import org.krysalis.barcode4j.output.Orientation;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
@@ -45,7 +46,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
      * @param orientation the barcode orientation (0, 90, 180, 270)
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public SVGCanvasProvider(String namespacePrefix, int orientation)
+    public SVGCanvasProvider(String namespacePrefix, Orientation orientation)
                 throws BarcodeCanvasSetupException {
         this(null, namespacePrefix, orientation);
     }
@@ -59,7 +60,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
     public SVGCanvasProvider(DOMImplementation domImpl, String namespacePrefix,
-                    int orientation)
+                    Orientation orientation)
                 throws BarcodeCanvasSetupException {
         super(namespacePrefix, orientation);
         this.domImpl = domImpl;
@@ -72,7 +73,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
      * @param orientation the barcode orientation (0, 90, 180, 270)
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public SVGCanvasProvider(boolean useNamespace, int orientation)
+    public SVGCanvasProvider(boolean useNamespace, Orientation orientation)
                 throws BarcodeCanvasSetupException {
         this(null, useNamespace, orientation);
     }
@@ -85,7 +86,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
      * @param orientation the barcode orientation (0, 90, 180, 270)
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public SVGCanvasProvider(DOMImplementation domImpl, boolean useNamespace, int orientation)
+    public SVGCanvasProvider(DOMImplementation domImpl, boolean useNamespace, Orientation orientation)
                 throws BarcodeCanvasSetupException {
         super(useNamespace, orientation);
         this.domImpl = domImpl;
@@ -98,7 +99,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
      * @param orientation the barcode orientation (0, 90, 180, 270)
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public SVGCanvasProvider(int orientation) throws BarcodeCanvasSetupException {
+    public SVGCanvasProvider(Orientation orientation) throws BarcodeCanvasSetupException {
         super(orientation);
         init();
     }
@@ -176,7 +177,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
     @Override
     public void establishDimensions(BarcodeDimension dim) {
         super.establishDimensions(dim);
-        int orientation = BarcodeDimension.normalizeOrientation(getOrientation());
+        Orientation orientation = getOrientation();
         Element svg = (Element)doc.getDocumentElement();
         svg.setAttribute("width", addUnit(dim.getWidthPlusQuiet(orientation)));
         svg.setAttribute("height", addUnit(dim.getHeightPlusQuiet(orientation)));
@@ -185,13 +186,13 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
         svg.setAttribute("viewBox", "0 0 " + w + " " + h);
         String transform;
         switch (orientation) {
-        case 90:
+        case NINETY:
             transform = "rotate(-90) translate(-" + h + ")";
             break;
-        case 180:
+        case ONEHUNDRED_EIGHTY:
             transform = "rotate(-180) translate(-" + w + " -" + h + ")";
             break;
-        case 270:
+        case TWOHUNDRED_SEVENTY:
             transform = "rotate(-270) translate(0 -" + w + ")";
             break;
         default:

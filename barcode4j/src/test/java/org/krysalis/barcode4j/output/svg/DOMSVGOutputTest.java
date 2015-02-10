@@ -21,6 +21,7 @@ import org.krysalis.barcode4j.BarcodeUtil;
 import org.w3c.dom.DocumentFragment;
 
 import junit.framework.TestCase;
+import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * Test class for SVG output to JDOM.
@@ -38,7 +39,7 @@ public class DOMSVGOutputTest extends TestCase {
         DefaultConfiguration cfg = new DefaultConfiguration("cfg");
         cfg.addChild(new DefaultConfiguration("intl2of5"));
         BarcodeGenerator gen = BarcodeUtil.getInstance().createBarcodeGenerator(cfg);
-        SVGCanvasProvider svg = new SVGCanvasProvider(false, 0);
+        SVGCanvasProvider svg = new SVGCanvasProvider(false, Orientation.ZERO);
 
         //Create Barcode and render it to SVG
         gen.generateBarcode(svg, "123");
