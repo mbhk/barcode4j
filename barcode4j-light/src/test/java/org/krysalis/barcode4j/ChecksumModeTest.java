@@ -23,30 +23,30 @@ import junit.framework.TestCase;
  *
  * @author mk
  */
-public class BarGroupTest extends TestCase {
+public class ChecksumModeTest extends TestCase {
 
-    public BarGroupTest(String testName) {
+    public ChecksumModeTest(String testName) {
         super(testName);
     }
 
     /**
-     * Test of getName method, of class BarGroup.
+     * Test of getName method, of class ChecksumMode.
      */
     public void testGetName() {
         System.out.println("getName");
-        assertEquals("start-char", BarGroup.START_CHARACTER.getName());
+        assertEquals("auto", ChecksumMode.CP_AUTO.getName());
     }
 
     /**
-     * Test of byName method, of class BarGroup.
+     * Test of byName method, of class ChecksumMode.
      */
     public void testByName() {
         System.out.println("byName");
-        assertEquals(BarGroup.UPC_EAN_GROUP, BarGroup.byName("upc-ean-group"));
+        assertEquals(ChecksumMode.CP_IGNORE, ChecksumMode.byName("ignore"));
 
         try {
-            BarGroup.byName("foo");
-            fail("foo is no BarGroup");
+            ChecksumMode.byName("foo");
+            fail("foo is no ChecksumMode");
         } catch (IllegalArgumentException e) {
         }
     }
