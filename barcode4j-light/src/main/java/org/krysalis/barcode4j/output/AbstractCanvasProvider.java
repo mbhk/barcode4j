@@ -27,10 +27,10 @@ import org.krysalis.barcode4j.TextAlignment;
 public abstract class AbstractCanvasProvider implements CanvasProvider {
 
     /** the cached barcode dimensions */
-    protected BarcodeDimension bardim;
+    private BarcodeDimension bardim;
 
     /** the barcode orientation (0, 90, 180, 270) */
-    private Orientation orientation;
+    private final Orientation orientation;
     
     /**
      * Main constructor.

@@ -23,39 +23,40 @@ import org.krysalis.barcode4j.output.Orientation;
  * Abstract base class for implementations that generate SVG.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
 public abstract class AbstractSVGGeneratingCanvasProvider
     extends AbstractXMLGeneratingCanvasProvider {
 
-    /** the SVG namespace: http://www.w3.org/2000/svg */
+    /** the SVG namespace */
     public static final String SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 
-    private boolean useNamespace = true;
-    private String prefix = "";
+    private final boolean useNamespace;
+    private final String prefix;
     
     /**
      * Creates a new AbstractSVGCanvasProvider.
      * @param useNamespace Controls whether namespaces should be used
      * @param namespacePrefix the namespace prefix to use, null for no prefix
      * @param orientation
-     * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public AbstractSVGGeneratingCanvasProvider(boolean useNamespace, String namespacePrefix, 
-                    Orientation orientation) 
-                throws BarcodeCanvasSetupException {
+    protected AbstractSVGGeneratingCanvasProvider(boolean useNamespace, String namespacePrefix, 
+                    Orientation orientation) {
         super(orientation);
-        if (!useNamespace && namespacePrefix != null) {
-            throw new IllegalArgumentException("No prefix allow when namespaces are enabled");
+        if (namespacePrefix != null && namespacePrefix.isEmpty()) {
+            throw new IllegalArgumentException("No empty prefix allowed.");
         }
-        this.useNamespace = true;
+        if (!useNamespace && namespacePrefix != null) {
+            throw new IllegalArgumentException("No prefix allowed when namespaces are enabled.");
+        }
+        this.useNamespace = useNamespace;
         this.prefix = namespacePrefix;
     }
     
     /**
      * Creates a new AbstractSVGCanvasProvider with namespaces enabled.
      * @param namespacePrefix the namespace prefix to use, null for no prefix
-     * @param orientation
+     * @param orientation the barcode orientation
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
     public AbstractSVGGeneratingCanvasProvider(String namespacePrefix, Orientation orientation) 
@@ -66,7 +67,7 @@ public abstract class AbstractSVGGeneratingCanvasProvider
     /**
      * Creates a new AbstractSVGCanvasProvider.
      * @param useNamespace Controls whether namespaces should be used
-     * @param orientation
+     * @param orientation the barcode orientation
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
     public AbstractSVGGeneratingCanvasProvider(boolean useNamespace, Orientation orientation) 
@@ -77,7 +78,7 @@ public abstract class AbstractSVGGeneratingCanvasProvider
     /**
      * Creates a new AbstractSVGCanvasProvider with default settings (with 
      * namespaces, but without namespace prefix).
-     * @param orientation
+     * @param orientation the barcode orientation
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
     public AbstractSVGGeneratingCanvasProvider(Orientation orientation) 
@@ -108,10 +109,10 @@ public abstract class AbstractSVGGeneratingCanvasProvider
      * @return the fully qualified name
      */
     protected String getQualifiedName(String localName) {
-        if (prefix == null || "".equals(prefix)) {
+        if (this.prefix == null) {
             return localName;
         } else {
-            return prefix + ':' + localName;
+            return this.prefix + ':' + localName;
         }
     }
 }

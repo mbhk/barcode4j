@@ -59,6 +59,10 @@ public class BitmapCanvasProvider extends AbstractCanvasProvider {
         this.imageType = imageType;
         this.antiAlias = antiAlias;
     }
+    public BitmapCanvasProvider(OutputStream out, String mime, 
+                    int resolution, int imageType, boolean antiAlias, int orientation) {
+        this(out, mime, resolution, imageType, antiAlias, Orientation.fromInt(orientation));
+    }
 
     /**
      * Creates a new BitmapCanvasProvider. 
@@ -68,6 +72,10 @@ public class BitmapCanvasProvider extends AbstractCanvasProvider {
      */
     public BitmapCanvasProvider(int resolution, int imageType, boolean antiAlias, 
                     Orientation orientation) {
+        this(null, null, resolution, imageType, antiAlias, orientation);
+    }
+    public BitmapCanvasProvider(int resolution, int imageType, boolean antiAlias, 
+                    int orientation) {
         this(null, null, resolution, imageType, antiAlias, orientation);
     }
 
