@@ -62,7 +62,7 @@ public enum HumanReadablePlacement {
      * @return the requested instance
      */
     public static HumanReadablePlacement byName(String name) {
-        for (HumanReadablePlacement p : HumanReadablePlacement.values()) {
+        for (final HumanReadablePlacement p : HumanReadablePlacement.values()) {
             if (p.getName().equalsIgnoreCase(name)) {
                 return p;
             }

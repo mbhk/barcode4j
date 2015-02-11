@@ -69,7 +69,7 @@ public enum ChecksumMode {
      * @return the requested instance
      */
     public static ChecksumMode byName(String name) {
-        for (ChecksumMode m : ChecksumMode.values()) {
+        for (final ChecksumMode m : ChecksumMode.values()) {
             if (m.getName().equalsIgnoreCase(name)) {
                 return m;
             }

@@ -58,7 +58,7 @@ public enum BaselineAlignment {
      * @return the requested instance
      */
     public static BaselineAlignment byName(String name) {
-        for (BaselineAlignment ba : BaselineAlignment.values()) {
+        for (final BaselineAlignment ba : BaselineAlignment.values()) {
             if (ba.getName().equalsIgnoreCase(name)) {
                 return ba;
             }

@@ -82,7 +82,7 @@ public enum BarGroup {
      * @return the requested BarGroup instance
      */
     public static BarGroup byName(String name) {
-        for (BarGroup g : BarGroup.values()) {
+        for (final BarGroup g : BarGroup.values()) {
             if (g.getName().equalsIgnoreCase(name)) {
                 return g;
             }
