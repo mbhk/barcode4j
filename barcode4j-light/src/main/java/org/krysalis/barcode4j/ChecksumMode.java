@@ -17,11 +17,12 @@ package org.krysalis.barcode4j;
 
 /**
  * Enumeration type for checksum policy.
- * 
+ *
  * @author Jeremias Maerki
- * @version 1.2
+ * @version 1.3
  */
 public enum ChecksumMode {
+
     /**
      * Chooses the barcode's default checksum behaviour.
      */
@@ -30,7 +31,7 @@ public enum ChecksumMode {
      * Doesn't check nor add a checksum.
      */
     CP_IGNORE("ignore"),
-    /** 
+    /**
      * Adds the necessary checksum to the message to be encoded.
      */
     CP_ADD("add"),
@@ -42,7 +43,7 @@ public enum ChecksumMode {
     CP_CHECK("check");
 
     private final String name;
-    
+
     /**
      * Creates a new ChecksumMode instance.
      *
@@ -51,7 +52,7 @@ public enum ChecksumMode {
     private ChecksumMode(String name) {
         this.name = name;
     }
-    
+
     /**
      * Gets the associated name.
      *
@@ -60,7 +61,7 @@ public enum ChecksumMode {
     public String getName() {
         return this.name;
     }
-    
+
     /**
      * Returns a ChecksumMode instance by name.
      *
@@ -68,21 +69,11 @@ public enum ChecksumMode {
      * @return the requested instance
      */
     public static ChecksumMode byName(String name) {
-        if (name.equalsIgnoreCase(ChecksumMode.CP_AUTO.getName())) {
-            return ChecksumMode.CP_AUTO;
-        } else if (name.equalsIgnoreCase(ChecksumMode.CP_IGNORE.getName())) {
-            return ChecksumMode.CP_IGNORE;
-        } else if (name.equalsIgnoreCase(ChecksumMode.CP_ADD.getName())) {
-            return ChecksumMode.CP_ADD;
-        } else if (name.equalsIgnoreCase(ChecksumMode.CP_CHECK.getName())) {
-            return ChecksumMode.CP_CHECK;
-        } else {
-            throw new IllegalArgumentException("Invalid ChecksumMode: " + name);
+        for (ChecksumMode m : ChecksumMode.values()) {
+            if (m.getName().equalsIgnoreCase(name)) {
+                return m;
+            }
         }
-    }
-
-    @Override
-    public String toString() {
-        return name;
+        throw new IllegalArgumentException("Invalid ChecksumMode: " + name);
     }
 }
