@@ -15,65 +15,78 @@
  */
 package org.krysalis.barcode4j;
 
-import java.util.Map;
-
 /**
  * Enumeration type for bar groups.
- * 
+ *
  * @author Jeremias Maerki
- * @version $Id$
+ * @author mk
+ * @version 1.2
  */
-public class BarGroup {
+public enum BarGroup {
 
-    private static final Map MAP = new java.util.HashMap();
+    /**
+     * Bar group is represents a start character.
+     */
+    START_CHARACTER("start-char"),
+    /**
+     * Bar group is represents a stop character.
+     */
+    STOP_CHARACTER("stop-char"),
+    /**
+     * Bar group is represents a message character or a part of the message.
+     */
+    MSG_CHARACTER("msg-char"),
+    /**
+     * Bar group is represents a UPC/EAN guard.
+     */
+    UPC_EAN_GUARD("upc-ean-guard"),
+    /**
+     * Bar group is represents a UPC/EAN lead.
+     */
+    UPC_EAN_LEAD("upc-ean-lead"),
+    /**
+     * Bar group is represents a UPC/EAN character group.
+     */
+    UPC_EAN_GROUP("upc-ean-group"),
+    /**
+     * Bar group is represents a UPC/EAN check character.
+     */
+    UPC_EAN_CHECK("upc-ean-check"),
+    /**
+     * Bar group is represents a UPC/EAN supplemental.
+     */
+    UPC_EAN_SUPP("upc-ean-supp");
 
-    /** Bar group is represents a start character */
-    public static final BarGroup START_CHARACTER = new BarGroup("start-char", MAP);
-    /** Bar group is represents a stop character */
-    public static final BarGroup STOP_CHARACTER  = new BarGroup("stop-char", MAP);
-    /** Bar group is represents a message character or a part of the message */
-    public static final BarGroup MSG_CHARACTER   = new BarGroup("msg-char", MAP);
-    /** Bar group is represents a UPC/EAN guard */
-    public static final BarGroup UPC_EAN_GUARD   = new BarGroup("upc-ean-guard", MAP);
-    /** Bar group is represents a UPC/EAN lead */
-    public static final BarGroup UPC_EAN_LEAD    = new BarGroup("upc-ean-lead", MAP);
-    /** Bar group is represents a UPC/EAN character group */
-    public static final BarGroup UPC_EAN_GROUP   = new BarGroup("upc-ean-group", MAP);
-    /** Bar group is represents a UPC/EAN check character */
-    public static final BarGroup UPC_EAN_CHECK   = new BarGroup("upc-ean-check", MAP);
-    /** Bar group is represents a UPC/EAN supplemental */
-    public static final BarGroup UPC_EAN_SUPP    = new BarGroup("upc-ean-supp", MAP);
+    private final String name;
 
-    private String name;
-    
     /**
      * Creates a new BarGroup instance.
+     *
      * @param name name of the BarGroup
-     * @param map Map to register the instance in.
      */
-    protected BarGroup(String name, final Map map) {
+    private BarGroup(String name) {
         this.name = name;
-        MAP.put(name, this);
     }
-    
+
     /**
-     * @return the name of the instance.
+     * @return the name of the instance
      */
     public String getName() {
         return this.name;
     }
-    
+
     /**
      * Returns a BarGroup instance by name.
+     *
      * @param name the name of the desired BarGroup
      * @return the requested BarGroup instance
      */
     public static BarGroup byName(String name) {
-        final BarGroup bg = (BarGroup)MAP.get(name);
-        if (bg == null) {
-            throw new IllegalArgumentException("Invalid BarGroup: " + name);
+        for (BarGroup g : BarGroup.values()) {
+            if (g.getName().equalsIgnoreCase(name)) {
+                return g;
+            }
         }
-        return bg;
+        throw new IllegalArgumentException("Invalid BarGroup: " + name);
     }
-    
 }
