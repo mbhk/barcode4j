@@ -17,24 +17,30 @@ package org.krysalis.barcode4j;
 
 /**
  * Enumeration for the alignment of bars when the heights are not uniform.
- * 
+ *
  * @author Chris Dolphy
- * @version $Id$
+ * @author mk
+ * @version 1.2
  */
-public class BaselineAlignment {
+public enum BaselineAlignment {
 
-    /** The bars are aligned to be even along the top. */
-    public static final BaselineAlignment ALIGN_TOP = new BaselineAlignment("top");
-    /** The bars are aligned to be even along the bottom. */
-    public static final BaselineAlignment ALIGN_BOTTOM = new BaselineAlignment("bottom");
+    /**
+     * The bars are aligned to be even along the top.
+     */
+    ALIGN_TOP("top"),
+    /**
+     * The bars are aligned to be even along the bottom.
+     */
+    ALIGN_BOTTOM("bottom");
 
-    private String name;
-    
+    private final String name;
+
     /**
      * Creates a new BaselineAlignment instance.
+     *
      * @param name the name for the instance
      */
-    protected BaselineAlignment(String name) {
+    private BaselineAlignment(String name) {
         this.name = name;
     }
 
@@ -44,20 +50,20 @@ public class BaselineAlignment {
     public String getName() {
         return this.name;
     }
-    
+
     /**
      * Returns a BaselineAlignment instance by name.
+     *
      * @param name the name of the instance
      * @return the requested instance
      */
     public static BaselineAlignment byName(String name) {
-        if (name.equalsIgnoreCase(BaselineAlignment.ALIGN_TOP.getName())) {
-            return BaselineAlignment.ALIGN_TOP;
-        } else if (name.equalsIgnoreCase(BaselineAlignment.ALIGN_BOTTOM.getName())) {
-            return BaselineAlignment.ALIGN_BOTTOM;
-        } else {
-            throw new IllegalArgumentException(
-                "Invalid BaselineAlignment: " + name);
+        for (BaselineAlignment ba : BaselineAlignment.values()) {
+            if (ba.getName().equalsIgnoreCase(name)) {
+                return ba;
+            }
         }
+        throw new IllegalArgumentException(
+                "Invalid BaselineAlignment: " + name);
     }
 }
