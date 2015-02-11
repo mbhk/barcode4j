@@ -15,18 +15,20 @@
  */
 package org.krysalis.barcode4j;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author mk
  */
-public class TextAlignmentTest extends TestCase {
+public class TextAlignmentTest {
 
     /**
      * Test of getName method, of class TextAlignment.
      */
-    public void testGetName() {
+    @Test
+    public void getName() {
         System.out.println("getName");
         assertEquals("center", TextAlignment.TA_CENTER.getName());
     }
@@ -34,7 +36,8 @@ public class TextAlignmentTest extends TestCase {
     /**
      * Test of byName method, of class TextAlignment.
      */
-    public void testByName() {
+    @Test
+    public void byName() {
         assertEquals(TextAlignment.TA_JUSTIFY, TextAlignment.byName("justify"));
 
         try {

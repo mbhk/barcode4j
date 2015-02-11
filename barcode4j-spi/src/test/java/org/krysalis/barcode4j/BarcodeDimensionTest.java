@@ -16,23 +16,23 @@
 package org.krysalis.barcode4j;
 
 import java.awt.geom.Rectangle2D;
-import junit.framework.TestCase;
 import org.krysalis.barcode4j.output.Orientation;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author mk
  */
-public class BarcodeDimensionTest extends TestCase {
-    
-    public BarcodeDimensionTest(String testName) {
-        super(testName);
-    }
+public class BarcodeDimensionTest {
+
 
     /**
      * Test of getHeight method, of class BarcodeDimension.
      */
-    public void testGetHeight_0args() {
+    @Test
+    public void getHeight_0args() {
         System.out.println("getHeight");
         assertEquals(200.0, new BarcodeDimension(100, 200).getHeight(), 0.0);
         
@@ -41,7 +41,8 @@ public class BarcodeDimensionTest extends TestCase {
     /**
      * Test of getHeight method, of class BarcodeDimension.
      */
-    public void testGetHeight_Orientation() {
+    @Test
+    public void getHeight_Orientation() {
         System.out.println("getHeight");
         assertEquals(100.0, new BarcodeDimension(100, 200).getHeight(Orientation.NINETY), 0.0);
         assertEquals(200.0, new BarcodeDimension(100, 200).getHeight(Orientation.ONEHUNDRED_EIGHTY), 0.0);
@@ -50,7 +51,8 @@ public class BarcodeDimensionTest extends TestCase {
     /**
      * Test of getHeightPlusQuiet method, of class BarcodeDimension.
      */
-    public void testGetHeightPlusQuiet_0args() {
+    @Test
+    public void getHeightPlusQuiet_0args() {
         System.out.println("getHeightPlusQuiet");
         assertEquals(210.0, new BarcodeDimension(100, 200, 110, 210, 5, 5).getHeightPlusQuiet(), 0.0);
     }
@@ -58,7 +60,8 @@ public class BarcodeDimensionTest extends TestCase {
     /**
      * Test of getHeightPlusQuiet method, of class BarcodeDimension.
      */
-    public void testGetHeightPlusQuiet_Orientation() {
+    @Test
+    public void getHeightPlusQuiet_Orientation() {
         System.out.println("getHeightPlusQuiet");
         assertEquals(210.0, new BarcodeDimension(100, 200, 110, 210, 5, 5).getHeightPlusQuiet(Orientation.ZERO), 0.0);
         assertEquals(110.0, new BarcodeDimension(100, 200, 110, 210, 5, 5).getHeightPlusQuiet(Orientation.TWOHUNDRED_SEVENTY), 0.0);
@@ -67,7 +70,8 @@ public class BarcodeDimensionTest extends TestCase {
     /**
      * Test of getWidth method, of class BarcodeDimension.
      */
-    public void testGetWidth_0args() {
+    @Test
+    public void getWidth_0args() {
         System.out.println("getWidth");
         assertEquals(100.0, new BarcodeDimension(100, 200).getWidth(), 0.0);
     }
@@ -75,7 +79,8 @@ public class BarcodeDimensionTest extends TestCase {
     /**
      * Test of getWidth method, of class BarcodeDimension.
      */
-    public void testGetWidth_Orientation() {
+    @Test
+    public void getWidth_Orientation() {
         System.out.println("getWidth");
         assertEquals(100.0, new BarcodeDimension(100, 200).getWidth(Orientation.ZERO), 0.0);
         assertEquals(200.0, new BarcodeDimension(100, 200).getWidth(Orientation.NINETY), 0.0);
@@ -84,7 +89,8 @@ public class BarcodeDimensionTest extends TestCase {
     /**
      * Test of getWidthPlusQuiet method, of class BarcodeDimension.
      */
-    public void testGetWidthPlusQuiet_0args() {
+    @Test
+    public void getWidthPlusQuiet_0args() {
         System.out.println("getWidthPlusQuiet");
         assertEquals(110.0, new BarcodeDimension(100, 200, 110, 210, 5, 5).getWidthPlusQuiet(), 0.0);
     }
@@ -92,7 +98,8 @@ public class BarcodeDimensionTest extends TestCase {
     /**
      * Test of getWidthPlusQuiet method, of class BarcodeDimension.
      */
-    public void testGetWidthPlusQuiet_Orientation() {
+    @Test
+    public void getWidthPlusQuiet_Orientation() {
         System.out.println("getWidthPlusQuiet");
         assertEquals(110.0, new BarcodeDimension(100, 200, 110, 210, 5, 5).getWidthPlusQuiet(Orientation.ONEHUNDRED_EIGHTY), 0.0);
         assertEquals(210.0, new BarcodeDimension(100, 200, 110, 210, 5, 5).getWidthPlusQuiet(Orientation.TWOHUNDRED_SEVENTY), 0.0);
@@ -101,7 +108,8 @@ public class BarcodeDimensionTest extends TestCase {
     /**
      * Test of getXOffset method, of class BarcodeDimension.
      */
-    public void testGetXOffset() {
+    @Test
+    public void getXOffset() {
         System.out.println("getXOffset");
         assertEquals(5, new BarcodeDimension(100, 200, 110, 204, 5, 2).getXOffset(), 0.0);
         assertEquals(0, new BarcodeDimension(100, 200).getXOffset(), 0.0);
@@ -110,6 +118,7 @@ public class BarcodeDimensionTest extends TestCase {
     /**
      * Test of getYOffset method, of class BarcodeDimension.
      */
+    @Test
     public void testGetYOffset() {
         System.out.println("getYOffset");
         assertEquals(2, new BarcodeDimension(100, 200, 110, 204, 5, 2).getYOffset(), 0.0);
@@ -119,7 +128,8 @@ public class BarcodeDimensionTest extends TestCase {
     /**
      * Test of getBoundingRect method, of class BarcodeDimension.
      */
-    public void testGetBoundingRect() {
+    @Test
+    public void getBoundingRect() {
         System.out.println("getBoundingRect");
         BarcodeDimension instance = new BarcodeDimension(100, 200, 110, 204, 5, 2);
         Rectangle2D expResult = new Rectangle2D.Double(0, 0, 110, 204);
@@ -130,7 +140,8 @@ public class BarcodeDimensionTest extends TestCase {
     /**
      * Test of getContentRect method, of class BarcodeDimension.
      */
-    public void testGetContentRect() {
+    @Test
+    public void getContentRect() {
         System.out.println("getContentRect");
         BarcodeDimension instance = new BarcodeDimension(100, 200, 110, 204, 5, 2);
         Rectangle2D expResult = new Rectangle2D.Double(5, 2, 100, 200);
@@ -141,6 +152,7 @@ public class BarcodeDimensionTest extends TestCase {
     /**
      * Test of toString method, of class BarcodeDimension.
      */
+    @Test
     public void testToString() {
         System.out.println("toString");
         BarcodeDimension instance = new BarcodeDimension(100, 200, 110, 204, 5, 2);

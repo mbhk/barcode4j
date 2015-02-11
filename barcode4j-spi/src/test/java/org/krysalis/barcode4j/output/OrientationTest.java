@@ -15,18 +15,20 @@
  */
 package org.krysalis.barcode4j.output;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author mk
  */
-public class OrientationTest extends TestCase {
+public class OrientationTest {
 
     /**
      * Test of getDegrees method, of class Orientation.
      */
-    public void testGetDegrees() {
+    @Test
+    public void getDegrees() {
         System.out.println("getDegrees");
         assertEquals(0, Orientation.ZERO.getDegrees());
         assertEquals(90, Orientation.NINETY.getDegrees());
@@ -37,7 +39,8 @@ public class OrientationTest extends TestCase {
     /**
      * Test of isSwitched method, of class Orientation.
      */
-    public void testIsSwitched() {
+    @Test
+    public void isSwitched() {
         System.out.println("isSwitched");
         assertEquals(false, Orientation.ZERO.isSwitched());
         assertEquals(true, Orientation.NINETY.isSwitched());
@@ -48,7 +51,8 @@ public class OrientationTest extends TestCase {
     /**
      * Test of fromInt method, of class Orientation.
      */
-    public void testFromInt() {
+    @Test
+    public void fromInt() {
         assertEquals(Orientation.ZERO, Orientation.fromInt(0));
         assertEquals(Orientation.TWOHUNDRED_SEVENTY, Orientation.fromInt(270));
         assertEquals(Orientation.TWOHUNDRED_SEVENTY, Orientation.fromInt(270 + 360));
