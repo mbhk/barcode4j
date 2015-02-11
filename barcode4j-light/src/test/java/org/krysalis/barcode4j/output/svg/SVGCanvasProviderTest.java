@@ -16,14 +16,9 @@
 package org.krysalis.barcode4j.output.svg;
 
 import junit.framework.TestCase;
-import org.krysalis.barcode4j.BarcodeDimension;
-import org.krysalis.barcode4j.BarcodeGenerator;
-import org.krysalis.barcode4j.BarcodeGeneratorProvider;
-import org.krysalis.barcode4j.TextAlignment;
 import org.krysalis.barcode4j.output.Orientation;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.Document;
-import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 
@@ -32,18 +27,6 @@ import org.w3c.dom.ls.LSSerializer;
  * @author mk
  */
 public class SVGCanvasProviderTest extends TestCase {
-
-    BarcodeGenerator gen;
-
-    @Override
-    protected void setUp() throws Exception {
-        gen = BarcodeGeneratorProvider.getInstance().getBarcodeGenerator("ean-13");
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
 
     static String getStringFromDoc(org.w3c.dom.Document doc) {
         DOMImplementationLS domImplementation = (DOMImplementationLS) doc.getImplementation();
@@ -64,18 +47,31 @@ public class SVGCanvasProviderTest extends TestCase {
         String expResult = "<svg xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"black\" stroke=\"none\"/></svg>";
         Document result = instance.getDOM();
         assertEquals(expResult, getStringFromDoc(result));
-        
+
         System.out.println("getDOM - no namespace");
         instance = new SVGCanvasProvider(false, Orientation.ZERO);
         expResult = "<svg><g fill=\"black\" stroke=\"none\"/></svg>";
         result = instance.getDOM();
         assertEquals(expResult, getStringFromDoc(result));
-        
+
         System.out.println("getDOM - with namespace and prefix");
         instance = new SVGCanvasProvider("svg", Orientation.ZERO);
         expResult = "<svg:svg xmlns:svg=\"http://www.w3.org/2000/svg\"><svg:g fill=\"black\" stroke=\"none\"/></svg:svg>";
         result = instance.getDOM();
         assertEquals(expResult, getStringFromDoc(result));
-    }
 
+        try {
+            System.out.println("getDOM - without namespace but prefix");
+            instance = new SVGCanvasProvider(null, false, "foo", Orientation.ZERO);
+            fail("not allowed combination of parameters");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            System.out.println("getDOM - with empty prefix");
+            instance = new SVGCanvasProvider(null, true, "", Orientation.ZERO);
+            fail("not allowed empty prefix");
+        } catch (IllegalArgumentException e) {
+        }
+    }
 }

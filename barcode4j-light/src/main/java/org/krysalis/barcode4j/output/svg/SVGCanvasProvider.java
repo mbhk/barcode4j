@@ -63,7 +63,7 @@ public class SVGCanvasProvider extends AbstractXMLGeneratingCanvasProvider {
      * @param namespacePrefix the namespace prefix to use, null for no prefix
      * @param orientation the barcode orientation
      */
-    private SVGCanvasProvider(DOMImplementation domImpl, boolean useNamespace, String namespacePrefix,
+    SVGCanvasProvider(DOMImplementation domImpl, boolean useNamespace, String namespacePrefix,
             Orientation orientation) {
         super(orientation);
         if (namespacePrefix != null && namespacePrefix.isEmpty()) {
