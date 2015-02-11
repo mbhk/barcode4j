@@ -21,59 +21,60 @@ import org.krysalis.barcode4j.output.Orientation;
 /**
  * This class provides information on the dimensions of a barcode. It makes a
  * distinction between the dimensions with and without quiet zone.
- * 
+ *
  * @author Jeremias Maerki
  * @version $Id$
  */
 public class BarcodeDimension {
-    
+
     private final double width;
     private final double height;
-    
+
     private final double widthPlusQuiet;
     private final double heightPlusQuiet;
     private final double xOffset;
     private final double yOffset;
-    
+
     /**
      * Creates a new BarcodeDimension object. No quiet-zone is respected.
+     *
      * @param w width of the barcode in millimeters (mm).
      * @param h height of the barcode in millimeters (mm).
      */
     public BarcodeDimension(double w, double h) {
-        this.width = w;
-        this.height = h;
-        this.widthPlusQuiet = this.width;
-        this.heightPlusQuiet = this.height;
-        this.xOffset = 0.0;
-        this.yOffset = 0.0;    
+        this(w, h, w, h, 0.0, 0.0);
     }
-    
+
     /**
      * Creates a new BarcodeDimension object.
-     * @param w width of the raw barcode (without quiet-zone) in millimeters (mm).
-     * @param h height of the raw barcode (without quiet-zone) in millimeters (mm).
-     * @param wpq width of the barcode (quiet-zone included) in millimeters (mm).
-     * @param hpq height of the barcode (quiet-zone included) in millimeters (mm).
-     * @param xoffset x-offset if the upper-left corner of the barcode within 
+     *
+     * @param w width of the raw barcode (without quiet-zone) in millimeters
+     * (mm).
+     * @param h height of the raw barcode (without quiet-zone) in millimeters
+     * (mm).
+     * @param wpq width of the barcode (quiet-zone included) in millimeters
+     * (mm).
+     * @param hpq height of the barcode (quiet-zone included) in millimeters
+     * (mm).
+     * @param xoffset x-offset if the upper-left corner of the barcode within
      * the extended barcode area.
-     * @param yoffset y-offset if the upper-left corner of the barcode within 
+     * @param yoffset y-offset if the upper-left corner of the barcode within
      * the extended barcode area.
      */
-    public BarcodeDimension(double w, double h, 
-                double wpq, double hpq, 
-                double xoffset, double yoffset) {
+    public BarcodeDimension(double w, double h,
+            double wpq, double hpq,
+            double xoffset, double yoffset) {
         this.width = w;
         this.height = h;
         this.widthPlusQuiet = wpq;
         this.heightPlusQuiet = hpq;
         this.xOffset = xoffset;
-        this.yOffset = yoffset;    
+        this.yOffset = yoffset;
     }
-    
-    
+
     /**
      * Returns the height of the barcode (ignores quiet-zone).
+     *
      * @return height in millimeters (mm)
      */
     public double getHeight() {
@@ -87,9 +88,10 @@ public class BarcodeDimension {
             return getHeight();
         }
     }
-    
+
     /**
      * Returns the height of the barcode (quiet-zone included).
+     *
      * @return height in millimeters (mm)
      */
     public double getHeightPlusQuiet() {
@@ -103,15 +105,16 @@ public class BarcodeDimension {
             return getHeightPlusQuiet();
         }
     }
-    
+
     /**
      * Returns the width of the barcode (ignores quiet-zone).
+     *
      * @return width in millimeters (mm)
      */
     public double getWidth() {
         return width;
     }
-    
+
     public double getWidth(Orientation orientation) {
         if (orientation.isSwitched()) {
             return getHeight();
@@ -119,9 +122,10 @@ public class BarcodeDimension {
             return getWidth();
         }
     }
-    
+
     /**
      * Returns the width of the barcode (quiet-zone included).
+     *
      * @return width in millimeters (mm)
      */
     public double getWidthPlusQuiet() {
@@ -135,10 +139,11 @@ public class BarcodeDimension {
             return getWidthPlusQuiet();
         }
     }
-    
+
     /**
-     * Returns the x-offset of the upper-left corner of the barcode within the 
+     * Returns the x-offset of the upper-left corner of the barcode within the
      * extended barcode area.
+     *
      * @return double x-offset in millimeters (mm)
      */
     public double getXOffset() {
@@ -146,40 +151,41 @@ public class BarcodeDimension {
     }
 
     /**
-     * Returns the y-offset of the upper-left corner of the barcode within the 
+     * Returns the y-offset of the upper-left corner of the barcode within the
      * extended barcode area.
+     *
      * @return double y-offset in millimeters (mm)
      */
     public double getYOffset() {
         return yOffset;
     }
 
-    /** @return a bounding rectangle (including quiet zone if applicable) */
+    /**
+     * @return a bounding rectangle (including quiet zone if applicable)
+     */
     public Rectangle2D getBoundingRect() {
-        final Rectangle2D.Double r = new Rectangle2D.Double(
+        return new Rectangle2D.Double(
                 0, 0, getWidthPlusQuiet(), getHeightPlusQuiet());
-        return r;
     }
-    
-    /** @return a content rectangle (excluding quiet zone) */
+
+    /**
+     * @return a content rectangle (excluding quiet zone)
+     */
     public Rectangle2D getContentRect() {
-        final Rectangle2D.Double r = new Rectangle2D.Double(
+        return new Rectangle2D.Double(
                 getXOffset(), getYOffset(), getWidth(), getHeight());
-        return r;
     }
-    
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder(super.toString());
-        sb.append("[width=");
-        sb.append(getWidth());
-        sb.append("(");
-        sb.append(getWidthPlusQuiet());
-        sb.append("),height=");
-        sb.append(getHeight());
-        sb.append("(");
-        sb.append(getHeightPlusQuiet());
-        sb.append(")]");
-        return sb.toString();
+        return new StringBuilder(50).append("[width=")
+                .append(getWidth())
+                .append("(")
+                .append(getWidthPlusQuiet())
+                .append("),height=")
+                .append(getHeight())
+                .append("(")
+                .append(getHeightPlusQuiet())
+                .append(")]").toString();
     }
 }
