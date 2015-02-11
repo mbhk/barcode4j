@@ -23,6 +23,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.TextAlignment;
+import org.krysalis.barcode4j.output.AbstractXMLGeneratingCanvasProvider;
 import org.krysalis.barcode4j.output.BarcodeCanvasSetupException;
 import org.krysalis.barcode4j.output.Orientation;
 import org.w3c.dom.DOMImplementation;
@@ -35,11 +36,19 @@ import org.w3c.dom.Element;
  *
  * @author Jeremias Maerki
  * @author mk
- * @version 1.2
+ * @version 1.3
  */
-public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
+public class SVGCanvasProvider extends AbstractXMLGeneratingCanvasProvider {
+
+    /**
+     * the SVG namespace
+     */
+    public static final String SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 
     private static final Logger LOGGER = Logger.getLogger(SVGCanvasProvider.class.getName());
+
+    private final boolean useNamespace;
+    private final String prefix;
 
     private final DOMImplementation domImpl;
     private Document doc;
@@ -56,7 +65,15 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
      */
     private SVGCanvasProvider(DOMImplementation domImpl, boolean useNamespace, String namespacePrefix,
             Orientation orientation) {
-        super(useNamespace, namespacePrefix, orientation);
+        super(orientation);
+        if (namespacePrefix != null && namespacePrefix.isEmpty()) {
+            throw new IllegalArgumentException("No empty prefix allowed.");
+        }
+        if (!useNamespace && namespacePrefix != null) {
+            throw new IllegalArgumentException("No prefix allowed when namespaces are enabled.");
+        }
+        this.useNamespace = useNamespace;
+        this.prefix = namespacePrefix;
         this.domImpl = initDOMImplementation(domImpl);
         init();
     }
@@ -264,6 +281,39 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
         } catch (ParserConfigurationException pce) {
             LOGGER.log(Level.SEVERE, "Error while creating SVG Document", pce);
             throw new IllegalStateException("Error while creating SVG Document", pce);
+        }
+    }
+
+    /**
+     * Indicates whether namespaces are enabled.
+     *
+     * @return true if namespaces are enabled
+     */
+    public boolean isNamespaceEnabled() {
+        return this.useNamespace;
+    }
+
+    /**
+     * Returns the namespace prefix
+     *
+     * @return the namespace prefix (may be null)
+     */
+    public String getNamespacePrefix() {
+        return this.prefix;
+    }
+
+    /**
+     * Constructs a fully qualified element name based on the namespace
+     * settings.
+     *
+     * @param localName the local name
+     * @return the fully qualified name
+     */
+    protected String getQualifiedName(String localName) {
+        if (this.prefix == null) {
+            return localName;
+        } else {
+            return this.prefix + ':' + localName;
         }
     }
 }
