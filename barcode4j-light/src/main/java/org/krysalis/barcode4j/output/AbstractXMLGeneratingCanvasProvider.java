@@ -30,6 +30,11 @@ public abstract class AbstractXMLGeneratingCanvasProvider
 
     private final DecimalFormat decimalFormat;
 
+    /**
+     * Base Constructor for xml-Canvas.
+     *
+     * @param orientation the barcode orientation
+     */
     public AbstractXMLGeneratingCanvasProvider(Orientation orientation) {
         super(orientation);
         final DecimalFormatSymbols dfs = new DecimalFormatSymbols();

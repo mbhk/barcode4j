@@ -26,11 +26,13 @@ import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider;
 
 /**
- * CanvasProvider implementation for generating bitmaps. This class wraps
- * Java2DCanvasProvider to do the actual rendering.
- * 
+ * CanvasProvider implementation for generating bitmaps.
+ *
+ * This class wraps Java2DCanvasProvider to do the actual rendering.
+ *
  * @author Jeremias Maerki
- * @version $Id$
+ * @author mk
+ * @version 1.2
  */
 public class BitmapCanvasProvider extends AbstractCanvasProvider {
 
@@ -43,15 +45,17 @@ public class BitmapCanvasProvider extends AbstractCanvasProvider {
     private Java2DCanvasProvider delegate;
 
     /**
-     * Creates a new BitmapCanvasProvider. 
+     * Creates a new BitmapCanvasProvider.
+     *
      * @param out OutputStream to write to
      * @param mime MIME type of the desired output format (ex. "image/png")
      * @param resolution the desired image resolution (dots per inch)
      * @param imageType the desired image type (Values: BufferedImage.TYPE_*)
      * @param antiAlias true if anti-aliasing should be enabled
+     * @param orientation the barcode orientation
      */
-    public BitmapCanvasProvider(OutputStream out, String mime, 
-                    int resolution, int imageType, boolean antiAlias, Orientation orientation) {
+    public BitmapCanvasProvider(OutputStream out, String mime,
+            int resolution, int imageType, boolean antiAlias, Orientation orientation) {
         super(orientation);
         this.out = out;
         this.mime = mime;
@@ -59,29 +63,60 @@ public class BitmapCanvasProvider extends AbstractCanvasProvider {
         this.imageType = imageType;
         this.antiAlias = antiAlias;
     }
-    public BitmapCanvasProvider(OutputStream out, String mime, 
-                    int resolution, int imageType, boolean antiAlias, int orientation) {
+
+    /**
+     * Creates a new BitmapCanvasProvider.
+     *
+     * @param out OutputStream to write to
+     * @param mime MIME type of the desired output format (ex. "image/png")
+     * @param resolution the desired image resolution (dots per inch)
+     * @param imageType the desired image type (Values: BufferedImage.TYPE_*)
+     * @param antiAlias true if anti-aliasing should be enabled
+     * @param orientation the barcode orientation
+     * @deprecated use
+     * {@link  #BitmapCanvasProvider(java.io.OutputStream, java.lang.String, int, int, boolean, org.krysalis.barcode4j.output.Orientation)}
+     * instead
+     */
+    @Deprecated
+    public BitmapCanvasProvider(OutputStream out, String mime,
+            int resolution, int imageType, boolean antiAlias, int orientation) {
         this(out, mime, resolution, imageType, antiAlias, Orientation.fromInt(orientation));
     }
 
     /**
-     * Creates a new BitmapCanvasProvider. 
+     * Creates a new BitmapCanvasProvider.
+     *
      * @param resolution the desired image resolution (dots per inch)
      * @param imageType the desired image type (Values: BufferedImage.TYPE_*)
      * @param antiAlias true if anti-aliasing should be enabled
+     * @param orientation the barcode orientation
      */
-    public BitmapCanvasProvider(int resolution, int imageType, boolean antiAlias, 
-                    Orientation orientation) {
-        this(null, null, resolution, imageType, antiAlias, orientation);
-    }
-    public BitmapCanvasProvider(int resolution, int imageType, boolean antiAlias, 
-                    int orientation) {
+    public BitmapCanvasProvider(int resolution, int imageType, boolean antiAlias,
+            Orientation orientation) {
         this(null, null, resolution, imageType, antiAlias, orientation);
     }
 
     /**
-     * Call this method to finish any pending operations after the 
+     * Creates a new BitmapCanvasProvider.
+     *
+     * @param resolution the desired image resolution (dots per inch)
+     * @param imageType the desired image type (Values: BufferedImage.TYPE_*)
+     * @param antiAlias true if anti-aliasing should be enabled
+     * @param orientation the barcode orientation
+     * @deprecated use
+     * {@link  #BitmapCanvasProvider(int, int, boolean, org.krysalis.barcode4j.output.Orientation)}
+     * instead
+     */
+    @Deprecated
+    public BitmapCanvasProvider(int resolution, int imageType, boolean antiAlias,
+            int orientation) {
+        this(null, null, resolution, imageType, antiAlias, orientation);
+    }
+
+    /**
+     * Call this method to finish any pending operations after the
      * BarcodeGenerator has finished its work.
+     *
      * @throws IOException in case of an I/O problem
      */
     public void finish() throws IOException {
@@ -91,9 +126,10 @@ public class BitmapCanvasProvider extends AbstractCanvasProvider {
             encoder.encode(this.image, out, mime, resolution);
         }
     }
-    
+
     /**
      * Returns the buffered image that is used to paint the barcode on.
+     *
      * @return the image.
      */
     public BufferedImage getBufferedImage() {
@@ -106,8 +142,8 @@ public class BitmapCanvasProvider extends AbstractCanvasProvider {
         this.image = BitmapBuilder.prepareImage(dim, getOrientation(),
                 this.resolution, this.imageType);
         this.delegate = new Java2DCanvasProvider(
-            BitmapBuilder.prepareGraphics2D(this.image, dim, getOrientation(),
-                    this.antiAlias), getOrientation());
+                BitmapBuilder.prepareGraphics2D(this.image, dim, getOrientation(),
+                        this.antiAlias), getOrientation());
         this.delegate.establishDimensions(dim);
     }
 
@@ -122,5 +158,4 @@ public class BitmapCanvasProvider extends AbstractCanvasProvider {
             String fontName, double fontSize, TextAlignment textAlign) {
         this.delegate.deviceText(text, x1, x2, y1, fontName, fontSize, textAlign);
     }
-
 }
