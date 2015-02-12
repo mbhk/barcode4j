@@ -40,7 +40,7 @@ import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider;
 /**
  * A GUI Panel.
  *
- * The Barcode is directly drawn in {@link #paintComponent(java.awt.Graphics) } 
+ * The Barcode is directly drawn in {@link #paintComponent(java.awt.Graphics) }
  *
  * @version 2.1.2
  */
@@ -115,8 +115,8 @@ public class BarcodePanel extends JPanel {
     /**
      * Returns current instance of barcode.
      *
-     * If no instance is present but we have a type-name, trying to get a
-     * fresh instance (bargen is transient).
+     * If no instance is present but we have a type-name, trying to get a fresh
+     * instance (bargen is transient).
      *
      * @return Barcode instance
      */
@@ -130,8 +130,8 @@ public class BarcodePanel extends JPanel {
     /**
      * Tries to paint barcode.
      *
-     * Drawing is done on temporary BufferedImage to preserve graphics state
-     * in case of an error.
+     * Drawing is done on temporary BufferedImage to preserve graphics state in
+     * case of an error.
      *
      * @param graphics target drawing area
      * @param rect usable painting area
@@ -152,7 +152,11 @@ public class BarcodePanel extends JPanel {
         LOGGER.log(Level.INFO, "bardim: {0}", barDim);
         final double sc1 = dim.getWidth() / barDim.getWidthPlusQuiet(provider.getOrientation());
         final double sc2 = dim.getHeight() / barDim.getHeightPlusQuiet(provider.getOrientation());
-        g2d.scale(sc1, sc2);
+        if (sc1 >= sc2) {
+            g2d.scale(sc2, sc2);
+        } else {
+            g2d.scale(sc1, sc1);
+        }
 
         g2d.setColor(Color.black);
 
