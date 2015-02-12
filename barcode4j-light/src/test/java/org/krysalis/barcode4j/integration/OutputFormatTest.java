@@ -17,8 +17,6 @@ package org.krysalis.barcode4j.integration;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
-import com.google.zxing.ChecksumException;
-import com.google.zxing.FormatException;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.NotFoundException;
@@ -70,7 +68,7 @@ public class OutputFormatTest {
     }
 
     @Test
-    public void createAndDecodeBarcode() throws BarcodeException, IOException, NotFoundException {
+    public void createAndDecodeEan13Barcode() throws BarcodeException, IOException, NotFoundException {
         String message = "9783935551007";
         BarcodeGenerator gen = provider.getBarcodeGenerator("ean-13");
         BitmapCanvasProvider bitmap = new BitmapCanvasProvider(out,
@@ -85,6 +83,42 @@ public class OutputFormatTest {
         Result res = decode(outFile.getAbsolutePath());
         TestCase.assertEquals(message, res.getText());
         TestCase.assertEquals(BarcodeFormat.EAN_13, res.getBarcodeFormat());
+    }
+
+    @Test
+    public void createAndDecodeDatamatrixCode() throws BarcodeException, IOException, NotFoundException {
+        String message = "visit http://barcode4j.sourceforge.net";
+        BarcodeGenerator gen = provider.getBarcodeGenerator("datamatrix");
+        BitmapCanvasProvider bitmap = new BitmapCanvasProvider(out,
+                "image/x-png", 300, BufferedImage.TYPE_BYTE_GRAY, true, Orientation.NINETY);
+        gen.generateBarcode(bitmap, message);
+        bitmap.finish();
+        try {
+            out.close();
+        } catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        Result res = decode(outFile.getAbsolutePath());
+        TestCase.assertEquals(message, res.getText());
+        TestCase.assertEquals(BarcodeFormat.DATA_MATRIX, res.getBarcodeFormat());
+    }
+
+    @Test
+    public void createAndDecodeQRCode() throws BarcodeException, IOException, NotFoundException {
+        String message = "visit http://barcode4j.sourceforge.net";
+        BarcodeGenerator gen = provider.getBarcodeGenerator("qr-code");
+        BitmapCanvasProvider bitmap = new BitmapCanvasProvider(out,
+                "image/x-png", 300, BufferedImage.TYPE_BYTE_GRAY, true, Orientation.NINETY);
+        gen.generateBarcode(bitmap, message);
+        bitmap.finish();
+        try {
+            out.close();
+        } catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        Result res = decode(outFile.getAbsolutePath());
+        TestCase.assertEquals(message, res.getText());
+        TestCase.assertEquals(BarcodeFormat.QR_CODE, res.getBarcodeFormat());
     }
 
     private Result decode(String filename) throws IOException, NotFoundException {
