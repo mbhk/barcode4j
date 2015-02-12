@@ -26,122 +26,130 @@ import org.krysalis.barcode4j.tools.MessageUtil;
  */
 public class Code128LogicImpl {
 
-    /** The function 1 command. ASCII: 0xF1 */
+    /**
+     * The function 1 command. ASCII: 0xF1
+     */
     public static final char FNC_1 = 0xF1;
-    /** The function 2 command. ASCII: 0xF2 */
+    /**
+     * The function 2 command. ASCII: 0xF2
+     */
     public static final char FNC_2 = 0xF2;
-    /** The function 3 command. ASCII: 0xF3 */
+    /**
+     * The function 3 command. ASCII: 0xF3
+     */
     public static final char FNC_3 = 0xF3;
-    /** The function 4 command. ASCII: 0xF4 */
+    /**
+     * The function 4 command. ASCII: 0xF4
+     */
     public static final char FNC_4 = 0xF4;
 
-    private static final byte[][] CHARSET =
-                                      {{2, 1, 2, 2, 2, 2}, //000, SP, #032
-                                       {2, 2, 2, 1, 2, 2},
-                                       {2, 2, 2, 2, 2, 1},
-                                       {1, 2, 1, 2, 2, 3},
-                                       {1, 2, 1, 3, 2, 2},
-                                       {1, 3, 1, 2, 2, 2},
-                                       {1, 2, 2, 2, 1, 3},
-                                       {1, 2, 2, 3, 1, 2},
-                                       {1, 3, 2, 2, 1, 2},
-                                       {2, 2, 1, 2, 1, 3},
-                                       {2, 2, 1, 3, 1, 2},
-                                       {2, 3, 1, 2, 1, 2},
-                                       {1, 1, 2, 2, 3, 2},
-                                       {1, 2, 2, 1, 3, 2},
-                                       {1, 2, 2, 2, 3, 1},
-                                       {1, 1, 3, 2, 2, 2},
-                                       {1, 2, 3, 1, 2, 2}, //016, '0', #048
-                                       {1, 2, 3, 2, 2, 1},
-                                       {2, 2, 3, 2, 1, 1},
-                                       {2, 2, 1, 1, 3, 2},
-                                       {2, 2, 1, 2, 3, 1},
-                                       {2, 1, 3, 2, 1, 2},
-                                       {2, 2, 3, 1, 1, 2},
-                                       {3, 1, 2, 1, 3, 1},
-                                       {3, 1, 1, 2, 2, 2},
-                                       {3, 2, 1, 1, 2, 2}, //025, '9', #057
-                                       {3, 2, 1, 2, 2, 1}, //026, ':', #058
-                                       {3, 1, 2, 2, 1, 2},
-                                       {3, 2, 2, 1, 1, 2},
-                                       {3, 2, 2, 2, 1, 1},
-                                       {2, 1, 2, 1, 2, 3},
-                                       {2, 1, 2, 3, 2, 1},
-                                       {2, 3, 2, 1, 2, 1},
-                                       {1, 1, 1, 3, 2, 3}, //033, 'A', #065
-                                       {1, 3, 1, 1, 2, 3},
-                                       {1, 3, 1, 3, 2, 1},
-                                       {1, 1, 2, 3, 1, 3},
-                                       {1, 3, 2, 1, 1, 3},
-                                       {1, 3, 2, 3, 1, 1},
-                                       {2, 1, 1, 3, 1, 3},
-                                       {2, 3, 1, 1, 1, 3},
-                                       {2, 3, 1, 3, 1, 1},
-                                       {1, 1, 2, 1, 3, 3},
-                                       {1, 1, 2, 3, 3, 1},
-                                       {1, 3, 2, 1, 3, 1},
-                                       {1, 1, 3, 1, 2, 3},
-                                       {1, 1, 3, 3, 2, 1},
-                                       {1, 3, 3, 1, 2, 1},
-                                       {3, 1, 3, 1, 2, 1},
-                                       {2, 1, 1, 3, 3, 1},
-                                       {2, 3, 1, 1, 3, 1},
-                                       {2, 1, 3, 1, 1, 3},
-                                       {2, 1, 3, 3, 1, 1},
-                                       {2, 1, 3, 1, 3, 1},
-                                       {3, 1, 1, 1, 2, 3},
-                                       {3, 1, 1, 3, 2, 1},
-                                       {3, 3, 1, 1, 2, 1},
-                                       {3, 1, 2, 1, 1, 3},
-                                       {3, 1, 2, 3, 1, 1}, //058, 'Z', #090
-                                       {3, 3, 2, 1, 1, 1}, //059, '[', #091
-                                       {3, 1, 4, 1, 1, 1},
-                                       {2, 2, 1, 4, 1, 1},
-                                       {4, 3, 1, 1, 1, 1},
-                                       {1, 1, 1, 2, 2, 4}, //063, '_', #095
-                                       {1, 1, 1, 4, 2, 2}, //064, A:NUL/B:'`', #000/#096
-                                       {1, 2, 1, 1, 2, 4}, //065, A:SOH/B:'a'. #001/#097
-                                       {1, 2, 1, 4, 2, 1},
-                                       {1, 4, 1, 1, 2, 2},
-                                       {1, 4, 1, 2, 2, 1},
-                                       {1, 1, 2, 2, 1, 4},
-                                       {1, 1, 2, 4, 1, 2},
-                                       {1, 2, 2, 1, 1, 4},
-                                       {1, 2, 2, 4, 1, 1},
-                                       {1, 4, 2, 1, 1, 2},
-                                       {1, 4, 2, 2, 1, 1},
-                                       {2, 4, 1, 2, 1, 1},
-                                       {2, 2, 1, 1, 1, 4},
-                                       {4, 1, 3, 1, 1, 1},
-                                       {2, 4, 1, 1, 1, 2},
-                                       {1, 3, 4, 1, 1, 1},
-                                       {1, 1, 1, 2, 4, 2},
-                                       {1, 2, 1, 1, 4, 2},
-                                       {1, 2, 1, 2, 4, 1},
-                                       {1, 1, 4, 2, 1, 2},
-                                       {1, 2, 4, 1, 1, 2},
-                                       {1, 2, 4, 2, 1, 1},
-                                       {4, 1, 1, 2, 1, 2},
-                                       {4, 2, 1, 1, 1, 2},
-                                       {4, 2, 1, 2, 1, 1},
-                                       {2, 1, 2, 1, 4, 1},
-                                       {2, 1, 4, 1, 2, 1}, //090, A:SUB/B:'z', #026/#122
-                                       {4, 1, 2, 1, 2, 1},
-                                       {1, 1, 1, 1, 4, 3},
-                                       {1, 1, 1, 3, 4, 1},
-                                       {1, 3, 1, 1, 4, 1}, //094, A:RS/B:tilde, #030/#126
-                                       {1, 1, 4, 1, 1, 3}, //095, A:US/B:DEL, #031/#127
-                                       {1, 1, 4, 3, 1, 1},
-                                       {4, 1, 1, 1, 1, 3},
-                                       {4, 1, 1, 3, 1, 1},
-                                       {1, 1, 3, 1, 4, 1},
-                                       {1, 1, 4, 1, 3, 1},
-                                       {3, 1, 1, 1, 4, 1},
-                                       {4, 1, 1, 1, 3, 1},
-                                       {2, 1, 1, 4, 1, 2},  //103, Start A
-                                       {2, 1, 1, 2, 1, 4},  //104, Start B
-                                       {2, 1, 1, 2, 3, 2}}; //105, Start C
+    private static final byte[][] CHARSET
+            = {{2, 1, 2, 2, 2, 2}, //000, SP, #032
+            {2, 2, 2, 1, 2, 2},
+            {2, 2, 2, 2, 2, 1},
+            {1, 2, 1, 2, 2, 3},
+            {1, 2, 1, 3, 2, 2},
+            {1, 3, 1, 2, 2, 2},
+            {1, 2, 2, 2, 1, 3},
+            {1, 2, 2, 3, 1, 2},
+            {1, 3, 2, 2, 1, 2},
+            {2, 2, 1, 2, 1, 3},
+            {2, 2, 1, 3, 1, 2},
+            {2, 3, 1, 2, 1, 2},
+            {1, 1, 2, 2, 3, 2},
+            {1, 2, 2, 1, 3, 2},
+            {1, 2, 2, 2, 3, 1},
+            {1, 1, 3, 2, 2, 2},
+            {1, 2, 3, 1, 2, 2}, //016, '0', #048
+            {1, 2, 3, 2, 2, 1},
+            {2, 2, 3, 2, 1, 1},
+            {2, 2, 1, 1, 3, 2},
+            {2, 2, 1, 2, 3, 1},
+            {2, 1, 3, 2, 1, 2},
+            {2, 2, 3, 1, 1, 2},
+            {3, 1, 2, 1, 3, 1},
+            {3, 1, 1, 2, 2, 2},
+            {3, 2, 1, 1, 2, 2}, //025, '9', #057
+            {3, 2, 1, 2, 2, 1}, //026, ':', #058
+            {3, 1, 2, 2, 1, 2},
+            {3, 2, 2, 1, 1, 2},
+            {3, 2, 2, 2, 1, 1},
+            {2, 1, 2, 1, 2, 3},
+            {2, 1, 2, 3, 2, 1},
+            {2, 3, 2, 1, 2, 1},
+            {1, 1, 1, 3, 2, 3}, //033, 'A', #065
+            {1, 3, 1, 1, 2, 3},
+            {1, 3, 1, 3, 2, 1},
+            {1, 1, 2, 3, 1, 3},
+            {1, 3, 2, 1, 1, 3},
+            {1, 3, 2, 3, 1, 1},
+            {2, 1, 1, 3, 1, 3},
+            {2, 3, 1, 1, 1, 3},
+            {2, 3, 1, 3, 1, 1},
+            {1, 1, 2, 1, 3, 3},
+            {1, 1, 2, 3, 3, 1},
+            {1, 3, 2, 1, 3, 1},
+            {1, 1, 3, 1, 2, 3},
+            {1, 1, 3, 3, 2, 1},
+            {1, 3, 3, 1, 2, 1},
+            {3, 1, 3, 1, 2, 1},
+            {2, 1, 1, 3, 3, 1},
+            {2, 3, 1, 1, 3, 1},
+            {2, 1, 3, 1, 1, 3},
+            {2, 1, 3, 3, 1, 1},
+            {2, 1, 3, 1, 3, 1},
+            {3, 1, 1, 1, 2, 3},
+            {3, 1, 1, 3, 2, 1},
+            {3, 3, 1, 1, 2, 1},
+            {3, 1, 2, 1, 1, 3},
+            {3, 1, 2, 3, 1, 1}, //058, 'Z', #090
+            {3, 3, 2, 1, 1, 1}, //059, '[', #091
+            {3, 1, 4, 1, 1, 1},
+            {2, 2, 1, 4, 1, 1},
+            {4, 3, 1, 1, 1, 1},
+            {1, 1, 1, 2, 2, 4}, //063, '_', #095
+            {1, 1, 1, 4, 2, 2}, //064, A:NUL/B:'`', #000/#096
+            {1, 2, 1, 1, 2, 4}, //065, A:SOH/B:'a'. #001/#097
+            {1, 2, 1, 4, 2, 1},
+            {1, 4, 1, 1, 2, 2},
+            {1, 4, 1, 2, 2, 1},
+            {1, 1, 2, 2, 1, 4},
+            {1, 1, 2, 4, 1, 2},
+            {1, 2, 2, 1, 1, 4},
+            {1, 2, 2, 4, 1, 1},
+            {1, 4, 2, 1, 1, 2},
+            {1, 4, 2, 2, 1, 1},
+            {2, 4, 1, 2, 1, 1},
+            {2, 2, 1, 1, 1, 4},
+            {4, 1, 3, 1, 1, 1},
+            {2, 4, 1, 1, 1, 2},
+            {1, 3, 4, 1, 1, 1},
+            {1, 1, 1, 2, 4, 2},
+            {1, 2, 1, 1, 4, 2},
+            {1, 2, 1, 2, 4, 1},
+            {1, 1, 4, 2, 1, 2},
+            {1, 2, 4, 1, 1, 2},
+            {1, 2, 4, 2, 1, 1},
+            {4, 1, 1, 2, 1, 2},
+            {4, 2, 1, 1, 1, 2},
+            {4, 2, 1, 2, 1, 1},
+            {2, 1, 2, 1, 4, 1},
+            {2, 1, 4, 1, 2, 1}, //090, A:SUB/B:'z', #026/#122
+            {4, 1, 2, 1, 2, 1},
+            {1, 1, 1, 1, 4, 3},
+            {1, 1, 1, 3, 4, 1},
+            {1, 3, 1, 1, 4, 1}, //094, A:RS/B:tilde, #030/#126
+            {1, 1, 4, 1, 1, 3}, //095, A:US/B:DEL, #031/#127
+            {1, 1, 4, 3, 1, 1},
+            {4, 1, 1, 1, 1, 3},
+            {4, 1, 1, 3, 1, 1},
+            {1, 1, 3, 1, 4, 1},
+            {1, 1, 4, 1, 3, 1},
+            {3, 1, 1, 1, 4, 1},
+            {4, 1, 1, 1, 3, 1},
+            {2, 1, 1, 4, 1, 2}, //103, Start A
+            {2, 1, 1, 2, 1, 4}, //104, Start B
+            {2, 1, 1, 2, 3, 2}}; //105, Start C
 
     private static final byte[] STOP = {2, 3, 3, 1, 1, 1, 2}; //106, STOP
 
@@ -156,6 +164,7 @@ public class Code128LogicImpl {
 
     /**
      * Main constructor.
+     *
      * @param codeset the enabled codeset
      */
     public Code128LogicImpl(Code128Constants codeset) {
@@ -164,39 +173,43 @@ public class Code128LogicImpl {
 
     /**
      * Determines whether a character can be encoded in Code 128.
+     *
      * @param ch the character to check
      * @return true if it is a valid character
      */
     public static boolean isValidChar(char ch) {
         return (ch >= 0 && ch <= 127)
-            || (ch >= FNC_1 && ch <= FNC_4);
+                || (ch >= FNC_1 && ch <= FNC_4);
     }
 
     /**
      * Determines whether a character is defined in codeset A.
+     *
      * @param ch the character to check
      * @return true if it is found in codeset A
      */
     public static boolean isInCodeSetA(char ch) {
         return (ch >= 0 && ch <= 95)
-            || (ch >= FNC_1 && ch <= FNC_4);
+                || (ch >= FNC_1 && ch <= FNC_4);
     }
 
     /**
      * Determines whether a character is defined in codeset B.
+     *
      * @param ch the character to check
      * @return true if it is found in codeset B
      */
     public static boolean isInCodeSetB(char ch) {
         return (ch >= 32 && ch <= 127)
-            || (ch >= FNC_1 && ch <= FNC_4);
+                || (ch >= FNC_1 && ch <= FNC_4);
     }
 
     /**
      * Determines whether a character is a digit or a function 1 command.
+     *
      * @param ch the character to check
-     * @param second true if checking the character for the second position in
-     *   a duo.
+     * @param second true if checking the character for the second position in a
+     * duo.
      * @return true if the above condition is met
      */
     public static boolean canBeInCodeSetC(char ch, boolean second) {
@@ -210,28 +223,39 @@ public class Code128LogicImpl {
     /**
      * Converts a character set index to a String representation. This is
      * primarily used for debugging purposes.
+     *
      * @param index the character set index
      * @return the String representation
      */
     public static String symbolCharToString(int index) {
         if (index >= 96 && index <= 105) {
             final String[] replacementString = new String[]{
-                "FNC3/96", "FNC3/97", "FNC3/98", "FNC3/99",
-                "CodeB/FNC4", "CodeA/FNC4", "FNC1", "StartA", "StartB", "StartC"};
+                "FNC3/96",
+                "FNC2/97",
+                "Shift/98",
+                "CodeC/99",
+                "CodeB/FNC4",
+                "CodeA/FNC4",
+                "FNC1",
+                "StartA",
+                "StartB",
+                "StartC"};
             return replacementString[index - 96];
         } else {
             return "idx" + Integer.toString(index);
         }
+
     }
 
     /**
      * Converts an encoded Code 128 message into a String for debugging
      * purposes.
+     *
      * @param encodedMsg the encoded message
      * @return the String representation
      */
     public static String toString(int... encodedMsg) {
-        if(encodedMsg == null) {
+        if (encodedMsg == null) {
             return "";
         }
         final StringBuilder sb = new StringBuilder();
@@ -246,6 +270,7 @@ public class Code128LogicImpl {
 
     /**
      * Encodes a character.
+     *
      * @param logic LogicHandler to send the barcode events to
      * @param index index withing the character set of the character to encode
      */
@@ -277,11 +302,13 @@ public class Code128LogicImpl {
     private boolean isBlack(byte i) {
         return (i % 2) == 0;
     }
+
     /**
-     * Returns the encoder to be used. The encoder is responsible for turning
-     * a String message into an array of character set indexes.
+     * Returns the encoder to be used. The encoder is responsible for turning a
+     * String message into an array of character set indexes.
      * <p>
      * Override this method to supply your own implementation.
+     *
      * @return the requested encoder
      */
     protected Code128Encoder getEncoder() {
@@ -290,6 +317,7 @@ public class Code128LogicImpl {
 
     /**
      * Encodes a message into an array of character set indexes.
+     *
      * @param msg the message to encode
      * @return the requested array of character set indexes
      * @see #getEncoder()
@@ -300,6 +328,7 @@ public class Code128LogicImpl {
 
     /**
      * Generates the barcode logic
+     *
      * @param logic the logic handler to receive the generated events
      * @param msg the message to encode
      */

@@ -108,7 +108,7 @@ public class OutputFormatTest {
         String message = "visit http://barcode4j.sourceforge.net";
         BarcodeGenerator gen = provider.getBarcodeGenerator("qr-code");
         BitmapCanvasProvider bitmap = new BitmapCanvasProvider(out,
-                "image/x-png", 300, BufferedImage.TYPE_BYTE_GRAY, true, Orientation.NINETY);
+                "image/x-png", 300, BufferedImage.TYPE_BYTE_BINARY, false, Orientation.ONEHUNDRED_EIGHTY);
         gen.generateBarcode(bitmap, message);
         bitmap.finish();
         try {
