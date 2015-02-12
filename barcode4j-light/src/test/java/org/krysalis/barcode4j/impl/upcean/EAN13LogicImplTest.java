@@ -13,34 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.krysalis.barcode4j.impl;
+package org.krysalis.barcode4j.impl.upcean;
 
 import org.krysalis.barcode4j.ChecksumMode;
-import org.krysalis.barcode4j.impl.upcean.EAN13;
-import org.krysalis.barcode4j.impl.upcean.EAN13LogicImpl;
 
 import junit.framework.TestCase;
+import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
+import org.krysalis.barcode4j.impl.NullClassicBarcodeLogicHandler;
 
 /**
  * Test class for the EAN-13 implementation.
- * 
+ *
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class EAN13Test extends TestCase {
+public class EAN13LogicImplTest extends TestCase {
 
-    public EAN13Test(String name) {
+    public EAN13LogicImplTest(String name) {
         super(name);
     }
 
     public void testIllegalArguments() throws Exception {
-        try {
-            EAN13 impl = new EAN13();
-            impl.generateBarcode(null, null);
-            fail("Expected an NPE");
-        } catch (NullPointerException npe) {
-            assertNotNull("Error message is empty", npe.getMessage());
-        }
 
         //Test invalid characters in message
         try {
@@ -50,7 +43,7 @@ public class EAN13Test extends TestCase {
         } catch (IllegalArgumentException iae) {
             //must fail
         }
-        
+
         //Test less than 13 characters
         try {
             EAN13LogicImpl logic = new EAN13LogicImpl(ChecksumMode.CP_AUTO);
@@ -59,7 +52,7 @@ public class EAN13Test extends TestCase {
         } catch (IllegalArgumentException iae) {
             //must fail
         }
-        
+
         //Test more than 13 characters
         try {
             EAN13LogicImpl logic = new EAN13LogicImpl(ChecksumMode.CP_AUTO);
@@ -74,32 +67,32 @@ public class EAN13Test extends TestCase {
         StringBuffer sb = new StringBuffer();
         EAN13LogicImpl logic;
         String expected;
-        
+
         logic = new EAN13LogicImpl(ChecksumMode.CP_AUTO);
         logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb), "200123456789");
         expected = "<BC>"
-            + "<SBG:upc-ean-guard:null>B1W1B1</SBG>"
-            + "<SBG:upc-ean-group:2:001234>"
+                + "<SBG:upc-ean-guard:null>B1W1B1</SBG>"
+                + "<SBG:upc-ean-group:2:001234>"
                 + "<SBG:msg-char:0>W3B2W1B1</SBG>"
                 + "<SBG:msg-char:0>W3B2W1B1</SBG>"
                 + "<SBG:msg-char:1>W1B2W2B2</SBG>"
                 + "<SBG:msg-char:2>W2B2W1B2</SBG>"
                 + "<SBG:msg-char:3>W1B4W1B1</SBG>"
                 + "<SBG:msg-char:4>W2B3W1B1</SBG>"
-            + "</SBG>"
-            + "<SBG:upc-ean-guard:null>W1B1W1B1W1</SBG>"
-            + "<SBG:upc-ean-group:567893>"
+                + "</SBG>"
+                + "<SBG:upc-ean-guard:null>W1B1W1B1W1</SBG>"
+                + "<SBG:upc-ean-group:567893>"
                 + "<SBG:msg-char:5>B1W2B3W1</SBG>"
                 + "<SBG:msg-char:6>B1W1B1W4</SBG>"
                 + "<SBG:msg-char:7>B1W3B1W2</SBG>"
                 + "<SBG:msg-char:8>B1W2B1W3</SBG>"
                 + "<SBG:msg-char:9>B3W1B1W2</SBG>"
                 + "<SBG:upc-ean-check:3>"
-                    + "<SBG:msg-char:3>B1W4B1W1</SBG>"
+                + "<SBG:msg-char:3>B1W4B1W1</SBG>"
                 + "</SBG>"
-            + "</SBG>"
-            + "<SBG:upc-ean-guard:null>B1W1B1</SBG>"
-            + "</BC>";
+                + "</SBG>"
+                + "<SBG:upc-ean-guard:null>B1W1B1</SBG>"
+                + "</BC>";
         //System.out.println(expected);
         //System.out.println(sb.toString());
         assertEquals(expected, sb.toString());
@@ -111,7 +104,6 @@ public class EAN13Test extends TestCase {
         //System.out.println(expected);
         //System.out.println(sb.toString());
         assertEquals(expected, sb.toString());
-        
-    }
 
+    }
 }

@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.krysalis.barcode4j.impl;
+package org.krysalis.barcode4j.impl.codabar;
 
 import junit.framework.TestCase;
 
 import org.krysalis.barcode4j.ChecksumMode;
-import org.krysalis.barcode4j.impl.codabar.Codabar;
-import org.krysalis.barcode4j.impl.codabar.CodabarLogicImpl;
+import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
+import org.krysalis.barcode4j.impl.NullClassicBarcodeLogicHandler;
 
 /**
  * Test class for the Codabar implementation.
@@ -27,21 +27,13 @@ import org.krysalis.barcode4j.impl.codabar.CodabarLogicImpl;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class CodabarTest extends TestCase {
+public class CodabarLogicImplTest extends TestCase {
 
-    public CodabarTest(String name) {
+    public CodabarLogicImplTest(String name) {
         super(name);
     }
 
     public void testIllegalArguments() throws Exception {
-        try {
-            Codabar impl = new Codabar();
-            impl.generateBarcode(null, null);
-            fail("Expected an NPE");
-        } catch (NullPointerException npe) {
-            assertNotNull("Error message is empty", npe.getMessage());
-        }
-
         try {
             CodabarLogicImpl logic = new CodabarLogicImpl(ChecksumMode.CP_AUTO);
             logic.generateBarcodeLogic(new NullClassicBarcodeLogicHandler(), "123èöö2");
@@ -60,16 +52,16 @@ public class CodabarTest extends TestCase {
         logic = new CodabarLogicImpl(ChecksumMode.CP_AUTO);
         logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb), "d123e");
         expected = "<BC>"
-            + "<SBG:msg-char:d>B1W1B1W2B2W2B1</SBG>"
-            + "W1"
-            + "<SBG:msg-char:1>B1W1B1W1B2W2B1</SBG>"
-            + "W1"
-            + "<SBG:msg-char:2>B1W1B1W2B1W1B2</SBG>"
-            + "W1"
-            + "<SBG:msg-char:3>B2W2B1W1B1W1B1</SBG>"
-            + "W1"
-            + "<SBG:msg-char:e>B1W1B1W2B2W2B1</SBG>"
-            + "</BC>";
+                + "<SBG:msg-char:d>B1W1B1W2B2W2B1</SBG>"
+                + "W1"
+                + "<SBG:msg-char:1>B1W1B1W1B2W2B1</SBG>"
+                + "W1"
+                + "<SBG:msg-char:2>B1W1B1W2B1W1B2</SBG>"
+                + "W1"
+                + "<SBG:msg-char:3>B2W2B1W1B1W1B1</SBG>"
+                + "W1"
+                + "<SBG:msg-char:e>B1W1B1W2B2W2B1</SBG>"
+                + "</BC>";
         //System.out.println(expected);
         //System.out.println(sb.toString());
         assertEquals(expected, sb.toString());
@@ -79,7 +71,9 @@ public class CodabarTest extends TestCase {
         logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb), "D123E");
         assertEquals(expected, sb.toString());
 
-        /**@todo Implement start/stop character checking */
+        /**
+         * @todo Implement start/stop character checking
+         */
     }
 
     public void testStartStopHandling() throws Exception {
@@ -91,14 +85,14 @@ public class CodabarTest extends TestCase {
         logic = new CodabarLogicImpl(ChecksumMode.CP_AUTO, true);
         logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb, true), "*12*");
         expected = "<BC:*12*>"
-            + "<SBG:msg-char:*>B1W1B1W2B1W2B2</SBG>"
-            + "W1"
-            + "<SBG:msg-char:1>B1W1B1W1B2W2B1</SBG>"
-            + "W1"
-            + "<SBG:msg-char:2>B1W1B1W2B1W1B2</SBG>"
-            + "W1"
-            + "<SBG:msg-char:*>B1W1B1W2B1W2B2</SBG>"
-            + "</BC>";
+                + "<SBG:msg-char:*>B1W1B1W2B1W2B2</SBG>"
+                + "W1"
+                + "<SBG:msg-char:1>B1W1B1W1B2W2B1</SBG>"
+                + "W1"
+                + "<SBG:msg-char:2>B1W1B1W2B1W1B2</SBG>"
+                + "W1"
+                + "<SBG:msg-char:*>B1W1B1W2B1W2B2</SBG>"
+                + "</BC>";
         assertEquals(expected, sb.toString());
 
         //Without start/stop in the HR part
@@ -106,15 +100,14 @@ public class CodabarTest extends TestCase {
         logic = new CodabarLogicImpl(ChecksumMode.CP_AUTO, false);
         logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb, true), "*12*");
         expected = "<BC:12>"
-            + "<SBG:msg-char:*>B1W1B1W2B1W2B2</SBG>"
-            + "W1"
-            + "<SBG:msg-char:1>B1W1B1W1B2W2B1</SBG>"
-            + "W1"
-            + "<SBG:msg-char:2>B1W1B1W2B1W1B2</SBG>"
-            + "W1"
-            + "<SBG:msg-char:*>B1W1B1W2B1W2B2</SBG>"
-            + "</BC>";
+                + "<SBG:msg-char:*>B1W1B1W2B1W2B2</SBG>"
+                + "W1"
+                + "<SBG:msg-char:1>B1W1B1W1B2W2B1</SBG>"
+                + "W1"
+                + "<SBG:msg-char:2>B1W1B1W2B1W1B2</SBG>"
+                + "W1"
+                + "<SBG:msg-char:*>B1W1B1W2B1W2B2</SBG>"
+                + "</BC>";
         assertEquals(expected, sb.toString());
     }
-
 }
