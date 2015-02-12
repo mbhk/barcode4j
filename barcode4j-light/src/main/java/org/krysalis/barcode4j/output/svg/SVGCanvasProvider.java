@@ -97,8 +97,7 @@ public class SVGCanvasProvider extends AbstractXMLGeneratingCanvasProvider {
      * @param domImpl DOMImplementation to use (JAXP default is used when this
      * is null)
      * @param namespacePrefix the namespace prefix to use, null for no prefix
-     * @param orientation the barcode orientation (0, 90, 180, 270)
-     * @throws BarcodeCanvasSetupException if setting up the provider fails
+     * @param orientation the barcode orientation
      */
     public SVGCanvasProvider(DOMImplementation domImpl, String namespacePrefix,
             Orientation orientation) {
@@ -110,7 +109,6 @@ public class SVGCanvasProvider extends AbstractXMLGeneratingCanvasProvider {
      *
      * @param useNamespace Controls whether namespaces should be used
      * @param orientation the barcode orientation
-     * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
     public SVGCanvasProvider(boolean useNamespace, Orientation orientation) {
         this(null, useNamespace, orientation);
@@ -121,7 +119,6 @@ public class SVGCanvasProvider extends AbstractXMLGeneratingCanvasProvider {
      *
      * @param useNamespace Controls whether namespaces should be used
      * @param orientation the barcode orientation
-     * @throws BarcodeCanvasSetupException
      * @deprecated use {@link SVGCanvasProvider#SVGCanvasProvider(boolean, org.krysalis.barcode4j.output.Orientation) instead
      */
     @Deprecated
@@ -134,7 +131,6 @@ public class SVGCanvasProvider extends AbstractXMLGeneratingCanvasProvider {
      *
      * @param namespacePrefix the namespace prefix to use, null for no prefix
      * @param orientation the barcode orientation
-     * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
     public SVGCanvasProvider(String namespacePrefix, Orientation orientation) {
         this(null, true, namespacePrefix, orientation);
@@ -144,8 +140,7 @@ public class SVGCanvasProvider extends AbstractXMLGeneratingCanvasProvider {
      * Creates a new SVGCanvasProvider with default settings (with namespaces,
      * but without namespace prefix).
      *
-     * @param orientation the barcode orientation (0, 90, 180, 270)
-     * @throws BarcodeCanvasSetupException if setting up the provider fails
+     * @param orientation the barcode orientation
      */
     public SVGCanvasProvider(Orientation orientation) {
         this(null, true, null, orientation);

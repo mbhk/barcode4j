@@ -15,10 +15,17 @@
  */
 package org.krysalis.barcode4j.output.svg;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.TestCase;
+import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.output.Orientation;
 import org.w3c.dom.DOMConfiguration;
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 
@@ -73,5 +80,33 @@ public class SVGCanvasProviderTest extends TestCase {
             fail("not allowed empty prefix");
         } catch (IllegalArgumentException e) {
         }
+    }
+
+    private Document fromFragment(DocumentFragment docFrag) throws Exception {
+        final DOMImplementation impl = getDomImpl();
+        Document res = impl.createDocument(null, "test", null);
+        Node importNode = res.importNode(docFrag, true);
+        Node e = res.getDocumentElement();
+        e.appendChild(importNode);
+        return res;
+    }
+
+    public void testGetDOMFragment() throws Exception {
+        System.out.println("getDOMFragment - default");
+        SVGCanvasProvider instance = new SVGCanvasProvider(Orientation.ZERO);
+        instance.establishDimensions(new BarcodeDimension(110, 110));
+        instance.deviceFillRect(0, 0, 100, 100);
+        String expResult = "<test><svg xmlns=\"http://www.w3.org/2000/svg\" height=\"110mm\" viewBox=\"0 0 110 110\" width=\"110mm\"><g fill=\"black\" stroke=\"none\"><rect height=\"100\" width=\"100\" x=\"0\" y=\"0\"/></g></svg></test>";
+        DocumentFragment result = instance.getDOMFragment();
+        assertEquals(expResult, getStringFromDoc(fromFragment(result)));
+    }
+
+    private DOMImplementation getDomImpl() throws Exception {
+        final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        dbf.setValidating(false);
+        final DocumentBuilder db = dbf.newDocumentBuilder();
+
+        return db.getDOMImplementation();
     }
 }
