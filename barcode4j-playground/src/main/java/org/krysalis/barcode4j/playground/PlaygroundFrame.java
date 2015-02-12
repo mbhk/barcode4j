@@ -15,10 +15,10 @@
  */
 package org.krysalis.barcode4j.playground;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
@@ -49,6 +50,7 @@ public class PlaygroundFrame extends JFrame implements ActionListener, ChangeLis
     private JComboBox<String> barcodeNames = null;
     private JTextField messageField = null;
     private JSlider orientation = null;
+    private JPanel parametersPanel;
 
     private BarcodePanel getBarcodePanel() {
         if (bcpanel == null) {
@@ -94,17 +96,10 @@ public class PlaygroundFrame extends JFrame implements ActionListener, ChangeLis
         setTitle(TITLE);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(600, 400));
-        final Container contentPane = getContentPane();
 
-        final JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        northPanel.add(new JLabel("Choose Barcode: "));
-        northPanel.add(getBarcodeNames());
-        northPanel.add(new JLabel("Message: "));
-        northPanel.add(getMessageField());
-        northPanel.add(new JLabel("Orientation: "));
-        northPanel.add(getOrientation());
-        contentPane.add(northPanel, BorderLayout.NORTH);
-        contentPane.add(getBarcodePanel(), BorderLayout.CENTER);
+        final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                getParametersPanel(), getBarcodePanel());
+        setContentPane(splitPane);
 
         getBarcodePanel().setBarcodeName((String) getBarcodeNames().getSelectedItem());
         getBarcodePanel().setMessage(getMessageField().getText());
@@ -126,6 +121,45 @@ public class PlaygroundFrame extends JFrame implements ActionListener, ChangeLis
         }
     }
 
+    private Component getParametersPanel() {
+        if (parametersPanel == null) {
+            parametersPanel = new JPanel(new GridBagLayout());
+            GridBagConstraints c = new GridBagConstraints();
+
+            c.gridx = 0;
+            c.gridy = 0;
+            c.weightx = 0;
+            c.fill = GridBagConstraints.NONE;
+            parametersPanel.add(new JLabel("Choose Barcode: "), c);
+            c.gridx = 1;
+            c.gridy = 0;
+            c.weightx = 0.5;
+            c.fill = GridBagConstraints.HORIZONTAL;
+            parametersPanel.add(getBarcodeNames(), c);
+            c.gridx = 0;
+            c.gridy = 1;
+            c.weightx = 0;
+            c.fill = GridBagConstraints.NONE;
+            parametersPanel.add(new JLabel("Message: "), c);
+            c.gridx = 1;
+            c.gridy = 1;
+            c.weightx = 0.5;
+            c.fill = GridBagConstraints.HORIZONTAL;
+            parametersPanel.add(getMessageField(), c);
+            c.gridx = 0;
+            c.gridy = 2;
+            c.weightx = 0;
+            c.fill = GridBagConstraints.NONE;
+            parametersPanel.add(new JLabel("Orientation: "), c);
+            c.gridx = 1;
+            c.gridy = 2;
+            c.weightx = 0.5;
+            c.fill = GridBagConstraints.HORIZONTAL;
+            parametersPanel.add(getOrientation(), c);
+        }
+        return parametersPanel;
+    }
+
     @Override
     public void stateChanged(ChangeEvent e) {
         if (getOrientation().equals(e.getSource())) {
@@ -137,6 +171,7 @@ public class PlaygroundFrame extends JFrame implements ActionListener, ChangeLis
      * Helper class to handle events of the message input field.
      */
     private class DocumentListenerImpl implements DocumentListener {
+
         public DocumentListenerImpl() {
         }
 

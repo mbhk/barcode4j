@@ -16,11 +16,13 @@
 package org.krysalis.barcode4j.playground;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
- * The Main class implements an application with a GUI to experiment
- * with the barcode4j library.
- * 
+ * The Main class implements an application with a GUI to experiment with the
+ * barcode4j library.
+ *
  * @version 2.1.2
  */
 public class Main {
@@ -37,6 +39,20 @@ public class Main {
      * @param args are ignored
      */
     public static void main(String[] args) {
+        try {
+            // Set System L&F
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (UnsupportedLookAndFeelException e) {
+            // ignore
+        } catch (ClassNotFoundException e) {
+            // ignore
+        } catch (InstantiationException e) {
+            // ignore
+        } catch (IllegalAccessException e) {
+            // ignore
+        }
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
