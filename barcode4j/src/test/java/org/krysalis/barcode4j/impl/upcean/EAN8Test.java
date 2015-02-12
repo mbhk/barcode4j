@@ -18,20 +18,20 @@ package org.krysalis.barcode4j.impl.upcean;
 import junit.framework.TestCase;
 
 /**
- * Test class for the UPC-E implementation.
+ * Test class for the EAN-8 implementation.
  *
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class UPCETest extends TestCase {
+public class EAN8Test extends TestCase {
 
-    public UPCETest(String name) {
+    public EAN8Test(String name) {
         super(name);
     }
 
     public void testIllegalArguments() throws Exception {
         try {
-            UPCE impl = new UPCE();
+            EAN8 impl = new EAN8();
             impl.generateBarcode(null, null);
             fail("Expected an NPE");
         } catch (NullPointerException npe) {

@@ -17,20 +17,18 @@ package org.krysalis.barcode4j.impl.upcean;
 
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
-import org.krysalis.barcode4j.impl.upcean.EAN13LogicImpl;
-import org.krysalis.barcode4j.impl.upcean.UPCEANLogicImpl;
 
 import junit.framework.TestCase;
 
 /**
  * Test class for general UPC/EAN functionality.
- * 
+ *
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class UPCEANTest extends TestCase {
+public class UPCEANLogicImplTest extends TestCase {
 
-    public UPCEANTest(String name) {
+    public UPCEANLogicImplTest(String name) {
         super(name);
     }
 
@@ -43,7 +41,7 @@ public class UPCEANTest extends TestCase {
         assertNull(UPCEANLogicImpl.retrieveSupplemental("1234"));
         assertEquals("20", UPCEANLogicImpl.retrieveSupplemental("1234+20"));
     }
-    
+
     public void testGetSupplementalLength() throws Exception {
         assertEquals(0, UPCEANLogicImpl.getSupplementalLength("1234"));
         assertEquals(2, UPCEANLogicImpl.getSupplementalLength("1234+12"));
@@ -59,15 +57,15 @@ public class UPCEANTest extends TestCase {
         StringBuffer sb = new StringBuffer();
         EAN13LogicImpl logic;
         String expected;
-        
+
         logic = new EAN13LogicImpl(ChecksumMode.CP_AUTO);
         logic.drawSupplemental(new MockClassicBarcodeLogicHandler(sb), "34");
         expected = "<SBG:upc-ean-supp:34>"
-            + "<SBG:upc-ean-guard:null>B1W1B2</SBG>"
-            + "<SBG:msg-char:3>W1B1W4B1</SBG>"
-            + "<SBG:upc-ean-guard:null>W1B1</SBG>"
-            + "<SBG:msg-char:4>W1B1W3B2</SBG>"
-            + "</SBG>";
+                + "<SBG:upc-ean-guard:null>B1W1B2</SBG>"
+                + "<SBG:msg-char:3>W1B1W4B1</SBG>"
+                + "<SBG:upc-ean-guard:null>W1B1</SBG>"
+                + "<SBG:msg-char:4>W1B1W3B2</SBG>"
+                + "</SBG>";
         //System.out.println("expected: " + expected);
         //System.out.println("actual:   " + sb.toString());
         assertEquals(expected, sb.toString());
@@ -77,24 +75,23 @@ public class UPCEANTest extends TestCase {
         StringBuffer sb = new StringBuffer();
         EAN13LogicImpl logic;
         String expected;
-        
+
         logic = new EAN13LogicImpl(ChecksumMode.CP_AUTO);
         logic.drawSupplemental(new MockClassicBarcodeLogicHandler(sb), "51234");
         expected = "<SBG:upc-ean-supp:51234>"
-            + "<SBG:upc-ean-guard:null>B1W1B2</SBG>"
-            + "<SBG:msg-char:5>W1B2W3B1</SBG>"
-            + "<SBG:upc-ean-guard:null>W1B1</SBG>"
-            + "<SBG:msg-char:1>W2B2W2B1</SBG>"
-            + "<SBG:upc-ean-guard:null>W1B1</SBG>"
-            + "<SBG:msg-char:2>W2B2W1B2</SBG>"
-            + "<SBG:upc-ean-guard:null>W1B1</SBG>"
-            + "<SBG:msg-char:3>W1B4W1B1</SBG>"
-            + "<SBG:upc-ean-guard:null>W1B1</SBG>"
-            + "<SBG:msg-char:4>W2B3W1B1</SBG>"
-            + "</SBG>";
+                + "<SBG:upc-ean-guard:null>B1W1B2</SBG>"
+                + "<SBG:msg-char:5>W1B2W3B1</SBG>"
+                + "<SBG:upc-ean-guard:null>W1B1</SBG>"
+                + "<SBG:msg-char:1>W2B2W2B1</SBG>"
+                + "<SBG:upc-ean-guard:null>W1B1</SBG>"
+                + "<SBG:msg-char:2>W2B2W1B2</SBG>"
+                + "<SBG:upc-ean-guard:null>W1B1</SBG>"
+                + "<SBG:msg-char:3>W1B4W1B1</SBG>"
+                + "<SBG:upc-ean-guard:null>W1B1</SBG>"
+                + "<SBG:msg-char:4>W2B3W1B1</SBG>"
+                + "</SBG>";
         //System.out.println("expected: " + expected);
         //System.out.println("actual:   " + sb.toString());
         assertEquals(expected, sb.toString());
     }
-
 }

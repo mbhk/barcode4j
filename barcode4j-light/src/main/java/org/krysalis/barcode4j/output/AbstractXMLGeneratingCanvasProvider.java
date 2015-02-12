@@ -19,36 +19,41 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 /**
- * Abstract base class that provides some commonly used methods for 
- * generating XML representations of barcodes.
- * 
+ * Abstract base class that provides some commonly used methods for generating
+ * XML representations of barcodes.
+ *
  * @author Jeremias Maerki
  * @version $Id$
  */
 public abstract class AbstractXMLGeneratingCanvasProvider
         extends AbstractCanvasProvider {
 
-    private DecimalFormat df;
+    private final DecimalFormat decimalFormat;
 
+    /**
+     * Base Constructor for xml-Canvas.
+     *
+     * @param orientation the barcode orientation
+     */
     public AbstractXMLGeneratingCanvasProvider(Orientation orientation) {
         super(orientation);
+        final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator('.');
+        this.decimalFormat = new DecimalFormat("0.####", dfs);
     }
-    
+
     /**
      * Returns the DecimalFormat instance to use internally to format numbers.
+     *
      * @return a DecimalFormat instance
      */
     protected DecimalFormat getDecimalFormat() {
-        if (this.df == null) {
-            final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-            dfs.setDecimalSeparator('.');
-            this.df = new DecimalFormat("0.####", dfs);
-        }
-        return this.df;
+        return this.decimalFormat;
     }
 
     /**
      * Formats a value and adds the unit specifier at the end.
+     *
      * @param value the value to format
      * @return the formatted value
      */

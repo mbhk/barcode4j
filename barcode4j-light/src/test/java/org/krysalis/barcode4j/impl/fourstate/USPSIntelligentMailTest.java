@@ -25,7 +25,6 @@ import junit.framework.TestCase;
 
 import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
 
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
 
 /**
  * Tests for the USPS Intelligent Mail Barcode (4-State Customer Barcode).
@@ -165,29 +164,6 @@ public class USPSIntelligentMailTest extends TestCase {
     public void testDefaults() throws Exception {
         USPSIntelligentMailBean bean = new USPSIntelligentMailBean();
         bean.verifySettings();
-    }
-    
-    public void testDefaultsInXML() throws Exception {
-        USPSIntelligentMailBean refBean = new USPSIntelligentMailBean();
-        
-        USPSIntelligentMail gen = new USPSIntelligentMail();
-        DefaultConfiguration cfg = new DefaultConfiguration("usps4cb");
-        gen.configure(cfg);
-        USPSIntelligentMailBean xmlBean = gen.getUSPSIntelligentMailBean();
-        assertEquals(refBean.getAscenderHeight(), xmlBean.getAscenderHeight(), 0.01);
-        assertEquals(refBean.getBarHeight(), xmlBean.getBarHeight(), 0.01);
-        assertEquals(refBean.getFontSize(), xmlBean.getFontSize(), 0.01);
-        assertEquals(refBean.getHeight(), xmlBean.getHeight(), 0.01);
-        assertEquals(refBean.getHumanReadableHeight(), xmlBean.getHumanReadableHeight(), 0.01);
-        assertEquals(refBean.getIntercharGapWidth(), xmlBean.getIntercharGapWidth(), 0.01);
-        assertEquals(refBean.getModuleWidth(), xmlBean.getModuleWidth(), 0.01);
-        assertEquals(refBean.getQuietZone(), xmlBean.getQuietZone(), 0.01);
-        assertEquals(refBean.getTrackHeight(), xmlBean.getTrackHeight(), 0.01);
-        assertEquals(refBean.getVerticalQuietZone(), xmlBean.getVerticalQuietZone(), 0.01);
-        assertEquals(refBean.hasQuietZone(), xmlBean.hasQuietZone());
-        assertEquals(refBean.getChecksumMode(), xmlBean.getChecksumMode());
-        assertEquals(refBean.getMsgPosition(), xmlBean.getMsgPosition());
-        assertEquals(refBean.getPattern(), xmlBean.getPattern());
     }
     
     public void testLogic() throws Exception {

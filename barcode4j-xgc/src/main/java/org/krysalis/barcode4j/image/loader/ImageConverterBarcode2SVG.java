@@ -21,11 +21,9 @@ package org.krysalis.barcode4j.image.loader;
 import java.io.IOException;
 import java.util.Map;
 
-import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
-import org.krysalis.barcode4j.output.svg.AbstractSVGGeneratingCanvasProvider;
 import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.krysalis.barcode4j.tools.PageInfo;
 import org.krysalis.barcode4j.tools.VariableUtil;
@@ -49,7 +47,7 @@ public class ImageConverterBarcode2SVG extends AbstractImageConverter {
     /** An SVG image in form of a W3C DOM instance */
     private static final XMLNamespaceEnabledImageFlavor SVG_DOM
         = new XMLNamespaceEnabledImageFlavor(
-            ImageFlavor.XML_DOM, AbstractSVGGeneratingCanvasProvider.SVG_NAMESPACE);
+            ImageFlavor.XML_DOM, SVGCanvasProvider.SVG_NAMESPACE);
 
 
     @Override

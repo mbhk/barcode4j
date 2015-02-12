@@ -15,33 +15,37 @@
  */
 package org.krysalis.barcode4j.impl.code128;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author mk
  */
-public class Code128ConstantsTest extends TestCase {
+public class Code128ConstantsTest {
 
     /**
      * Test of fromInt method, of class Code128Constants.
      */
-    public void testFromInt() {
+    @Test
+    public void fromInt() {
         System.out.println("fromInt");
         int i = 7;
         Code128Constants result = Code128Constants.fromInt(i);
         assertEquals(Code128Constants.CODESET_ALL, result);
-        
+
         try {
             Code128Constants.fromInt(0);
             fail("Must throw an exception for 0");
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException e) {
+        }
     }
 
     /**
      * Test of and method, of class Code128Constants.
      */
-    public void testAnd() {
+    @Test
+    public void and() {
         System.out.println("and");
         Code128Constants a = Code128Constants.CODESET_A;
         Code128Constants b = Code128Constants.CODESET_B;
@@ -53,7 +57,8 @@ public class Code128ConstantsTest extends TestCase {
     /**
      * Test of getValue method, of class Code128Constants.
      */
-    public void testGetValue() {
+    @Test
+    public void getValue() {
         System.out.println("getValue");
         Code128Constants instance = Code128Constants.CODESET_BC;
         int expResult = 6;

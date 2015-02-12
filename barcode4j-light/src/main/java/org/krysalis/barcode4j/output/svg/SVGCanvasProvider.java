@@ -23,6 +23,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.TextAlignment;
+import org.krysalis.barcode4j.output.AbstractXMLGeneratingCanvasProvider;
 import org.krysalis.barcode4j.output.BarcodeCanvasSetupException;
 import org.krysalis.barcode4j.output.Orientation;
 import org.w3c.dom.DOMImplementation;
@@ -34,81 +35,123 @@ import org.w3c.dom.Element;
  * Implementation that outputs to a W3C DOM.
  *
  * @author Jeremias Maerki
- * @version 1.2
+ * @author mk
+ * @version 1.3
  */
-public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
+public class SVGCanvasProvider extends AbstractXMLGeneratingCanvasProvider {
+
+    /**
+     * the SVG namespace
+     */
+    public static final String SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+
     private static final Logger LOGGER = Logger.getLogger(SVGCanvasProvider.class.getName());
 
-    private DOMImplementation domImpl;
+    private final boolean useNamespace;
+    private final String prefix;
+
+    private final DOMImplementation domImpl;
     private Document doc;
     private Element detailGroup;
 
     /**
-     * Creates a new SVGCanvasProvider with namespaces enabled.
+     * Main Constructor.
+     *
+     * @param domImpl DOMImplementation to use (JAXP default is used when this
+     * is null)
+     * @param useNamespace Controls whether namespaces should be used
      * @param namespacePrefix the namespace prefix to use, null for no prefix
-     * @param orientation the barcode orientation (0, 90, 180, 270)
-     * @throws BarcodeCanvasSetupException if setting up the provider fails
+     * @param orientation the barcode orientation
      */
-    public SVGCanvasProvider(String namespacePrefix, Orientation orientation)
-                throws BarcodeCanvasSetupException {
-        this(null, namespacePrefix, orientation);
+    SVGCanvasProvider(DOMImplementation domImpl, boolean useNamespace, String namespacePrefix,
+            Orientation orientation) {
+        super(orientation);
+        if (namespacePrefix != null && namespacePrefix.isEmpty()) {
+            throw new IllegalArgumentException("No empty prefix allowed.");
+        }
+        if (!useNamespace && namespacePrefix != null) {
+            throw new IllegalArgumentException("No prefix allowed when namespaces are enabled.");
+        }
+        this.useNamespace = useNamespace;
+        this.prefix = namespacePrefix;
+        this.domImpl = initDOMImplementation(domImpl);
+        init();
+    }
+
+    /**
+     * Creates a new SVGCanvasProvider.
+     *
+     * @param domImpl DOMImplementation to use (JAXP default is used when this
+     * is null)
+     * @param useNamespace Controls whether namespaces should be used
+     * @param orientation the barcode orientation
+     */
+    public SVGCanvasProvider(DOMImplementation domImpl, boolean useNamespace,
+            Orientation orientation) {
+        this(domImpl, useNamespace, null, orientation);
     }
 
     /**
      * Creates a new SVGCanvasProvider with namespaces enabled.
-     * @param domImpl DOMImplementation to use (JAXP default is used when
-     *     this is null)
+     *
+     * @param domImpl DOMImplementation to use (JAXP default is used when this
+     * is null)
      * @param namespacePrefix the namespace prefix to use, null for no prefix
      * @param orientation the barcode orientation (0, 90, 180, 270)
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
     public SVGCanvasProvider(DOMImplementation domImpl, String namespacePrefix,
-                    Orientation orientation)
-                throws BarcodeCanvasSetupException {
-        super(namespacePrefix, orientation);
-        this.domImpl = domImpl;
-        init();
+            Orientation orientation) {
+        this(domImpl, true, namespacePrefix, orientation);
     }
 
     /**
      * Creates a new SVGCanvasProvider.
+     *
      * @param useNamespace Controls whether namespaces should be used
-     * @param orientation the barcode orientation (0, 90, 180, 270)
+     * @param orientation the barcode orientation
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public SVGCanvasProvider(boolean useNamespace, Orientation orientation)
-                throws BarcodeCanvasSetupException {
+    public SVGCanvasProvider(boolean useNamespace, Orientation orientation) {
         this(null, useNamespace, orientation);
     }
 
     /**
      * Creates a new SVGCanvasProvider.
-     * @param domImpl DOMImplementation to use (JAXP default is used when
-     *     this is null)
+     *
      * @param useNamespace Controls whether namespaces should be used
-     * @param orientation the barcode orientation (0, 90, 180, 270)
+     * @param orientation the barcode orientation
+     * @throws BarcodeCanvasSetupException
+     * @deprecated use {@link SVGCanvasProvider#SVGCanvasProvider(boolean, org.krysalis.barcode4j.output.Orientation) instead
+     */
+    @Deprecated
+    public SVGCanvasProvider(boolean useNamespace, int orientation) {
+        this(useNamespace, Orientation.fromInt(orientation));
+    }
+
+    /**
+     * Creates a new SVGCanvasProvider with namespaces enabled.
+     *
+     * @param namespacePrefix the namespace prefix to use, null for no prefix
+     * @param orientation the barcode orientation
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public SVGCanvasProvider(DOMImplementation domImpl, boolean useNamespace, Orientation orientation)
-                throws BarcodeCanvasSetupException {
-        super(useNamespace, orientation);
-        this.domImpl = domImpl;
-        init();
+    public SVGCanvasProvider(String namespacePrefix, Orientation orientation) {
+        this(null, true, namespacePrefix, orientation);
     }
 
     /**
      * Creates a new SVGCanvasProvider with default settings (with namespaces,
      * but without namespace prefix).
+     *
      * @param orientation the barcode orientation (0, 90, 180, 270)
      * @throws BarcodeCanvasSetupException if setting up the provider fails
      */
-    public SVGCanvasProvider(Orientation orientation) throws BarcodeCanvasSetupException {
-        super(orientation);
-        init();
+    public SVGCanvasProvider(Orientation orientation) {
+        this(null, true, null, orientation);
     }
 
     private void init() {
-        initDOMImplementation();
         doc = createDocument();
         final Element svg = doc.getDocumentElement();
 
@@ -139,6 +182,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
 
     /**
      * Returns the DOM document containing the SVG barcode.
+     *
      * @return the DOM document
      */
     public Document getDOM() {
@@ -147,6 +191,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
 
     /**
      * Returns the DOM fragment containing the SVG barcode.
+     *
      * @return the DOM fragment
      */
     public DocumentFragment getDOMFragment() {
@@ -167,17 +212,17 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
         svg.setAttribute("viewBox", "0 0 " + w + " " + h);
         String transform;
         switch (orientation) {
-        case NINETY:
-            transform = "rotate(-90) translate(-" + h + ")";
-            break;
-        case ONEHUNDRED_EIGHTY:
-            transform = "rotate(-180) translate(-" + w + " -" + h + ")";
-            break;
-        case TWOHUNDRED_SEVENTY:
-            transform = "rotate(-270) translate(0 -" + w + ")";
-            break;
-        default:
-            transform = null;
+            case NINETY:
+                transform = "rotate(-90) translate(-" + h + ")";
+                break;
+            case ONEHUNDRED_EIGHTY:
+                transform = "rotate(-180) translate(-" + w + " -" + h + ")";
+                break;
+            case TWOHUNDRED_SEVENTY:
+                transform = "rotate(-270) translate(0 -" + w + ")";
+                break;
+            default:
+                transform = null;
         }
         if (transform != null) {
             detailGroup.setAttribute("transform", transform);
@@ -196,7 +241,7 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
 
     @Override
     public void deviceText(String text, double x1, double x2, double y1,
-                            String fontName, double fontSize, TextAlignment textAlign) {
+            String fontName, double fontSize, TextAlignment textAlign) {
         final Element el = createElement("text");
         String anchor;
         double tx;
@@ -222,18 +267,53 @@ public class SVGCanvasProvider extends AbstractSVGGeneratingCanvasProvider {
         detailGroup.appendChild(el);
     }
 
-    private void initDOMImplementation() {
+    private DOMImplementation initDOMImplementation(DOMImplementation in) {
         try {
-            if (this.domImpl == null) {
+            DOMImplementation res = in;
+            if (res == null) {
                 final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 dbf.setNamespaceAware(true);
                 dbf.setValidating(false);
                 final DocumentBuilder db = dbf.newDocumentBuilder();
-                this.domImpl = db.getDOMImplementation();
+                res = db.getDOMImplementation();
             }
+            return res;
         } catch (ParserConfigurationException pce) {
             LOGGER.log(Level.SEVERE, "Error while creating SVG Document", pce);
             throw new IllegalStateException("Error while creating SVG Document", pce);
+        }
+    }
+
+    /**
+     * Indicates whether namespaces are enabled.
+     *
+     * @return true if namespaces are enabled
+     */
+    public boolean isNamespaceEnabled() {
+        return this.useNamespace;
+    }
+
+    /**
+     * Returns the namespace prefix
+     *
+     * @return the namespace prefix (may be null)
+     */
+    public String getNamespacePrefix() {
+        return this.prefix;
+    }
+
+    /**
+     * Constructs a fully qualified element name based on the namespace
+     * settings.
+     *
+     * @param localName the local name
+     * @return the fully qualified name
+     */
+    protected String getQualifiedName(String localName) {
+        if (this.prefix == null) {
+            return localName;
+        } else {
+            return this.prefix + ':' + localName;
         }
     }
 }
