@@ -31,4 +31,5 @@ handle the message.
 
 Enhancements
 ============
-* Make Orientation more robust: 277 should be Orientation.TWOHUNDRED_SEVENTY
+* Reenable FOP and provide documentation and examples
+* ~~Make Orientation more robust: 277 should be Orientation.TWOHUNDRED_SEVENTY~~
