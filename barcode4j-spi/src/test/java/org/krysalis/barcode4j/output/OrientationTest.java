@@ -64,4 +64,10 @@ public class OrientationTest {
         } catch (IllegalArgumentException e) {}
     }
 
+    @Test
+    public void lenientFromInt() {
+        assertEquals(Orientation.ZERO, Orientation.lenientFromInt(44));
+        assertEquals(Orientation.NINETY, Orientation.lenientFromInt(45));
+        assertEquals(Orientation.ZERO, Orientation.lenientFromInt(359));
+    }
 }
