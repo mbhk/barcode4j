@@ -86,8 +86,12 @@ public class BarcodePanel extends JPanel {
      * @param orientation rotation in degrees
      */
     public void setOrientation(int orientation) {
-        this.orientation = Orientation.fromInt(orientation);
-        repaint();
+        final Orientation intermediate = Orientation.lenientFromInt(orientation);
+
+        if (this.orientation != intermediate) {
+            this.orientation = intermediate;
+            repaint();
+        }
     }
 
     @Override
