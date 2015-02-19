@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+            http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+              version="2.0">
+    <name>barcode4j</name>
+    <application>
+        <resource-handler>net.sf.barcode4j.taglib.BarcodeResourceHandler</resource-handler>
+    </application>
+    <component>
+        <component-type>net.sf.barcode4j.taglib.Barcode</component-type>
+        <component-class>net.sf.barcode4j.taglib.Barcode</component-class>
+    </component>
+    <render-kit>
+        <renderer>
+            <component-family>net.sf.barcode4j.taglib</component-family>
+            <renderer-type>net.sf.barcode4j.taglib.BarcodeRenderer</renderer-type>
+            <renderer-class>net.sf.barcode4j.taglib.BarcodeRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+</faces-config>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<facelet-taglib version="2.0"
+                xmlns="http://java.sun.com/xml/ns/javaee"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
+
+    <namespace>http://barcode4j.sourceforge.net/taglib</namespace>
+    <composite-library-name>barcode4j</composite-library-name>
+
+    <tag>
+        <tag-name>barcode</tag-name>
+        <description><![CDATA[Barcode component for rendering different kinds of Barcode symbologies.]]></description>
+        <component>
+            <component-type>net.sf.barcode4j.taglib.Barcode</component-type>
+            <renderer-type>net.sf.barcode4j.taglib.BarcodeRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description><![CDATA[Message encoded in this barcode.]]></description>
+            <name>message</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Barcode symbologie (e.g. Datamatrix).]]></description>
+            <name>symbologie</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Orientation in steps of 90 degrees.]]></description>
+            <name>orientation</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+    </tag>
+
+</facelet-taglib>
