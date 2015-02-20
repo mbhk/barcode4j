@@ -18,8 +18,6 @@ package net.sf.barcode4j.taglib;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -33,13 +31,11 @@ import org.krysalis.barcode4j.output.Orientation;
  */
 public class BarcodeRenderer extends Renderer {
 
-    private static final Logger LOGGER = Logger.getLogger(BarcodeRenderer.class.getName());
-
     private String constructUrl(FacesContext context, String message, String symbologie, Orientation orientation) throws UnsupportedEncodingException {
-        Resource resource = context.getApplication().getResourceHandler().createResource("barcode.svg", "barcode4j");
-        String resourcePath = resource.getRequestPath();
+        final Resource resource = context.getApplication().getResourceHandler().createResource("barcode.svg", "barcode4j");
+        final String resourcePath = resource.getRequestPath();
 
-        StringBuilder res = new StringBuilder(resourcePath);
+        final StringBuilder res = new StringBuilder(resourcePath);
         res.append("&")
                 .append("orientation=")
                 .append(orientation)
@@ -55,13 +51,12 @@ public class BarcodeRenderer extends Renderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        LOGGER.log(Level.INFO, "encodeEnd {0}", component);
-        ResponseWriter writer = context.getResponseWriter();
-        Barcode barcode = (Barcode) component;
+        final ResponseWriter writer = context.getResponseWriter();
+        final Barcode barcode = (Barcode) component;
 
-        Object message = barcode.getValue();
-        String symbologie = barcode.getSymbologie();
-        Orientation orientation = barcode.getOrientation();
+        final Object message = barcode.getValue();
+        final String symbologie = barcode.getSymbologie();
+        final Orientation orientation = barcode.getOrientation();
 
         if (message == null) {
             return;
@@ -72,8 +67,8 @@ public class BarcodeRenderer extends Renderer {
         writer.writeAttribute("alt", barcode.getAlt(), "alt");
         writer.writeAttribute("width", barcode.getWidth(), "width");
         writer.writeAttribute("height", barcode.getHeight(), "height");
-        String url = constructUrl(context, (String)message, symbologie, orientation);
-        writer.writeAttribute("src", url, null);
+        writer.writeAttribute("src",
+                constructUrl(context, (String) message, symbologie, orientation), null);
         writer.endElement("img");
     }
 }

@@ -34,6 +34,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeGeneratorProvider;
@@ -95,37 +97,32 @@ public class BarcodeResourceHandler extends ResourceHandlerWrapper {
 
         @Override
         public InputStream getInputStream() throws IOException {
-            /*
-             TODO: This method must be made much more robust!
-             */
+            final FacesContext context = FacesContext.getCurrentInstance();
+            final ExternalContext externalContext = context.getExternalContext();
+            final Map<String, String> params = externalContext.getRequestParameterMap();
 
-            FacesContext context = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = context.getExternalContext();
-            Map<String, String> params = externalContext.getRequestParameterMap();
-
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            final ByteArrayOutputStream os = new ByteArrayOutputStream();
             try {
                 if (params.get("orientation") != null && params.get("symbologie") != null && params.get("message") != null) {
-                    LOGGER.info("handling barcode4j resourcerequest");
                     externalContext.setResponseContentType("image/svg+xml");
-                    SVGCanvasProvider svgCanvasProvider = new SVGCanvasProvider(true, Orientation.valueOf(params.get("orientation")));
-                    BarcodeGenerator gen = BarcodeGeneratorProvider.getInstance().getBarcodeGenerator(params.get("symbologie"));
+                    final SVGCanvasProvider svgCanvasProvider = new SVGCanvasProvider(true, Orientation.valueOf(params.get("orientation")));
+                    final BarcodeGenerator gen = BarcodeGeneratorProvider.getInstance().getBarcodeGenerator(params.get("symbologie"));
                     gen.generateBarcode(svgCanvasProvider, params.get("message"));
-                    DocumentFragment frag = svgCanvasProvider.getDOMFragment();
+                    final DocumentFragment frag = svgCanvasProvider.getDOMFragment();
 
-                    TransformerFactory factory = TransformerFactory.newInstance();
-                    Transformer trans = factory.newTransformer();
-                    Source src = new javax.xml.transform.dom.DOMSource(frag);
-                    Result res = new javax.xml.transform.stream.StreamResult(os);
+                    final Transformer trans = TransformerFactory.newInstance()
+                            .newTransformer();
+                    final Source src = new DOMSource(frag);
+                    final Result res = new StreamResult(os);
                     trans.transform(src, res);
                 }
                 os.flush();
             } catch (BarcodeException ex) {
-                Logger.getLogger(BarcodeResourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(Level.SEVERE, null, ex);
             } catch (TransformerConfigurationException ex) {
-                Logger.getLogger(BarcodeResourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(Level.SEVERE, null, ex);
             } catch (TransformerException ex) {
-                Logger.getLogger(BarcodeResourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(Level.SEVERE, null, ex);
             }
             return new ByteArrayInputStream(os.toByteArray());
         }
