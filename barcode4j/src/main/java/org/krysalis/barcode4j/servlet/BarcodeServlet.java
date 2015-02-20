@@ -152,9 +152,6 @@ public class BarcodeServlet extends HttpServlet {
             response.setContentLength(bout.size());
             response.getOutputStream().write(bout.toByteArray());
             response.getOutputStream().flush();
-        } catch (ConfigurationException e) {
-            LOGGER.log(Level.SEVERE, ERROR_WHILE_GENERATING_BARCODE, e);
-            throw new ServletException(e);
         } catch (BarcodeException e) {
             LOGGER.log(Level.SEVERE, ERROR_WHILE_GENERATING_BARCODE, e);
             throw new ServletException(e);

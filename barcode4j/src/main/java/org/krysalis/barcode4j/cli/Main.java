@@ -202,9 +202,9 @@ public class Main {
         } catch (IOException ioe) {
             exitHandler.failureExit(this,
                 "Error writing output file: " + ioe.getMessage(), null, -5);
-        } catch (ConfigurationException ce) {
+        } catch (IllegalArgumentException e) {
             exitHandler.failureExit(this,
-                "Configuration problem: " + ce.getMessage(), ce, -6);
+                "Error generating the barcode", e, -6);
         } catch (BarcodeException be) {
             exitHandler.failureExit(this,
                 "Error generating the barcode", be, -3);

@@ -134,8 +134,6 @@ public class BarcodeTask extends Task {
             out.close();
         } catch (IOException ioe) {
             throw new BuildException("Error writing output file: " + ioe.getMessage());
-        } catch (ConfigurationException ce) {
-            throw new BuildException("Configuration problem: " + ce.getMessage(), ce);
         } catch (BarcodeException be) {
             throw new BuildException("Error generating the barcode", be);
         }
