@@ -32,13 +32,13 @@ import org.krysalis.barcode4j.output.Orientation;
  * @author mk
  */
 public class BarcodeRenderer extends Renderer {
-    
+
     private static final Logger LOGGER = Logger.getLogger(BarcodeRenderer.class.getName());
-    
+
     private String constructUrl(FacesContext context, String message, String symbologie, Orientation orientation) throws UnsupportedEncodingException {
         Resource resource = context.getApplication().getResourceHandler().createResource("barcode.svg", "barcode4j");
         String resourcePath = resource.getRequestPath();
-        
+
         StringBuilder res = new StringBuilder(resourcePath);
         res.append("&")
                 .append("orientation=")
@@ -49,26 +49,30 @@ public class BarcodeRenderer extends Renderer {
                 .append("&")
                 .append("message=")
                 .append(URLEncoder.encode(message, "UTF-8"));
-        
+
         return res.toString();
     }
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         LOGGER.log(Level.INFO, "encodeEnd {0}", component);
         ResponseWriter writer = context.getResponseWriter();
         Barcode barcode = (Barcode) component;
-        
-        String message = barcode.getMessage();
+
+        Object message = barcode.getValue();
         String symbologie = barcode.getSymbologie();
         Orientation orientation = barcode.getOrientation();
-        
+
+        if (message == null) {
+            return;
+        }
+
         writer.startElement("img", barcode);
         writer.writeAttribute("id", barcode.getClientId(context), "id");
-        writer.writeAttribute("alt", message, "alt");
-        
-        String url = constructUrl(context, message, symbologie, orientation);
-        // TODO Construct URL
+        writer.writeAttribute("alt", barcode.getAlt(), "alt");
+        writer.writeAttribute("width", barcode.getWidth(), "width");
+        writer.writeAttribute("height", barcode.getHeight(), "height");
+        String url = constructUrl(context, (String)message, symbologie, orientation);
         writer.writeAttribute("src", url, null);
         writer.endElement("img");
     }

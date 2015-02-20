@@ -28,7 +28,7 @@ public class Barcode extends HtmlGraphicImage {
 
     enum PropertyKeys {
 
-        MESSAGE, SYMBOLOGIE, ORIENTATION
+        SYMBOLOGIE, ORIENTATION
     }
 
     public Barcode() {
@@ -38,14 +38,6 @@ public class Barcode extends HtmlGraphicImage {
     @Override
     public String getFamily() {
         return BARCODE_COMPONENT_FAMILY;
-    }
-
-    public String getMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.MESSAGE);
-    }
-
-    public void setMessage(String message) {
-        getStateHelper().put(PropertyKeys.MESSAGE, message);
     }
 
     public String getSymbologie() {
