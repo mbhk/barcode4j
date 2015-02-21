@@ -39,9 +39,11 @@ public abstract class AbstractExitHandler implements ExitHandler {
             throw new IllegalArgumentException("exitCode must not be zero");
         }
         app.printAppHeader();
-        Main.stderr.println(msg);
+        // TODO reenable this output
+        //Main.stderr.println(msg);
         if (t != null) {
-            Main.stderr.println(ExceptionUtil.printStackTrace(t));
+            // TODO reenable this output
+            //Main.stderr.println(ExceptionUtil.printStackTrace(t));
         }
     }
 

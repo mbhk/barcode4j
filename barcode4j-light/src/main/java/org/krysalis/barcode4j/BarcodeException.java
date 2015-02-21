@@ -33,4 +33,8 @@ public class BarcodeException extends Exception {
         super(message);
     }
 
+    public BarcodeException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

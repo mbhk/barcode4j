@@ -17,16 +17,15 @@ package org.krysalis.barcode4j.cli;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
@@ -40,15 +39,11 @@ import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.krysalis.barcode4j.tools.MimeTypes;
 
 import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
-import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
-import org.apache.avalon.framework.logger.Logger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.MissingOptionException;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
@@ -60,55 +55,62 @@ import org.krysalis.barcode4j.output.Orientation;
  * Command-line interface.
  *
  * @author Jeremias Maerki
- * @version $Id$
+ * @author mk
+ * @version 1.2
  */
 public class Main {
 
-    private static final String[] APP_HEADER = {
-        "Barcode4J command-line application, Version " + getVersion(),
-        ""};
+    private static final String APP_HEADER = String.format("Barcode4J command-line application, Version %s%n", getVersion());
 
-    /** stdout for this application (default: System.out) */
-    public static PrintStream stdout = System.out;
-    /** stderr for this application (default: System.err) */
-    public static PrintStream stderr = System.err;
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+    /**
+     * stdout for this application (default: System.out)
+     */
+    private PrintStream stdout = System.out;
+    /**
+     * stderr for this application (default: System.err)
+     */
+    private PrintStream stderr = System.err;
 
-    private static ExitHandler exitHandler = new DefaultExitHandler();
+    private ExitHandler exitHandler = new DefaultExitHandler();
     private Options options;
     private boolean headerPrinted = false;
-    private Logger log;
 
     /**
      * Main method.
+     *
      * @param args commandline arguments
      */
-    public static void main(String[] args) {
+    public static void main(String... args) {
         final Main app = new Main();
         app.handleCommandLine(args);
     }
 
-    /**
-     * Set an alternative exit handler here.
-     * @param handler the alternative exit handler
-     */
-    public static void setExitHandler(ExitHandler handler) {
-        exitHandler = handler;
+    public void setOutStream(PrintStream out) {
+        stdout = out;
+    }
+
+    public void setErrStream(PrintStream err) {
+        stderr = err;
     }
 
     /**
-     * Handles the command line. The method calls the exit handler upon
-     * completion.
-     * @param args the command line arguments
+     * Set an alternative exit handler here.
+     *
+     * @param handler the alternative exit handler
      */
-    public void handleCommandLine(String[] args) {
-        CommandLine cl;
-        String[] msg;
+    public void setExitHandler(ExitHandler handler) {
+        exitHandler = handler;
+    }
+
+    private CommandLine parseCommandLine(String... args) {
+        CommandLine res = null;
         try {
             final CommandLineParser clp = new PosixParser();
-            cl = clp.parse(getOptions(), args);
+            res = clp.parse(getOptions(), args);
 
             //Message
-            msg = cl.getArgs();
+            String[] msg = res.getArgs();
             if (msg.length == 0) {
                 throw new ParseException("No message");
             }
@@ -118,191 +120,165 @@ public class Main {
         } catch (MissingOptionException moe) {
             printHelp(new PrintWriter(stdout));
             exitHandler.failureExit(this,
-                "Bad command line. Missing option: " + moe.getMessage(), null, -2);
-            return; //never reached
+                    "Bad command line. Missing option: " + moe.getMessage(), null, -2);
         } catch (ParseException pe) {
             printHelp(new PrintWriter(stdout));
             //pe.printStackTrace();
             exitHandler.failureExit(this,
-                "Bad command line: " + pe.getMessage(), null, -2);
-            return; //never reached
+                    "Bad command line: " + pe.getMessage(), null, -2);
         }
+        return res;
+    }
+
+    /**
+     * Handles the command line.
+     *
+     * The method calls the exit handler upon completion.
+     *
+     * @param args the command line arguments
+     */
+    public void handleCommandLine(String... args) {
+        final CommandLine cl = parseCommandLine(args);
+        if (cl == null) {
+            return;
+        }
+
+        final String message = cl.getArgs()[0];
+
+        OutputStream out = stdout;
         try {
-            OutputStream out;
             if (cl.hasOption("o")) {
-                int logLevel = AdvancedConsoleLogger.LEVEL_INFO;
                 if (cl.hasOption('v')) {
-                    logLevel = AdvancedConsoleLogger.LEVEL_DEBUG;
+                    Logger logger = Logger.getGlobal();
+                    logger.setLevel(Level.ALL);
                 }
-                log = new AdvancedConsoleLogger(logLevel, false, stdout, stderr);
                 printAppHeader();
                 final File outFile = new File(cl.getOptionValue("o"));
-                if (log.isDebugEnabled()) {
-                    log.debug("Output to: " + outFile.getCanonicalPath());
-                }
-                out = new java.io.FileOutputStream(outFile);
+                LOGGER.log(Level.FINE, "Output to: {}", outFile.getCanonicalPath());
+                out = new FileOutputStream(outFile);
             } else {
-                log = new AdvancedConsoleLogger(AdvancedConsoleLogger.LEVEL_ERROR,
-                        false, stderr, stderr);
                 printAppHeader();
-                out = stdout;
             }
 
-            log.debug("Message: " + msg[0]);
+            LOGGER.log(Level.FINE, "Message: {}", message);
 
             //Output format
-            final String format = MimeTypes.expandFormat(
-                    cl.getOptionValue("f", MimeTypes.MIME_SVG));
+            final String format = MimeTypes.expandFormat(cl.getOptionValue("f", MimeTypes.MIME_SVG));
+            LOGGER.log(Level.INFO, "Generating {}...", format);
             final Orientation orientation = Orientation.ZERO;
-            log.info("Generating " + format + "...");
             final BarcodeUtil util = BarcodeUtil.getInstance();
             final BarcodeGenerator gen = util.createBarcodeGenerator(
                     getConfiguration(cl));
 
+            final boolean renderRes;
             if (MimeTypes.MIME_SVG.equals(format)) {
-                //Create Barcode and render it to SVG
-                final SVGCanvasProvider svg = new SVGCanvasProvider(false, orientation);
-                gen.generateBarcode(svg, msg[0]);
-
-                //Serialize SVG barcode
-                try {
-                    final TransformerFactory factory = TransformerFactory.newInstance();
-                    final Transformer trans = factory.newTransformer();
-                    final Source src = new javax.xml.transform.dom.DOMSource(
-                        svg.getDOMFragment());
-                    final Result res = new javax.xml.transform.stream.StreamResult(out);
-                    trans.transform(src, res);
-                } catch (TransformerException te) {
-                    exitHandler.failureExit(this, "XML/XSLT library error", te, -6);
-                }
+                renderRes = renderSvg(message, gen, out, orientation);
             } else if (MimeTypes.MIME_EPS.equals(format)) {
-                final EPSCanvasProvider eps = new EPSCanvasProvider(out, orientation);
-                gen.generateBarcode(eps, msg[0]);
-                eps.finish();
+                renderRes = renderEps(message, gen, out, orientation);
             } else {
-                final int dpi = Integer.parseInt(cl.getOptionValue('d', "300"));
-                log.debug("Resolution: " + dpi + "dpi");
-                BitmapCanvasProvider bitmap;
-                if (cl.hasOption("bw")) {
-                    log.debug("Black/white image (1-bit)");
-                    bitmap = new BitmapCanvasProvider(out,
-                        format, dpi, BufferedImage.TYPE_BYTE_BINARY, false, orientation);
-                } else {
-                    log.debug("Grayscale image (8-bit) with anti-aliasing");
-                    bitmap = new BitmapCanvasProvider(out,
-                        format, dpi, BufferedImage.TYPE_BYTE_GRAY, true, orientation);
-                }
-                gen.generateBarcode(bitmap, msg[0]);
-                bitmap.finish();
+                renderRes = renderBitmap(message, gen, out, orientation, format, Integer.parseInt(cl.getOptionValue('d', "300")), cl.hasOption("bw"));
             }
 
-            out.close();
-            log.info("done.");
+            if (!renderRes) {
+                throw new IOException("Failure while writing BarcodeImage.");
+            }
+            LOGGER.info("done.");
             exitHandler.successfulExit(this);
         } catch (IOException ioe) {
             exitHandler.failureExit(this,
-                "Error writing output file: " + ioe.getMessage(), null, -5);
+                    "Error writing output file: " + ioe.getMessage(), null, -5);
         } catch (IllegalArgumentException e) {
             exitHandler.failureExit(this,
-                "Error generating the barcode", e, -6);
+                    "Error generating the barcode", e, -6);
         } catch (BarcodeException be) {
             exitHandler.failureExit(this,
-                "Error generating the barcode", be, -3);
+                    "Error generating the barcode", be, -3);
+        } finally {
+            try {
+                out.close();
+            } catch (IOException ex) {
+                exitHandler.failureExit(this,
+                        "Error writing output file: " + ex.getMessage(), null, -5);
+            }
         }
     }
 
     private Options getOptions() {
         if (options == null) {
             this.options = new Options();
-            final Option opt;
 
-            this.options.addOption(OptionBuilder
-                .withLongOpt("verbose")
-                .withDescription("enable debug output")
-                .create('v'));
+            OptionBuilder.withLongOpt("verbose");
+            OptionBuilder.withDescription("enable debug output");
+            this.options.addOption(OptionBuilder.create('v'));
 
             //Group: file/stdout
-            this.options.addOption(OptionBuilder
-                .withLongOpt("output")
-                .withArgName("file")
-                .hasArg()
-                .withDescription("the output filename")
-                .create('o'));
+            OptionBuilder.withLongOpt("output");
+            OptionBuilder.withArgName("file");
+            OptionBuilder.hasArg();
+            OptionBuilder.withDescription("the output filename");
+            this.options.addOption(OptionBuilder.create('o'));
 
             //Group: config file/barcode type
             final OptionGroup group = new OptionGroup();
             group.setRequired(true);
-            group.addOption(OptionBuilder
-                .withArgName("file")
-                .withLongOpt("config")
-                .hasArg()
-                .withDescription("the config file")
-                .create('c'));
-            group.addOption(OptionBuilder
-                .withArgName("name")
-                .withLongOpt("symbol")
-                .hasArg()
-                .withDescription("the barcode symbology to select "
-                    + "(default settings, use -c if you want to customize)")
-                .create('s'));
+            OptionBuilder.withArgName("file");
+            OptionBuilder.withLongOpt("config");
+            OptionBuilder.hasArg();
+            OptionBuilder.withDescription("the config file");
+            group.addOption(OptionBuilder.create('c'));
+
+            OptionBuilder.withArgName("name");
+            OptionBuilder.withLongOpt("symbol");
+            OptionBuilder.hasArg();
+            OptionBuilder.withDescription("the barcode symbology to select (default settings, use -c if you want to customize)");
+            group.addOption(OptionBuilder.create('s'));
             this.options.addOptionGroup(group);
 
             //Output format type
-            this.options.addOption(OptionBuilder
-                .withArgName("format")
-                .withLongOpt("format")
-                .hasArg()
-                .withDescription("the output format: MIME type or file "
-                    + "extension\n"
-                    + "Default: " + MimeTypes.MIME_SVG + " (SVG)")
-                .create('f'));
+            OptionBuilder.withArgName("format");
+            OptionBuilder.withLongOpt("format");
+            OptionBuilder.hasArg();
+            OptionBuilder.withDescription(String.format("the output format: MIME type or file extension%nDefault: %s (SVG)", MimeTypes.MIME_SVG));
+            this.options.addOption(OptionBuilder.create('f'));
 
             //Bitmap-specific options
-            this.options.addOption(OptionBuilder
-                .withArgName("integer")
-                .withLongOpt("dpi")
-                .hasArg()
-                .withDescription("(for bitmaps) the image resolution in dpi\n"
-                    + "Default: 300")
-                .create('d'));
-            this.options.addOption(OptionBuilder
-                .withLongOpt("bw")
-                .withDescription("(for bitmaps) create monochrome (1-bit) "
-                    + "image instead of grayscale (8-bit)")
-                .create());
+            OptionBuilder.withArgName("integer");
+            OptionBuilder.withLongOpt("dpi");
+            OptionBuilder.hasArg();
+            OptionBuilder.withDescription(String.format("(for bitmaps) the image resolution in dpi%nDefault: 300"));
+            this.options.addOption(OptionBuilder.create('d'));
+
+            OptionBuilder.withLongOpt("bw");
+            OptionBuilder.withDescription("(for bitmaps) create monochrome (1-bit) image instead of grayscale (8-bit)");
+            this.options.addOption(OptionBuilder.create());
         }
         return this.options;
     }
 
     private Configuration getConfiguration(CommandLine cl) {
+        Configuration res = null;
         if (cl.hasOption("s")) {
             final String sym = cl.getOptionValue("s");
             final DefaultConfiguration cfg = new DefaultConfiguration("cfg");
             final DefaultConfiguration child = new DefaultConfiguration(sym);
             cfg.addChild(child);
-            return cfg;
-        }
-        if (cl.hasOption("c")) {
+            res = cfg;
+        } else if (cl.hasOption("c")) {
             try {
                 final String filename = cl.getOptionValue("c");
-                final File cfgFile = new File(filename);
-                if (!cfgFile.exists() || !cfgFile.isFile()) {
-                    throw new FileNotFoundException(
-                        "Config file not found: " + cfgFile);
-                }
-                log.info("Using configuration: " + cfgFile);
-
-                final DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
-                return builder.buildFromFile(cfgFile);
-            } catch (Exception e) {
+                LOGGER.log(Level.INFO, "Using configurationfile: {}", filename);
+                res = ConfigurationBuilder.buildFromFile(filename);
+            } catch (BarcodeException e) {
                 exitHandler.failureExit(this,
-                    "Error reading configuration file: " + e.getMessage(), null, -3);
+                        "Error reading configuration file: " + e.getMessage(), null, -3);
             }
         }
-        return new DefaultConfiguration("cfg");
+        return (res == null) ? new DefaultConfiguration("cfg") : res;
     }
 
-    /** @return the Barcode4J version */
+    /**
+     * @return the Barcode4J version
+     */
     public static String getVersion() {
         String version = null;
         final Package jarinfo = Main.class.getPackage();
@@ -317,74 +293,117 @@ public class Main {
     }
 
     /**
-     * Prints the application header on the console. Ensures that this is only
-     * done once.
+     * Prints the application header on the console.
+     *
+     * Ensures that this is only done once.
      */
     public void printAppHeader() {
         if (!headerPrinted) {
-            if (log == null) {
-                for (int i = 0; i < APP_HEADER.length; i++) {
-                    stdout.println(APP_HEADER[i]);
-                }                
-            } else {
-                for (int i = 0; i < APP_HEADER.length; i++) {
-                    log.info(APP_HEADER[i]);
-                }
-            }
+            LOGGER.info(APP_HEADER);
             headerPrinted = true;
         }
+    }
+
+    /**
+     * Get a list of additional supported MIME types.
+     *
+     * @return Set of MIME-Types
+     */
+    private Set<String> computeAdditionalMimes() {
+        final Set<String> additionalMimes = BitmapEncoderRegistry.getSupportedMIMETypes();
+        additionalMimes.remove("");
+        additionalMimes.remove(MimeTypes.MIME_PNG);
+        additionalMimes.remove("image/png");
+        additionalMimes.remove(MimeTypes.MIME_JPEG);
+        additionalMimes.remove(MimeTypes.MIME_TIFF);
+        additionalMimes.remove(MimeTypes.MIME_GIF);
+        additionalMimes.remove(MimeTypes.MIME_BMP);
+        return additionalMimes;
     }
 
     private void printHelp(PrintWriter writer) {
         printAppHeader();
 
-        //Get a list of additional supported MIME types
-        final Set knownMimes = new java.util.HashSet();
-        knownMimes.add(null);
-        knownMimes.add("");
-        knownMimes.add(MimeTypes.MIME_PNG);
-        knownMimes.add("image/png");
-        knownMimes.add(MimeTypes.MIME_JPEG);
-        knownMimes.add(MimeTypes.MIME_TIFF);
-        knownMimes.add(MimeTypes.MIME_GIF);
-        knownMimes.add(MimeTypes.MIME_BMP);
-        final Set additionalMimes = BitmapEncoderRegistry.getSupportedMIMETypes();
-        additionalMimes.removeAll(knownMimes);
-
         final HelpFormatter help = new HelpFormatter();
-        final String unavailable = " (unavailable)";
         help.printHelp(writer, HelpFormatter.DEFAULT_WIDTH,
-            "java -jar barcode4j.jar "
+                "java -jar barcode4j.jar "
                 + "[-v] [[-s <symbology>]|[-c <cfg-file>]] [-f <format>] "
                 + "[-d <dpi>] [-bw] [-o <file>] <message>",
-            null,
-            getOptions(),
-            HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD,
-            "\nValid output formats:"
-                + "\nSVG: " + MimeTypes.MIME_SVG + ", svg"
-                + "\nEPS: " + MimeTypes.MIME_EPS + ", eps"
-                + "\nPNG: " + MimeTypes.MIME_PNG + ", png"
-                    + (BitmapEncoderRegistry.supports(MimeTypes.MIME_PNG)
-                        ? "" : unavailable)
-                + "\nTIFF: " + MimeTypes.MIME_TIFF + ", tiff, tif"
-                    + (BitmapEncoderRegistry.supports(MimeTypes.MIME_TIFF)
-                        ? "" : unavailable)
-                + "\nJPEG: " + MimeTypes.MIME_JPEG + ", jpeg, jpg"
-                    + (BitmapEncoderRegistry.supports(MimeTypes.MIME_JPEG)
-                        ? "" : unavailable)
-                + "\nGIF: " + MimeTypes.MIME_GIF + ", gif"
-                    + (BitmapEncoderRegistry.supports(MimeTypes.MIME_GIF)
-                        ? "" : unavailable)
-                + "\nBMP: " + MimeTypes.MIME_BMP + ", bmp"
-                    + (BitmapEncoderRegistry.supports(MimeTypes.MIME_BMP)
-                        ? "" : unavailable)
-                + (additionalMimes.size() > 0
-                    ? "\nAdditional supported formats:\n" + additionalMimes
-                    : "")
-                + "\n"
-                + "\nIf -o is omitted the output is written to stdout.");
+                null,
+                getOptions(),
+                HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD,
+                getAvailableFormatsHelp(computeAdditionalMimes()) + "\n\nIf -o is omitted the output is written to stdout.");
         writer.flush();
-
     }
 
+    private String mimeTypeAvailable(String mimeType) {
+        return BitmapEncoderRegistry.supports(mimeType) ? "" : " (unavailable)";
+    }
+
+    private String getAvailableFormatsHelp(Set<String> additionalMimes) {
+        final String nl = System.getProperty("line.separator");
+        final StringBuilder formats = new StringBuilder(300);
+        formats.append(nl).append("Valid output formats:")
+                .append(nl).append("SVG: " + MimeTypes.MIME_SVG + ", svg")
+                .append(nl).append("EPS: " + MimeTypes.MIME_EPS + ", eps")
+                .append(nl).append("PNG: " + MimeTypes.MIME_PNG + ", png").append(mimeTypeAvailable(MimeTypes.MIME_PNG))
+                .append(nl).append("TIFF: " + MimeTypes.MIME_TIFF + ", tiff, tif").append(mimeTypeAvailable(MimeTypes.MIME_TIFF))
+                .append(nl).append("JPEG: " + MimeTypes.MIME_JPEG + ", jpeg, jpg").append(mimeTypeAvailable(MimeTypes.MIME_JPEG))
+                .append(nl).append("GIF: " + MimeTypes.MIME_GIF + ", gif").append(mimeTypeAvailable(MimeTypes.MIME_GIF))
+                .append(nl).append("BMP: " + MimeTypes.MIME_BMP + ", bmp").append(mimeTypeAvailable(MimeTypes.MIME_BMP));
+
+        if (!additionalMimes.isEmpty()) {
+            formats.append(nl).append("Additional supported formats:").append(nl);
+            for (final String mime : additionalMimes) {
+                formats.append(mime).append(nl);
+            }
+        }
+        return formats.toString();
+    }
+
+    private boolean renderBitmap(String message, BarcodeGenerator gen, OutputStream out, Orientation orientation, String format, int dpi, boolean bw) {
+        final BitmapCanvasProvider bitmap;
+        boolean res = true;
+        final boolean antiAlias = !bw;
+        final int imageType = bw ? BufferedImage.TYPE_BYTE_BINARY : BufferedImage.TYPE_BYTE_GRAY;
+        LOGGER.log(Level.FINE, "Resolution: {}dpi", dpi);
+        LOGGER.log(Level.FINE, bw ? "Black/white image (1-bit)" : "Grayscale image (8-bit) with anti-aliasing");
+        LOGGER.log(Level.FINE, "AntiAlias: {}, ImageType: {}", new Object[]{antiAlias, imageType});
+
+        bitmap = new BitmapCanvasProvider(out, format, dpi, imageType, antiAlias, orientation);
+        gen.generateBarcode(bitmap, message);
+        try {
+            bitmap.finish();
+        } catch (IOException e) {
+            res = false;
+            LOGGER.log(Level.SEVERE, "Error rendering Barcode in Bitmap format " + format + ".", e);
+        }
+        return res;
+    }
+
+    private boolean renderEps(String message, BarcodeGenerator gen, OutputStream out, Orientation orientation) {
+        boolean res = true;
+        try {
+            final EPSCanvasProvider eps = new EPSCanvasProvider(out, orientation);
+            gen.generateBarcode(eps, message);
+            eps.finish();
+        } catch (IOException e) {
+            res = false;
+            LOGGER.log(Level.SEVERE, "Error rendering Barcode in EPS format.", e);
+        }
+        return res;
+    }
+
+    private boolean renderSvg(String message, BarcodeGenerator gen, OutputStream out, Orientation orientation) {
+        final SVGCanvasProvider svg = new SVGCanvasProvider(true, orientation);
+        gen.generateBarcode(svg, message);
+        try {
+            TransformerFactory.newInstance().newTransformer()
+                    .transform(new javax.xml.transform.dom.DOMSource(svg.getDOMFragment())
+                    , new javax.xml.transform.stream.StreamResult(out));
+        } catch (TransformerException te) {
+            exitHandler.failureExit(this, "XML/XSLT library error", te, -6);
+        }
+        return true;
+    }
 }

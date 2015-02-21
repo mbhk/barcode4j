@@ -42,7 +42,7 @@ public final class BitmapEncoderRegistry {
     }
 
     /**
-     * Utility class: No instantiation
+     * Utility class: No instantiation.
      */
     private BitmapEncoderRegistry() {
         // intentionally left blank

@@ -153,6 +153,7 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
         final Collection<String> res = new ArrayList<String>(1);
         res.add("2of5");
         res.add("interleaved2of5");
+        res.add("int2of5");
         return res;
     }
 

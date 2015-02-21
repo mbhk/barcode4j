@@ -34,7 +34,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
 
     /**
      * Main constructor.
-     * <br>
+     *
      * Already registers a default set of implementations.
      */
     public DefaultBarcodeClassResolver() {
@@ -84,7 +84,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
      * @param id short name to use as a key
      * @param classname fully qualified classname
      */
-    public void registerBarcodeClass(String id, String classname) {
+    public final void registerBarcodeClass(String id, String classname) {
         registerBarcodeClass(id, classname, false);
     }
 
@@ -94,7 +94,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
      * @param classname fully qualified classname
      * @param mainID indicates whether the name is the main name for the barcode
      */
-    public void registerBarcodeClass(String id, String classname, boolean mainID) {
+    public final void registerBarcodeClass(String id, String classname, boolean mainID) {
         if (this.classes == null) {
             this.classes = new java.util.HashMap();
             this.mainIDs = new java.util.HashSet();

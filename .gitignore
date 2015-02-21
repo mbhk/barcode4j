@@ -18,3 +18,4 @@ build-site.bat
 deploy-site.bat
 .settings
 nb-configuration.xml
+nbactions.xml
