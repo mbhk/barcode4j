@@ -20,15 +20,17 @@ package org.krysalis.barcode4j.impl.pdf417;
 
 import org.krysalis.barcode4j.tools.TestHelper;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Tests for the error correction code.
  * 
  * @version $Id$
  */
-public class ErrorCorrectionTest extends TestCase {
+public class ErrorCorrectionTest {
 
+    @Test
     public void testErrorCorrection() throws Exception {
         String data = "\u0005\u01c5\u00b2\u0079\u00ef";
         assertEquals("5 453 178 121 239", TestHelper.visualize(data));
@@ -37,6 +39,4 @@ public class ErrorCorrectionTest extends TestCase {
         String expected = "452 327 657 619";
         assertEquals(expected, TestHelper.visualize(ec));
     }
-    
-    
 }

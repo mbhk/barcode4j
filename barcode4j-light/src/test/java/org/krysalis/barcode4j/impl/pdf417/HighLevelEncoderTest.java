@@ -18,18 +18,21 @@
 
 package org.krysalis.barcode4j.impl.pdf417;
 
-import junit.framework.TestCase;
-
 import org.krysalis.barcode4j.tools.TestHelper;
 
-public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
+import static org.junit.Assert.*;
+import org.junit.Test;
 
+public class HighLevelEncoderTest implements PDF417Constants {
+
+    @Test
     public void testFindNumericSequence() throws Exception {
         String msg = "1234567890ABC";
         int count = PDF417HighLevelEncoder.determineConsecutiveDigitCount(msg, 0);
         assertEquals(10, count);
     }
 
+    @Test
     public void testFindTextSequence() throws Exception {
         String msg = "1234567890ABCDÄ123";
         int count = PDF417HighLevelEncoder.determineConsecutiveTextCount(msg, 0);
@@ -44,6 +47,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         return PDF417HighLevelEncoder.getBytesForMessage(msg, PDF417Constants.DEFAULT_ENCODING);
     }
 
+    @Test
     public void testFindBinarySequence() throws Exception {
         String msg;
         byte[] bytes;
@@ -81,6 +85,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
 
     }
 
+    @Test
     public void testEncodeText() throws Exception {
         String msg = "PDF417";
         StringBuilder sb = new StringBuilder();
@@ -103,6 +108,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         //There was a bug with an endless loop here, just check that it doesn't hang.
     }
 
+    @Test
     public void testEncodeTextLatching() throws Exception {
         String msg = "417'<x>";
         String result = TestHelper.visualize(PDF417HighLevelEncoder.encodeHighLevel(msg));
@@ -125,6 +131,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         assertEquals(expected, result);
     }
 
+    @Test
     public void testEncodeNumeric() throws Exception {
         String msg = "000213298174000";
         StringBuilder sb = new StringBuilder();
@@ -133,13 +140,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         assertEquals(expected, sb.toString());
     }
 
-    private void log(String expected, String actual) {
-        /*
-        System.out.println("expected: " + expected);
-        System.out.println("actual: " + actual);
-        */
-    }
-
+    @Test
     public void testEncodeBinary() throws Exception {
         //Example from Annex C
         byte[] bytes = new byte[] {(byte)231, 101, 11, 97, (byte)205, 2};
@@ -147,7 +148,6 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         StringBuilder sb = new StringBuilder();
         PDF417HighLevelEncoder.encodeBinary(msg, bytes, 0, msg.length(), TEXT_COMPACTION, sb);
         String expected = "924 387 700 208 213 302";
-        log(expected, TestHelper.visualize(sb.toString()));
         assertEquals(expected, TestHelper.visualize(sb.toString()));
 
         msg = msg + msg + msg.substring(0, 1);
@@ -172,6 +172,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         assertEquals(expected, TestHelper.visualize(sb.toString()));
     }
 
+    @Test
     public void testEncodeHighLevel() throws Exception {
         String msg = "000213298174000";
         String result = TestHelper.visualize(PDF417HighLevelEncoder.encodeHighLevel(msg));
@@ -196,28 +197,25 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         msg = "TestTest‰‰‰‰‰‰‰‰‰‰"; //10 binary characters = 1x6 + 4
         result = TestHelper.visualize(PDF417HighLevelEncoder.encodeHighLevel(msg));
         expected = "597 138 597 574 559 901 222 69 238 51 792 132 132 132 132";
-        log(expected, result);
         assertEquals(expected, result);
 
         msg = "A10200124040182000";
         result = TestHelper.visualize(PDF417HighLevelEncoder.encodeHighLevel(msg));
         expected = "913 65 902 186 562 350 852 68 800";
-        log(expected, result);
         assertEquals(expected, result);
 
         msg = "A10200124040 182000";
         result = TestHelper.visualize(PDF417HighLevelEncoder.encodeHighLevel(msg));
         expected = "28 30 60 1 64 4 26 38 60 0";
-        log(expected, result);
         assertEquals(expected, result);
 
         msg = "A1234567890123456789012 1365465465464";
         result = TestHelper.visualize(PDF417HighLevelEncoder.encodeHighLevel(msg));
         expected = "913 65 902 23 439 739 333 729 883 621 112 901 32 902 17 290 438 761 564";
-        log(expected, result);
         assertEquals(expected, result);
     }
 
+    @Test
     public void testBug1970483() throws Exception {
         String msg = "<FIELDS><FIELD NAME=\"DEALER #\">550";
         //The bug was an invalid value for switching back from Punctuation to Alpha in
@@ -227,6 +225,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         assertEquals(expected, result);
     }
 
+    @Test
     public void testBug2482570() throws Exception {
         String msg = "UNT+11+123'";
         String result = TestHelper.visualize(PDF417HighLevelEncoder.encodeHighLevel(msg));
@@ -238,6 +237,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
      * Tests bug https://sourceforge.net/tracker/?func=detail&atid=615504&aid=2804024&group_id=96670
      * @throws Exception if an error occurs
      */
+    @Test
     public void testBug2804024() throws Exception {
         String msg, result, expected;
         msg = "5789\u001dB0KLT3215\u001e\u0004"; //good
@@ -254,6 +254,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         assertEquals(expected, result);
     }
 
+    @Test
     public void testBinaryData() throws Exception {
         String msg, result, expected;
         msg = "url(data:;base64,flRlc3R+)"; //~Test~
@@ -263,6 +264,7 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         assertEquals(expected, result);
     }
 
+    @Test
     public void testCharsets() throws Exception {
         String msg;
         String result;
@@ -272,21 +274,18 @@ public class HighLevelEncoderTest extends TestCase implements PDF417Constants {
         msg = "Test\u00e4\u00e4\u00e4\u00e4\u00e4\u00e4"; //10 characters encoded as binary
         result = TestHelper.visualize(PDF417HighLevelEncoder.encodeHighLevel(msg));
         expected = "901 141 390 364 673 320 132 132 132 132";
-        log(expected, result);
         assertEquals(expected, result);
 
         //Same text but this time with ISO-8859-1 (but with no ECI!!!)
         result = TestHelper.visualize(PDF417HighLevelEncoder.encodeHighLevel(
                 msg, "ISO-8859-1", false));
         expected = "901 141 390 364 700 692 228 228 228 228";
-        log(expected, result);
         assertEquals(expected, result);
 
         //Same text but this time with ISO-8859-1 and ECI enabled
         result = TestHelper.visualize(PDF417HighLevelEncoder.encodeHighLevel(
                 msg, "ISO-8859-1", true));
         expected = "927 3 901 141 390 364 700 692 228 228 228 228";
-        log(expected, result);
         assertEquals(expected, result);
     }
 }

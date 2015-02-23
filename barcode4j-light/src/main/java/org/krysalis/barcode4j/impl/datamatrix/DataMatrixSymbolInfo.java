@@ -66,8 +66,11 @@ public class DataMatrixSymbolInfo {
     /**
      * Overrides the symbol info set used by this class. Used for testing purposes.
      * @param override the symbol info set to use
+     * @deprecated bad API for testing purposes
      */
+    @Deprecated
     public static void overrideSymbolSet(DataMatrixSymbolInfo[] override) {
+        // TODO remove this method!
         symbols = override;
     }
 

@@ -15,42 +15,41 @@
  */
 
 /* $Id$ */
-
 package org.krysalis.barcode4j.tools;
 
 import java.util.StringTokenizer;
 
 /**
  * Helper methods for testing.
- * 
+ *
  * @version $Id$
  */
 public class TestHelper {
 
     /**
-     * Convert a string of char codewords into a different string which lists each character 
-     * using its decimal value.
-     * @param codewords the codewords 
+     * Convert a string of char codewords into a different string which lists
+     * each character using its decimal value.
+     *
+     * @param codewords the codewords
      * @return the visualized codewords
      */
     public static String visualize(String codewords) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < codewords.length(); i++) {
             if (i > 0) {
                 sb.append(" ");
             }
-            sb.append((int)codewords.charAt(i));
+            sb.append((int) codewords.charAt(i));
         }
         return sb.toString();
     }
-    
+
     public static String unvisualize(String visualized) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         StringTokenizer st = new StringTokenizer(visualized, " ");
         while (st.hasMoreTokens()) {
-            sb.append((char)Integer.parseInt(st.nextToken()));
+            sb.append((char) Integer.parseInt(st.nextToken()));
         }
         return sb.toString();
     }
-    
 }

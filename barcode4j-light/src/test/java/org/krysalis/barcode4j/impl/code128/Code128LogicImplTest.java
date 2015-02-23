@@ -15,36 +15,23 @@
  */
 package org.krysalis.barcode4j.impl.code128;
 
-import junit.framework.TestCase;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.fail;
 import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
 import org.krysalis.barcode4j.impl.NullClassicBarcodeLogicHandler;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author mk
  */
-public class Code128LogicImplTest extends TestCase {
-    
-    public Code128LogicImplTest(String testName) {
-        super(testName);
-    }
-    
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-    
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
+public class Code128LogicImplTest {
 
     /**
      * Test of isValidChar method, of class Code128LogicImpl.
      */
-    public void testIsValidChar() {
+    @Test
+    public void isValidChar() {
         System.out.println("isValidChar");
         char ch = 010;
         boolean expResult = true;
@@ -55,7 +42,8 @@ public class Code128LogicImplTest extends TestCase {
     /**
      * Test of isInCodeSetA method, of class Code128LogicImpl.
      */
-    public void testIsInCodeSetA() {
+    @Test
+    public void isInCodeSetA() {
         System.out.println("isInCodeSetA");
         char ch = 'A';
         boolean expResult = true;
@@ -66,7 +54,8 @@ public class Code128LogicImplTest extends TestCase {
     /**
      * Test of isInCodeSetB method, of class Code128LogicImpl.
      */
-    public void testIsInCodeSetB() {
+    @Test
+    public void isInCodeSetB() {
         System.out.println("isInCodeSetB");
         char ch = ' ';
         boolean expResult = true;
@@ -77,7 +66,8 @@ public class Code128LogicImplTest extends TestCase {
     /**
      * Test of canBeInCodeSetC method, of class Code128LogicImpl.
      */
-    public void testCanBeInCodeSetC() {
+    @Test
+    public void canBeInCodeSetC() {
         System.out.println("canBeInCodeSetC");
         char ch = '1';
         boolean second = false;
@@ -89,7 +79,8 @@ public class Code128LogicImplTest extends TestCase {
     /**
      * Test of symbolCharToString method, of class Code128LogicImpl.
      */
-    public void testSymbolCharToString() {
+    @Test
+    public void symbolCharToString() {
         System.out.println("symbolCharToString");
         int index = 0;
         String expResult = "idx0";
@@ -101,6 +92,7 @@ public class Code128LogicImplTest extends TestCase {
     /**
      * Test of toString method, of class Code128LogicImpl.
      */
+    @Test
     public void testToString() {
         System.out.println("toString");
         assertEquals("", Code128LogicImpl.toString(null));
@@ -136,7 +128,8 @@ public class Code128LogicImplTest extends TestCase {
     /**
      * Test of getEncoder method, of class Code128LogicImpl.
      */
-    public void testGetEncoder() {
+    @Test
+    public void getEncoder() {
         System.out.println("getEncoder");
         Code128LogicImpl instance = new Code128LogicImpl();
         Code128Encoder result = instance.getEncoder();
@@ -146,7 +139,8 @@ public class Code128LogicImplTest extends TestCase {
     /**
      * Test of createEncodedMessage method, of class Code128LogicImpl.
      */
-    public void testCreateEncodedMessage() {
+    @Test
+    public void createEncodedMessage() {
         System.out.println("createEncodedMessage");
         String msg = "1337Mate";
         Code128LogicImpl instance = new Code128LogicImpl();
@@ -158,7 +152,8 @@ public class Code128LogicImplTest extends TestCase {
         }
     }
 
-    public void testLogic() throws Exception {
+    @Test
+    public void logic() throws Exception {
         StringBuffer sb = new StringBuffer();
         Code128LogicImpl logic;
         String expected;
@@ -186,7 +181,8 @@ public class Code128LogicImplTest extends TestCase {
         assertEquals(expected, sb.toString());
     }
 
-    public void testNonPrintableAscii() throws Exception {
+    @Test
+    public void nonPrintableAscii() throws Exception {
         StringBuffer sb = new StringBuffer();
         String expected;
         Code128LogicImpl logic = new Code128LogicImpl();
@@ -208,11 +204,11 @@ public class Code128LogicImplTest extends TestCase {
         assertEquals(expected, sb.toString());
     }
 
-    public void testBug942246() throws Exception {
+    @Test
+    public void bug942246() throws Exception {
         Code128LogicImpl logic = new Code128LogicImpl();
         logic.generateBarcodeLogic(new NullClassicBarcodeLogicHandler(),
             "\u00f1020456789012341837100\u00f13101000200");
         //expect no failure
     }
-
 }

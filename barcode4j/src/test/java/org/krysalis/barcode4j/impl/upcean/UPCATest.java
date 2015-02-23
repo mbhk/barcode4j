@@ -15,7 +15,8 @@
  */
 package org.krysalis.barcode4j.impl.upcean;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Test class for the UPC-A implementation.
@@ -23,12 +24,9 @@ import junit.framework.TestCase;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class UPCATest extends TestCase {
+public class UPCATest {
 
-    public UPCATest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testIllegalArguments() throws Exception {
         try {
             UPCA impl = new UPCA();

@@ -17,23 +17,24 @@ package org.krysalis.barcode4j.output.svg;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.TestCase;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.output.Orientation;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author mk
  */
-public class SVGCanvasProviderTest extends TestCase {
+public class SVGCanvasProviderTest {
 
     static String getStringFromDoc(org.w3c.dom.Document doc) {
         DOMImplementationLS domImplementation = (DOMImplementationLS) doc.getImplementation();
@@ -48,6 +49,7 @@ public class SVGCanvasProviderTest extends TestCase {
     /**
      * Test of getDOM method, of class SVGCanvasProvider.
      */
+    @Test
     public void testGetDOM() {
         System.out.println("getDOM - default");
         SVGCanvasProvider instance = new SVGCanvasProvider(Orientation.ZERO);
@@ -91,6 +93,7 @@ public class SVGCanvasProviderTest extends TestCase {
         return res;
     }
 
+    @Test
     public void testGetDOMFragment() throws Exception {
         System.out.println("getDOMFragment - default");
         SVGCanvasProvider instance = new SVGCanvasProvider(Orientation.ZERO);

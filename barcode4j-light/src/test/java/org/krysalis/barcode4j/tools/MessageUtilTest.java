@@ -18,17 +18,19 @@
 
 package org.krysalis.barcode4j.tools;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Tests the {@code MessageUtil} class.
  */
-public class MessageUtilTest extends TestCase {
+public class MessageUtilTest {
 
     /**
      * Tests unescaping.
      * @throws Exception If an error occurs
      */
+    @Test
     public void testUnescaping() throws Exception {
         String msg = "12345\\u001E00\\\\u001e11\\u0004";
         String processed = MessageUtil.unescapeUnicode(msg);
@@ -49,5 +51,4 @@ public class MessageUtilTest extends TestCase {
         processed = MessageUtil.unescapeUnicode(msg);
         assertEquals("1\\u001E", processed);
     }
-
 }

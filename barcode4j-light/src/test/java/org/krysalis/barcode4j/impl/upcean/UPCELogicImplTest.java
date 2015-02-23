@@ -19,7 +19,8 @@ import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
 import org.krysalis.barcode4j.impl.NullClassicBarcodeLogicHandler;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Test class for the UPC-E implementation.
@@ -27,12 +28,9 @@ import junit.framework.TestCase;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class UPCELogicImplTest extends TestCase {
+public class UPCELogicImplTest {
 
-    public UPCELogicImplTest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testIllegalArguments() throws Exception {
 
         //Test invalid characters in message
@@ -83,19 +81,12 @@ public class UPCELogicImplTest extends TestCase {
         {"00102546", "001020000056"},
         {"01234133", "012300000413"}};
 
+    @Test
     public void testMessageCompaction() throws Exception {
-        for (int i = 0; i < COMPACTION_TESTS.length; i++) {
-            assertEquals(
-                    COMPACTION_TESTS[i][1] + " must be compacted to "
-                    + COMPACTION_TESTS[i][0],
-                    COMPACTION_TESTS[i][0],
-                    UPCELogicImpl.compactMessage(COMPACTION_TESTS[i][1]));
-            String nocheck = COMPACTION_TESTS[i][1].substring(0, 11);
-            assertEquals(
-                    nocheck + " must be compacted to "
-                    + COMPACTION_TESTS[i][0],
-                    COMPACTION_TESTS[i][0],
-                    UPCELogicImpl.compactMessage(nocheck));
+        for (String[] COMPACTION_TESTS1 : COMPACTION_TESTS) {
+            assertEquals(COMPACTION_TESTS1[1] + " must be compacted to " + COMPACTION_TESTS1[0], COMPACTION_TESTS1[0], UPCELogicImpl.compactMessage(COMPACTION_TESTS1[1]));
+            String nocheck = COMPACTION_TESTS1[1].substring(0, 11);
+            assertEquals(nocheck + " must be compacted to " + COMPACTION_TESTS1[0], COMPACTION_TESTS1[0], UPCELogicImpl.compactMessage(nocheck));
         }
         final String noUPCE = "01234567890";
         assertNull(UPCELogicImpl.compactMessage(noUPCE));
@@ -114,6 +105,7 @@ public class UPCELogicImplTest extends TestCase {
         }
     }
 
+    @Test
     public void testMessageExpansion() throws Exception {
         for (int i = 0; i < COMPACTION_TESTS.length; i++) {
             assertEquals(
@@ -130,6 +122,7 @@ public class UPCELogicImplTest extends TestCase {
         }
     }
 
+    @Test
     public void testLogic() throws Exception {
         StringBuffer sb = new StringBuffer();
         UPCELogicImpl logic;
@@ -180,6 +173,5 @@ public class UPCELogicImplTest extends TestCase {
         //System.out.println(expected);
         //System.out.println(sb.toString());
         assertEquals(expected, sb.toString());
-
     }
 }

@@ -17,9 +17,11 @@ package org.krysalis.barcode4j.impl.upcean;
 
 import org.krysalis.barcode4j.ChecksumMode;
 
-import junit.framework.TestCase;
 import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
 import org.krysalis.barcode4j.impl.NullClassicBarcodeLogicHandler;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Test class for the EAN-13 implementation.
@@ -27,12 +29,9 @@ import org.krysalis.barcode4j.impl.NullClassicBarcodeLogicHandler;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class EAN13LogicImplTest extends TestCase {
+public class EAN13LogicImplTest {
 
-    public EAN13LogicImplTest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testIllegalArguments() throws Exception {
 
         //Test invalid characters in message
@@ -63,6 +62,7 @@ public class EAN13LogicImplTest extends TestCase {
         }
     }
 
+    @Test
     public void testLogic() throws Exception {
         StringBuffer sb = new StringBuffer();
         EAN13LogicImpl logic;
@@ -104,6 +104,5 @@ public class EAN13LogicImplTest extends TestCase {
         //System.out.println(expected);
         //System.out.println(sb.toString());
         assertEquals(expected, sb.toString());
-
     }
 }

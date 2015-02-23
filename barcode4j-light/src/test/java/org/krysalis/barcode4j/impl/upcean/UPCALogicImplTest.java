@@ -19,7 +19,8 @@ import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
 import org.krysalis.barcode4j.impl.NullClassicBarcodeLogicHandler;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Test class for the UPC-A implementation.
@@ -27,12 +28,9 @@ import junit.framework.TestCase;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class UPCALogicImplTest extends TestCase {
+public class UPCALogicImplTest {
 
-    public UPCALogicImplTest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testIllegalArguments() throws Exception {
         //Test invalid characters in message
         try {
@@ -63,6 +61,7 @@ public class UPCALogicImplTest extends TestCase {
         }
     }
 
+    @Test
     public void testLogic() throws Exception {
         StringBuffer sb = new StringBuffer();
         UPCALogicImpl logic;
@@ -107,7 +106,5 @@ public class UPCALogicImplTest extends TestCase {
         //System.out.println(expected);
         //System.out.println(sb.toString());
         assertEquals(expected, sb.toString());
-        
     }
-
 }

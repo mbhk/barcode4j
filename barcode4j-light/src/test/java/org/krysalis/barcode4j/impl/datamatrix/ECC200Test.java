@@ -20,16 +20,17 @@ package org.krysalis.barcode4j.impl.datamatrix;
 
 import org.krysalis.barcode4j.tools.TestHelper;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Tests for the ECC200 error correction.
  * 
  * @version $Id$
  */
-public class ECC200Test extends TestCase {
+public class ECC200Test {
 
-
+    @Test
     public void testRS() throws Exception {
         //Sample from Annexe R in ISO/IEC 16022:2000(E)
         char[] cw = new char[] {142, 164, 186};
@@ -42,5 +43,4 @@ public class ECC200Test extends TestCase {
         s = DataMatrixErrorCorrection.encodeECC200(String.valueOf(cw), symbolInfo);
         assertEquals("66 129 70 138 234 82 82 95", TestHelper.visualize(s));
     }
-    
 }

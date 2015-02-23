@@ -15,23 +15,19 @@
  */
 package org.krysalis.barcode4j;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author mk
  */
-public class BarGroupTest extends TestCase {
-
-    public BarGroupTest(String testName) {
-        super(testName);
-    }
+public class BarGroupTest {
 
     /**
      * Test of getName method, of class BarGroup.
      */
+    @Test
     public void testGetName() {
         System.out.println("getName");
         assertEquals("start-char", BarGroup.START_CHARACTER.getName());
@@ -40,6 +36,7 @@ public class BarGroupTest extends TestCase {
     /**
      * Test of byName method, of class BarGroup.
      */
+    @Test
     public void testByName() {
         System.out.println("byName");
         assertEquals(BarGroup.UPC_EAN_GROUP, BarGroup.byName("upc-ean-group"));

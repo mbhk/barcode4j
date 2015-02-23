@@ -15,9 +15,10 @@
  */
 package org.krysalis.barcode4j.impl.postnet;
 
-import junit.framework.TestCase;
-
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Test class for the POSTNET implementation.
@@ -25,12 +26,9 @@ import org.apache.avalon.framework.configuration.DefaultConfiguration;
  * @author Chris Dolphy
  * @version $Id$
  */
-public class POSTNETTest extends TestCase {
+public class POSTNETTest {
 
-    public POSTNETTest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testIllegalArguments() throws Exception {
         try {
             POSTNET impl = new POSTNET();
@@ -41,6 +39,7 @@ public class POSTNETTest extends TestCase {
         }
     }
 
+    @Test
     public void testDefaultsInXML() throws Exception {
         POSTNETBean refBean = new POSTNETBean();
 
@@ -65,5 +64,4 @@ public class POSTNETTest extends TestCase {
         assertEquals(refBean.getMsgPosition(), xmlBean.getMsgPosition());
         assertEquals(refBean.getPattern(), xmlBean.getPattern());
     }
-
 }

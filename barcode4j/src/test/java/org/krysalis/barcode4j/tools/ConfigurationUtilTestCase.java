@@ -22,7 +22,8 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Test case for ConfigurationUtil.
@@ -30,12 +31,9 @@ import junit.framework.TestCase;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class ConfigurationUtilTestCase extends TestCase {
+public class ConfigurationUtilTestCase {
 
-    public ConfigurationUtilTestCase(String name) {
-        super(name);
-    }
-
+    @Test
     public void testDOMLevel1ToConfiguration() throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(false);
@@ -55,7 +53,8 @@ public class ConfigurationUtilTestCase extends TestCase {
         
         checkCfgTree(cfg);
     }
-    
+
+    @Test
     public void testDOMLevel2ToConfiguration() throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
@@ -76,7 +75,7 @@ public class ConfigurationUtilTestCase extends TestCase {
         
         checkCfgTree(cfg);
     }
-    
+
     private void checkCfgTree(final Configuration cfg) throws Exception {
         assertNotNull(cfg);
         assertEquals("root", cfg.getName());
@@ -88,5 +87,4 @@ public class ConfigurationUtilTestCase extends TestCase {
         assertEquals("bar", childcfg.getAttribute("foo"));
         assertEquals("hello", childcfg.getValue());
     }
-
 }

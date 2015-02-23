@@ -18,22 +18,21 @@ package org.krysalis.barcode4j;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import junit.framework.TestCase;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author mk
  */
-public class BarcodeGeneratorProviderTest extends TestCase {
-    
-    public BarcodeGeneratorProviderTest(String testName) {
-        super(testName);
-    }
+public class BarcodeGeneratorProviderTest {
 
     /**
      * Test of getInstance method, of class BarcodeGeneratorProvider.
      */
-    public void testGetInstance() {
+    @Test
+    public void getInstance() {
         System.out.println("getInstance");
         BarcodeGeneratorProvider result = BarcodeGeneratorProvider.getInstance();
         assertNotNull(result);
@@ -42,9 +41,11 @@ public class BarcodeGeneratorProviderTest extends TestCase {
     }
 
     /**
-     * Test of getAvailableBarcodeGenerators method, of class BarcodeGeneratorProvider.
+     * Test of getAvailableBarcodeGenerators method, of class
+     * BarcodeGeneratorProvider.
      */
-    public void testGetAvailableBarcodeGenerators() {
+    @Test
+    public void getAvailableBarcodeGenerators() {
         System.out.println("getAvailableBarcodeGenerators");
         BarcodeGeneratorProvider instance = BarcodeGeneratorProvider.getInstance();
         Collection<String> result = instance.getAvailableBarcodeGenerators();
@@ -54,9 +55,11 @@ public class BarcodeGeneratorProviderTest extends TestCase {
 
     /**
      * Test of getBarcodeGenerator method, of class BarcodeGeneratorProvider.
+     *
      * @throws java.lang.Exception
      */
-    public void testGetBarcodeGenerator() throws Exception {
+    @Test
+    public void getBarcodeGenerator() throws Exception {
         System.out.println("getBarcodeGenerator");
         String id = "qr";
         BarcodeGeneratorProvider instance = BarcodeGeneratorProvider.getInstance();
@@ -65,8 +68,9 @@ public class BarcodeGeneratorProviderTest extends TestCase {
         BarcodeGenerator result2 = instance.getBarcodeGenerator(id);
         assertNotSame("must be new instance", result2, result);
     }
-    
-    public void testBadBarcodeGenerator() {
+
+    @Test
+    public void badBarcodeGenerator() {
         BarcodeGeneratorProvider instance = BarcodeGeneratorProvider.getInstance();
         try {
             BarcodeGenerator bad = instance.getBarcodeGenerator("foobar");
@@ -75,5 +79,4 @@ public class BarcodeGeneratorProviderTest extends TestCase {
             Logger.getLogger(BarcodeGeneratorProviderTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 }

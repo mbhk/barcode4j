@@ -15,22 +15,20 @@
  */
 package org.krysalis.barcode4j;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author mk
  */
-public class HumanReadablePlacementTest extends TestCase {
-
-    public HumanReadablePlacementTest(String testName) {
-        super(testName);
-    }
+public class HumanReadablePlacementTest {
 
     /**
      * Test of getName method, of class HumanReadablePlacement.
      */
-    public void testGetName() {
+    @Test
+    public void getName() {
         System.out.println("getName");
         assertEquals("bottom", HumanReadablePlacement.HRP_BOTTOM.getName());
     }
@@ -38,7 +36,8 @@ public class HumanReadablePlacementTest extends TestCase {
     /**
      * Test of byName method, of class HumanReadablePlacement.
      */
-    public void testByName() {
+    @Test
+    public void byName() {
         System.out.println("byName");
         assertEquals(HumanReadablePlacement.HRP_NONE, HumanReadablePlacement.byName("NOnE"));
 

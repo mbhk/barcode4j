@@ -15,23 +15,26 @@
  */
 package org.krysalis.barcode4j.impl.fourstate;
 
-import junit.framework.TestCase;
-
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Testcase for the Royal Mail CBC barcode.
  */
-public class RoyalMailCBCTest extends TestCase {
+public class RoyalMailCBCTest {
 
+    @Test
     public void testChecksum() throws Exception {
         String msg = "SN34RD1A";
         RoyalMailCBCLogicImpl logic = new RoyalMailCBCLogicImpl(ChecksumMode.CP_AUTO);
         char check = logic.calcChecksum(msg);
         assertEquals('K', check);
     }
-    
+
+    @Test
     public void testChecksumHandling() throws Exception {
         String msg = "SN34RD1A";
         RoyalMailCBCLogicImpl logic;
@@ -61,7 +64,8 @@ public class RoyalMailCBCTest extends TestCase {
         res = logic.handleChecksum(msg);
         assertEquals("SN34RD1A", res);
     }
-    
+
+    @Test
     public void testLogic() throws Exception {
         RoyalMailCBCLogicImpl logic = new RoyalMailCBCLogicImpl(ChecksumMode.CP_AUTO);
         StringBuffer sb = new StringBuffer();
@@ -82,5 +86,4 @@ public class RoyalMailCBCTest extends TestCase {
         //System.out.println(sb.toString());
         assertEquals(expected, sb.toString());
     }
-    
 }

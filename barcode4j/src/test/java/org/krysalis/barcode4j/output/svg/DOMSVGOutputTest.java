@@ -20,8 +20,11 @@ import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
 import org.w3c.dom.DocumentFragment;
 
-import junit.framework.TestCase;
 import org.krysalis.barcode4j.output.Orientation;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
+
 
 /**
  * Test class for SVG output to JDOM.
@@ -29,12 +32,9 @@ import org.krysalis.barcode4j.output.Orientation;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class DOMSVGOutputTest extends TestCase {
+public class DOMSVGOutputTest {
 
-    public DOMSVGOutputTest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testDOMSVG() throws Exception {
         DefaultConfiguration cfg = new DefaultConfiguration("cfg");
         cfg.addChild(new DefaultConfiguration("intl2of5"));
@@ -47,5 +47,4 @@ public class DOMSVGOutputTest extends TestCase {
         DocumentFragment frag = svg.getDOMFragment();
         assertNotNull(frag);
     }
-
 }

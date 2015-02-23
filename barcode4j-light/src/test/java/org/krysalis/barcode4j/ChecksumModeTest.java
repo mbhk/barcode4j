@@ -15,24 +15,20 @@
  */
 package org.krysalis.barcode4j;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author mk
  */
-public class ChecksumModeTest extends TestCase {
-
-    public ChecksumModeTest(String testName) {
-        super(testName);
-    }
+public class ChecksumModeTest {
 
     /**
      * Test of getName method, of class ChecksumMode.
      */
-    public void testGetName() {
+    @Test
+    public void getName() {
         System.out.println("getName");
         assertEquals("auto", ChecksumMode.CP_AUTO.getName());
     }
@@ -40,7 +36,8 @@ public class ChecksumModeTest extends TestCase {
     /**
      * Test of byName method, of class ChecksumMode.
      */
-    public void testByName() {
+    @Test
+    public void byName() {
         System.out.println("byName");
         assertEquals(ChecksumMode.CP_IGNORE, ChecksumMode.byName("ignore"));
 

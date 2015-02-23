@@ -15,7 +15,9 @@
  */
 package org.krysalis.barcode4j.impl.codabar;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
+
 
 /**
  * Test class for the Codabar implementation.
@@ -23,12 +25,9 @@ import junit.framework.TestCase;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class CodabarTest extends TestCase {
+public class CodabarTest {
 
-    public CodabarTest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testIllegalArguments() throws Exception {
         try {
             Codabar impl = new Codabar();

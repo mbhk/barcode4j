@@ -18,7 +18,8 @@ package org.krysalis.barcode4j.impl.upcean;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Test class for general UPC/EAN functionality.
@@ -26,22 +27,21 @@ import junit.framework.TestCase;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class UPCEANLogicImplTest extends TestCase {
+public class UPCEANLogicImplTest {
 
-    public UPCEANLogicImplTest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testRemoveSupplemental() throws Exception {
         assertEquals("1234", UPCEANLogicImpl.removeSupplemental("1234"));
         assertEquals("1234", UPCEANLogicImpl.removeSupplemental("1234+20"));
     }
 
+    @Test
     public void testRetrieveSupplemental() throws Exception {
         assertNull(UPCEANLogicImpl.retrieveSupplemental("1234"));
         assertEquals("20", UPCEANLogicImpl.retrieveSupplemental("1234+20"));
     }
 
+    @Test
     public void testGetSupplementalLength() throws Exception {
         assertEquals(0, UPCEANLogicImpl.getSupplementalLength("1234"));
         assertEquals(2, UPCEANLogicImpl.getSupplementalLength("1234+12"));
@@ -53,6 +53,7 @@ public class UPCEANLogicImplTest extends TestCase {
         }
     }
 
+    @Test
     public void testSupplemental2() throws Exception {
         StringBuffer sb = new StringBuffer();
         EAN13LogicImpl logic;
@@ -71,6 +72,7 @@ public class UPCEANLogicImplTest extends TestCase {
         assertEquals(expected, sb.toString());
     }
 
+    @Test
     public void testSupplemental5() throws Exception {
         StringBuffer sb = new StringBuffer();
         EAN13LogicImpl logic;

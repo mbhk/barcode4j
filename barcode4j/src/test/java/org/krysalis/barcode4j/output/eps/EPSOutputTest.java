@@ -21,7 +21,8 @@ import org.apache.avalon.framework.configuration.DefaultConfiguration;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Test class for basic EPS output functionality.
@@ -29,12 +30,9 @@ import junit.framework.TestCase;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class EPSOutputTest extends TestCase {
+public class EPSOutputTest {
 
-    public EPSOutputTest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testEPS() throws Exception {
         DefaultConfiguration cfg = new DefaultConfiguration("cfg");
         cfg.addChild(new DefaultConfiguration("intl2of5"));
@@ -51,5 +49,4 @@ public class EPSOutputTest extends TestCase {
         
         assertTrue(baout.size() > 0);
     }
-
 }

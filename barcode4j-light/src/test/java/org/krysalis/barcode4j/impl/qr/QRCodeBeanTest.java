@@ -20,15 +20,17 @@ package org.krysalis.barcode4j.impl.qr;
 
 import java.awt.Dimension;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Tests the QR Code bean.
  *
  * @version $Id$
  */
-public class QRCodeBeanTest extends TestCase {
+public class QRCodeBeanTest {
 
+    @Test
     public void testParameters() throws Exception {
         QRCodeBean bean = new QRCodeBean();
 
@@ -62,5 +64,4 @@ public class QRCodeBeanTest extends TestCase {
         bean.setErrorCorrectionLevel('M');
         assertEquals('M', bean.getErrorCorrectionLevel());
     }
-
 }

@@ -15,11 +15,12 @@
  */
 package org.krysalis.barcode4j.impl.codabar;
 
-import junit.framework.TestCase;
-
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
 import org.krysalis.barcode4j.impl.NullClassicBarcodeLogicHandler;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Test class for the Codabar implementation.
@@ -27,13 +28,10 @@ import org.krysalis.barcode4j.impl.NullClassicBarcodeLogicHandler;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class CodabarLogicImplTest extends TestCase {
+public class CodabarLogicImplTest {
 
-    public CodabarLogicImplTest(String name) {
-        super(name);
-    }
-
-    public void testIllegalArguments() throws Exception {
+    @Test
+    public void illegalArguments() throws Exception {
         try {
             CodabarLogicImpl logic = new CodabarLogicImpl(ChecksumMode.CP_AUTO);
             logic.generateBarcodeLogic(new NullClassicBarcodeLogicHandler(), "123èöö2");
@@ -44,7 +42,8 @@ public class CodabarLogicImplTest extends TestCase {
 
     }
 
-    public void testLogic() throws Exception {
+    @Test
+    public void logic() throws Exception {
         StringBuffer sb = new StringBuffer();
         CodabarLogicImpl logic;
         String expected;
@@ -76,7 +75,8 @@ public class CodabarLogicImplTest extends TestCase {
          */
     }
 
-    public void testStartStopHandling() throws Exception {
+    @Test
+    public void startStopHandling() throws Exception {
         StringBuffer sb = new StringBuffer();
         CodabarLogicImpl logic;
         String expected;

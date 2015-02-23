@@ -18,15 +18,17 @@
 
 package org.krysalis.barcode4j.impl.code128;
 
-import junit.framework.TestCase;
-
 import org.krysalis.barcode4j.ChecksumMode;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Tests for EAN 128.
  */
-public class EAN128Test extends TestCase {
+public class EAN128Test {
 
+    @Test
     public void testAI() throws Exception {
         EAN128AI ret = null;
         ret = EAN128AI.parseSpec("230", "n1");
@@ -108,6 +110,7 @@ public class EAN128Test extends TestCase {
         } catch (Exception e) {};
     }
 
+    @Test
     public void testSupportRequests() throws Exception {
         final char FNC1 = Code128LogicImpl.FNC_1;
         final char GS = EAN128Bean.DEFAULT_GROUP_SEPARATOR;
@@ -127,5 +130,4 @@ public class EAN128Test extends TestCase {
                 + "390000021170" + FNC1 
                 + "9620080402", impl.getCode128Msg());
     }
-    
 }

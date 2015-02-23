@@ -33,15 +33,16 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import junit.framework.TestCase;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeGeneratorProvider;
 import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
@@ -81,8 +82,8 @@ public class OutputFormatTest {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         Result res = decode(outFile.getAbsolutePath());
-        TestCase.assertEquals(message, res.getText());
-        TestCase.assertEquals(BarcodeFormat.EAN_13, res.getBarcodeFormat());
+        assertEquals(message, res.getText());
+        assertEquals(BarcodeFormat.EAN_13, res.getBarcodeFormat());
     }
 
     @Test
@@ -99,8 +100,8 @@ public class OutputFormatTest {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         Result res = decode(outFile.getAbsolutePath());
-        TestCase.assertEquals(message, res.getText());
-        TestCase.assertEquals(BarcodeFormat.DATA_MATRIX, res.getBarcodeFormat());
+        assertEquals(message, res.getText());
+        assertEquals(BarcodeFormat.DATA_MATRIX, res.getBarcodeFormat());
     }
 
     @Test
@@ -117,8 +118,8 @@ public class OutputFormatTest {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         Result res = decode(outFile.getAbsolutePath());
-        TestCase.assertEquals(message, res.getText());
-        TestCase.assertEquals(BarcodeFormat.QR_CODE, res.getBarcodeFormat());
+        assertEquals(message, res.getText());
+        assertEquals(BarcodeFormat.QR_CODE, res.getBarcodeFormat());
     }
 
     private Result decode(String filename) throws IOException, NotFoundException {

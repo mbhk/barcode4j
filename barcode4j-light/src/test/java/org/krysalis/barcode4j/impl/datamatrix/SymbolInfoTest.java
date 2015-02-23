@@ -20,13 +20,15 @@ package org.krysalis.barcode4j.impl.datamatrix;
 
 import java.awt.Dimension;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Tests the SymbolInfo class.
  */
-public class SymbolInfoTest extends TestCase {
+public class SymbolInfoTest {
 
+    @Test
     public void testSymbolInfo() throws Exception {
         DataMatrixSymbolInfo info;
         info = DataMatrixSymbolInfo.lookup(3);
@@ -106,5 +108,4 @@ public class SymbolInfoTest extends TestCase {
                 SymbolShapeHint.FORCE_NONE, minSize, maxSize, false);
         assertNull(info);
     }
-
 }

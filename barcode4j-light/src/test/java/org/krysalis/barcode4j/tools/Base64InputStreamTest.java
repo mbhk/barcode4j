@@ -19,12 +19,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Test case for the Base64 decoder.
  */
-public class Base64InputStreamTest extends TestCase {
+public class Base64InputStreamTest {
 
     private static final boolean DEBUG = false;
 
@@ -35,6 +36,7 @@ public class Base64InputStreamTest extends TestCase {
      * Tests the Base64 decoder.
      * @throws Exception if an error occurs
      */
+    @Test
     public void testDecoder() throws Exception {
         for (int mode = MODE_BUF; mode <= MODE_BYTE; mode++) {
             assertEquals("sure.", decode("c3VyZS4=", mode));
@@ -57,6 +59,7 @@ public class Base64InputStreamTest extends TestCase {
      * Tests invalid Base64 strings.
      * @throws Exception if an error occurs
      */
+    @Test
     public void testInvalid() throws Exception {
         //Incomplete quad at the end, only three characters expected
         assertEquals("sur", decode("c3VyZS4"));
@@ -84,6 +87,7 @@ public class Base64InputStreamTest extends TestCase {
 
     }
 
+    @Test
     public void testCloseBehaviour() throws Exception {
         Base64InputStream in = new Base64InputStream(new StringReader("c3VyZS4="));
         assertEquals('s', in.read());
@@ -128,5 +132,4 @@ public class Base64InputStreamTest extends TestCase {
         }
         return decoded;
     }
-
 }

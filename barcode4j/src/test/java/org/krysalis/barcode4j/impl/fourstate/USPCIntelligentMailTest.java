@@ -15,15 +15,18 @@
  */
 package org.krysalis.barcode4j.impl.fourstate;
 
-import junit.framework.TestCase;
-import static junit.framework.TestCase.assertEquals;
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author mk
  */
-public class USPCIntelligentMailTest extends TestCase {
+public class USPCIntelligentMailTest {
+    
+    @Test
     public void testDefaultsInXML() throws Exception {
         USPSIntelligentMailBean refBean = new USPSIntelligentMailBean();
         

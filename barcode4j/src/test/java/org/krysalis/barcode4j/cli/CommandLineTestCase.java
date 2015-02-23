@@ -20,24 +20,27 @@ import java.io.File;
 import java.io.PrintStream;
 
 import org.apache.avalon.framework.ExceptionUtil;
-import org.krysalis.barcode4j.AbstractBarcodeTestCase;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests the command line application
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class CommandLineTestCase extends AbstractBarcodeTestCase {
+public class CommandLineTestCase {
 
     private ByteArrayOutputStream out;
     private ByteArrayOutputStream err;
     private ExitHandlerForTests exitHandler;
-
-    /**
-     * @see junit.framework.TestCase#Constructor(String)
-     */
-    public CommandLineTestCase(String name) {
-        super(name);
+    
+    @Before
+    public void setUp() throws Exception {
+        this.out = new ByteArrayOutputStream();
+        this.err = new ByteArrayOutputStream();
+        this.exitHandler = new ExitHandlerForTests();
     }
 
     private void dumpResults() throws Exception {
@@ -65,14 +68,8 @@ public class CommandLineTestCase extends AbstractBarcodeTestCase {
             //ignore
         }
     }
-
-    @Override
-    protected void setUp() throws Exception {
-        this.out = new ByteArrayOutputStream();
-        this.err = new ByteArrayOutputStream();
-        this.exitHandler = new ExitHandlerForTests();
-    }
     
+    @Test
     public void testSVG() throws Exception {
         final String[] args = {"-s", "ean13", "9771422985503+00006"};
         callCLI(args);
@@ -83,6 +80,7 @@ public class CommandLineTestCase extends AbstractBarcodeTestCase {
         assertTrue("No output on stderr expected", this.err.size() == 0);
     }
 
+    @Test
     public void testEPS() throws Exception {
         final String[] args = {"-s", "ean13", "-f", "eps", "9771422985503+00006"};
         callCLI(args);
@@ -93,6 +91,7 @@ public class CommandLineTestCase extends AbstractBarcodeTestCase {
         assertTrue("No output on stderr expected", this.err.size() == 0);
     }
 
+    @Test
     public void testBitmapJPEG() throws Exception {
         final String[] args = {"-s", "ean13", "-f", "image/jpeg", "9771422985503+00006"};
         callCLI(args);
@@ -103,6 +102,7 @@ public class CommandLineTestCase extends AbstractBarcodeTestCase {
         assertTrue("No output on stderr expected", this.err.size() == 0);
     }
 
+    @Test
     public void testNoArgs() throws Exception {
         final String[] args = new String[0];
         callCLI(args);
@@ -114,6 +114,7 @@ public class CommandLineTestCase extends AbstractBarcodeTestCase {
 //assertTrue("Error message expected on stderr", this.err.size() > 0);
     }
 
+    @Test
     public void testUnknownArg() throws Exception {
         final String[] args = {"--badArgument"};
         callCLI(args);
@@ -125,6 +126,7 @@ public class CommandLineTestCase extends AbstractBarcodeTestCase {
 //        assertTrue("Error message expected on stderr", this.err.size() > 0);
     }
     
+    @Test
     public void testWrongConfigFile() throws Exception {
         final String[] args = {"-c", "NonExistingConfigFile", "9771422985503+00006"};
         callCLI(args);
@@ -137,6 +139,7 @@ public class CommandLineTestCase extends AbstractBarcodeTestCase {
 //assertTrue("Error message expected on stderr", this.err.size() > 0);
     }
 
+    @Test
     public void testValidConfigFile() throws Exception {
         File cfgFile = new File(getClass().getResource("/xml/good-cfg.xml").toURI());
         final String[] args = {"-c", cfgFile.getAbsolutePath(),
@@ -145,6 +148,7 @@ public class CommandLineTestCase extends AbstractBarcodeTestCase {
         assertEquals("Exit code must be 0", 0, this.exitHandler.getLastExitCode());
     }
 
+    @Test
     public void testBadConfigFile() throws Exception {
         File cfgFile = new File(getClass().getResource("/xml/bad-cfg.xml").toURI());
         final String[] args = {"-c", cfgFile.getAbsolutePath(),
@@ -159,6 +163,7 @@ public class CommandLineTestCase extends AbstractBarcodeTestCase {
         //assertTrue("Error message expected on stderr", this.err.size() > 0);
     }
 
+    @Test
     public void testToFile() throws Exception {
         File out = File.createTempFile("krba", ".tmp");
         final String[] args = {"-s", "ean-13", "-o", out.getAbsolutePath(),
@@ -177,6 +182,7 @@ public class CommandLineTestCase extends AbstractBarcodeTestCase {
         } 
     }
 
+    @Test
     public void testDPI() throws Exception {
         File out100 = File.createTempFile("krba", ".tmp");
         final String[] args100 = {"-s", "ean-13", 
@@ -205,5 +211,4 @@ public class CommandLineTestCase extends AbstractBarcodeTestCase {
             fail("Target file could not be deleted. Not closed?");
         } 
     }
-
 }

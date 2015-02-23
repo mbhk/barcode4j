@@ -18,10 +18,12 @@
 
 package org.krysalis.barcode4j.impl.pdf417;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
-public class PDF417UtilitiesTest extends TestCase {
+public class PDF417UtilitiesTest {
 
+    @Test
     public void testSymbolSizeCalculation() throws Exception {
         int k;
         k = PDF417ErrorCorrection.getErrorCorrectionCodewordCount(0);
@@ -49,5 +51,4 @@ public class PDF417UtilitiesTest extends TestCase {
         int sld = PDF417LogicImpl.getNumberOfDataCodewords(m, ecl, c);
         assertEquals(256, sld);
     }
-    
 }

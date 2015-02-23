@@ -15,22 +15,20 @@
  */
 package org.krysalis.barcode4j;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author mk
  */
-public class BaselineAlignmentTest extends TestCase {
-
-    public BaselineAlignmentTest(String testName) {
-        super(testName);
-    }
+public class BaselineAlignmentTest {
 
     /**
      * Test of getName method, of class BaselineAlignment.
      */
-    public void testGetName() {
+    @Test
+    public void getName() {
         System.out.println("getName");
         assertEquals("bottom", BaselineAlignment.ALIGN_BOTTOM.getName());
         assertEquals("top", BaselineAlignment.ALIGN_TOP.getName());
@@ -39,7 +37,8 @@ public class BaselineAlignmentTest extends TestCase {
     /**
      * Test of byName method, of class BaselineAlignment.
      */
-    public void testByName() {
+    @Test
+    public void byName() {
         System.out.println("byName");
         assertEquals(BaselineAlignment.ALIGN_TOP, BaselineAlignment.byName("TOP"));
         assertEquals(BaselineAlignment.ALIGN_BOTTOM, BaselineAlignment.byName("bottoM"));

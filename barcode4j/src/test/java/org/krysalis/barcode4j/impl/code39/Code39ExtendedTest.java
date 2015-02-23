@@ -15,13 +15,15 @@
  */
 package org.krysalis.barcode4j.impl.code39;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Tests for the extended character set for Code 39.
  */
-public class Code39ExtendedTest extends TestCase {
+public class Code39ExtendedTest {
 
+    @Test
     public void testEscaping() throws Exception {
         String msg = "\0\1\2\3";
         assertEquals("%U$A$B$C", Code39LogicImpl.escapeExtended(msg, null).toString());
@@ -51,5 +53,4 @@ public class Code39ExtendedTest extends TestCase {
             //expected
         }
     }
-    
 }

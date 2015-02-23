@@ -18,13 +18,15 @@
 
 package org.krysalis.barcode4j.tools;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Tests {@link URLUtil}.
  */
-public class URLUtilTest extends TestCase {
+public class URLUtilTest {
 
+    @Test
     public void testIsURL() throws Exception {
         assertFalse(URLUtil.isURL("some message"));
         assertTrue(URLUtil.isURL("url(http://localhost/test.txt)"));
@@ -32,11 +34,13 @@ public class URLUtilTest extends TestCase {
         assertFalse(URLUtil.isURL("(http://localhost/test.txt)"));
     }
 
+    @Test
     public void testGetURL() throws Exception {
         assertEquals("http://localhost/test.txt", URLUtil.getURL("url(http://localhost/test.txt)"));
         assertNull(URLUtil.getURL("some message"));
     }
 
+    @Test
     public void testGetData() throws Exception {
         byte[] data = URLUtil.getData("data:;base64,flRlc3R+", "US-ASCII");
         String text = new String(data, "US-ASCII");
@@ -47,6 +51,7 @@ public class URLUtilTest extends TestCase {
         assertEquals("~Test~\u00E5", text);
     }
 
+    @Test
     public void testGetDataEncoding() throws Exception {
         String encoding;
         encoding = URLUtil.getDataEncoding("data:;base64,flRlc3R+");
@@ -55,5 +60,4 @@ public class URLUtilTest extends TestCase {
         encoding = URLUtil.getDataEncoding("data:;charset=ISO-8859-1;base64,flRlc3R+");
         assertEquals("ISO-8859-1", encoding);
     }
-
 }

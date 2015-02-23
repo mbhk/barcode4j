@@ -16,7 +16,8 @@
 
 package org.krysalis.barcode4j.impl.int2of5;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
@@ -26,8 +27,9 @@ import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
  *
  * @version $Id$
  */
-public class ITF14Test extends TestCase {
+public class ITF14Test {
 
+    @Test
     public void testChecksum() throws Exception {
         StringBuffer sb = new StringBuffer();
         ITF14LogicImpl logic;
@@ -85,5 +87,4 @@ public class ITF14Test extends TestCase {
             //expected
         }
     }
-
 }

@@ -18,8 +18,6 @@ package org.krysalis.barcode4j.output.bitmap;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 
-import junit.framework.TestCase;
-
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
@@ -29,17 +27,16 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
 import org.krysalis.barcode4j.output.Orientation;
 
+import static org.junit.Assert.*;
+import org.junit.Test;
+
 /**
  * Test class for basic bitmap output functionality.
  *
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class BitmapOutputTest extends TestCase {
-
-    public BitmapOutputTest(String name) {
-        super(name);
-    }
+public class BitmapOutputTest {
 
     private BarcodeGenerator getGenerator() throws ConfigurationException, BarcodeException {
         DefaultConfiguration cfg = new DefaultConfiguration("cfg");
@@ -50,6 +47,7 @@ public class BitmapOutputTest extends TestCase {
         return gen;
     }
 
+    @Test
     public void testBitmap() throws Exception {
         BarcodeGenerator gen = getGenerator();
         BarcodeDimension dim = gen.calcDimensions("123");
@@ -60,6 +58,7 @@ public class BitmapOutputTest extends TestCase {
         assertEquals("Height in pixels should be 140", 140, image.getHeight());
     }
 
+    @Test
     public void testBitmapFile() throws Exception {
         BarcodeGenerator gen = getGenerator();
 
@@ -74,6 +73,7 @@ public class BitmapOutputTest extends TestCase {
         assertTrue(baout.size() > 0);
     }
 
+    @Test
     public void testBitmapBuffered() throws Exception {
         BarcodeGenerator gen = getGenerator();
 
@@ -89,5 +89,4 @@ public class BitmapOutputTest extends TestCase {
         assertEquals("Width in pixels should be 107", 107, image.getWidth());
         assertEquals("Height in pixels should be 140", 140, image.getHeight());
     }
-
 }

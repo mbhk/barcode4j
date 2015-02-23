@@ -18,18 +18,20 @@
 
 package org.krysalis.barcode4j.tools;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Tests the class MessagePatternUtil.
  * @version $Id$
  */
-public class MessagePatternUtilTest extends TestCase {
+public class MessagePatternUtilTest {
 
     /**
      * Tests the message pattern feature.
      * @throws Exception If an error occurs
      */
+    @Test
     public void testMessagePattern() throws Exception {
         String msg, pattern;
         String result;
@@ -84,6 +86,7 @@ public class MessagePatternUtilTest extends TestCase {
      * Tests the deletion placeholder (#).
      * @throws Exception if an error occurs
      */
+    @Test
     public void testDeletion() throws Exception {
         String msg;
         String result;
@@ -94,5 +97,4 @@ public class MessagePatternUtilTest extends TestCase {
         result = MessagePatternUtil.applyCustomMessagePattern(msg, pattern);
         assertEquals("2008/11/28", result);
     }
-
 }

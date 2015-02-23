@@ -16,17 +16,20 @@
 package org.krysalis.barcode4j.output.bitmap;
 
 import java.util.Set;
-import junit.framework.TestCase;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author mk
  */
-public class BitmapEncoderRegistryTest extends TestCase {
+public class BitmapEncoderRegistryTest {
 
     /**
      * Test of register method, of class BitmapEncoderRegistry.
      */
+    @Test
     public void testRegister() {
         System.out.println("register");
         String classname = ImageIOBitmapEncoder.class.getName();
@@ -45,6 +48,7 @@ public class BitmapEncoderRegistryTest extends TestCase {
     /**
      * Test of supports method, of class BitmapEncoderRegistry.
      */
+    @Test
     public void testSupports_BitmapEncoder_String() {
         System.out.println("supports");
         String mime = "image/png";
@@ -57,6 +61,7 @@ public class BitmapEncoderRegistryTest extends TestCase {
     /**
      * Test of supports method, of class BitmapEncoderRegistry.
      */
+    @Test
     public void testSupports_String() {
         System.out.println("supports");
         String mime = "image/jpeg";
@@ -69,6 +74,7 @@ public class BitmapEncoderRegistryTest extends TestCase {
     /**
      * Test of getInstance method, of class BitmapEncoderRegistry.
      */
+    @Test
     public void testGetInstance() {
         System.out.println("getInstance");
         String mime = "image/gif";
@@ -85,6 +91,7 @@ public class BitmapEncoderRegistryTest extends TestCase {
     /**
      * Test of getSupportedMIMETypes method, of class BitmapEncoderRegistry.
      */
+    @Test
     public void testGetSupportedMIMETypes() {
         System.out.println("getSupportedMIMETypes");
         boolean expResult = true;

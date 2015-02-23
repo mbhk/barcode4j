@@ -57,7 +57,7 @@ public class ExitHandlerForTests extends AbstractExitHandler {
         return lastThrowable;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void failureExit(Main app, String msg, Throwable t, int exitCode) {
         super.failureExit(app, msg, t, exitCode);
         this.lastMsg = msg;
@@ -66,7 +66,7 @@ public class ExitHandlerForTests extends AbstractExitHandler {
         throw new SimulateVMExitError();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void successfulExit(Main app) {
         super.successfulExit(app);
         this.lastMsg = null;
@@ -74,5 +74,4 @@ public class ExitHandlerForTests extends AbstractExitHandler {
         this.lastExitCode = 0;
         throw new SimulateVMExitError();
     }
-
 }

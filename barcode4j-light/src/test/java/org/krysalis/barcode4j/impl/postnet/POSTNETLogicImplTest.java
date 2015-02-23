@@ -15,12 +15,13 @@
  */
 package org.krysalis.barcode4j.impl.postnet;
 
-import junit.framework.TestCase;
-
 import org.krysalis.barcode4j.ChecksumMode;
 
 import org.krysalis.barcode4j.impl.MockClassicBarcodeLogicHandler;
 import org.krysalis.barcode4j.impl.NullClassicBarcodeLogicHandler;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Test class for the POSTNET implementation.
@@ -28,12 +29,9 @@ import org.krysalis.barcode4j.impl.NullClassicBarcodeLogicHandler;
  * @author Chris Dolphy
  * @version $Id$
  */
-public class POSTNETLogicImplTest extends TestCase {
+public class POSTNETLogicImplTest {
 
-    public POSTNETLogicImplTest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testChecksum() throws Exception {
         assertEquals('1', POSTNETLogicImpl.calcChecksum("75368"));
         assertEquals('7', POSTNETLogicImpl.calcChecksum("110119000"));
@@ -41,11 +39,13 @@ public class POSTNETLogicImplTest extends TestCase {
         assertEquals('0', POSTNETLogicImpl.calcChecksum("400017265951"));
     }
 
+    @Test
     public void testIgnoreChars() throws Exception {
         assertEquals("75368", POSTNETLogicImpl.removeIgnoredCharacters("75368"));
         assertEquals("110119000", POSTNETLogicImpl.removeIgnoredCharacters("11011-9000"));
     }
 
+    @Test
     public void testLogic() throws Exception {
         StringBuffer sb = new StringBuffer();
         POSTNETLogicImpl logic;
