@@ -204,7 +204,7 @@ public class Code39Bean extends AbstractBarcodeBean {
         final int msglen = impl.prepareMessage(msg).length();
         final double width = ((msglen + 2) * (3 * wideFactor + 6) * moduleWidth)
                 + ((msglen + 1) * intercharGapWidth);
-        final double qz = (hasQuietZone() ? quietZone : 0);
+        final double qz = hasQuietZone() ? quietZone : 0;
         return new BarcodeDimension(width, getHeight(),
                 width + (2 * qz), getHeight(),
                 quietZone, 0.0);

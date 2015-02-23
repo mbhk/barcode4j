@@ -80,7 +80,7 @@ public class AdvancedConsoleLogger implements Logger {
 
     private void logMessage(String msg, Throwable t, int logLevel) {
         if (logLevel >= this.logLevel) {
-            final PrintStream stream = (logLevel >= LEVEL_ERROR ? err : out);
+            final PrintStream stream = logLevel >= LEVEL_ERROR ? err : out;
             if (prefix) {
                 stream.print(LEVEL_STRINGS[logLevel]);
             }
@@ -104,7 +104,7 @@ public class AdvancedConsoleLogger implements Logger {
 
     @Override
     public boolean isDebugEnabled() {
-        return (logLevel <= LEVEL_DEBUG);
+        return logLevel <= LEVEL_DEBUG;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class AdvancedConsoleLogger implements Logger {
 
     @Override
     public boolean isInfoEnabled() {
-        return (logLevel <= LEVEL_INFO);
+        return logLevel <= LEVEL_INFO;
     }
 
     @Override
@@ -134,7 +134,7 @@ public class AdvancedConsoleLogger implements Logger {
 
     @Override
     public boolean isWarnEnabled() {
-        return (logLevel <= LEVEL_WARN);
+        return logLevel <= LEVEL_WARN;
     }
 
     @Override
@@ -149,7 +149,7 @@ public class AdvancedConsoleLogger implements Logger {
 
     @Override
     public boolean isErrorEnabled() {
-        return (logLevel <= LEVEL_ERROR);
+        return logLevel <= LEVEL_ERROR;
     }
 
     @Override
@@ -164,7 +164,7 @@ public class AdvancedConsoleLogger implements Logger {
 
     @Override
     public boolean isFatalErrorEnabled() {
-        return (logLevel <= LEVEL_FATAL);
+        return logLevel <= LEVEL_FATAL;
     }
 
     @Override

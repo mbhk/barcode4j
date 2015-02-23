@@ -363,7 +363,7 @@ public class EAN128AI {
     }
 
     public static final boolean isCheckDigitType(byte type) {
-        return (type == TYPECD);
+        return type == TYPECD;
     }
     public final boolean isCheckDigit(byte idx) {
         return isCheckDigitType(type[idx]);

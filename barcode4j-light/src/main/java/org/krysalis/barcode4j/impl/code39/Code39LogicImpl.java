@@ -211,7 +211,7 @@ public class Code39LogicImpl {
     public static boolean validateChecksum(String msg) {
         final char actual = msg.charAt(msg.length() - 1);
         final char expected = calcChecksum(msg.substring(0, msg.length() - 1));
-        return (actual == expected);
+        return actual == expected;
     }
 
     private static int getCharIndex(char ch) {
@@ -233,7 +233,7 @@ public class Code39LogicImpl {
         if (ch == STARTSTOP) {
             return false;
         }
-        return (getCharIndex(ch) >= 0);
+        return getCharIndex(ch) >= 0;
     }
 
     private int widthAt(char ch, int index) {
@@ -256,7 +256,7 @@ public class Code39LogicImpl {
         logic.startBarGroup(BarGroup.MSG_CHARACTER, String.valueOf(c));
         for (byte i = 0; i < 9; i++) {
             final int width = widthAt(c, i);
-            final boolean black = (i % 2 == 0);
+            final boolean black = i % 2 == 0;
             logic.addBar(black, width);
         }
         logic.endBarGroup();

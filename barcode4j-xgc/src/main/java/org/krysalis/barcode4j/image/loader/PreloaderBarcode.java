@@ -162,7 +162,7 @@ public class PreloaderBarcode extends AbstractImagePreloader {
     private boolean isSupportedSource(Source src) {
         if (src instanceof DOMSource) {
             final DOMSource domSrc = (DOMSource)src;
-            return (domSrc.getNode() instanceof Document);
+            return domSrc.getNode() instanceof Document;
         } else {
             return ImageUtil.hasInputStream(src);
         }

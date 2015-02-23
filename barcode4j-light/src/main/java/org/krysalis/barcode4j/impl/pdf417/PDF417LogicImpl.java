@@ -132,7 +132,7 @@ public class PDF417LogicImpl {
             int errorCorrectionLevel, TwoDimBarcodeLogicHandler logic) {
         int idx = 0;
         for (int y = 0; y < r; y++) {
-            final int cluster = (y % 3);
+            final int cluster = y % 3;
             logic.startRow();
             logic.startBarGroup(BarGroup.START_CHARACTER, null);
             encodeChar(PDF417Constants.START_PATTERN, 17, logic);

@@ -144,14 +144,14 @@ public abstract class UPCEANLogicImpl {
         if (charset == LEFT_HAND_B) {
             for (byte i = 0; i < 4; i++) {
                 final int width = widthAt(c, 3 - i);
-                final boolean black = (i % 2 != 0);
+                final boolean black = i % 2 != 0;
                 logic.addBar(black, width);
             }
         } else {
             for (byte i = 0; i < 4; i++) {
                 final int width = widthAt(c, i);
-                final boolean black = ((i % 2 == 0 && charset == RIGHT_HAND) 
-                                    || (i % 2 != 0 && charset == LEFT_HAND_A));
+                final boolean black = (i % 2 == 0 && charset == RIGHT_HAND) 
+                                    || (i % 2 != 0 && charset == LEFT_HAND_A);
                 logic.addBar(black, width);
             }
         }

@@ -134,8 +134,8 @@ public class DataMatrixBean extends AbstractBarcodeBean {
 
         final double symbolWidth = symbolInfo.getSymbolWidth() * getModuleWidth();
         final double symbolHeight = symbolInfo.getSymbolHeight() * getBarHeight();
-        final double qzh = (hasQuietZone() ? getQuietZone() : 0);
-        final double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);
+        final double qzh = hasQuietZone() ? getQuietZone() : 0;
+        final double qzv = hasQuietZone() ? getVerticalQuietZone() : 0;
         return new BarcodeDimension(symbolWidth, symbolHeight,
                 symbolWidth + (2 * qzh), symbolHeight + (2 * qzv),
                 qzh, qzv);

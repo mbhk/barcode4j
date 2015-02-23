@@ -92,7 +92,7 @@ public class POSTNETLogicImpl {
     public static boolean validateChecksum(String msg) {
         final char actual = msg.charAt(msg.length() - 1);
         final char expected = calcChecksum(msg.substring(0, msg.length() - 1));
-        return (actual == expected);
+        return actual == expected;
     }
 
     private static boolean isValidChar(char ch) {

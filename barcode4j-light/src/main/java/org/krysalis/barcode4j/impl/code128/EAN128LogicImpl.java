@@ -278,7 +278,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
     }
 
     private boolean isGroupSeparator(char ch) {
-        return (ch == groupSeparator || ch == Code128LogicImpl.FNC_1);
+        return ch == groupSeparator || ch == Code128LogicImpl.FNC_1;
     }
 
     private void checkType(EAN128AI ai, byte idx, String msg, int start, int end, int cdStart) {

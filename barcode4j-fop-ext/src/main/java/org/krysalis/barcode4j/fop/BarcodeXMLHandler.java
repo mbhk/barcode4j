@@ -177,10 +177,10 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
                 System.out.println(" --> Java2D");
             }
             g2dAdapter.paintImage(painter,
-                    context, ((Integer) context.getProperty("xpos"))
-                    , ((Integer) context.getProperty("ypos"))
-                    , ((Integer) context.getProperty("width"))
-                    , ((Integer) context.getProperty("height")));
+                    context, (Integer) context.getProperty("xpos")
+                    , (Integer) context.getProperty("ypos")
+                    , (Integer) context.getProperty("width")
+                    , (Integer) context.getProperty("height"));
             return true;
         }
     }
@@ -245,6 +245,6 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
 
     @Override
     public boolean supportsRenderer(Renderer renderer) {
-        return (renderer.getGraphics2DAdapter() != null);
+        return renderer.getGraphics2DAdapter() != null;
     }
 }

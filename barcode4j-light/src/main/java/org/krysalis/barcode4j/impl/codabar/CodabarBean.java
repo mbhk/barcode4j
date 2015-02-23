@@ -159,7 +159,7 @@ public class CodabarBean extends AbstractBarcodeBean {
             }
             width += calcCharWidth(msg.charAt(i));
         }
-        final double qz = (hasQuietZone() ? quietZone : 0);
+        final double qz = hasQuietZone() ? quietZone : 0;
         return new BarcodeDimension(width, getHeight(),
                 width + (2 * qz), getHeight(),
                 quietZone, 0.0);

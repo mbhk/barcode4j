@@ -111,7 +111,7 @@ public class CodabarLogicImpl {
      * @return true if it is a valid character, false otherwise
      */
     protected static boolean isValidChar(char ch) {
-        return (getCharIndex(Character.toLowerCase(ch)) >= 0);
+        return getCharIndex(Character.toLowerCase(ch)) >= 0;
     }
 
     /**
@@ -121,10 +121,10 @@ public class CodabarLogicImpl {
      */
     protected static boolean isStartStopChar(char ch) {
         ch = Character.toLowerCase(ch);
-        return ((ch == 'a') || (ch == 'b')
-             || (ch == 'c') || (ch == 'd')
-             || (ch == 'e') || (ch == '*')
-             || (ch == 'n') || (ch == 't'));
+        return (ch == 'a') || (ch == 'b')
+            || (ch == 'c') || (ch == 'd')
+            || (ch == 'e') || (ch == '*')
+            || (ch == 'n') || (ch == 't');
     }
 
     private int widthAt(char ch, int index) throws IllegalArgumentException {
@@ -148,7 +148,7 @@ public class CodabarLogicImpl {
         logic.startBarGroup(BarGroup.MSG_CHARACTER, String.valueOf(ch));
         for (byte i = 0; i < 7; i++) {
             final int width = widthAt(ch, i);
-            final boolean black = ((i % 2) == 0);
+            final boolean black = (i % 2) == 0;
             logic.addBar(black, width);
         }
         logic.endBarGroup();

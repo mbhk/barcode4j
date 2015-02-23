@@ -88,8 +88,8 @@ public class Code128Bean extends AbstractBarcodeBean {
         final int msgLen = impl.createEncodedMessage(msg).length + 1;
 
         final double width = ((msgLen * 11) + 13) * getModuleWidth();
-        final double qz = (hasQuietZone() ? quietZone : 0);
-        final double vqz = (hasQuietZone() ? quietZoneVertical : 0);
+        final double qz = hasQuietZone() ? quietZone : 0;
+        final double vqz = hasQuietZone() ? quietZoneVertical : 0;
 
         return new BarcodeDimension(width, getHeight(),
                 width + (2 * qz), getHeight() + (2 * vqz),

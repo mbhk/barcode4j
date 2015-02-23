@@ -74,8 +74,8 @@ public class RoyalMailCBCBean extends AbstractFourStateBean {
         final int len = modMsg.length() + additional;
         final double width = (((len * 4) + 2) * moduleWidth) 
                 + (((len * 4) + 1) * getIntercharGapWidth());
-        final double qzh = (hasQuietZone() ? getQuietZone() : 0);        
-        final double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);        
+        final double qzh = hasQuietZone() ? getQuietZone() : 0;
+        final double qzv = hasQuietZone() ? getVerticalQuietZone() : 0;
         return new BarcodeDimension(width, getBarHeight(), 
                 width + (2 * qzh), getBarHeight() + (2 * qzv), 
                 qzh, qzv);

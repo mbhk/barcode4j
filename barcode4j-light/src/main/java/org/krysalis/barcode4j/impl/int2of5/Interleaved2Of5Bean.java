@@ -96,7 +96,7 @@ public class Interleaved2Of5Bean extends AbstractBarcodeBean {
         }
         final double charwidth = 2 * wideFactor + 3;
         final double width = ((msgLen * charwidth) + 6 + wideFactor) * moduleWidth;
-        final double qz = (hasQuietZone() ? quietZone : 0);
+        final double qz = hasQuietZone() ? quietZone : 0;
         return new BarcodeDimension(width, getHeight(), 
                 width + (2 * qz), getHeight(), 
                 quietZone, 0.0);

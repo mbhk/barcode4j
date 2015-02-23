@@ -135,13 +135,13 @@ public class BarcodeServlet extends HttpServlet {
                             "Minimum resolution must be 10dpi");
                     }
                     final String gray = request.getParameter(BARCODE_IMAGE_GRAYSCALE);
-                    final BitmapCanvasProvider bitmap = ("true".equalsIgnoreCase(gray)
+                    final BitmapCanvasProvider bitmap = "true".equalsIgnoreCase(gray)
                         ? new BitmapCanvasProvider(
                                 bout, format, resolution,
                                 BufferedImage.TYPE_BYTE_GRAY, true, orientation)
                         : new BitmapCanvasProvider(
                                 bout, format, resolution,
-                                BufferedImage.TYPE_BYTE_BINARY, false, orientation));
+                                BufferedImage.TYPE_BYTE_BINARY, false, orientation);
                     gen.generateBarcode(bitmap, msg);
                     bitmap.finish();
                 }

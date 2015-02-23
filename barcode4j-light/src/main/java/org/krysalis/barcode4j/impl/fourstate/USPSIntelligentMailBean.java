@@ -97,8 +97,8 @@ public class USPSIntelligentMailBean extends AbstractFourStateBean {
         final int barCount = 65;
         final double width = (barCount * getModuleWidth()) 
                 + ((barCount - 1) * getIntercharGapWidth());
-        final double qzh = (hasQuietZone() ? getQuietZone() : 0);
-        final double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);
+        final double qzh = hasQuietZone() ? getQuietZone() : 0;
+        final double qzv = hasQuietZone() ? getVerticalQuietZone() : 0;
         return new BarcodeDimension(width, getHeight(), 
                 width + (2 * qzh), getHeight() + (2 * qzv), 
                 qzh, qzv);

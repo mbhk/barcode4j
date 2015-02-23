@@ -52,7 +52,7 @@ public abstract class DataMatrixPlacement {
             if ((row == numrows - 2) && (col == 0) && ((numcols % 4) != 0)) {
                 corner2(pos++);
             }
-            if ((row == numrows - 2) && (col == 0) && ((numcols % 8 == 4))) {
+            if ((row == numrows - 2) && (col == 0) && (numcols % 8 == 4)) {
                 corner3(pos++);
             }
             if ((row == numrows + 4) && (col == 2) && (!((numcols % 8) != 0))) {
@@ -65,7 +65,7 @@ public abstract class DataMatrixPlacement {
                 }
                 row -= 2;
                 col += 2;
-            } while ((row >= 0 && (col < numcols)));
+            } while (row >= 0 && (col < numcols));
             row++;
             col += 3;
             

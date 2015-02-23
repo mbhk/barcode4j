@@ -88,10 +88,10 @@ public class MimeTypes {
         if (fmt == null) {
             return false;
         }
-        return (fmt.equals(MIME_JPEG)
+        return fmt.equals(MIME_JPEG)
             || fmt.equals(MIME_TIFF)
             || fmt.equals(MIME_PNG)
             || fmt.equals(MIME_GIF)
-            || fmt.equals(MIME_BMP));
+            || fmt.equals(MIME_BMP);
     }
 }

@@ -311,7 +311,7 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
         if (count == 1 && startmode == TEXT_COMPACTION) {
             sb.append((char)SHIFT_TO_BYTE);
         } else {
-            final boolean sixpack = ((count % 6) == 0);
+            final boolean sixpack = (count % 6) == 0;
             if (sixpack) {
                 sb.append((char)LATCH_TO_BYTE);
             } else {
@@ -373,26 +373,26 @@ public class PDF417HighLevelEncoder implements PDF417Constants {
     }
 
     private static boolean isAlphaUpper(char ch) {
-        return (ch == ' ' || (ch >= 'A' && ch <= 'Z'));
+        return ch == ' ' || (ch >= 'A' && ch <= 'Z');
     }
 
     private static boolean isAlphaLower(char ch) {
-        return (ch == ' ' || (ch >= 'a' && ch <= 'z'));
+        return ch == ' ' || (ch >= 'a' && ch <= 'z');
     }
 
     private static boolean isMixed(char ch) {
-        return (MIXED[ch] != -1);
+        return MIXED[ch] != -1;
     }
 
     private static boolean isPunctuation(char ch) {
-        return (PUNCTUATION[ch] != -1);
+        return PUNCTUATION[ch] != -1;
     }
 
     private static boolean isText(char ch) {
-        return (ch == 9 //TAB
+        return ch == 9 //TAB
                 || ch == 10 //LF
                 || ch == 13 //CR
-                || (ch >= 32 && ch <= 126));
+                || (ch >= 32 && ch <= 126);
     }
     /*
     private boolean isByte(int pos) {

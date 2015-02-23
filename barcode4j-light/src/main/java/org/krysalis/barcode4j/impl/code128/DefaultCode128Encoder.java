@@ -53,7 +53,7 @@ public class DefaultCode128Encoder implements Code128Encoder {
 
     private boolean needA(char c) {
         //Character can't be encoded in B
-        return (c < 32);
+        return c < 32;
     }
 
     private boolean needB(char c) {
@@ -100,7 +100,7 @@ public class DefaultCode128Encoder implements Code128Encoder {
     }
 
     private boolean isAllowed(Code128Constants codeset) {
-        return ((this.codeset.getValue() & codeset.getValue()) != 0);
+        return (this.codeset.getValue() & codeset.getValue()) != 0;
     }
 
     private boolean isAAllowed() {
@@ -154,7 +154,7 @@ public class DefaultCode128Encoder implements Code128Encoder {
 
                     // check if next character is digit as well
                     character = message.charAt(messagePos + countC + 1);
-                    if ((character < '0' || character > '9')) {
+                    if (character < '0' || character > '9') {
                         break;
                     }
 

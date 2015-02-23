@@ -136,7 +136,7 @@ public class ITF14Bean extends Interleaved2Of5Bean {
         final double charwidth = 2 * getWideFactor() + 3;
         final double width = ((msgLen * charwidth) + 6 + getWideFactor()) * getModuleWidth();
         final double qz = getQuietZone();
-        final double vBearerBar = (isBearerBox() ? getBearerBarWidth() : 0.0);
+        final double vBearerBar = isBearerBox() ? getBearerBarWidth() : 0.0;
         return new BarcodeDimension(width, getHeight(),
                 width + (2 * qz) + (2 * vBearerBar), getHeight() + (2 * getBearerBarWidth()),
                 vBearerBar + getQuietZone(), getBearerBarWidth());

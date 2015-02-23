@@ -747,9 +747,9 @@ public class DataMatrixHighLevelEncoder {
                 throw new IllegalStateException("StringBuilder must not be empty");
             }
             final char c1 = sb.charAt(startPos);
-            final char c2 = (len >= 2 ? sb.charAt(startPos + 1) : 0);
-            final char c3 = (len >= 3 ? sb.charAt(startPos + 2) : 0);
-            final char c4 = (len >= 4 ? sb.charAt(startPos + 3) : 0);
+            final char c2 = len >= 2 ? sb.charAt(startPos + 1) : 0;
+            final char c3 = len >= 3 ? sb.charAt(startPos + 2) : 0;
+            final char c4 = len >= 4 ? sb.charAt(startPos + 3) : 0;
 
             final int v = (c1 << 18) + (c2 << 12) + (c3 << 6) + c4;
             final char cw1 = (char)((v >> 16) & 255);
@@ -793,9 +793,9 @@ public class DataMatrixHighLevelEncoder {
             }
             final int dataCount = buffer.length() - 1;
             final int lengthFieldSize = 1;
-            final int currentSize = (context.getCodewordCount() + dataCount + lengthFieldSize);
+            final int currentSize = context.getCodewordCount() + dataCount + lengthFieldSize;
             context.updateSymbolInfo(currentSize);
-            final boolean mustPad = ((context.symbolInfo.dataCapacity - currentSize) > 0);
+            final boolean mustPad = (context.symbolInfo.dataCapacity - currentSize) > 0;
             if (context.hasMoreCharacters() || mustPad) {
                 if (dataCount <= 249) {
                     buffer.setCharAt(0, (char)dataCount);
@@ -1029,11 +1029,11 @@ public class DataMatrixHighLevelEncoder {
     }*/
 
     private static boolean isExtendedASCII(char ch) {
-        return (ch >= 128 && ch <= 255);
+        return ch >= 128 && ch <= 255;
     }
 
     private static boolean isASCII7(char ch) {
-        return (ch >= 0 && ch <= 127);
+        return ch >= 0 && ch <= 127;
     }
 
     private static boolean isNativeC40(char ch) {
@@ -1062,7 +1062,7 @@ public class DataMatrixHighLevelEncoder {
     }
 
     private static boolean isNativeEDIFACT(char ch) {
-        return (ch >= 32 && ch <= 94);
+        return ch >= 32 && ch <= 94;
     }
 
     private static boolean isSpecialB256(char ch) {

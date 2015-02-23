@@ -191,8 +191,8 @@ public class POSTNETBean extends HeightVariableBarcodeBean {
         final String modMsg = POSTNETLogicImpl.removeIgnoredCharacters(msg);
         final double width = (((modMsg.length() * 5) + 2) * moduleWidth) 
                 + (((modMsg.length() * 5) + 1) * intercharGapWidth);
-        final double qz = (hasQuietZone() ? quietZone : 0);
-        final double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);        
+        final double qz = hasQuietZone() ? quietZone : 0;
+        final double qzv = hasQuietZone() ? getVerticalQuietZone() : 0;
         double height = getHeight();
         if (getMsgPosition() == HumanReadablePlacement.HRP_NONE) {
             height -= getHumanReadableHeight();

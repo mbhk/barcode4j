@@ -57,7 +57,7 @@ public class EAN128Bean extends Code128Bean {
         //TODO If the output is able to calculate text lenghts (e.g. awt, fop), and 
         //the human readable part is longer then barcode the size should be enlarged!
         final double width = ((msgLen * 11) + 13) * getModuleWidth();
-        final double qz = (hasQuietZone() ? quietZone : 0);
+        final double qz = hasQuietZone() ? quietZone : 0;
         return new BarcodeDimension(width, getHeight(), 
                 width + (2 * qz), getHeight(), 
                 quietZone, 0.0);

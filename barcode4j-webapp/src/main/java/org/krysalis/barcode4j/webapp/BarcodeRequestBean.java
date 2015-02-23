@@ -286,7 +286,7 @@ public class BarcodeRequestBean {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_IMAGE_GRAYSCALE);
             sb.append("=");
-            sb.append((isGray() ? "true" : "false"));
+            sb.append(isGray() ? "true" : "false");
         }
 
         return sb.toString();

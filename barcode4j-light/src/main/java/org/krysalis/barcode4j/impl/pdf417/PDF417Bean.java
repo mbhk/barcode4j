@@ -99,9 +99,9 @@ public class PDF417Bean extends AbstractBarcodeBean {
         }
 
         final double width = (17 * dimension.width + 69) * getModuleWidth();
-        final double height = (getBarHeight() * dimension.height);
-        final double qzh = (hasQuietZone() ? getQuietZone() : 0);
-        final double qzv = (hasQuietZone() ? getVerticalQuietZone() : 0);
+        final double height = getBarHeight() * dimension.height;
+        final double qzh = hasQuietZone() ? getQuietZone() : 0;
+        final double qzv = hasQuietZone() ? getVerticalQuietZone() : 0;
         return new BarcodeDimension(width, height,
                 width + (2 * qzh), height + (2 * qzv),
                 qzh, qzv);

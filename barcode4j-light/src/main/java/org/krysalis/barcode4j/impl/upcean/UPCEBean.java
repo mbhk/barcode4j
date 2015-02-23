@@ -38,7 +38,7 @@ public class UPCEBean extends UPCEANBean {
         width += 6 * 7 * moduleWidth;
         width += 6 * moduleWidth; //right guard
         width += supplementalWidth(msg);
-        final double qz = (hasQuietZone() ? quietZone : 0);
+        final double qz = hasQuietZone() ? quietZone : 0;
         return new BarcodeDimension(width, getHeight(), 
                 width + (2 * qz), getHeight(), 
                 quietZone, 0.0);
