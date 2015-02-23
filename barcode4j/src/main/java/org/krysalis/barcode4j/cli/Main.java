@@ -39,7 +39,6 @@ import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.krysalis.barcode4j.tools.MimeTypes;
 
 import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -56,7 +55,7 @@ import org.krysalis.barcode4j.output.Orientation;
  *
  * @author Jeremias Maerki
  * @author mk
- * @version 1.2
+ * @version 1.3
  */
 public class Main {
 
@@ -255,25 +254,16 @@ public class Main {
         return this.options;
     }
 
-    private Configuration getConfiguration(CommandLine cl) {
-        Configuration res = null;
+    private Configuration getConfiguration(CommandLine cl) throws BarcodeException {
+        final Configuration res;
         if (cl.hasOption("s")) {
-            final String sym = cl.getOptionValue("s");
-            final DefaultConfiguration cfg = new DefaultConfiguration("cfg");
-            final DefaultConfiguration child = new DefaultConfiguration(sym);
-            cfg.addChild(child);
-            res = cfg;
+            res = ConfigurationBuilder.createDefaultConfiguration(cl.getOptionValue("s"));
         } else if (cl.hasOption("c")) {
-            try {
-                final String filename = cl.getOptionValue("c");
-                LOGGER.log(Level.INFO, "Using configurationfile: {}", filename);
-                res = ConfigurationBuilder.buildFromFile(filename);
-            } catch (BarcodeException e) {
-                exitHandler.failureExit(this,
-                        "Error reading configuration file: " + e.getMessage(), null, -3);
-            }
+            res = ConfigurationBuilder.buildFromFile(cl.getOptionValue("c"));
+        } else {
+            res = ConfigurationBuilder.createEmptyConfiguration();
         }
-        return (res == null) ? new DefaultConfiguration("cfg") : res;
+        return res;
     }
 
     /**
@@ -399,8 +389,7 @@ public class Main {
         gen.generateBarcode(svg, message);
         try {
             TransformerFactory.newInstance().newTransformer()
-                    .transform(new javax.xml.transform.dom.DOMSource(svg.getDOMFragment())
-                    , new javax.xml.transform.stream.StreamResult(out));
+                    .transform(new javax.xml.transform.dom.DOMSource(svg.getDOMFragment()), new javax.xml.transform.stream.StreamResult(out));
         } catch (TransformerException te) {
             exitHandler.failureExit(this, "XML/XSLT library error", te, -6);
         }
