@@ -42,6 +42,8 @@ public class Length {
     public static final String CM = "cm";
     /** String constant for millimeters. */
     public static final String MM = "mm";
+    /** String constant for module-width. */
+    public static final String MW = "mw";
     
     private double value;
     private String unit;
@@ -128,6 +130,7 @@ public class Length {
         res.add(INCH);
         res.add(POINT);
         res.add(MM);
+        res.add(MW);
         return res;
     }
 
