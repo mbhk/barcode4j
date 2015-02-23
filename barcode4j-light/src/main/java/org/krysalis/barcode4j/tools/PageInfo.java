@@ -23,8 +23,8 @@ import java.util.Map;
  */
 public class PageInfo {
 
-    private int pageNumber;
-    private String pageNumberString;
+    private final int pageNumber;
+    private final String pageNumberString;
 
     /**
      * Creates a new object.
