@@ -213,7 +213,6 @@
         <module>barcode4j-xgc</module>
         <module>barcode4j-fop-ext</module>
         <module>barcode4j-fop-ext-0.20.5</module>
-        <module>barcode4j-fop-ext-0.20.5-complete</module>
         <module>barcode4j-playground</module>
         <module>barcode4j-webapp</module>
         <module>barcode4j-taglib</module>
