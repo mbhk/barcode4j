@@ -31,10 +31,13 @@ import org.krysalis.barcode4j.tools.UnitConv;
 
 /**
  * CanvasProvider implementation for EPS output (Encapsulated PostScript).
+ *
  * @author Jeremias Maerki
  * @version $Id$
  */
 public class EPSCanvasProvider extends AbstractCanvasProvider {
+
+    private static final String EPS_END_DEF = "} def\n";
 
     private Writer writer;
     private DecimalFormat df;
@@ -43,6 +46,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
 
     /**
      * Main constructor.
+     *
      * @param out OutputStream to write the EPS to
      * @param orientation the barcode orientation (0, 90, 180, 270)
      * @throws IOException in case of an I/O problem
@@ -52,17 +56,28 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
         try {
             this.writer = new java.io.OutputStreamWriter(out, "US-ASCII");
         } catch (UnsupportedEncodingException uee) {
-            throw new RuntimeException(
-                    "Incompatible VM: Need US-ASCII encoding. " + uee.getMessage());
+            throw new IllegalStateException("Incompatible VM: Need US-ASCII encoding.", uee);
         }
     }
-    
+
+    /**
+     * Main constructor.
+     *
+     * @param out OutputStream to write the EPS to
+     * @param orientation the barcode orientation (0, 90, 180, 270)
+     * @throws IOException in case of an I/O problem
+     * @deprecated use
+     * {@link EPSCanvasProvider#EPSCanvasProvider(java.io.OutputStream, org.krysalis.barcode4j.output.Orientation)}
+     * instead
+     */
+    @Deprecated
     public EPSCanvasProvider(OutputStream out, int orientation) throws IOException {
         this(out, Orientation.fromInt(orientation));
     }
 
     /**
      * Returns the DecimalFormat instance to use internally to format numbers.
+     *
      * @return a DecimalFormat instance
      */
     protected DecimalFormat getDecimalFormat() {
@@ -83,7 +98,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
     }
 
     private String formatmm(double x, double y) {
-        return formatmm(x) + " "  + formatmm(this.height - y);
+        return formatmm(x) + " " + formatmm(this.height - y);
     }
 
     private void writeHeader(double width, double height) throws IOException {
@@ -110,13 +125,13 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
         writer.write("exch 0 rlineto\n");
         writer.write("0 neg exch rlineto\n");
         writer.write("closepath fill\n");
-        writer.write("} def\n");
+        writer.write(EPS_END_DEF);
 
         writer.write("/ct {\n"); //centered text: (text) middle-x y ct
         writer.write("moveto dup stringwidth\n");
         writer.write("2 div neg exch 2 div neg exch\n");
         writer.write("rmoveto show\n");
-        writer.write("} def\n");
+        writer.write(EPS_END_DEF);
 
         writer.write("/rt {\n"); //right-aligned text: (text) x1 x2 y rt
         //Calc string width
@@ -129,7 +144,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
         writer.write("add\n");
         //moveto and finally show
         writer.write("3 -1 roll moveto show\n");
-        writer.write("} def\n");
+        writer.write(EPS_END_DEF);
 
         writer.write("/jt {\n"); //justified: (text) x1 x2 y jt
         //Calc string width
@@ -145,7 +160,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
         //setup moveto and ashow
         writer.write("0 4 -1 roll 4 -1 roll 5 -1 roll\n");
         writer.write("moveto ashow\n");
-        writer.write("} def\n");
+        writer.write(EPS_END_DEF);
 
         writer.write("%%EndProcSet: barcode4j-procset 1.0\n");
         writer.write("%%EndProlog\n");
@@ -154,6 +169,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
     /**
      * Writes the EPS trailer. Must be called after barcode painting call
      * returns.
+     *
      * @throws IOException if an I/O error happened during EPS generation
      */
     public void finish() throws IOException {
@@ -178,16 +194,16 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
             final String w = formatmm(dim.getWidthPlusQuiet());
             final String h = formatmm(dim.getHeightPlusQuiet());
             switch (orientation) {
-            case NINETY:
-                writer.write("90 rotate 0" + " -" + h + " translate\n");
-                break;
-            case ONEHUNDRED_EIGHTY:
-                writer.write("180 rotate -" + w + " -" + h + " translate\n");
-                break;
-            case TWOHUNDRED_SEVENTY:
-                writer.write("270 rotate -" + w + " 0 translate\n");
-                break;
-            default:
+                case NINETY:
+                    writer.write("90 rotate 0" + " -" + h + " translate\n");
+                    break;
+                case ONEHUNDRED_EIGHTY:
+                    writer.write("180 rotate -" + w + " -" + h + " translate\n");
+                    break;
+                case TWOHUNDRED_SEVENTY:
+                    writer.write("270 rotate -" + w + " 0 translate\n");
+                    break;
+                default:
                 //nop
             }
         } catch (IOException ioe) {
@@ -202,7 +218,7 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
         }
         try {
             writer.write(formatmm(x, y) + " "
-                       + formatmm(w) + " " + formatmm(h) + " rf\n");
+                    + formatmm(w) + " " + formatmm(h) + " rf\n");
         } catch (IOException ioe) {
             firstError = ioe;
         }
@@ -210,46 +226,70 @@ public class EPSCanvasProvider extends AbstractCanvasProvider {
 
     @Override
     public void deviceText(
-                String text,
-                double x1,
-                double x2,
-                double y1,
-                String fontName,
-                double fontSize,
-                TextAlignment textAlign) {
+            String text,
+            double x1,
+            double x2,
+            double y1,
+            String fontName,
+            double fontSize,
+            TextAlignment textAlign) {
         if (firstError != null) {
             return;
+        }
+        if (textAlign == null) {
+            throw new IllegalArgumentException("textAlign must not be NULL");
         }
         checkFontName(fontName);
         try {
             writer.write("/" + fontName + " findfont "
                     + UnitConv.mm2pt(fontSize) + " scalefont setfont\n");
-            if (textAlign == TextAlignment.TA_LEFT) {
-                writer.write(formatmm(x1, y1) + " moveto (" + text + ") show\n");
-            } else if (textAlign == TextAlignment.TA_RIGHT) {
-                writer.write("(" + text + ") "
-                        + formatmm(x1) + " "
-                        + formatmm(x2) + " "
-                        + formatmm(this.height - y1) + " rt\n");
-            } else if (textAlign == TextAlignment.TA_CENTER) {
-                writer.write("(" + text + ") "
-                        + formatmm((x1 + x2) / 2, y1) + " ct\n");
-            } else if (textAlign == TextAlignment.TA_JUSTIFY) {
-                writer.write("(" + text + ") "
-                        + formatmm(x1) + " "
-                        + formatmm(x2) + " "
-                        + formatmm(this.height - y1) + " jt\n");
+            switch (textAlign) {
+                case TA_LEFT:
+                    writeLeftTextAlign(x1, y1, text);
+                    break;
+                case TA_CENTER:
+                    writeCenterTextAlign(text, x1, x2, y1);
+                    break;
+                case TA_RIGHT:
+                    writeRightTextAlign(text, x1, x2, y1);
+                    break;
+                case TA_JUSTIFY:
+                    writeJustifyTextAlign(text, x1, x2, y1);
+                    break;
+                default:
+                    throw new AssertionError(textAlign.name());
             }
+
         } catch (IOException ioe) {
             firstError = ioe;
         }
     }
 
+    private void writeJustifyTextAlign(String text, double x1, double x2, double y1) throws IOException {
+        writer.write("(" + text + ") "
+                + formatmm(x1) + " "
+                + formatmm(x2) + " "
+                + formatmm(this.height - y1) + " jt\n");
+    }
+
+    private void writeRightTextAlign(String text, double x1, double x2, double y1) throws IOException {
+        writer.write("(" + text + ") "
+                + formatmm(x1) + " "
+                + formatmm(x2) + " "
+                + formatmm(this.height - y1) + " rt\n");
+    }
+
+    private void writeCenterTextAlign(String text, double x1, double x2, double y1) throws IOException {
+        writer.write("(" + text + ") " + formatmm((x1 + x2) / 2, y1) + " ct\n");
+    }
+
+    private void writeLeftTextAlign(double x1, double y1, String text) throws IOException {
+        writer.write(formatmm(x1, y1) + " moveto (" + text + ") show\n");
+    }
+
     private void checkFontName(String fontName) {
         if (fontName.indexOf(' ') >= 0) {
-            throw new IllegalArgumentException("PostScript/EPS output does not support font names"
-                    + " with spaces ('" + fontName
-                    + "'). Please use the PostScript name of the font!");
+            throw new IllegalArgumentException(String.format("PostScript/EPS output does not support font names with spaces ('%s'). Please use the PostScript name of the font!", fontName));
         }
     }
 }
