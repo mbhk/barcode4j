@@ -16,58 +16,60 @@
 package org.krysalis.barcode4j.impl.datamatrix;
 
 /**
- * Enumeration for DataMatrix symbol shape hint. It can be used to force square or rectangular
- * symbols.
- * 
- * @version 1.2
+ * Enumeration for DataMatrix symbol shape hint.
+ *
+ * It can be used to force square or rectangular symbols.
+ *
+ * @version 1.3
  */
-public class SymbolShapeHint {
+public enum SymbolShapeHint {
 
-    /** The human-readable part is suppressed. */
-    public static final SymbolShapeHint FORCE_NONE
-                                    = new SymbolShapeHint("force-none");
-    /** The human-readable part is placed at the top of the barcode. */
-    public static final SymbolShapeHint FORCE_SQUARE
-                                    = new SymbolShapeHint("force-square");
-    /** The human-readable part is placed at the bottom of the barcode. */
-    public static final SymbolShapeHint FORCE_RECTANGLE
-                                    = new SymbolShapeHint("force-rectangle");
+    /**
+     * The human-readable part is suppressed.
+     */
+    FORCE_NONE("force-none"),
+    /**
+     * The human-readable part is placed at the top of the barcode.
+     */
+    FORCE_SQUARE("force-square"),
+    /**
+     * The human-readable part is placed at the bottom of the barcode.
+     */
+    FORCE_RECTANGLE("force-rectangle");
 
     private final String name;
-    
+
     /**
      * Creates a new SymbolShapeHint instance.
+     *
      * @param name the name for the instance
      */
-    protected SymbolShapeHint(String name) {
+    private SymbolShapeHint(String name) {
         this.name = name;
     }
-    
+
     /**
      * @return the name of the instance.
      */
     public String getName() {
         return this.name;
     }
-    
+
     /**
      * Returns a SymbolShapeHint instance by name.
+     *
      * @param name the name of the instance
      * @return the requested instance
      */
     public static SymbolShapeHint byName(String name) {
-        if (name.equalsIgnoreCase(SymbolShapeHint.FORCE_NONE.getName())) {
-            return SymbolShapeHint.FORCE_NONE;
-        } else if (name.equalsIgnoreCase(SymbolShapeHint.FORCE_SQUARE.getName())) {
-            return SymbolShapeHint.FORCE_SQUARE;
-        } else if (name.equalsIgnoreCase(SymbolShapeHint.FORCE_RECTANGLE.getName())) {
-            return SymbolShapeHint.FORCE_RECTANGLE;
-        } else {
-            throw new IllegalArgumentException(
-                "Invalid SymbolShapeHint: " + name);
+        for (final SymbolShapeHint ref : SymbolShapeHint.values()) {
+            if (ref.name.equalsIgnoreCase(name)) {
+                return ref;
+            }
         }
+        throw new IllegalArgumentException("Invalid SymbolShapeHint: " + name);
     }
-    
+
     @Override
     public String toString() {
         return getName();

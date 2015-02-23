@@ -39,8 +39,7 @@ public class DataMatrixBean extends AbstractBarcodeBean {
     protected static final double DEFAULT_MODULE_WIDTH = UnitConv.in2mm(1.0 / 72); //1px at 72dpi
 
     /**
-     * The requested shape. May be <code>FORCE_NONE</code>,
-     * <code>FORCE_SQUARE</code> or <code>FORCE_RECTANGLE</code>.
+     * The requested shape.
      */
     private SymbolShapeHint shape;
 
