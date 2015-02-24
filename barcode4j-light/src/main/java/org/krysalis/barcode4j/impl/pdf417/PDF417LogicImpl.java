@@ -104,7 +104,7 @@ public class PDF417LogicImpl {
      *          row indicator codewords)
      * @return the number of data codewords
      */
-    public static int getNumberOfDataCodewords(int m, int errorCorrectionLevel, int c) {
+    public static int getNumberOfDataCodewords(int m, ErrorCorrectionLevel errorCorrectionLevel, int c) {
         final int k = PDF417ErrorCorrection.getErrorCorrectionCodewordCount(errorCorrectionLevel);
         final int r = getNumberOfRows(m, k, c);
         return c * r - k;
@@ -129,7 +129,7 @@ public class PDF417LogicImpl {
     }
 
     private static void encodeLowLevel(String fullCodewords, int c, int r,
-            int errorCorrectionLevel, TwoDimBarcodeLogicHandler logic) {
+            ErrorCorrectionLevel errorCorrectionLevel, TwoDimBarcodeLogicHandler logic) {
         int idx = 0;
         for (int y = 0; y < r; y++) {
             final int cluster = y % 3;
@@ -143,11 +143,11 @@ public class PDF417LogicImpl {
                 left = (30 * (y / 3)) + ((r - 1) / 3);
                 right = (30 * (y / 3)) + (c - 1);
             } else if (cluster == 1) {
-                left = (30 * (y / 3)) + (errorCorrectionLevel * 3) + ((r - 1) % 3);
+                left = (30 * (y / 3)) + (errorCorrectionLevel.getLevel() * 3) + ((r - 1) % 3);
                 right = (30 * (y / 3)) + ((r - 1) / 3);
             } else {
                 left = (30 * (y / 3)) + (c - 1);
-                right = (30 * (y / 3)) + (errorCorrectionLevel * 3) + ((r - 1) % 3);
+                right = (30 * (y / 3)) + (errorCorrectionLevel.getLevel() * 3) + ((r - 1) % 3);
             }
             int pattern;
 
@@ -185,7 +185,7 @@ public class PDF417LogicImpl {
     public static void generateBarcodeLogic(TwoDimBarcodeLogicHandler logic,
             String msg, PDF417Bean pdf417Bean) {
 
-        final int errorCorrectionLevel = pdf417Bean.getErrorCorrectionLevel();
+        final ErrorCorrectionLevel errorCorrectionLevel = pdf417Bean.getErrorCorrectionLevel();
 
         //1. step: High-level encoding
         final int errorCorrectionCodeWords = PDF417ErrorCorrection.getErrorCorrectionCodewordCount(

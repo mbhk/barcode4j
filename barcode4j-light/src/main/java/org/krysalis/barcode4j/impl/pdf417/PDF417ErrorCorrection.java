@@ -32,11 +32,8 @@ public class PDF417ErrorCorrection implements PDF417Constants {
      * @param errorCorrectionLevel the error correction level (0-8)
      * @return the number of codewords generated for error correction
      */
-    public static int getErrorCorrectionCodewordCount(int errorCorrectionLevel) {
-        if (errorCorrectionLevel < 0 || errorCorrectionLevel > 8) {
-            throw new IllegalArgumentException("Error correction level must be between 0 and 8!");
-        }
-        return 1 << (errorCorrectionLevel + 1);
+    public static int getErrorCorrectionCodewordCount(ErrorCorrectionLevel errorCorrectionLevel) {
+        return 1 << (errorCorrectionLevel.getLevel() + 1);
     }
     
     /**
@@ -67,7 +64,7 @@ public class PDF417ErrorCorrection implements PDF417Constants {
      * @param errorCorrectionLevel the error correction level (0-8)
      * @return the String representing the error correction codewords
      */
-    public static String generateErrorCorrection(String dataCodewords, int errorCorrectionLevel) {
+    public static String generateErrorCorrection(String dataCodewords, ErrorCorrectionLevel errorCorrectionLevel) {
         final int k = getErrorCorrectionCodewordCount(errorCorrectionLevel);
         char[] e = new char[k];
         final int sld = dataCodewords.length();
@@ -75,11 +72,11 @@ public class PDF417ErrorCorrection implements PDF417Constants {
         for (int i = 0; i < sld; i++) {
             t1 = (dataCodewords.charAt(i) + e[e.length - 1]) % 929;
             for (int j = k - 1; j >= 1; j--) {
-                t2 = (t1 * EC_COEFFICIENTS[errorCorrectionLevel][j]) % 929;
+                t2 = (t1 * EC_COEFFICIENTS[errorCorrectionLevel.getLevel()][j]) % 929;
                 t3 = 929 - t2;
                 e[j] = (char)((e[j - 1] + t3) % 929);
             }
-            t2 = (t1 * EC_COEFFICIENTS[errorCorrectionLevel][0]) % 929;
+            t2 = (t1 * EC_COEFFICIENTS[errorCorrectionLevel.getLevel()][0]) % 929;
             t3 = 929 - t2;
             e[0] = (char)(t3 % 929);
             //System.out.println(HighLevelEncoderTest.visualize(new String(e)));

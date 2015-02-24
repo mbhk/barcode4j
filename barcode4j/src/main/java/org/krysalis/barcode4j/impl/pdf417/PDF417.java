@@ -70,8 +70,8 @@ public class PDF417 extends ConfigurableBarcodeGenerator
             getPDF417Bean().setColumns(child.getValueAsInteger());
         }
 
-        getPDF417Bean().setErrorCorrectionLevel(cfg.getChild("ec-level").getValueAsInteger(
-                PDF417Bean.DEFAULT_ERROR_CORRECTION_LEVEL));
+        getPDF417Bean().setErrorCorrectionLevel(ErrorCorrectionLevel.fromInt(cfg.getChild("ec-level").getValueAsInteger(
+                ErrorCorrectionLevel.DEFAULT_ERROR_CORRECTION_LEVEL.getLevel())));
 
         final String rhs = cfg.getChild("row-height").getValue(null);
         if (rhs != null) {

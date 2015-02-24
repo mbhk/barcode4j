@@ -44,9 +44,6 @@ public class PDF417Bean extends AbstractBarcodeBean {
     /** The default column count for PDF417. */
     protected static final int DEFAULT_COLUMN_COUNT = 2;
 
-    /** The default error correction level for PDF417 */
-    protected static final int DEFAULT_ERROR_CORRECTION_LEVEL = 0;
-
     private static final double DEFAULT_WIDTH_TO_HEIGHT_RATIO = 3;
     private static final int MAX_ROW_COUNT = 90;
     private static final int MIN_ROW_COUNT = 3;
@@ -58,7 +55,7 @@ public class PDF417Bean extends AbstractBarcodeBean {
     private int minCols = MIN_COLUMN_COUNT;
     private int maxCols = MAX_COLUMN_COUNT;
     private double widthToHeightRatio = DEFAULT_WIDTH_TO_HEIGHT_RATIO;
-    private int errorCorrectionLevel = DEFAULT_ERROR_CORRECTION_LEVEL;
+    private ErrorCorrectionLevel errorCorrectionLevel = ErrorCorrectionLevel.DEFAULT_ERROR_CORRECTION_LEVEL;
 
     /** Message encoding */
     private String encoding = "Cp437"; //ECI 000000
@@ -118,7 +115,7 @@ public class PDF417Bean extends AbstractBarcodeBean {
     }
 
     /** @return the error correction level (0-8) */
-    public int getErrorCorrectionLevel() {
+    public ErrorCorrectionLevel getErrorCorrectionLevel() {
         return this.errorCorrectionLevel;
     }
 
@@ -206,7 +203,7 @@ public class PDF417Bean extends AbstractBarcodeBean {
      * be determined based on the amount of data.
      * @param cols the number of columns
      */
-    public void setColumns(int cols) {
+    public final void setColumns(int cols) {
         setMinCols(cols);
         setMaxCols(cols);
     }
@@ -215,10 +212,9 @@ public class PDF417Bean extends AbstractBarcodeBean {
      * Sets the error correction level for the barcode.
      * @param level the error correction level (a value between 0 and 8)
      */
-    public void setErrorCorrectionLevel(int level) {
-        if (level < 0 || level > 8) {
-            throw new IllegalArgumentException(
-                    "Error correction level must be between 0 and 8!");
+    public void setErrorCorrectionLevel(ErrorCorrectionLevel level) {
+        if(level == null) {
+            throw new IllegalArgumentException("Level must not be null");
         }
         this.errorCorrectionLevel = level;
     }
