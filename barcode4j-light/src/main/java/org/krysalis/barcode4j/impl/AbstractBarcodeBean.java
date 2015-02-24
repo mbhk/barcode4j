@@ -29,16 +29,16 @@ import org.krysalis.barcode4j.tools.UnitConv;
 public abstract class AbstractBarcodeBean
             implements BarcodeGenerator {
 
-    /** Net height of bars in mm */
-    protected double height          = 15.0; //mm
+    /** Net height of bars in mm. Defaults to 15mm */
+    protected double height          = 15.0;
     /** Width of narrow module in mm */
     protected double moduleWidth;
     /** Position of human-readable text */
     protected HumanReadablePlacement msgPos = HumanReadablePlacement.HRP_BOTTOM;
-    /** Font size in mm */
-    protected double fontSize        = UnitConv.pt2mm(8); //8pt
-    /** Font name */
-    protected String fontName        = "Helvetica"; //"OCR-B,Helvetica,Arial";
+    /** Font size in mm. Default is eq of 8pt */
+    protected double fontSize        = UnitConv.pt2mm(8);
+    /** Font name. Default is Helvetica, it has been "OCR-B,Helvetica,Arial" */
+    protected String fontName        = "Helvetica";
     /** True if quiet zone should be rendered */
     protected boolean doQuietZone    = true;
     /** Width of the quiet zone left and right of the barcode in mm */
