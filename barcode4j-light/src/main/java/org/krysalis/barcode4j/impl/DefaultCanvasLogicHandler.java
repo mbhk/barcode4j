@@ -30,11 +30,17 @@ import org.krysalis.barcode4j.tools.MessagePatternUtil;
  */
 public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
 
-    /** the barcode bean */
+    /**
+     * the barcode bean.
+     */
     protected AbstractBarcodeBean bcBean;
-    /** the canvas to paint on */
+    /**
+     * the canvas to paint on.
+     */
     protected Canvas canvas;
-    /** the barcode dimensions */
+    /**
+     * the barcode dimensions.
+     */
     protected BarcodeDimension dimensions;
     private double x = 0.0;
     private double y;
@@ -42,6 +48,7 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
 
     /**
      * Main constructor.
+     *
      * @param bcBean the barcode implementation class
      * @param canvas the canvas to paint to
      */
@@ -52,6 +59,7 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
 
     /**
      * Returns the start X position of the bars.
+     *
      * @return the start X position of the bars.
      */
     protected double getStartX() {
@@ -64,17 +72,18 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
 
     /**
      * Returns the start Y position of the bars.
+     *
      * @return the start Y position of the bars.
      */
     protected double getStartY() {
-        double y = 0.0;
+        double res = 0.0;
         if (bcBean.hasQuietZone()) {
-            y += bcBean.getVerticalQuietZone();
+            res += bcBean.getVerticalQuietZone();
         }
         if (bcBean.getMsgPosition() == HumanReadablePlacement.HRP_TOP) {
-            y += bcBean.getHumanReadableHeight();
+            res += bcBean.getHumanReadableHeight();
         }
-        return y;
+        return res;
     }
 
     @Override
@@ -121,6 +130,7 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
 
     /**
      * Returns the vertical text baseline position.
+     *
      * @return the vertical text baseline position
      */
     protected double getTextBaselinePosition() {
@@ -140,6 +150,4 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
             throw new IllegalStateException("not applicable");
         }
     }
-
 }
-
