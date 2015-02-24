@@ -18,7 +18,6 @@ package org.krysalis.barcode4j.impl.postnet;
 import org.krysalis.barcode4j.BaselineAlignment;
 import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.impl.AbstractVariableHeightLogicHandler;
-import org.krysalis.barcode4j.impl.HeightVariableBarcodeBean;
 import org.krysalis.barcode4j.output.Canvas;
 
 /**
@@ -35,7 +34,7 @@ public class POSTNETLogicHandler
      * @param bcBean the barcode implementation class
      * @param canvas the canvas to paint to
      */
-    public POSTNETLogicHandler(HeightVariableBarcodeBean bcBean, Canvas canvas) {
+    public POSTNETLogicHandler(POSTNETBean bcBean, Canvas canvas) {
         super(bcBean, canvas);
     }
 
