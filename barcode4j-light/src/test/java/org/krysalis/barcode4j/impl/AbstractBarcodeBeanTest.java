@@ -18,7 +18,6 @@ package org.krysalis.barcode4j.impl;
 import java.util.Collection;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.output.CanvasProvider;
 
