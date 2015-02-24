@@ -36,7 +36,7 @@ import org.junit.Test;
  */
 public class SVGCanvasProviderTest {
 
-    static String getStringFromDoc(org.w3c.dom.Document doc) {
+    public static String getStringFromDoc(org.w3c.dom.Document doc) {
         DOMImplementationLS domImplementation = (DOMImplementationLS) doc.getImplementation();
         LSSerializer lsSerializer = domImplementation.createLSSerializer();
         DOMConfiguration cfg = lsSerializer.getDomConfig();
