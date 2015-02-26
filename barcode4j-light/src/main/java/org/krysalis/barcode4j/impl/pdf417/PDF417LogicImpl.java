@@ -280,10 +280,8 @@ public class PDF417LogicImpl {
 
             ratio = newRatio;
             dimension = new Dimension(cols, rows);
-
         }
 
         return dimension;
     }
 }
-

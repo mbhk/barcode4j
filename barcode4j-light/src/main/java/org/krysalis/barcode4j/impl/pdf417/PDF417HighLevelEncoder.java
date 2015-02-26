@@ -24,13 +24,15 @@ import java.util.Arrays;
 import org.krysalis.barcode4j.tools.ECIUtil;
 import org.krysalis.barcode4j.tools.URLUtil;
 
+import static org.krysalis.barcode4j.impl.pdf417.PDF417Constants.*;
+
 /**
  * PDF417 high-level encoder following the algorithm described in ISO/IEC 15438:2001(E) in
  * annex P.
  *
  * @version 1.1
  */
-public class PDF417HighLevelEncoder implements PDF417Constants {
+public class PDF417HighLevelEncoder {
 
     private static final byte[] MIXED = new byte[128];
     private static final byte[] PUNCTUATION = new byte[128];

@@ -20,10 +20,12 @@ package org.krysalis.barcode4j.impl.pdf417;
 
 import org.krysalis.barcode4j.tools.TestHelper;
 
+import static org.krysalis.barcode4j.impl.pdf417.PDF417Constants.*;
+
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class HighLevelEncoderTest implements PDF417Constants {
+public class HighLevelEncoderTest {
 
     @Test
     public void testFindNumericSequence() throws Exception {

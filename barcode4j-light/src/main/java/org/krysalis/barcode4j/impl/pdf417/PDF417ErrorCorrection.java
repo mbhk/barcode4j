@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.pdf417;
+
+import static org.krysalis.barcode4j.impl.pdf417.PDF417Constants.*;
 
 /**
  * PDF417 error correction code following the algorithm described in ISO/IEC 15438:2001(E) in
@@ -24,7 +24,11 @@ package org.krysalis.barcode4j.impl.pdf417;
  * 
  * @version $Id$
  */
-public class PDF417ErrorCorrection implements PDF417Constants {
+public class PDF417ErrorCorrection {
+
+    private PDF417ErrorCorrection() {
+        // hide public constructor
+    }
 
     /**
      * Determines the number of error correction codewords for a specified error correction

@@ -23,64 +23,64 @@ package org.krysalis.barcode4j.impl.pdf417;
  *
  * @version $Id$
  */
-public interface PDF417Constants {
+class PDF417Constants {
 
-    String CP437 = "cp437";
+    static final String CP437 = "cp437";
 
     //See 4.4.3 and annex B of ISO/IEC 15438:2001(E)
-    String DEFAULT_ENCODING = CP437;
+    static final String DEFAULT_ENCODING = CP437;
 
     /** code for Text compaction */
-    int TEXT_COMPACTION = 0;
+    static final int TEXT_COMPACTION = 0;
     /** code for Byte compaction */
-    int BYTE_COMPACTION = 1;
+    static final int BYTE_COMPACTION = 1;
     /** code for Numeric compaction */
-    int NUMERIC_COMPACTION = 2;
+    static final int NUMERIC_COMPACTION = 2;
 
     /** Text compaction submode Alpha */
-    int SUBMODE_ALPHA = 0;
+    static final int SUBMODE_ALPHA = 0;
     /** Text compaction submode Lower */
-    int SUBMODE_LOWER = 1;
+    static final int SUBMODE_LOWER = 1;
     /** Text compaction submode Mixed */
-    int SUBMODE_MIXED = 2;
+    static final int SUBMODE_MIXED = 2;
     /** Text compaction submode Punctuation */
-    int SUBMODE_PUNCTUATION = 3;
+    static final int SUBMODE_PUNCTUATION = 3;
 
     /** mode latch to Text Compaction mode */
-    int LATCH_TO_TEXT = 900;
+    static final int LATCH_TO_TEXT = 900;
     /** mode latch to Byte Compaction mode (number of characters NOT a multiple of 6) */
-    int LATCH_TO_BYTE_PADDED = 901;
+    static final int LATCH_TO_BYTE_PADDED = 901;
     /** mode latch to Numeric Compaction mode */
-    int LATCH_TO_NUMERIC = 902;
+    static final int LATCH_TO_NUMERIC = 902;
     /** mode shift to Byte Compaction mode */
-    int SHIFT_TO_BYTE = 913;
+    static final int SHIFT_TO_BYTE = 913;
     /** reader initialisation */
-    int READER_INITIALISATION = 921;
+    static final int READER_INITIALISATION = 921;
     /** terminator codeword for Macro PDF control block */
-    int MACRO_PDF_TERMINATOR = 922;
+    static final int MACRO_PDF_TERMINATOR = 922;
     /** sequence tag to identify the beginning of optional fields in the Macro PDF control block */
-    int MACRO_PDF_OPTIONAL_FIELD_START = 923;
+    static final int MACRO_PDF_OPTIONAL_FIELD_START = 923;
     /** mode latch to Byte Compaction mode (number of characters a multiple of 6) */
-    int LATCH_TO_BYTE = 924;
+    static final int LATCH_TO_BYTE = 924;
     /** identifier for a user defined Extended Channel Interpretation (ECI) */
-    int ECI_USER_DEFINED = 925;
+    static final int ECI_USER_DEFINED = 925;
     /** identifier for a general purpose ECO format */
-    int ECI_GENERAL_PURPOSE = 926;
+    static final int ECI_GENERAL_PURPOSE = 926;
     /** identifier for an ECI of a character set of code page */
-    int ECI_CHARSET = 927;
+    static final int ECI_CHARSET = 927;
     /** Macro marker codeword to indicate the beginning of a Macro PDF Control Block */
-    int MACRO_PDF_CONTROL_BLOCK_START = 928;
+    static final int MACRO_PDF_CONTROL_BLOCK_START = 928;
 
     /** Padding character */
-    int PAD = 900;
+    static final int PAD = 900;
 
     /** Raw code table for text compaction Mixed sub-mode */
-    byte[] TEXT_MIXED_RAW = {
+    static final byte[] TEXT_MIXED_RAW = {
             48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  38,  13,   9,  44,  58,
             35,  45,  46,  36,  47,  43,  37,  42,  61,  94,   0,  32,   0,   0,   0};
 
     /** Raw code table for text compaction: Punctuation sub-mode */
-    byte[] TEXT_PUNCTUATION_RAW = {
+    static final byte[] TEXT_PUNCTUATION_RAW = {
             59,  60,  62,  64,  91,  92,  93,  95,  96, 126,  33,  13,   9,  44,  58,
             10,  45,  46,  36,  47,  34, 124,  42,  40,  41,  63, 123, 125,  39,   0};
 
@@ -88,7 +88,7 @@ public interface PDF417Constants {
      * Tables of coefficients for calculating error correction words
      * (see annex F, ISO/IEC 15438:2001(E))
      */
-    int[][] EC_COEFFICIENTS = {
+    static final int[][] EC_COEFFICIENTS = {
         {27, 917},
         {522, 568, 723, 809},
         {237, 308, 436, 284, 646, 653, 428, 379},
@@ -181,14 +181,14 @@ public interface PDF417Constants {
                 410, 389, 244, 31, 121, 303, 263}};
 
     /** The start pattern (17 bits) */
-    int START_PATTERN = 0x1fea8;
+    static final int START_PATTERN = 0x1fea8;
     /** The stop pattern (18 bits) */
-    int STOP_PATTERN = 0x3fa29;
+    static final int STOP_PATTERN = 0x3fa29;
 
     /**
      * The codeword table from the Annex A of ISO/IEC 15438:2001(E).
      */
-    int[][] CODEWORD_TABLE = {
+    static final int[][] CODEWORD_TABLE = {
            {0x1d5c0, 0x1eaf0, 0x1f57c, 0x1d4e0, 0x1ea78, 0x1f53e,
             0x1a8c0, 0x1d470, 0x1a860, 0x15040, 0x1a830, 0x15020,
             0x1adc0, 0x1d6f0, 0x1eb7c, 0x1ace0, 0x1d678, 0x1eb3e,
@@ -655,4 +655,7 @@ public interface PDF417Constants {
             0x107a4, 0x107a2, 0x10396, 0x107b6, 0x187d4, 0x187d2,
             0x10794, 0x10fb4, 0x10792, 0x10fb2, 0x1c7ea}};
 
+    private PDF417Constants() {
+        // hide public constructor
+    }
 }
