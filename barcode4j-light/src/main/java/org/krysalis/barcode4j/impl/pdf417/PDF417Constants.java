@@ -88,7 +88,7 @@ class PDF417Constants {
      * Tables of coefficients for calculating error correction words
      * (see annex F, ISO/IEC 15438:2001(E))
      */
-    static final int[][] EC_COEFFICIENTS = {
+    private static final int[][] EC_COEFFICIENTS = {
         {27, 917},
         {522, 568, 723, 809},
         {237, 308, 436, 284, 646, 653, 428, 379},
@@ -188,7 +188,7 @@ class PDF417Constants {
     /**
      * The codeword table from the Annex A of ISO/IEC 15438:2001(E).
      */
-    static final int[][] CODEWORD_TABLE = {
+    private static final int[][] CODEWORD_TABLE = {
            {0x1d5c0, 0x1eaf0, 0x1f57c, 0x1d4e0, 0x1ea78, 0x1f53e,
             0x1a8c0, 0x1d470, 0x1a860, 0x15040, 0x1a830, 0x15020,
             0x1adc0, 0x1d6f0, 0x1eb7c, 0x1ace0, 0x1d678, 0x1eb3e,
@@ -657,5 +657,31 @@ class PDF417Constants {
 
     private PDF417Constants() {
         // hide public constructor
+    }
+    
+    /**
+     * Gets ErrorCorrectionCoefficient.
+     * 
+     * Unchecked!
+     * 
+     * @param level Level of ErrorCorrection
+     * @param pos position in Level
+     * @return errorCorrectionCoefficient
+     */
+    public static int getEcCoefficient(ErrorCorrectionLevel level, int pos) {
+        return EC_COEFFICIENTS[level.getLevel()][pos];
+    }
+    
+    /**
+     * Gets Codeword.
+     * 
+     * Unchecked!
+     * 
+     * @param cluster cluster to use
+     * @param word word in cluster
+     * @return Codeword
+     */
+    public static int getCodeword(int cluster, int word) {
+        return CODEWORD_TABLE[cluster][word];
     }
 }

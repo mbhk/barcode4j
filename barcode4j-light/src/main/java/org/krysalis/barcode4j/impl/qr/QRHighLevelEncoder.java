@@ -17,6 +17,7 @@
 package org.krysalis.barcode4j.impl.qr;
 
 import static org.krysalis.barcode4j.impl.qr.QRConstants.*;
+import org.krysalis.barcode4j.tools.CheckUtil;
 
 /**
  * High-level encoder for QR Code.
@@ -41,7 +42,7 @@ public class QRHighLevelEncoder {
         int mode = NUMERIC;
         for (int i = 0; i < msg.length(); i++) {
             final char ch = msg.charAt(i);
-            if (isDigit(ch)) {
+            if (CheckUtil.isDigit(ch)) {
                 //nop
             } else if (mode == NUMERIC && isAlphanumeric(ch)) {
                 mode = ALPHANUMERIC;
@@ -51,9 +52,5 @@ public class QRHighLevelEncoder {
             }
         }
         return mode;
-    }
-
-    private static boolean isDigit(char ch) {
-        return ch >= '0' && ch <= '9';
     }
 }

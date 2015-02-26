@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import org.krysalis.barcode4j.tools.URLUtil;
 import static org.krysalis.barcode4j.impl.datamatrix.DataMatrixConstants.*;
+import org.krysalis.barcode4j.tools.CheckUtil;
 
 /**
  * DataMatrix ECC 200 data encoder following the algorithm described in ISO/IEC 16022:200(E) in
@@ -816,7 +817,7 @@ public class DataMatrixHighLevelEncoder {
     }
 
     private static char encodeASCIIDigits(char digit1, char digit2) {
-        if (isDigit(digit1) && isDigit(digit2)) {
+        if (CheckUtil.isDigit(digit1) && CheckUtil.isDigit(digit2)) {
             final int num = (digit1 - 48) * 10 + (digit2 - 48);
             return (char)(num + 130);
         } else {
@@ -866,7 +867,7 @@ public class DataMatrixHighLevelEncoder {
             charsProcessed++;
 
             //step L
-            if (isDigit(c)) {
+            if (CheckUtil.isDigit(c)) {
                 charCounts[ASCII_ENCODATION] += 0.5;
             } else if (isExtendedASCII(c)) {
                 charCounts[ASCII_ENCODATION] = (int)Math.ceil(charCounts[ASCII_ENCODATION]);
@@ -1000,10 +1001,6 @@ public class DataMatrixHighLevelEncoder {
         return minCount;
     }
 
-    private static boolean isDigit(char ch) {
-        return ch >= '0' && ch <= '9';
-    }
-
     /*
     private static final String EXTENDED_ASCII;
     static {
@@ -1081,7 +1078,7 @@ public class DataMatrixHighLevelEncoder {
         int idx = startpos;
         if (idx < len) {
             char ch = msg.charAt(idx);
-            while (isDigit(ch) && idx < len) {
+            while (CheckUtil.isDigit(ch) && idx < len) {
                 count++;
                 idx++;
                 if (idx < len) {

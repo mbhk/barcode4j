@@ -17,12 +17,13 @@
 package org.krysalis.barcode4j.impl.pdf417;
 
 import static org.krysalis.barcode4j.impl.pdf417.PDF417Constants.*;
+import org.krysalis.barcode4j.tools.CheckUtil;
 
 /**
  * PDF417 error correction code following the algorithm described in ISO/IEC 15438:2001(E) in
  * chapter 4.10.
  * 
- * @version $Id$
+ * @version 1.2
  */
 public class PDF417ErrorCorrection {
 
@@ -49,13 +50,13 @@ public class PDF417ErrorCorrection {
     public static int getRecommendedMinimumErrorCorrectionLevel(int n) {
         if (n <= 0) {
             throw new IllegalArgumentException("n must be > 0");
-        } else if (n >= 1 && n <= 40) {
+        } else if (CheckUtil.intervallContains(1, 40, n)) {
             return 2;
-        } else if (n >= 41 && n <= 160) {
+        } else if (CheckUtil.intervallContains(41, 160, n)) {
             return 3;
-        } else if (n >= 161 && n <= 320) {
+        } else if (CheckUtil.intervallContains(161, 320, n)) {
             return 4;
-        } else if (n >= 321 && n <= 863) {
+        } else if (CheckUtil.intervallContains(321, 863, n)) {
             return 5;
         } else {
             throw new IllegalArgumentException("No recommendation possible");
@@ -71,20 +72,21 @@ public class PDF417ErrorCorrection {
     public static String generateErrorCorrection(String dataCodewords, ErrorCorrectionLevel errorCorrectionLevel) {
         final int k = getErrorCorrectionCodewordCount(errorCorrectionLevel);
         char[] e = new char[k];
-        final int sld = dataCodewords.length();
-        int t1, t2, t3;
-        for (int i = 0; i < sld; i++) {
+        int t1;
+        int t2;
+        int t3;
+        for (int i = 0; i < dataCodewords.length(); i++) {
             t1 = (dataCodewords.charAt(i) + e[e.length - 1]) % 929;
             for (int j = k - 1; j >= 1; j--) {
-                t2 = (t1 * EC_COEFFICIENTS[errorCorrectionLevel.getLevel()][j]) % 929;
+                t2 = (t1 * getEcCoefficient(errorCorrectionLevel, j)) % 929;
                 t3 = 929 - t2;
                 e[j] = (char)((e[j - 1] + t3) % 929);
             }
-            t2 = (t1 * EC_COEFFICIENTS[errorCorrectionLevel.getLevel()][0]) % 929;
+            t2 = (t1 * getEcCoefficient(errorCorrectionLevel, 0)) % 929;
             t3 = 929 - t2;
             e[0] = (char)(t3 % 929);
-            //System.out.println(HighLevelEncoderTest.visualize(new String(e)));
         }
+
         final StringBuilder sb = new StringBuilder(k);
         for (int j = k - 1; j >= 0; j--) {
             if (e[j] != 0) {
@@ -94,5 +96,4 @@ public class PDF417ErrorCorrection {
         }
         return sb.toString();
     }
-    
 }

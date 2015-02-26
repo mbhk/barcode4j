@@ -25,6 +25,7 @@ import org.krysalis.barcode4j.tools.ECIUtil;
 import org.krysalis.barcode4j.tools.URLUtil;
 
 import static org.krysalis.barcode4j.impl.pdf417.PDF417Constants.*;
+import org.krysalis.barcode4j.tools.CheckUtil;
 
 /**
  * PDF417 high-level encoder following the algorithm described in ISO/IEC 15438:2001(E) in
@@ -369,11 +370,6 @@ public class PDF417HighLevelEncoder {
         }
     }
 
-    @Deprecated
-    private static boolean isDigit(char ch) {
-        return Character.isDigit(ch); //ch >= '0' && ch <= '9';
-    }
-
     private static boolean isAlphaUpper(char ch) {
         return ch == ' ' || (ch >= 'A' && ch <= 'Z');
     }
@@ -421,7 +417,7 @@ public class PDF417HighLevelEncoder {
         int idx = startpos;
         if (idx < len) {
             char ch = msg.charAt(idx);
-            while (isDigit(ch) && idx < len) {
+            while (CheckUtil.isDigit(ch) && idx < len) {
                 count++;
                 idx++;
                 if (idx < len) {
@@ -444,7 +440,7 @@ public class PDF417HighLevelEncoder {
         while (idx < len) {
             char ch = msg.charAt(idx);
             int numericCount = 0;
-            while (numericCount < 13 && isDigit(ch) && idx < len) {
+            while (numericCount < 13 && CheckUtil.isDigit(ch) && idx < len) {
                 numericCount++;
                 idx++;
                 if (idx < len) {
@@ -484,7 +480,7 @@ public class PDF417HighLevelEncoder {
             int numericCount = 0;
             int textCount = 0;
 
-            while (numericCount < 13 && isDigit(ch)) {
+            while (numericCount < 13 && CheckUtil.isDigit(ch)) {
                 numericCount++;
                 //textCount++;
                 final int i = idx + numericCount;

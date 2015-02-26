@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.pdf417;
 
 import java.awt.Dimension;
@@ -24,10 +22,12 @@ import org.krysalis.barcode4j.BarGroup;
 import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
 import org.krysalis.barcode4j.TwoDimBarcodeLogicHandler;
 
+import static org.krysalis.barcode4j.impl.pdf417.PDF417Constants.*;
+
 /**
  * Top-level class for the logic part of the PDF417 implementation.
  *
- * @version $Id$
+ * @version 1.3
  */
 public class PDF417LogicImpl {
 
@@ -135,7 +135,7 @@ public class PDF417LogicImpl {
             final int cluster = y % 3;
             logic.startRow();
             logic.startBarGroup(BarGroup.START_CHARACTER, null);
-            encodeChar(PDF417Constants.START_PATTERN, 17, logic);
+            encodeChar(START_PATTERN, 17, logic);
             logic.endBarGroup();
 
             int left, right;
@@ -152,25 +152,25 @@ public class PDF417LogicImpl {
             int pattern;
 
             logic.startBarGroup(BarGroup.MSG_CHARACTER, null);
-            pattern = PDF417Constants.CODEWORD_TABLE[cluster][left];
+            pattern = getCodeword(cluster, left);
             encodeChar(pattern, 17, logic);
             logic.endBarGroup();
 
             for (int x = 0; x < c; x++) {
                 logic.startBarGroup(BarGroup.MSG_CHARACTER, null);
-                pattern = PDF417Constants.CODEWORD_TABLE[cluster][fullCodewords.charAt(idx)];
+                pattern = getCodeword(cluster, fullCodewords.charAt(idx));
                 encodeChar(pattern, 17, logic);
                 logic.endBarGroup();
                 idx++;
             }
 
             logic.startBarGroup(BarGroup.MSG_CHARACTER, null);
-            pattern = PDF417Constants.CODEWORD_TABLE[cluster][right];
+            pattern = getCodeword(cluster, right);
             encodeChar(pattern, 17, logic);
             logic.endBarGroup();
 
             logic.startBarGroup(BarGroup.STOP_CHARACTER, null);
-            encodeChar(PDF417Constants.STOP_PATTERN, 18, logic);
+            encodeChar(STOP_PATTERN, 18, logic);
             logic.endBarGroup();
             logic.endRow();
         }
