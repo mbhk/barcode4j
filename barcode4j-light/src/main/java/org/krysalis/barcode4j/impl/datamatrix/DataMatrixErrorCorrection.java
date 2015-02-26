@@ -19,9 +19,9 @@ package org.krysalis.barcode4j.impl.datamatrix;
 /**
  * Error Correction Code for ECC200.
  * 
- * @version 1.1
+ * @version 1.2
  */
-public class DataMatrixErrorCorrection implements DataMatrixReedSolomonFactors {
+public class DataMatrixErrorCorrection {
 
     private static final int MODULO_VALUE = 0x12d;
 
@@ -95,18 +95,13 @@ public class DataMatrixErrorCorrection implements DataMatrixReedSolomonFactors {
     }
     
     private static String createECCBlock(String codewords, int start, int len, int numECWords) {
-        int table = -1;
-        for (int i = 0; i < FACTOR_SETS.length; i++) {
-            if (FACTOR_SETS[i] == numECWords) {
-                table = i;
-                break;
-            }
-        }
+        final int table = DataMatrixReedSolomonFactors.findEcTable(numECWords);
+
         if (table < 0) {
             throw new IllegalArgumentException(
                     "Illegal number of error correction codewords specified: " + numECWords);
         }
-        final int[] poly = DataMatrixReedSolomonFactors.FACTORS[table];
+        final int[] poly = DataMatrixReedSolomonFactors.getFactorTable(table);
         char[] ecc = new char[numECWords];
         for (int i = 0; i < numECWords; i++) {
             ecc[i] = 0;

@@ -16,24 +16,26 @@
 
 package org.krysalis.barcode4j.impl.datamatrix;
 
+import java.util.Arrays;
+
 /**
  * Precomputed factor tables for all the different variants in ECC200. 
  *
  * @version 1.1
  */
-public interface DataMatrixReedSolomonFactors {
+class DataMatrixReedSolomonFactors {
 
     /**
      * Lookup table which factors to use for which number of error correction codewords.
      * See FACTORS.
      */
-    int[] FACTOR_SETS
+    private static final int[] FACTOR_SETS
                    = new int[] {5, 7, 10, 11, 12, 14, 18, 20, 24, 28, 36, 42, 48, 56, 62, 68}; 
     
     /**
      * Precomputed polynomial factors for ECC 200.
      */
-    int[][] FACTORS = new int[][] {
+    private static final int[][] FACTORS = new int[][] {
     {228, 48, 15, 111, 62},
 
     {23, 68, 144, 134, 240, 92, 254},
@@ -83,4 +85,28 @@ public interface DataMatrixReedSolomonFactors {
     66, 139, 153, 185, 202, 167, 179, 25, 220, 232, 96, 210, 231, 136, 223, 239,
     181, 241, 59, 52, 172, 25, 49, 232, 211, 189, 64, 54, 108, 153, 132, 63,
     96, 103, 82, 186}};
+
+    private DataMatrixReedSolomonFactors() {
+        // hide public default constructor
+    }
+   
+    /**
+     * Finds a appropriate ErrorCorrectionTable.
+     *
+     * @param numECWords required ecWords
+     * @return id of EcTable or -1 in case of an error
+     */
+    static int findEcTable(int numECWords) {
+        for (int i = 0; i < FACTOR_SETS.length; i++) {
+            if (FACTOR_SETS[i] == numECWords) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    static int[] getFactorTable(int table) {
+        final int[] res = FACTORS[table];
+        return Arrays.copyOf(res, res.length);
+    }
 }
