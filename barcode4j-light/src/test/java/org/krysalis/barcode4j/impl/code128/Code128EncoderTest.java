@@ -148,7 +148,7 @@ public class Code128EncoderTest {
 
     @Test
     public void encoderSpecialChars() {
-        Code128Encoder encoder = new DefaultCode128Encoder();
+        Code128Encoder encoder = new Code128Encoder();
         assertEquals("->BCode<SHIFT-A><HT>128", encodeToDebug("Code\t128", encoder));
         assertEquals("->BCode->A<HT><HT>128", encodeToDebug("Code\t\t128", encoder));
         assertEquals("->C<FNC1>[12][34][56]", encodeToDebug("\u00f1123456", encoder));
@@ -160,7 +160,7 @@ public class Code128EncoderTest {
 
     @Test
     public void defaultEncoder() throws Exception {
-        Code128Encoder encoder = new DefaultCode128Encoder();
+        Code128Encoder encoder = new Code128Encoder();
         assertEquals("->B1", encodeToDebug("1", encoder));
         assertEquals("->C[12]", encodeToDebug("12", encoder));
         assertEquals("->B123", encodeToDebug("123", encoder));
@@ -191,12 +191,12 @@ public class Code128EncoderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void defaultEncoderException() throws Exception {
-        encodeToDebug("before\u00f5after", new DefaultCode128Encoder());
+        encodeToDebug("before\u00f5after", new Code128Encoder());
     }
 
     @Test
     public void bug942246() throws Exception {
-        Code128Encoder encoder = new DefaultCode128Encoder();
+        Code128Encoder encoder = new Code128Encoder();
         String eff = encodeToDebug("37100\u00f13101000200", encoder);
         assertTrue(
                 "->C[37][10]->B0<FNC1>->C[31][1][0][2][0]".equals(eff)
@@ -212,7 +212,7 @@ public class Code128EncoderTest {
 
     @Test
     public void codesetA() throws Exception {
-        Code128Encoder encoder = new DefaultCode128Encoder(Code128Constants.CODESET_A);
+        Code128Encoder encoder = new Code128Encoder(Code128Constants.CODESET_A);
 
         assertEquals("->AA*B*C*D", encodeToDebug("A*B*C*D", encoder));
         assertEquals("->A1234567890", encodeToDebug("1234567890", encoder));
@@ -233,7 +233,7 @@ public class Code128EncoderTest {
 
     @Test
     public void codesetB() throws Exception {
-        Code128Encoder encoder = new DefaultCode128Encoder(Code128Constants.CODESET_B);
+        Code128Encoder encoder = new Code128Encoder(Code128Constants.CODESET_B);
         assertEquals("->BA*B*C*D", encodeToDebug("A*B*C*D", encoder));
         assertEquals("->Ba*b*c*d", encodeToDebug("a*b*c*d", encoder));
         assertEquals("->B1234567890", encodeToDebug("1234567890", encoder));
@@ -247,7 +247,7 @@ public class Code128EncoderTest {
 
     @Test
     public void codesetAB() throws Exception {
-        Code128Encoder encoder = new DefaultCode128Encoder(Code128Constants.and(
+        Code128Encoder encoder = new Code128Encoder(Code128Constants.and(
                 Code128Constants.CODESET_A, Code128Constants.CODESET_B));
         assertEquals("->Barthur<SHIFT-A><HT>DENT", encodeToDebug("arthur\tDENT", encoder));
         assertEquals("->B1234567890", encodeToDebug("1234567890", encoder));
@@ -255,7 +255,7 @@ public class Code128EncoderTest {
 
     @Test
     public void codesetC() throws Exception {
-        Code128Encoder encoder = new DefaultCode128Encoder(Code128Constants.CODESET_C);
+        Code128Encoder encoder = new Code128Encoder(Code128Constants.CODESET_C);
         try {
             encodeToDebug("7483927d584f301g83755", encoder);
             fail("Expected IllegalArgumentException for the Codeset B characters");
@@ -270,11 +270,11 @@ public class Code128EncoderTest {
         } catch (IllegalArgumentException iae) {
             //expected
         }
-        encoder = new DefaultCode128Encoder(Code128Constants.and(
+        encoder = new Code128Encoder(Code128Constants.and(
                 Code128Constants.CODESET_A, Code128Constants.CODESET_C));
         assertEquals("->A7->C[48][39][27][58][43][1][83][75]",
                 encodeToDebug("74839275843018375", encoder));
-        encoder = new DefaultCode128Encoder(Code128Constants.and(
+        encoder = new Code128Encoder(Code128Constants.and(
                 Code128Constants.CODESET_B, Code128Constants.CODESET_C));
         assertEquals("->B7->C[48][39][27][58][43][1][83][75]",
                 encodeToDebug("74839275843018375", encoder));

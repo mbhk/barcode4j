@@ -171,7 +171,7 @@ public class EAN128AI {
     private EAN128AI(String id, String spec, byte lenID, byte type, byte len) {
         this(id, lenID, 
                 new byte[] {type}, new byte[] {len}, new byte[] {len}, 
-                new byte[] {CheckDigit.CDNone});
+                new byte[] {CheckDigit.CD_NONE});
         fixed = true;
     }
 

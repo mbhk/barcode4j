@@ -27,19 +27,19 @@ import org.krysalis.barcode4j.tools.MessageUtil;
 public class Code128LogicImpl {
 
     /**
-     * The function 1 command. ASCII: 0xF1
+     * The function 1 command.
      */
     public static final char FNC_1 = 0xF1;
     /**
-     * The function 2 command. ASCII: 0xF2
+     * The function 2 command.
      */
     public static final char FNC_2 = 0xF2;
     /**
-     * The function 3 command. ASCII: 0xF3
+     * The function 3 command.
      */
     public static final char FNC_3 = 0xF3;
     /**
-     * The function 4 command. ASCII: 0xF4
+     * The function 4 command.
      */
     public static final char FNC_4 = 0xF4;
 
@@ -312,7 +312,7 @@ public class Code128LogicImpl {
      * @return the requested encoder
      */
     protected Code128Encoder getEncoder() {
-        return new DefaultCode128Encoder(this.codeset);
+        return new Code128Encoder(this.codeset);
     }
 
     /**

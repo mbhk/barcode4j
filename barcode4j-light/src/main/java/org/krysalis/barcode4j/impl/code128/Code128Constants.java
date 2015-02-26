@@ -83,4 +83,20 @@ public enum Code128Constants {
     public int getValue() {
         return value;
     }
+
+    public boolean isIncluded(Code128Constants other) {
+        return (value & other.value) > 0;
+    }
+
+    public boolean isAIncluded() {
+        return isIncluded(CODESET_A);
+    }
+
+    public boolean isBIncluded() {
+        return isIncluded(CODESET_B);
+    }
+
+    public boolean isCIncluded() {
+        return isIncluded(CODESET_C);
+    }
 }

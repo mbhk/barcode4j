@@ -15,30 +15,32 @@
  */
 package org.krysalis.barcode4j.impl.code128;
 
+class CheckDigit {
 
-public class CheckDigit {
+    public static final byte CD_NONE = 0;
+    public static final byte CD_31 = 1;
+    public static final byte CD_11 = 2;
 
-    public final static byte CDNone = 0;
-    public final static byte CD31 = 1;
-    public final static byte CD11 = 2;
-
-    public static char calcCheckdigit(String msg, int start, int end, byte type) {
-        switch (type) {
-            case CD31 :    return calcCheckdigit(3, 1, msg, start, end);
-            case CD11 :    return calcCheckdigit(1, 1, msg, start, end);
-            default : return '0';
-        }
-    }
-
-    public static char calcCheckdigit31(String msg, int start, int end) {
-        return calcCheckdigit(3, 1, msg, start, end);
-    }
-
-    public static char calcCheckdigit11(String msg, int start, int end) {
-        return calcCheckdigit(1, 1, msg, start, end);
+    private CheckDigit() {
+        // hide public default constructor
     }
     
-    public static char calcCheckdigit(int oddMult, int evenMult, String msg, int start, int end) {
+    public static char calcCheckdigit(String msg, int start, int end, byte type) {
+        final char res;
+        switch (type) {
+            case CD_31:
+                res = calcCheckdigit(3, 1, msg, start, end);
+                break;
+            case CD_11:
+                res = calcCheckdigit(1, 1, msg, start, end);
+                break;
+            default:
+                res = '0';
+        }
+        return res;
+    }
+    
+    private static char calcCheckdigit(int oddMult, int evenMult, String msg, int start, int end) {
         int oddSum = 0;
         int evenSum = 0;
         boolean even = false; 

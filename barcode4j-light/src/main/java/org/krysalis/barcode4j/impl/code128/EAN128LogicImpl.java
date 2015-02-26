@@ -80,7 +80,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
                 code128Msg.append(Code128LogicImpl.FNC_1);
                 addAIs(msg);
 
-                final Code128Encoder encoder = new DefaultCode128Encoder();
+                final Code128Encoder encoder = new Code128Encoder();
                 encodedMsg = encoder.encode(getCode128Msg());
             }
         } else if (exception != null) {
@@ -240,7 +240,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
 //            } else if (ai.checkDigit[i] == CheckDigit.CDNone || !doChecksumADD) {
             if (doChecksumADD && i == ai.type.length - 1) { //ai.checkDigit[i] != CheckDigit.CDNone) {
                 final char c = CheckDigit.calcCheckdigit(msg,
-                        startA[ai.checkDigitStart[i]], start, CheckDigit.CD31);
+                        startA[ai.checkDigitStart[i]], start, CheckDigit.CD_31);
                 humanReadableMsg.append(c);
                 code128Msg.append(c);
                 if (newOffset < msg.length()
@@ -305,7 +305,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
             }
         } else {
             if (ai.isCheckDigit(idx) && checksumCHECK) {
-                final char cd1 = CheckDigit.calcCheckdigit(msg, cdStart, start, CheckDigit.CD31);
+                final char cd1 = CheckDigit.calcCheckdigit(msg, cdStart, start, CheckDigit.CD_31);
                 char cd2 = msg.charAt(start);
                 if (cd2 == checkDigitMarker) {
                     cd2 = cd1;

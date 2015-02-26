@@ -177,6 +177,7 @@ public class EAN128Bean extends Code128Bean {
     public Collection<String> getAdditionalNames() {
         final Collection<String> res = new ArrayList<String>(1);
         res.add("ean128");
+        res.add("gs1-128");
         return res;
     }
 

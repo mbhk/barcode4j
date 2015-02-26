@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2004 Jeremias Maerki.
+ * Copyright 2002-2004,2007-2009 Jeremias Maerki.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,364 @@
  */
 package org.krysalis.barcode4j.impl.code128;
 
+import java.util.Arrays;
+import org.krysalis.barcode4j.tools.CheckUtil;
+
 /**
- * This interface is implemented by classes that encode a Code128 message into
- * an integer array representing character set indexes.
+ * Default encoder algorithm for Code128 barcode messages.
  *
- * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
-public interface Code128Encoder {
+public class Code128Encoder {
+
+    private static final int START_A = 103;
+    private static final int START_B = 104;
+    private static final int START_C = 105;
+    private static final int GOTO_A = 101;
+    private static final int GOTO_B = 100;
+    private static final int GOTO_C = 99;
+    private static final int FNC_1 = 102;
+    private static final int FNC_2 = 97;
+    private static final int FNC_3 = 96;
+    private static final int FNC_4 = 100;
+    private static final int FNC_4_A = 101;
+    private static final int SHIFT = 98;
+
+    private final Code128Constants codeset;
 
     /**
-     * Encodes a valid Code 128 message to an array of character set indexes.
-     * @param msg the message to encode
-     * @return the requested array of indexes
+     * Create a new encoder
+     * @param codeset the allowed codeset
      */
-    int[] encode(String msg);
+    public Code128Encoder(Code128Constants codeset) {
+        this.codeset = codeset;
+    }
 
+    /**
+     * Default constructor allowing all codesets.
+     */
+    public Code128Encoder() {
+        this(Code128Constants.CODESET_ALL);
+    }
+
+    /**
+     * Character can't be encoded in B.
+     * @param c Character to check
+     * @return true if only encodable in A
+     */
+    private boolean needA(char c) {
+        return c < 32;
+    }
+
+    /**
+     * Character can't be encoded in A
+     * @param c character to check
+     * @return true if encodable in B (!A)
+     */
+    private boolean needB(char c) {
+        return CheckUtil.intervallContains(96, 127, c);
+    }
+
+    private int encodeAorB(char c, Code128Constants codeset) {
+        final int res = encodeFunctionChars(c);
+        if (res > -1) {
+            return res;
+        }
+        //Convert normal characters
+        if (codeset == Code128Constants.CODESET_A) {
+            return encodeA(c);
+        } else if (codeset == Code128Constants.CODESET_B) {
+            return encodeB(c);
+        } else {
+            throw new IllegalArgumentException("Only A or B allowed");
+        }
+    }
+
+    private int encodeB(char c) {
+        if (CheckUtil.intervallContains(32, 127, c)) {
+            return c - 32;
+        } else {
+            throw new IllegalArgumentException("Illegal character: " + c);
+        }
+    }
+
+    private int encodeA(char c) {
+        if (CheckUtil.intervallContains(0, 31, c)) {
+            return c + 64;
+        } else if (CheckUtil.intervallContains(32, 95, c)) {
+            return c - 32;
+        } else {
+            throw new IllegalArgumentException("Illegal character: " + c);
+        }
+    }
+
+    private int encodeFunctionChars(char c) {
+        final int res;
+        switch(c) {
+            case Code128LogicImpl.FNC_1:
+                res = FNC_1;
+                break;
+            case Code128LogicImpl.FNC_2:
+                res = FNC_2;
+                break;
+            case Code128LogicImpl.FNC_3:
+                res = FNC_3;
+                break;
+            case Code128LogicImpl.FNC_4:
+                res = (codeset == Code128Constants.CODESET_A) ? FNC_4_A : FNC_4;
+                break;
+            default:
+                res = -1;
+        }
+        return res;
+    }
+
+    /**
+     * Encodes message using code set A, B and C. 
+     * 
+     * Tries to use as few characters as possible.
+     * @param message to encoded
+     * @return array of code set caracters
+     * @see org.krysalis.barcode4j.impl.code128.Code128Encoder#encode(java.lang.String)
+     */
+    public int[] encode(String message) {
+
+        // Allocate enough space
+        final int[] encoded = new int[message.length() * 2];
+        int encodedPos = 0;
+        int startAorBPos = 0;
+        final int messageLength = message.length();
+        int messagePos = 0;
+
+        // iterate over all characters in message
+        while (messagePos < messageLength) {
+
+            // count number of C characters starting from current character
+            int countC = 0;
+
+            // determine number of characters saved by using codeset C
+            int saveChar = 0;
+
+            boolean extraDigitAtEnd = false;
+            while (codeset.isCIncluded() && messagePos + countC < messageLength) {
+                char character = message.charAt(messagePos + countC);
+                if (character >= '0' && character <= '9') {
+
+                    // check for uneven number of digits
+                    if (messagePos + countC + 1 == messageLength) {
+                        extraDigitAtEnd = true;
+                        break;
+                    }
+
+                    // check if next character is digit as well
+                    character = message.charAt(messagePos + countC + 1);
+                    if (character < '0' || character > '9') {
+                        break;
+                    }
+
+                    saveChar++;
+                    countC += 2;
+                } else if (character == Code128LogicImpl.FNC_1
+                        && (messagePos == 0 || countC > 0)) {
+                    // only include FNC_1 if it is the first character or if it is
+                    // preceeded by other codeset C characters
+                    countC += 1;
+                } else {
+                    break;
+                }
+            }
+
+            // at least 2 characters should be saved to switch to codeset C
+            // or whole message is in code set C
+            if (saveChar >= 2 || countC == messageLength) {
+
+                // if extra digit at end then skip first digit
+                if (extraDigitAtEnd) {
+
+                    // section should not contain FNC_1
+                    final int fnc1Pos = message.indexOf(Code128LogicImpl.FNC_1, messagePos);
+                    if (fnc1Pos < 0 || fnc1Pos > messagePos + countC) {
+                        messagePos++;
+                    }
+                }
+
+                // write A or B section preceeding this C section
+                encodedPos += encodeAordB(message, startAorBPos, messagePos,
+                        encoded, encodedPos);
+
+                // set new start to end of C section
+                startAorBPos = messagePos + countC;
+
+                // write codeset C section
+                encodedPos += encodeC(message, messagePos, startAorBPos,
+                        encoded, encodedPos);
+            }
+
+            // skip the current codeset C section and the character following it
+            messagePos += countC + 1;
+
+        }
+
+        // write A or B section after the (optional) C section
+        encodedPos += encodeAordB(message, startAorBPos, messageLength,
+                encoded, encodedPos);
+
+        return Arrays.copyOf(encoded, encodedPos);
+    }
+
+    /**
+     * Encodes section of message in codeset C
+     * @param message to encode
+     * @param start position of section in message
+     * @param finish first position after section in message
+     * @param encoded int array to hold encoded message
+     * @param startEncodedPos start index in encoded array
+     * @return number of integers added to encoding
+     */
+    private int encodeC(String message, int start, int finish, int[] encoded,
+            int startEncodedPos) {
+
+        if (start == finish) {
+            return 0;
+        }
+
+        int encodedPos = startEncodedPos;
+
+        // start or switch to code set C
+        encoded[encodedPos++] = start == 0 ? START_C : GOTO_C;
+
+        int messagePos = start;
+
+        while (messagePos < finish) {
+            final char character = message.charAt(messagePos);
+
+            if (character == Code128LogicImpl.FNC_1) {
+                encoded[encodedPos++] = FNC_1;
+                messagePos++;
+            } else {
+                //Encode the next two digits
+                encoded[encodedPos++] = Character.digit(character, 10) * 10
+                        + Character.digit(message.charAt(messagePos + 1), 10);
+                messagePos += 2;
+            }
+        }
+
+        // number of characters added
+        return encodedPos - startEncodedPos;
+
+    }
+
+    /**
+     * Encodes section of message in codeset A or B.
+     *
+     * @param message to encode
+     * @param start position of section in message
+     * @param finish first position after section in message
+     * @param encoded int array to hold encoded message
+     * @param startEncodedPos start index in encoded array
+     * @return number of integers added to encoding
+     */
+    private int encodeAordB(String message, int start, int finish,
+            int[] encoded, int startEncodedPos) {
+
+        if (start == finish) {
+            return 0;
+        }
+
+        int encodedPos = startEncodedPos;
+        boolean aUsed = false;
+        boolean bUsed = false;
+
+        // determine to start with codeset A or B
+        boolean inB = false;
+        if (codeset.isBIncluded()) {
+            inB = true;
+            for (int messagePos = start; messagePos < finish; messagePos++) {
+
+                final char character = message.charAt(messagePos);
+
+                if (needA(character)) {
+                    inB = false;
+                    break;
+                } else if (needB(character)) {
+                    inB = true;
+                    break;
+                }
+            }
+        } else if (!codeset.isAIncluded()) {
+            if (finish - start == 1) {
+                throw new IllegalArgumentException("The message has an odd number of digits."
+                        + " The number of digits must be even for Codeset C.");
+            } else {
+                throw new IllegalArgumentException(
+                    "Invalid characters found for Code 128 Codeset A or B which are disabled.");
+            }
+        }
+
+        // start or switch to correct code set
+        if (inB) {
+            encoded[encodedPos++] = (start == 0) ? START_B : GOTO_B;
+            bUsed = true;
+        } else {
+            encoded[encodedPos++] = (start == 0) ? START_A : GOTO_A;
+            aUsed = true;
+        }
+
+        // iterate over characters in message
+        for (int messagePos = start; messagePos < finish; messagePos++) {
+
+            final char character = message.charAt(messagePos);
+
+            if (inB) {
+                // check if current character is not in code set B
+                if (needA(character)) {
+
+                    // check for switch or shift
+                    if (messagePos + 1 < finish
+                            && needA(message.charAt(messagePos + 1))) {
+                        encoded[encodedPos++] = GOTO_A;
+                        inB = false;
+                    } else {
+                        encoded[encodedPos++] = SHIFT;
+                    }
+                    aUsed = true;
+
+                    encoded[encodedPos++] = encodeAorB(character, Code128Constants.CODESET_A);
+                } else {
+                    encoded[encodedPos++] = encodeAorB(character, Code128Constants.CODESET_B);
+                }
+
+            } else {
+                // check if current character is not in code set A
+                if (needB(character)) {
+
+                    // check for switch or shift
+                    if (messagePos + 1 < finish
+                            && needB(message.charAt(messagePos + 1))) {
+                        encoded[encodedPos++] = GOTO_B;
+                        inB = true;
+                    } else {
+                        encoded[encodedPos++] = SHIFT;
+                    }
+                    bUsed = true;
+
+                    encoded[encodedPos++] = encodeAorB(character, Code128Constants.CODESET_B);
+                } else {
+                    encoded[encodedPos++] = encodeAorB(character, Code128Constants.CODESET_A);
+                }
+            }
+        }
+
+        if (aUsed && !codeset.isAIncluded()) {
+            throw new IllegalArgumentException(
+                    "Invalid characters found for Code 128 Codeset A which is disabled.");
+        }
+        if (bUsed && !codeset.isBIncluded()) {
+            throw new IllegalArgumentException(
+                    "Invalid characters found for Code 128 Codeset B which is disabled.");
+        }
+
+        // number of characters added
+        return encodedPos - startEncodedPos;
+    }
 }

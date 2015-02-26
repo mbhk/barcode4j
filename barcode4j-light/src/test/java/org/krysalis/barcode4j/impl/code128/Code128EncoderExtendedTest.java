@@ -80,6 +80,6 @@ public class Code128EncoderExtendedTest {
         assertEquals(
                 message,
                 expected,
-                Code128LogicImpl.toString(new DefaultCode128Encoder().encode(plaintext)));
+                Code128LogicImpl.toString(new Code128Encoder().encode(plaintext)));
     }
 }
