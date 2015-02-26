@@ -16,12 +16,14 @@
 
 package org.krysalis.barcode4j.impl.qr;
 
+import static org.krysalis.barcode4j.impl.qr.QRConstants.*;
+
 /**
  * High-level encoder for QR Code.
  *
  * @version 1.2
  */
-public class QRHighLevelEncoder implements QRConstants {
+public class QRHighLevelEncoder {
 
     private final String msg;
     private final int encodingMode;
@@ -53,9 +55,5 @@ public class QRHighLevelEncoder implements QRConstants {
 
     private static boolean isDigit(char ch) {
         return ch >= '0' && ch <= '9';
-    }
-
-    private static boolean isAlphanumeric(char ch) {
-        return ALPHANUMERIC_TABLE[ch] >= 0;
     }
 }

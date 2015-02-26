@@ -13,31 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/* $Id$ */
-
 package org.krysalis.barcode4j.impl.qr;
 
 /**
  * Constants for QR Code.
  *
- * @version $Id$
+ * @version 1.2
  */
-public interface QRConstants {
+class QRConstants {
 
-    char ERROR_CORRECTION_LEVEL_L = 'L';
-    char ERROR_CORRECTION_LEVEL_M = 'M';
-    char ERROR_CORRECTION_LEVEL_Q = 'Q';
-    char ERROR_CORRECTION_LEVEL_H = 'H';
+    static final char ERROR_CORRECTION_LEVEL_L = 'L';
+    static final char ERROR_CORRECTION_LEVEL_M = 'M';
+    static final char ERROR_CORRECTION_LEVEL_Q = 'Q';
+    static final char ERROR_CORRECTION_LEVEL_H = 'H';
 
-    int QUIET_ZONE_SIZE = 4;
-    int QUIET_ZONE_SIZE_MICRO = 2;
+    static final int QUIET_ZONE_SIZE = 4;
+    static final int QUIET_ZONE_SIZE_MICRO = 2;
 
-    int NUMERIC = 0;
-    int ALPHANUMERIC = 1;
-    int BINARY = 2;
+    static final int NUMERIC = 0;
+    static final int ALPHANUMERIC = 1;
+    static final int BINARY = 2;
 
-    int[] ALPHANUMERIC_TABLE = {
+    private static final int[] ALPHANUMERIC_TABLE = {
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  //0x00-0x0f
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  //0x10-0x1f
             36, -1, -1, -1, 37, 38, -1, -1, -1, -1, 39, 40, -1, 41, 42, 43,  //0x20-0x2f
@@ -45,5 +42,18 @@ public interface QRConstants {
             -1, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,  //0x40-0x4f
             25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1,  //0x50-0x5f
     };
-
+    
+    private QRConstants() {
+        // hide public constructor
+    }
+    
+    /**
+     * Checks if the given char is alphanumeric.
+     * 
+     * @param ch Character to check
+     * @return true if alphanumeric
+     */
+    static boolean isAlphanumeric(char ch) {
+        return ALPHANUMERIC_TABLE[ch] >= 0;
+    }
 }

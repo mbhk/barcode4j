@@ -29,12 +29,14 @@ import com.google.zxing.qrcode.encoder.QRCode;
 import java.util.EnumMap;
 import java.util.Map;
 
+import static org.krysalis.barcode4j.impl.qr.QRConstants.*;
+
 /**
  * Top-level class for the logic part of the DataMatrix implementation.
  *
  * @version 1.2
  */
-public class QRLogicImpl implements QRConstants {
+public class QRLogicImpl {
 
     /**
      * Generates the barcode logic.
