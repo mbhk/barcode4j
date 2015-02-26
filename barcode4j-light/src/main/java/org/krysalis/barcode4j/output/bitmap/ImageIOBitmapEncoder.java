@@ -19,6 +19,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -35,17 +37,26 @@ import org.krysalis.barcode4j.tools.UnitConv;
  * BitmapEncoder implementation using ImageIO.
  *
  * @author Jeremias Maerki
+ * @author mk
+ * @version 1.2
  */
 public class ImageIOBitmapEncoder implements BitmapEncoder {
 
+    private static final Logger LOGGER = Logger.getLogger(ImageIOBitmapEncoder.class.getName());
+
     /**
-     * Constructs the BitmapEncoder. The constructor checks if the ImageIO
-     * API is available so it doesn't get registered in case it's not
-     * there.
+     * Constructs the BitmapEncoder. The constructor checks if the ImageIO API
+     * is available so it doesn't get registered in case it's not there.
+     *
      * @throws ClassNotFoundException if the ImageIO API is unavailable
      */
     public ImageIOBitmapEncoder() throws ClassNotFoundException {
-        Class.forName("javax.imageio.ImageIO");
+        try {
+            Class.forName("javax.imageio.ImageIO");
+        } catch (ClassNotFoundException ex) {
+            LOGGER.log(Level.INFO, "{0} not available. This JVM does not support ImageIO.", ImageIOBitmapEncoder.class.getName());
+            throw ex;
+        }
     }
 
     @Override
@@ -55,11 +66,11 @@ public class ImageIOBitmapEncoder implements BitmapEncoder {
 
     @Override
     public void encode(BufferedImage image, OutputStream out,
-                String mime, int resolution) throws IOException {
+            String mime, int resolution) throws IOException {
 
         //Simply get first offered writer
         final Iterator i = ImageIO.getImageWritersByMIMEType(mime);
-        final ImageWriter writer = (ImageWriter)i.next();
+        final ImageWriter writer = (ImageWriter) i.next();
 
         //Prepare output
         final ImageOutputStream imout = ImageIO.createImageOutputStream(out);
@@ -76,22 +87,19 @@ public class ImageIOBitmapEncoder implements BitmapEncoder {
     }
 
     private IIOMetadata setupMetadata(BufferedImage image, ImageWriter writer,
-                String mime, int resolution) throws IOException {
+            String mime, int resolution) throws IOException {
         IIOMetadata iiometa;
         try {
             iiometa = writer.getDefaultImageMetadata(new ImageTypeSpecifier(image),
-                writer.getDefaultWriteParam());
+                    writer.getDefaultWriteParam());
         } catch (Exception e) {
-            return null; //ImageIO has problems with metadata
+            LOGGER.log(Level.INFO, "ImageIO has problems with metadata", e);
+            return null;
         }
         if (iiometa == null) {
             return null; //Some JAI-codecs don't support metadata
         }
 
-        /*
-        String[] metanames = iiometa.getMetadataFormatNames();
-        for (int j = 0; j < metanames.length; j++) System.out.println(metanames[j]);
-        */
         final String stdmeta = "javax_imageio_1.0";
         final String jpegmeta = "javax_imageio_jpeg_image_1.0";
 
@@ -103,14 +111,13 @@ public class ImageIOBitmapEncoder implements BitmapEncoder {
                  * the JPEG codec in ImageIO converting the pixel size incorrectly
                  * when using standard metadata format. JM, 2003-10-28
                  */
-
                 checkWritable(iiometa);
 
-                final IIOMetadataNode rootnode = (IIOMetadataNode)iiometa.getAsTree(jpegmeta);
-                final IIOMetadataNode variety = (IIOMetadataNode)rootnode.
+                final IIOMetadataNode rootnode = (IIOMetadataNode) iiometa.getAsTree(jpegmeta);
+                final IIOMetadataNode variety = (IIOMetadataNode) rootnode.
                         getElementsByTagName("JPEGvariety").item(0);
 
-                final IIOMetadataNode jfif = (IIOMetadataNode)variety.
+                final IIOMetadataNode jfif = (IIOMetadataNode) variety.
                         getElementsByTagName("app0JFIF").item(0);
                 jfif.setAttribute("resUnits", "1"); //dots per inch
                 jfif.setAttribute("Xdensity", Integer.toString(resolution));
@@ -118,11 +125,9 @@ public class ImageIOBitmapEncoder implements BitmapEncoder {
 
                 //dumpMetadata(iiometa);
                 //DebugUtil.dumpNode(rootnode);
-
                 iiometa.setFromTree(jpegmeta, rootnode);
 
                 //dumpMetadata(iiometa);
-
             } else if (iiometa.isStandardMetadataFormatSupported()) {
                 checkWritable(iiometa);
 
@@ -149,20 +154,17 @@ public class ImageIOBitmapEncoder implements BitmapEncoder {
                 rootnode.appendChild(imagedim);
                 rootnode.appendChild(textNode);
 
-                //dumpMetadata(iiometa);
-                //DebugUtil.dumpNode(rootnode);
-
                 try {
                     iiometa.mergeTree(stdmeta, rootnode);
                 } catch (Exception e1) {
+                    LOGGER.log(Level.INFO, "Failure while merging MetaData-Tree. Trying to replace", e1);
                     try {
                         iiometa.setFromTree(stdmeta, rootnode);
                     } catch (Exception e2) {
                         //ignore metadata
+                        LOGGER.log(Level.INFO, "Failure while replacing MetaData. Ignoring MetaData", e2);
                     }
                 }
-
-                //dumpMetadata(iiometa);
             }
         }
 
@@ -171,7 +173,6 @@ public class ImageIOBitmapEncoder implements BitmapEncoder {
 
     private void checkWritable(IIOMetadata iiometa) throws IOException {
         if (iiometa.isReadOnly()) {
-            //System.out.println("Metadata is read-only");
             throw new IOException("Metadata is read-only. Cannot modify");
         }
     }
