@@ -48,7 +48,7 @@ public class DataMatrixLogicImpl {
         try {
             encoded = DataMatrixHighLevelEncoder.encodeHighLevel(msg, shape, minSize, maxSize);
         } catch (IOException e) {
-            throw new IllegalArgumentException("Cannot fetch data: " + e.getLocalizedMessage());
+            throw new IllegalArgumentException("Cannot fetch data", e);
         }
 
         final DataMatrixSymbolInfo symbolInfo = DataMatrixSymbolInfo.lookup(encoded.length(),

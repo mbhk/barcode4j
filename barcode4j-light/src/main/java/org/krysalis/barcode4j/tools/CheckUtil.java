@@ -36,14 +36,30 @@ public class CheckUtil {
     public static boolean intervallContains(int low, int high, int n) {
         return low <= n && n <= high;
     }
-    
+
     /**
      * Checks if n is a ASCII-Digit.
-     * 
-     * @param n Character to check
+     *
+     * @param ch Character to check
      * @return true if n is digit
      */
-    public static boolean isDigit(char n) {
-        return intervallContains('0', '9', n);
+    public static boolean isDigit(char ch) {
+        return intervallContains('0', '9', ch);
+    }
+
+    public static boolean isASCII7(char ch) {
+        return intervallContains(0, 127, ch);
+    }
+
+    public static boolean isExtendedASCII(char ch) {
+        return intervallContains(128, 255, ch);
+    }
+
+    public static boolean isUpperAtoZ(char ch) {
+        return intervallContains('A', 'Z', ch);
+    }
+
+    public static boolean isLowerAtoZ(char ch) {
+        return intervallContains('a', 'z', ch);
     }
 }

@@ -21,7 +21,7 @@ package org.krysalis.barcode4j.impl.datamatrix;
  * 
  * @version 1.2
  */
-class DataMatrixConstants {
+public class DataMatrixConstants {
 
     /** Padding character */
     public static final char PAD = 129;
