@@ -41,15 +41,17 @@ public class PDF417HighLevelEncoder {
     static {
         //Construct inverse lookups
         Arrays.fill(MIXED, (byte)-1);
-        for (byte i = 0; i < TEXT_MIXED_RAW.length; i++) {
-            final byte b = TEXT_MIXED_RAW[i];
+        final byte[] tmr = getTextMixedRaw();
+        for (byte i = 0; i < tmr.length; i++) {
+            final byte b = tmr[i];
             if (b > 0) {
                 MIXED[b] = i;
             }
         }
         Arrays.fill(PUNCTUATION, (byte)-1);
-        for (byte i = 0; i < TEXT_PUNCTUATION_RAW.length; i++) {
-            final byte b = TEXT_PUNCTUATION_RAW[i];
+        final byte[] tpr = getTextPunctuationRaw();
+        for (byte i = 0; i < tpr.length; i++) {
+            final byte b = tpr[i];
             if (b > 0) {
                 PUNCTUATION[b] = i;
             }

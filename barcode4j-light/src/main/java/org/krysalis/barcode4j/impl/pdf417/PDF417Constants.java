@@ -18,6 +18,8 @@
 
 package org.krysalis.barcode4j.impl.pdf417;
 
+import java.util.Arrays;
+
 /**
  * Constants for PDF417 barcodes.
  *
@@ -75,12 +77,12 @@ class PDF417Constants {
     static final int PAD = 900;
 
     /** Raw code table for text compaction Mixed sub-mode */
-    static final byte[] TEXT_MIXED_RAW = {
+    private static final byte[] TEXT_MIXED_RAW = {
             48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  38,  13,   9,  44,  58,
             35,  45,  46,  36,  47,  43,  37,  42,  61,  94,   0,  32,   0,   0,   0};
 
     /** Raw code table for text compaction: Punctuation sub-mode */
-    static final byte[] TEXT_PUNCTUATION_RAW = {
+    private static final byte[] TEXT_PUNCTUATION_RAW = {
             59,  60,  62,  64,  91,  92,  93,  95,  96, 126,  33,  13,   9,  44,  58,
             10,  45,  46,  36,  47,  34, 124,  42,  40,  41,  63, 123, 125,  39,   0};
 
@@ -670,6 +672,13 @@ class PDF417Constants {
      */
     public static int getEcCoefficient(ErrorCorrectionLevel level, int pos) {
         return EC_COEFFICIENTS[level.getLevel()][pos];
+    }
+    
+    public static byte[] getTextPunctuationRaw() {
+        return Arrays.copyOf(TEXT_PUNCTUATION_RAW, TEXT_PUNCTUATION_RAW.length);
+    }
+    public static byte[] getTextMixedRaw() {
+        return Arrays.copyOf(TEXT_MIXED_RAW, TEXT_MIXED_RAW.length);
     }
     
     /**

@@ -35,9 +35,9 @@ import org.krysalis.barcode4j.tools.IOUtil;
  */
 public class USPSIntelligentMailLogicImpl extends AbstractFourStateLogicImpl {
 
-    static final char[] TABLE5OF13 = new char[1287];
-    static final char[] TABLE2OF13 = new char[78];
-    static final BarToCharacterMapping[] TABLE_BAR_TO_CHARACTER = new BarToCharacterMapping[65];
+    private static final char[] TABLE5OF13 = new char[1287];
+    private static final char[] TABLE2OF13 = new char[78];
+    private static final BarToCharacterMapping[] TABLE_BAR_TO_CHARACTER = new BarToCharacterMapping[65];
 
     static {
         initializeNof13Table(TABLE5OF13, 5, TABLE5OF13.length);
