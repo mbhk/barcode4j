@@ -18,12 +18,13 @@ package org.krysalis.barcode4j.fop;
 import org.krysalis.barcode4j.tools.PageInfo;
 
 import org.apache.fop.area.PageViewport;
+import org.krysalis.barcode4j.tools.VariableUtil;
 
 /**
  * Helper class to replace certain variables in the barcode message.
  * @author Jeremias Maerki
  */
-public class VariableUtil extends org.krysalis.barcode4j.tools.VariableUtil {
+public class FopVariableUtil extends VariableUtil {
 
     /**
      * Legacy method to replace page number variables in the message.

@@ -16,6 +16,8 @@
 package org.krysalis.barcode4j.fop;
 
 import java.awt.geom.Point2D;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeException;
@@ -44,6 +46,7 @@ import org.krysalis.barcode4j.output.Orientation;
  * @version $Id$
  */
 public class BarcodeElement extends BarcodeObj {
+    private static final Logger LOGGER = Logger.getLogger(BarcodeElement.class.getName());
 
     public BarcodeElement(FONode parent) {
         super(parent);
@@ -73,15 +76,15 @@ public class BarcodeElement extends BarcodeObj {
 
             final BarcodeGenerator bargen = BarcodeUtil.getInstance().
                     createBarcodeGenerator(cfg);
-            final String expandedMsg = VariableUtil.getExpandedMessage((PageInfo)null, msg);
+            final String expandedMsg = FopVariableUtil.getExpandedMessage((PageInfo)null, msg);
             final BarcodeDimension bardim = bargen.calcDimensions(expandedMsg);
             final float w = (float)UnitConv.mm2pt(bardim.getWidthPlusQuiet(orientation));
             final float h = (float)UnitConv.mm2pt(bardim.getHeightPlusQuiet(orientation));
             return new Point2D.Float(w, h);
         } catch (ConfigurationException ce) {
-            ce.printStackTrace();
+            LOGGER.log(Level.INFO, "Error in Configuration", ce);
         } catch (BarcodeException be) {
-            be.printStackTrace();
+            LOGGER.log(Level.INFO, "Error in Barcode", be);
         }
         return null;
     }

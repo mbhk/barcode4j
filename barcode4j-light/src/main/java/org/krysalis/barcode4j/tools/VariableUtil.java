@@ -58,26 +58,26 @@ public class VariableUtil {
             final String fmt = s.substring(idx + PAGE_NUMBER_WITH_FORMAT.length(), endidx);
             final StringBuilder sb = new StringBuilder(s);
             String value;
-            if (page != null) {
-                final NumberFormat nf = new DecimalFormat(fmt);
-                value = nf.format(page.getPageNumber());
-            } else {
+            if (page == null) {
                 final StringBuilder blanks = new StringBuilder(fmt.length());
                 blanks.setLength(fmt.length());
                 for (int i = 0; i < blanks.length(); i++) {
                     blanks.setCharAt(i, '0');
                 }
                 value = blanks.toString();
+            } else {
+                final NumberFormat nf = new DecimalFormat(fmt);
+                value = nf.format(page.getPageNumber());
             }
             sb.replace(idx, endidx + 1, value);
             s = sb.toString();
         }
-        if (page != null) {
-            s = replace(s, PAGE_NUMBER, Integer.toString(page.getPageNumber()));
-            s = replace(s, FORMATTED_PAGE_NUMBER, page.getPageNumberString());
-        } else {
+        if (page == null) {
             s = replace(s, PAGE_NUMBER, "000");
             s = replace(s, FORMATTED_PAGE_NUMBER, "000");
+        } else {
+            s = replace(s, PAGE_NUMBER, Integer.toString(page.getPageNumber()));
+            s = replace(s, FORMATTED_PAGE_NUMBER, page.getPageNumberString());
         }
         return s;
     }

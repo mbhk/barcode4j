@@ -80,7 +80,7 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
 
         final BarcodeGenerator bargen = BarcodeUtil.getInstance().
                 createBarcodeGenerator(cfg);
-        final String expandedMsg = VariableUtil.getExpandedMessage(
+        final String expandedMsg = FopVariableUtil.getExpandedMessage(
                 page, msg);
 
         boolean handled = false;
@@ -125,10 +125,10 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
         final float bw = (float)UnitConv.mm2pt(barDim.getWidthPlusQuiet(orientation));
         final float bh = (float)UnitConv.mm2pt(barDim.getHeightPlusQuiet(orientation));
 
-        final float width = ((Integer)context.getProperty(WIDTH)).intValue() / 1000f;
-        final float height = ((Integer)context.getProperty(HEIGHT)).intValue() / 1000f;
-        final float x = ((Integer)context.getProperty(XPOS)).intValue() / 1000f;
-        final float y = ((Integer)context.getProperty(YPOS)).intValue() / 1000f;
+        final float width = (Integer)context.getProperty(WIDTH) / 1000f;
+        final float height = (Integer)context.getProperty(HEIGHT) / 1000f;
+        final float x = (Integer)context.getProperty(XPOS) / 1000f;
+        final float y = (Integer)context.getProperty(YPOS) / 1000f;
 
         if (DEBUG) {
             System.out.println(" --> EPS");
@@ -202,10 +202,10 @@ public class BarcodeXMLHandler implements XMLHandler, RendererContextConstants {
             }
             imgAdapter.paintImage(canvas.getBufferedImage(),
                     context,
-                    ((Integer)context.getProperty("xpos")).intValue(),
-                    ((Integer)context.getProperty("ypos")).intValue(),
-                    ((Integer)context.getProperty("width")).intValue(),
-                    ((Integer)context.getProperty("height")).intValue());
+                    (Integer)context.getProperty("xpos"),
+                    (Integer)context.getProperty("ypos"),
+                    (Integer)context.getProperty("width"),
+                    (Integer)context.getProperty("height"));
             return true;
         }
     }
