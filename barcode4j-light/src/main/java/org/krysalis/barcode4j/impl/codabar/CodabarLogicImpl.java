@@ -15,6 +15,8 @@
  */
 package org.krysalis.barcode4j.impl.codabar;
 
+import java.util.Set;
+import java.util.TreeSet;
 import org.krysalis.barcode4j.BarGroup;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
@@ -28,44 +30,56 @@ import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
  */
 public class CodabarLogicImpl {
 
-    private static final char[] CHARACTERS =
-                            {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                             'a', 'b', 'c', 'd', 'e', 'n', 't',
-                             '-', '$', ':', '/', '.', '+', '*'};
+    private static final char[] CHARACTERS
+            = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'a', 'b', 'c', 'd', 'e', 'n', 't',
+                '-', '$', ':', '/', '.', '+', '*'};
 
-    /** Defines the Codabar character set. */
-    static final byte[][] CHARSET =
-                                            {{0, 0, 0, 0, 0, 1, 1},  //0
-                                             {0, 0, 0, 0, 1, 1, 0},  //1
-                                             {0, 0, 0, 1, 0, 0, 1},  //2
-                                             {1, 1, 0, 0, 0, 0, 0},  //3
-                                             {0, 0, 1, 0, 0, 1, 0},  //4
-                                             {1, 0, 0, 0, 0, 1, 0},  //5
-                                             {0, 1, 0, 0, 0, 0, 1},  //6
-                                             {0, 1, 0, 0, 1, 0, 0},  //7
-                                             {0, 1, 1, 0, 0, 0, 0},  //8
-                                             {1, 0, 0, 1, 0, 0, 0},  //9
-                                             {0, 0, 1, 1, 0, 1, 0},  //a
-                                             {0, 1, 0, 1, 0, 0, 1},  //b
-                                             {0, 0, 0, 1, 0, 1, 1},  //c
-                                             {0, 0, 0, 1, 1, 1, 0},  //d
-                                             {0, 0, 0, 1, 1, 1, 0},  //e
-                                             {0, 1, 0, 1, 0, 0, 1},  //n
-                                             {0, 0, 1, 1, 0, 1, 0},  //t
-                                             {0, 0, 0, 1, 1, 0, 0},  //-
-                                             {0, 0, 1, 1, 0, 0, 0},  //$
-                                             {1, 0, 0, 0, 1, 0, 1},  //:
-                                             {1, 0, 1, 0, 0, 0, 1},  ///
-                                             {1, 0, 1, 0, 1, 0, 0},  //.
-                                             {0, 0, 1, 0, 1, 0, 1},  //+
-                                             {0, 0, 0, 1, 0, 1, 1}}; //*
+    /**
+     * Defines the Codabar character set.
+     */
+    private static final byte[][] CHARSET
+            = {{0, 0, 0, 0, 0, 1, 1}, //0
+            {0, 0, 0, 0, 1, 1, 0}, //1
+            {0, 0, 0, 1, 0, 0, 1}, //2
+            {1, 1, 0, 0, 0, 0, 0}, //3
+            {0, 0, 1, 0, 0, 1, 0}, //4
+            {1, 0, 0, 0, 0, 1, 0}, //5
+            {0, 1, 0, 0, 0, 0, 1}, //6
+            {0, 1, 0, 0, 1, 0, 0}, //7
+            {0, 1, 1, 0, 0, 0, 0}, //8
+            {1, 0, 0, 1, 0, 0, 0}, //9
+            {0, 0, 1, 1, 0, 1, 0}, //a
+            {0, 1, 0, 1, 0, 0, 1}, //b
+            {0, 0, 0, 1, 0, 1, 1}, //c
+            {0, 0, 0, 1, 1, 1, 0}, //d
+            {0, 0, 0, 1, 1, 1, 0}, //e
+            {0, 1, 0, 1, 0, 0, 1}, //n
+            {0, 0, 1, 1, 0, 1, 0}, //t
+            {0, 0, 0, 1, 1, 0, 0}, //-
+            {0, 0, 1, 1, 0, 0, 0}, //$
+            {1, 0, 0, 0, 1, 0, 1}, //:
+            {1, 0, 1, 0, 0, 0, 1}, ///
+            {1, 0, 1, 0, 1, 0, 0}, //.
+            {0, 0, 1, 0, 1, 0, 1}, //+
+            {0, 0, 0, 1, 0, 1, 1}}; //*
 
     private ChecksumMode checksumMode = ChecksumMode.CP_AUTO;
     private boolean displayStartStop = false;
 
+    private static final Set<Character> startStops;
+
+    static {
+        startStops = new TreeSet<Character>();
+        final String chars = "abcde*nt";
+        for (int i = 0; i < chars.length(); ++i) {
+            startStops.add(chars.charAt(i));
+        }
+    }
 
     /**
      * Main constructor
+     *
      * @param mode Determines how checksums are to be treated.
      */
     public CodabarLogicImpl(ChecksumMode mode) {
@@ -74,17 +88,23 @@ public class CodabarLogicImpl {
 
     /**
      * Main constructor
+     *
      * @param mode Determines how checksums are to be treated.
-     * @param displayStartStop enables or disables suppressing the start/stop characters from
-     *          the human-readable part
+     * @param displayStartStop enables or disables suppressing the start/stop
+     * characters from the human-readable part
      */
     public CodabarLogicImpl(ChecksumMode mode, boolean displayStartStop) {
         this.checksumMode = mode;
         this.displayStartStop = displayStartStop;
     }
 
+    static byte getCharset(int i, int j) {
+        return CHARSET[i][j];
+    }
+
     /**
      * Returns the checksum mode.
+     *
      * @return the current checksum mode
      */
     public ChecksumMode getChecksumMode() {
@@ -93,6 +113,7 @@ public class CodabarLogicImpl {
 
     /**
      * Returns the index of a character within the character set.
+     *
      * @param ch the character to lookup
      * @return the index of the character or -1 if it isn't supported
      */
@@ -107,6 +128,7 @@ public class CodabarLogicImpl {
 
     /**
      * Determines whether a character is a valid message character.
+     *
      * @param ch the character to check
      * @return true if it is a valid character, false otherwise
      */
@@ -115,21 +137,17 @@ public class CodabarLogicImpl {
     }
 
     /**
-     * Determines whether a character is on of the start/stop characters.
+     * Determines whether a character is one of the start/stop characters.
+     *
      * @param ch the character to check
      * @return true if it is a start/stop character
      */
     protected static boolean isStartStopChar(char ch) {
-        ch = Character.toLowerCase(ch);
-        return (ch == 'a') || (ch == 'b')
-            || (ch == 'c') || (ch == 'd')
-            || (ch == 'e') || (ch == '*')
-            || (ch == 'n') || (ch == 't');
+        return startStops.contains(Character.toLowerCase(ch));
     }
 
-    private int widthAt(char ch, int index) throws IllegalArgumentException {
-        ch = Character.toLowerCase(ch);
-        final int chidx = getCharIndex(ch);
+    private int widthAt(char ch, int index) {
+        final int chidx = getCharIndex(Character.toLowerCase(ch));
         if (chidx >= 0) {
             final int binary = CHARSET[chidx][index];
             return binary + 1;
@@ -140,11 +158,12 @@ public class CodabarLogicImpl {
 
     /**
      * Encodes a character to a logic handler.
+     *
      * @param logic the logic handler to send events to
-     * @param ch the character to encode
+     * @param enc the character to encode
      */
-    protected void encodeChar(ClassicBarcodeLogicHandler logic, char ch) {
-        ch = Character.toLowerCase(ch);
+    protected void encodeChar(ClassicBarcodeLogicHandler logic, char enc) {
+        final char ch = Character.toLowerCase(enc);
         logic.startBarGroup(BarGroup.MSG_CHARACTER, String.valueOf(ch));
         for (byte i = 0; i < 7; i++) {
             final int width = widthAt(ch, i);
@@ -154,11 +173,11 @@ public class CodabarLogicImpl {
         logic.endBarGroup();
     }
 
-    private void handleChecksum(StringBuilder sb) {
+    private void handleChecksum() {
         if ((getChecksumMode() == ChecksumMode.CP_ADD)
                 || (getChecksumMode() == ChecksumMode.CP_CHECK)) {
             throw new UnsupportedOperationException(
-                "No checksums are currently supported for Codabar symbols");
+                    "No checksums are currently supported for Codabar symbols");
         }
     }
 
@@ -173,13 +192,14 @@ public class CodabarLogicImpl {
 
     /**
      * Generates the barcode logic.
+     *
      * @param logic the logic handler to send generated events to
      * @param msg the message to encode
      */
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
         final StringBuilder sb = new StringBuilder(msg);
 
-        handleChecksum(sb);
+        handleChecksum();
 
         //Checksum handling as requested
         final String effMsg = sb.toString();

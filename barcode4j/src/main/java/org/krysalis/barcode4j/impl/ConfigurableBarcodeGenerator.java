@@ -16,6 +16,7 @@
 package org.krysalis.barcode4j.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.krysalis.barcode4j.BarcodeDimension;
@@ -35,15 +36,15 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
  * @version $Id$
  */
 public abstract class ConfigurableBarcodeGenerator
-            implements BarcodeGenerator, Configurable {
+        implements BarcodeGenerator, Configurable {
 
     /**
      * Contains all possible element names that may appear in barcode XML.
      */
-    public static final String[] BARCODE_ELEMENTS;
+    private static final List<String> elements;
 
     static {
-        final List elements = new java.util.ArrayList();
+        elements = new java.util.ArrayList();
         //All barcode names
         elements.addAll(BarcodeUtil.getInstance().getClassResolver().getBarcodeNames());
         //All configuration element names
@@ -86,10 +87,11 @@ public abstract class ConfigurableBarcodeGenerator
         elements.add("codesets"); //Code128
         elements.add("bearer-bar-width"); //ITF-14
         elements.add("bearer-box"); //ITF-14
-        BARCODE_ELEMENTS = (String[])elements.toArray(new String[elements.size()]);
     }
 
-    /** Proxy target. Barcode bean to configure. */
+    /**
+     * Proxy target. Barcode bean to configure.
+     */
     protected AbstractBarcodeBean bean;
 
     @Override
@@ -162,8 +164,13 @@ public abstract class ConfigurableBarcodeGenerator
         }
     }
 
+    public static final Collection<String> getBarcodeElements() {
+        return Collections.unmodifiableCollection(elements);
+    }
+
     /**
      * Provides access to the underlying barcode bean.
+     *
      * @return the underlying barcode bean
      */
     public AbstractBarcodeBean getBean() {

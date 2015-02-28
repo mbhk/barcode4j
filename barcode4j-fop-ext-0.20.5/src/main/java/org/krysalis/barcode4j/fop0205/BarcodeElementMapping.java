@@ -15,6 +15,7 @@
  */
 package org.krysalis.barcode4j.fop0205;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.fop.fo.DirectPropertyListBuilder;
@@ -45,7 +46,7 @@ public class BarcodeElementMapping implements ElementMapping {
     private synchronized void setupBarcodeElements() {
         if (foObjs == null) {
             foObjs = new HashMap();
-            final String[] elements = ConfigurableBarcodeGenerator.BARCODE_ELEMENTS;
+            final Collection<String> elements = ConfigurableBarcodeGenerator.getBarcodeElements();
             foObjs.put("barcode", getBarcodeElementMaker());
             for (final String element : elements) {
                 foObjs.put(element, getBarcodeObjMaker(element));
