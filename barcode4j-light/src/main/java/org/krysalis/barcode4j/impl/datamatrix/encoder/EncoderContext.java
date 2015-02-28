@@ -152,7 +152,7 @@ public class EncoderContext {
     }
 
     public void updateSymbolInfo(int len) {
-        if (this.symbolInfo == null || len > this.symbolInfo.dataCapacity) {
+        if (this.symbolInfo == null || len > this.symbolInfo.getDataCapacity()) {
             this.symbolInfo = DataMatrixSymbolInfo.lookup(len, shape, minSize, maxSize, true);
         }
     }

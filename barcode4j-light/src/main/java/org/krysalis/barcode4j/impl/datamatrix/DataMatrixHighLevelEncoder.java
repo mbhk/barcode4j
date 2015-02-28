@@ -95,7 +95,7 @@ public class DataMatrixHighLevelEncoder {
         }
         final int len = context.getCodewordCount();
         context.updateSymbolInfo();
-        final int capacity = context.getSymbolInfo().dataCapacity;
+        final int capacity = context.getSymbolInfo().getDataCapacity();
         if (len < capacity) {
             if (encodingMode != Encodation.ASCII_ENCODATION && encodingMode != Encodation.BASE256_ENCODATION) {
                 LOGGER.log(Level.FINE, "Unlatch because symbol isn't filled up");

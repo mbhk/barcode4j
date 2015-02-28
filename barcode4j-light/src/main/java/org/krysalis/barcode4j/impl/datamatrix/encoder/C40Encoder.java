@@ -44,7 +44,7 @@ class C40Encoder implements Encoder {
 
             final int curCodewordCount = context.getCodewordCount() + unwritten;
             context.updateSymbolInfo(curCodewordCount);
-            final int available = context.getSymbolInfo().dataCapacity - curCodewordCount;
+            final int available = context.getSymbolInfo().getDataCapacity() - curCodewordCount;
 
             if (!context.hasMoreCharacters()) {
                 //Avoid having a single C40 value in the last triplet
@@ -103,7 +103,7 @@ class C40Encoder implements Encoder {
 
         final int curCodewordCount = context.getCodewordCount() + unwritten;
         context.updateSymbolInfo(curCodewordCount);
-        final int available = context.getSymbolInfo().dataCapacity - curCodewordCount;
+        final int available = context.getSymbolInfo().getDataCapacity() - curCodewordCount;
 
         if (rest == 2) {
             buffer.append('\0'); //Shift 1

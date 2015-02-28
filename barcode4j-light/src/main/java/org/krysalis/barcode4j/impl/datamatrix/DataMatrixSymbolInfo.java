@@ -21,11 +21,11 @@ import java.awt.Dimension;
 /**
  * Symbol info table for DataMatrix.
  *
- * @version 1.2
+ * @version 1.3
  */
 public class DataMatrixSymbolInfo {
 
-    public static final DataMatrixSymbolInfo[] PROD_SYMBOLS = new DataMatrixSymbolInfo[] {
+    private static final DataMatrixSymbolInfo[] PROD_SYMBOLS = new DataMatrixSymbolInfo[] {
         new DataMatrixSymbolInfo(false, 3, 5, 8, 8, 1),
         new DataMatrixSymbolInfo(false, 5, 7, 10, 10, 1),
         /*rect*/new DataMatrixSymbolInfo(true, 5, 7, 16, 6, 1),
@@ -58,38 +58,25 @@ public class DataMatrixSymbolInfo {
         new DataMatrixSymbolInfo(false, 816, 336, 24, 24, 16, 136, 56),
         new DataMatrixSymbolInfo(false, 1050, 408, 18, 18, 36, 175, 68),
         new DataMatrixSymbolInfo(false, 1304, 496, 20, 20, 36, 163, 62),
-        new DataMatrixSymbolInfo144(),
+        new DataMatrixSymbolInfo144()
     };
 
-    private static DataMatrixSymbolInfo[] symbols = PROD_SYMBOLS;
+    private final boolean rectangular;
+    private final int dataCapacity;
+    private final int errorCodewords;
+    private final int matrixWidth;
+    private final int matrixHeight;
+    private final int dataRegions;
+    private final int rsBlockData;
+    private final int rsBlockError;
 
-    /**
-     * Overrides the symbol info set used by this class. Used for testing purposes.
-     * @param override the symbol info set to use
-     * @deprecated bad API for testing purposes
-     */
-    @Deprecated
-    public static void overrideSymbolSet(DataMatrixSymbolInfo[] override) {
-        // TODO remove this method!
-        symbols = override;
-    }
-
-    public boolean rectangular;
-    public int dataCapacity;
-    public int errorCodewords;
-    public int matrixWidth;
-    public int matrixHeight;
-    public int dataRegions;
-    public int rsBlockData;
-    public int rsBlockError;
-
-    public DataMatrixSymbolInfo(boolean rectangular, int dataCapacity, int errorCodewords,
+    DataMatrixSymbolInfo(boolean rectangular, int dataCapacity, int errorCodewords,
             int matrixWidth, int matrixHeight, int dataRegions) {
         this(rectangular, dataCapacity, errorCodewords, matrixWidth, matrixHeight, dataRegions,
                 dataCapacity, errorCodewords);
     }
 
-    public DataMatrixSymbolInfo(boolean rectangular, int dataCapacity, int errorCodewords,
+    DataMatrixSymbolInfo(boolean rectangular, int dataCapacity, int errorCodewords,
             int matrixWidth, int matrixHeight, int dataRegions,
             int rsBlockData, int rsBlockError) {
         this.rectangular = rectangular;
@@ -123,9 +110,9 @@ public class DataMatrixSymbolInfo {
     }
 
     public static DataMatrixSymbolInfo lookup(int dataCodewords,
-            SymbolShapeHint shape, Dimension minSize, Dimension maxSize, boolean fail) {
-        for (int i = 0; i < symbols.length; i++) {
-            final DataMatrixSymbolInfo symbol = symbols[i];
+            SymbolShapeHint shape, Dimension minSize, Dimension maxSize, boolean fail, DataMatrixSymbolInfo... symbolsIn) {
+        final DataMatrixSymbolInfo[] symbols = symbolsIn == null || symbolsIn.length == 0 ? PROD_SYMBOLS : symbolsIn;
+        for (final DataMatrixSymbolInfo symbol : symbols) {
             if (shape == SymbolShapeHint.FORCE_SQUARE && symbol.rectangular) {
                 continue;
             }
@@ -134,12 +121,12 @@ public class DataMatrixSymbolInfo {
             }
             if (minSize != null
                     && (symbol.getSymbolWidth() < minSize.width
-                            || symbol.getSymbolHeight() < minSize.height)) {
+                    || symbol.getSymbolHeight() < minSize.height)) {
                 continue;
             }
             if (maxSize != null
                     && (symbol.getSymbolWidth() > maxSize.width
-                            || symbol.getSymbolHeight() > maxSize.height)) {
+                    || symbol.getSymbolHeight() > maxSize.height)) {
                 continue;
             }
             if (dataCodewords <= symbol.dataCapacity) {
@@ -154,6 +141,14 @@ public class DataMatrixSymbolInfo {
         return null;
     }
 
+    public int getDataCapacity() {
+        return dataCapacity;
+    }
+
+    int getErrorCodewords() {
+        return errorCodewords;
+    }
+
     public int getHorzDataRegions() {
         switch (dataRegions) {
         case 1: return 1;
@@ -164,6 +159,14 @@ public class DataMatrixSymbolInfo {
         default:
             throw new IllegalStateException("Cannot handle this number of data regions");
         }
+    }
+
+    int getMatrixHeight() {
+        return matrixHeight;
+    }
+
+    int getMatrixWidth() {
+        return matrixWidth;
     }
 
     public int getVertDataRegions() {
@@ -223,10 +226,11 @@ public class DataMatrixSymbolInfo {
 
     private static class DataMatrixSymbolInfo144 extends DataMatrixSymbolInfo {
 
+        /**
+         * special values for BlockData andBlockError.
+         */
         public DataMatrixSymbolInfo144() {
-            super(false, 1558, 620, 22, 22, 36);
-            this.rsBlockData = -1; //special! see below
-            this.rsBlockError = 62;
+            super(false, 1558, 620, 22, 22, 36, -1, 62);
         }
 
         @Override

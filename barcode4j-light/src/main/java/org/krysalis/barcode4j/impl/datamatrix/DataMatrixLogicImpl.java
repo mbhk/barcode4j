@@ -76,7 +76,7 @@ public class DataMatrixLogicImpl {
         final int symbolWidth = symbolInfo.getSymbolDataWidth();
         final int symbolHeight = symbolInfo.getSymbolDataHeight();
         for (int y = 0; y < symbolHeight; y++) {
-            if ((y % symbolInfo.matrixHeight) == 0) {
+            if ((y % symbolInfo.getMatrixHeight()) == 0) {
                 logic.startRow();
                 for (int x = 0; x < symbolInfo.getSymbolWidth(); x++) {
                     logic.addBar((x % 2) == 0, 1);
@@ -85,16 +85,16 @@ public class DataMatrixLogicImpl {
             }
             logic.startRow();
             for (int x = 0; x < symbolWidth; x++) {
-                if ((x % symbolInfo.matrixWidth) == 0) {
+                if ((x % symbolInfo.getMatrixWidth()) == 0) {
                     logic.addBar(true, 1); //left finder edge
                 }
                 logic.addBar(placement.getBit(x, y), 1);
-                if ((x % symbolInfo.matrixWidth) == symbolInfo.matrixWidth - 1) {
+                if ((x % symbolInfo.getMatrixWidth()) == symbolInfo.getMatrixWidth() - 1) {
                     logic.addBar((y % 2) == 0, 1); //right finder edge
                 }
             }
             logic.endRow();
-            if ((y % symbolInfo.matrixHeight) == symbolInfo.matrixHeight - 1) {
+            if ((y % symbolInfo.getMatrixHeight()) == symbolInfo.getMatrixHeight() - 1) {
                 logic.startRow();
                 for (int x = 0; x < symbolInfo.getSymbolWidth(); x++) {
                     logic.addBar(true, 1);

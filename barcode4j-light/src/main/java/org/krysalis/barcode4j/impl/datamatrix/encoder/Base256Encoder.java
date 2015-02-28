@@ -46,7 +46,7 @@ class Base256Encoder implements Encoder {
         final int lengthFieldSize = 1;
         final int currentSize = context.getCodewordCount() + dataCount + lengthFieldSize;
         context.updateSymbolInfo(currentSize);
-        final boolean mustPad = (context.getSymbolInfo().dataCapacity - currentSize) > 0;
+        final boolean mustPad = (context.getSymbolInfo().getDataCapacity() - currentSize) > 0;
         if (context.hasMoreCharacters() || mustPad) {
             if (dataCount <= 249) {
                 buffer.setCharAt(0, (char) dataCount);

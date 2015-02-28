@@ -51,15 +51,15 @@ public class DataMatrixErrorCorrection {
      * @return the codewords with interleaved error correction.
      */
     public static String encodeECC200(String codewords, DataMatrixSymbolInfo symbolInfo) {
-        if (codewords.length() != symbolInfo.dataCapacity) {
+        if (codewords.length() != symbolInfo.getDataCapacity()) {
             throw new IllegalArgumentException(
                     "The number of codewords does not match the selected symbol");
         }
-        final StringBuilder sb = new StringBuilder(symbolInfo.dataCapacity + symbolInfo.errorCodewords);
+        final StringBuilder sb = new StringBuilder(symbolInfo.getDataCapacity() + symbolInfo.getErrorCodewords());
         sb.append(codewords);
         final int blockCount = symbolInfo.getInterleavedBlockCount();
         if (blockCount == 1) {
-            final String ecc = createECCBlock(codewords, symbolInfo.errorCodewords);
+            final String ecc = createECCBlock(codewords, symbolInfo.getErrorCodewords());
             sb.append(ecc);
         } else {
             sb.setLength(sb.capacity());
@@ -76,13 +76,13 @@ public class DataMatrixErrorCorrection {
             }
             for (int block = 0; block < blockCount; block++) {
                 final StringBuilder temp = new StringBuilder(dataSizes[block]);
-                for (int d = block; d < symbolInfo.dataCapacity; d += blockCount) {
+                for (int d = block; d < symbolInfo.getDataCapacity(); d += blockCount) {
                     temp.append(codewords.charAt(d));
                 }
                 final String ecc = createECCBlock(temp.toString(), errorSizes[block]);
                 int pos = 0;
                 for (int e = block; e < errorSizes[block] * blockCount; e += blockCount) {
-                    sb.setCharAt(symbolInfo.dataCapacity + e, ecc.charAt(pos++));
+                    sb.setCharAt(symbolInfo.getDataCapacity() + e, ecc.charAt(pos++));
                 }
             }
         }

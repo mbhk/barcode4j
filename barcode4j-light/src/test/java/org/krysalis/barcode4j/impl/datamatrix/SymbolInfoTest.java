@@ -32,30 +32,30 @@ public class SymbolInfoTest {
     public void testSymbolInfo() throws Exception {
         DataMatrixSymbolInfo info;
         info = DataMatrixSymbolInfo.lookup(3);
-        assertEquals(5, info.errorCodewords);
-        assertEquals(8, info.matrixWidth);
-        assertEquals(8, info.matrixHeight);
+        assertEquals(5, info.getErrorCodewords());
+        assertEquals(8, info.getMatrixWidth());
+        assertEquals(8, info.getMatrixHeight());
         assertEquals(10, info.getSymbolWidth());
         assertEquals(10, info.getSymbolHeight());
 
         info = DataMatrixSymbolInfo.lookup(3, SymbolShapeHint.FORCE_RECTANGLE);
-        assertEquals(7, info.errorCodewords);
-        assertEquals(16, info.matrixWidth);
-        assertEquals(6, info.matrixHeight);
+        assertEquals(7, info.getErrorCodewords());
+        assertEquals(16, info.getMatrixWidth());
+        assertEquals(6, info.getMatrixHeight());
         assertEquals(18, info.getSymbolWidth());
         assertEquals(8, info.getSymbolHeight());
 
         info = DataMatrixSymbolInfo.lookup(9);
-        assertEquals(11, info.errorCodewords);
-        assertEquals(14, info.matrixWidth);
-        assertEquals(6, info.matrixHeight);
+        assertEquals(11, info.getErrorCodewords());
+        assertEquals(14, info.getMatrixWidth());
+        assertEquals(6, info.getMatrixHeight());
         assertEquals(32, info.getSymbolWidth());
         assertEquals(8, info.getSymbolHeight());
 
         info = DataMatrixSymbolInfo.lookup(9, SymbolShapeHint.FORCE_SQUARE);
-        assertEquals(12, info.errorCodewords);
-        assertEquals(14, info.matrixWidth);
-        assertEquals(14, info.matrixHeight);
+        assertEquals(12, info.getErrorCodewords());
+        assertEquals(14, info.getMatrixWidth());
+        assertEquals(14, info.getMatrixHeight());
         assertEquals(16, info.getSymbolWidth());
         assertEquals(16, info.getSymbolHeight());
 

@@ -74,7 +74,7 @@ class X12Encoder extends C40Encoder {
 
     protected void handleEOD(EncoderContext context, StringBuilder buffer) {
         context.updateSymbolInfo();
-        final int available = context.getSymbolInfo().dataCapacity - context.getCodewordCount();
+        final int available = context.getSymbolInfo().getDataCapacity() - context.getCodewordCount();
         final int count = buffer.length();
         if (count == 2) {
             context.writeCodeword(X12_UNLATCH);
