@@ -175,67 +175,67 @@ public class BarcodeRequestBean {
         sb.append("genbc?");
 
         //Type
-        String type = getType();
-        if (type == null) {
-            type = "code128";
+        String reqType = getType();
+        if (reqType == null) {
+            reqType = "code128";
         }
         sb.append(BarcodeServlet.BARCODE_TYPE);
         sb.append("=");
-        sb.append(type);
+        sb.append(reqType);
 
         //Message
-        String msg = getMsg();
-        if (msg == null) {
-            msg = "123456";
+        String reqMsg = getMsg();
+        if (reqMsg == null) {
+            reqMsg = "123456";
         }
         sb.append("&");
         sb.append(BarcodeServlet.BARCODE_MSG);
         sb.append("=");
-        sb.append(encode(msg));
+        sb.append(encode(reqMsg));
 
         //Height
-        final String height = getHeight();
-        if (height != null) {
+        final String reqHeight = getHeight();
+        if (reqHeight != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_HEIGHT);
             sb.append("=");
-            sb.append(height);
+            sb.append(reqHeight);
         }
 
         //Module Width
-        final String moduleWidth = getModuleWidth();
-        if (moduleWidth != null) {
+        final String reqModuleWidth = getModuleWidth();
+        if (reqModuleWidth != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_MODULE_WIDTH);
             sb.append("=");
-            sb.append(moduleWidth);
+            sb.append(reqModuleWidth);
         }
 
         //Wide Factor
-        final String wideFactor = getWideFactor();
-        if (wideFactor != null) {
+        final String reqWideFactor = getWideFactor();
+        if (reqWideFactor != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_WIDE_FACTOR);
             sb.append("=");
-            sb.append(wideFactor);
+            sb.append(reqWideFactor);
         }
 
         //Quiet Zone
-        final String quietZone = getQuietZone();
-        if (quietZone != null) {
+        final String reqQuietZone = getQuietZone();
+        if (reqQuietZone != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_QUIET_ZONE);
             sb.append("=");
-            sb.append(quietZone);
+            sb.append(reqQuietZone);
         }
 
         //Human Readable Part
-        final String humanReadable = getHumanReadable();
-        if (humanReadable != null) {
+        final String reqHumanReadable = getHumanReadable();
+        if (reqHumanReadable != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_HUMAN_READABLE_POS);
             sb.append("=");
-            sb.append(humanReadable);
+            sb.append(reqHumanReadable);
         }
 
         //Output Format
@@ -247,20 +247,20 @@ public class BarcodeRequestBean {
             sb.append(fmt);
         }
 
-        final String humanReadableSize = getHumanReadableSize();
-        if (humanReadableSize != null) {
+        final String reqHumanReadableSize = getHumanReadableSize();
+        if (reqHumanReadableSize != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_HUMAN_READABLE_SIZE);
             sb.append("=");
-            sb.append(humanReadableSize);
+            sb.append(reqHumanReadableSize);
         }
 
-        final String humanReadableFont = getHumanReadableFont();
-        if (humanReadableFont != null) {
+        final String reqHumanReadableFont = getHumanReadableFont();
+        if (reqHumanReadableFont != null) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_HUMAN_READABLE_FONT);
             sb.append("=");
-            sb.append(encode(humanReadableFont));
+            sb.append(encode(reqHumanReadableFont));
         }
 
         final String hrPattern = getHumanReadablePattern();
@@ -281,8 +281,8 @@ public class BarcodeRequestBean {
         }
 
         //Output Format
-        final boolean gray = isGray();
-        if (gray && isBitmap()) {
+        final boolean reqGray = isGray();
+        if (reqGray && isBitmap()) {
             sb.append("&");
             sb.append(BarcodeServlet.BARCODE_IMAGE_GRAYSCALE);
             sb.append("=");

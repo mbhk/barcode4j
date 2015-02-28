@@ -79,7 +79,7 @@ class AsciiEncoder implements Encoder {
 
     private static char encodeASCIIDigits(char digit1, char digit2) {
         if (CheckUtil.isDigit(digit1) && CheckUtil.isDigit(digit2)) {
-            final int num = (digit1 - 48) * 10 + (digit2 - 48);
+            final int num = (digit1 - '0') * 10 + (digit2 - '0');
             return (char) (num + 130);
         } else {
             throw new IllegalArgumentException("not digits: " + digit1 + digit2);

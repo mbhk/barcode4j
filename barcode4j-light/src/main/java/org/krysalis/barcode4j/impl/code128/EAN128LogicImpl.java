@@ -17,6 +17,7 @@
  */
 package org.krysalis.barcode4j.impl.code128;
 
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import org.krysalis.barcode4j.ChecksumMode;
@@ -27,17 +28,12 @@ import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
  *
  * @author Dietmar Bürkle, Jeremias Maerki (generateBarcodeLogic)
  */
-public class EAN128LogicImpl { //extends Code128LogicImpl{
+public class EAN128LogicImpl {
     private static final byte MAX_LENGTH = 48; // Max according to EAN128 specification.
-
-    private static final byte TYPENumTestCheckDigit = 4;
-    private static final byte TYPENumReplaceCheckDigit = 5;
-    private static final byte TYPENumAddCheckDigit = 6;
-
 
     private EAN128AI[] ais = null;
 
-    //GroupSeperator not Code128LogicImpl.FNC_1;
+    // GroupSeperator not Code128LogicImpl.FNC_1
     private char groupSeparator = EAN128Bean.DEFAULT_GROUP_SEPARATOR;
 
     private char checkDigitMarker = EAN128Bean.DEFAULT_CHECK_DIGIT_MARKER;
@@ -61,10 +57,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
     }
 
     public EAN128LogicImpl(ChecksumMode mode, String template) {
-        this.humanReadableMsg = new StringBuilder(MAX_LENGTH);
-        this.code128Msg = new StringBuilder(MAX_LENGTH);
-        setChecksumMode(mode);
-        setTemplate(template);
+        this(mode, template, EAN128Bean.DEFAULT_GROUP_SEPARATOR);
     }
 
     protected void setMessage(String msg) {
@@ -101,7 +94,7 @@ public class EAN128LogicImpl { //extends Code128LogicImpl{
      */
     public int[] getEncodedMessage(String msg) {
         setMessage(msg);
-        return encodedMsg;
+        return Arrays.copyOf(encodedMsg, encodedMsg.length);
     }
 
     /**

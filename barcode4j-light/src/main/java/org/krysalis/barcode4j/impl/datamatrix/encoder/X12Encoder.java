@@ -67,7 +67,7 @@ class X12Encoder extends C40Encoder {
         } else if (c >= 'A' && c <= 'Z') {
             sb.append((char) (c - 65 + 14));
         } else {
-            LookAhead.throwIllegalCharacter(c);
+            throw LookAhead.throwIllegalCharacter(c);
         }
         return 1;
     }

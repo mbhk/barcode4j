@@ -18,12 +18,19 @@
 
 package org.krysalis.barcode4j.tools;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Utilities concerning the ZXing dependency.
  *
  * @version $Id$
  */
 public class ZXingUtil {
+
+    private ZXingUtil() {
+        // hide public default constructor
+    }
 
     /**
      * Indicates whether ZXing is available in the classpath.
@@ -34,6 +41,7 @@ public class ZXingUtil {
             Class.forName("com.google.zxing.qrcode.QRCodeWriter");
             return true;
         } catch (Exception e) {
+            Logger.getLogger(ZXingUtil.class.getName()).log(Level.INFO, "ZXing is not available.", e);
             return false;
         }
     }

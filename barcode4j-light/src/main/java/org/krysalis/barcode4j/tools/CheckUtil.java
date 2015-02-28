@@ -62,4 +62,8 @@ public class CheckUtil {
     public static boolean isLowerAtoZ(char ch) {
         return intervallContains('a', 'z', ch);
     }
+    
+    public static boolean isSpace(char ch) {
+        return ch == ' ';
+    }
 }

@@ -115,6 +115,7 @@ public class DefaultCanvasLogicHandler implements ClassicBarcodeLogicHandler {
 
     @Override
     public void endBarGroup() {
+        //nop
     }
 
     @Override

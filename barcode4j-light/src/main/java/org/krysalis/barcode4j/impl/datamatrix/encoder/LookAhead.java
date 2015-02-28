@@ -242,10 +242,6 @@ public class LookAhead {
         return minCount;
     }
 
-    static boolean isSpace(char ch) {
-        return ch == ' ';
-    }
-
     static boolean isNativeC40(char ch) {
         return isSpace(ch)
                 || isDigit(ch)
@@ -279,7 +275,7 @@ public class LookAhead {
         return false; //TODO NOT IMPLEMENTED YET!!!
     }
 
-    static void throwIllegalCharacter(char c) {
-        throw new IllegalArgumentException(String.format("Illegal character: %s (0x%04X)", c, (int) c));
+    static IllegalArgumentException throwIllegalCharacter(char c) {
+        return new IllegalArgumentException(String.format("Illegal character: %s (0x%04X)", c, (int) c));
     }
 }

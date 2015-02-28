@@ -15,6 +15,8 @@
  */
 package org.krysalis.barcode4j.impl.datamatrix.encoder;
 
+import org.krysalis.barcode4j.tools.CheckUtil;
+
 /**
  *
  * @author mk
@@ -28,52 +30,33 @@ class TextEncoder extends C40Encoder {
 
     @Override
     protected int encodeChar(char c, StringBuilder sb) {
-        if (c == ' ') {
-            sb.append('\3');
-            return 1;
-        } else if (c >= '0' && c <= '9') {
-            sb.append((char) (c - 48 + 4));
-            return 1;
-        } else if (c >= 'a' && c <= 'z') {
-            sb.append((char) (c - 97 + 14));
-            return 1;
-        } else if (c >= '\0' && c <= '\u001f') {
-            sb.append('\0'); //Shift 1 Set
-            sb.append(c);
-            return 2;
-        } else if (c >= '!' && c <= '/') {
-            sb.append('\1'); //Shift 2 Set
-            sb.append((char) (c - 33));
-            return 2;
-        } else if (c >= ':' && c <= '@') {
-            sb.append('\1'); //Shift 2 Set
-            sb.append((char) (c - 58 + 15));
-            return 2;
-        } else if (c >= '[' && c <= '_') {
-            sb.append('\1'); //Shift 2 Set
-            sb.append((char) (c - 91 + 22));
-            return 2;
+        final int res;
+        if (CheckUtil.isSpace(c)) {
+            res = append(sb, '\3');
+        } else if (CheckUtil.isDigit(c)) {
+            res = append(sb, (char) (c - '0' + 4));
+        } else if (CheckUtil.isLowerAtoZ(c)) {
+            res = append(sb, (char) (c - 'a' + 14));
+        } else if (CheckUtil.intervallContains('\0', '\u001f', c)) {
+            res = append(sb, SHIFT_1_SET, c);
+        } else if (CheckUtil.intervallContains('!', '/', c)) {
+            res = append(sb, SHIFT_2_SET, (char) (c - '!'));
+        } else if (CheckUtil.intervallContains(':', '@', c)) {
+            res = append(sb, SHIFT_2_SET, (char) (c - ':' + 15));
+        } else if (CheckUtil.intervallContains('[', '_', c)) {
+            res = append(sb, SHIFT_2_SET, (char) (c - '[' + 22));
         } else if (c == '\u0060') {
-            sb.append('\2'); //Shift 3 Set
-            sb.append((char) (c - 96));
-            return 2;
-        } else if (c >= 'A' && c <= 'Z') {
-            sb.append('\2'); //Shift 3 Set
-            sb.append((char) (c - 65 + 1));
-            return 2;
-        } else if (c >= '{' && c <= '\u007f') {
-            sb.append('\2'); //Shift 3 Set
-            sb.append((char) (c - 123 + 27));
-            return 2;
+            res = append(sb, SHIFT_3_SET, (char) (c - '\u0060'));
+        } else if (CheckUtil.isUpperAtoZ(c)) {
+            res = append(sb, SHIFT_3_SET, (char) (c - 'A' + 1));
+        } else if (CheckUtil.intervallContains('{', '\u007f', c)) {
+            res = append(sb, SHIFT_3_SET, (char) (c - '{' + 27));
         } else if (c >= '\u0080') {
-            sb.append("\1\u001e"); //Shift 2, Upper Shift
-            int len = 2;
-            len += encodeChar((char) (c - 128), sb);
-            return len;
+            final int len = append(sb, SHIFT_2_SET, SHIFT_UPPER);
+            res = len + encodeChar((char) (c - 128), sb);
         } else {
-            LookAhead.throwIllegalCharacter(c);
-            return -1;
+            throw LookAhead.throwIllegalCharacter(c);
         }
+        return res;
     }
-
 }

@@ -63,13 +63,14 @@ class Base256Encoder implements Encoder {
                     buffer.charAt(i), context.getCodewordCount() + 1));
         }
     }
-private static char randomize255State(char ch, int codewordPosition) {
+
+    private static char randomize255State(char ch, int codewordPosition) {
         final int pseudoRandom = ((149 * codewordPosition) % 255) + 1;
         final int tempVariable = ch + pseudoRandom;
         if (tempVariable <= 255) {
-            return (char)tempVariable;
+            return (char) tempVariable;
         } else {
-            return (char)(tempVariable - 256);
+            return (char) (tempVariable - 256);
         }
     }
 }

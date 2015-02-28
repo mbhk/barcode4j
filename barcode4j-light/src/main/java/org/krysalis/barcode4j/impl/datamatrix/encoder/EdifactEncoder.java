@@ -109,7 +109,7 @@ public class EdifactEncoder implements Encoder {
         } else if (c >= '@' && c <= '^') {
             sb.append((char) (c - 64));
         } else {
-            LookAhead.throwIllegalCharacter(c);
+            throw LookAhead.throwIllegalCharacter(c);
         }
     }
 

@@ -29,6 +29,8 @@ import org.krysalis.barcode4j.tools.ZXingUtil;
  */
 public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
 
+    private static final String INTL_2_OF_5_CLASSNAME = "org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5";
+    private static final String EAN_128_CLASSNAME = "org.krysalis.barcode4j.impl.code128.EAN128";
     private Map classes;
     private Set mainIDs;
 
@@ -41,13 +43,11 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         registerBarcodeClass("codabar", "org.krysalis.barcode4j.impl.codabar.Codabar", true);
         registerBarcodeClass("code39", "org.krysalis.barcode4j.impl.code39.Code39", true);
         registerBarcodeClass("code128", "org.krysalis.barcode4j.impl.code128.Code128", true);
-        registerBarcodeClass("ean-128", "org.krysalis.barcode4j.impl.code128.EAN128", true);
-        registerBarcodeClass("ean128", "org.krysalis.barcode4j.impl.code128.EAN128");
-        registerBarcodeClass("2of5", "org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5");
-        registerBarcodeClass("intl2of5",
-                "org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5", true);
-        registerBarcodeClass("interleaved2of5",
-                "org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5");
+        registerBarcodeClass("ean-128", EAN_128_CLASSNAME, true);
+        registerBarcodeClass("ean128", EAN_128_CLASSNAME);
+        registerBarcodeClass("2of5", INTL_2_OF_5_CLASSNAME);
+        registerBarcodeClass("intl2of5", INTL_2_OF_5_CLASSNAME, true);
+        registerBarcodeClass("interleaved2of5", INTL_2_OF_5_CLASSNAME);
         registerBarcodeClass("itf-14", "org.krysalis.barcode4j.impl.int2of5.ITF14", true);
         registerBarcodeClass("itf14", "org.krysalis.barcode4j.impl.int2of5.ITF14");
         registerBarcodeClass("ean-13", "org.krysalis.barcode4j.impl.upcean.EAN13", true);
@@ -63,10 +63,6 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
                 "org.krysalis.barcode4j.impl.fourstate.RoyalMailCBC", true);
         registerBarcodeClass("usps4cb",
                 "org.krysalis.barcode4j.impl.fourstate.USPSIntelligentMail", true);
-        /*
-        registerBarcodeClass("austpost",
-                "org.krysalis.barcode4j.impl.fourstate.AustPost", true);
-                */
         registerBarcodeClass("pdf417", "org.krysalis.barcode4j.impl.pdf417.PDF417", true);
         registerBarcodeClass("datamatrix",
                 "org.krysalis.barcode4j.impl.datamatrix.DataMatrix", true);
@@ -94,7 +90,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
      * @param classname fully qualified classname
      * @param mainID indicates whether the name is the main name for the barcode
      */
-    public final void registerBarcodeClass(String id, String classname, boolean mainID) {
+    public final synchronized void registerBarcodeClass(String id, String classname, boolean mainID) {
         if (this.classes == null) {
             this.classes = new java.util.HashMap();
             this.mainIDs = new java.util.HashSet();
@@ -114,11 +110,19 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         if (clazz == null) {
             clazz = name;
         }
-        final Class cl = Class.forName(clazz);
-        return cl;
+        return Class.forName(clazz);
     }
 
-    @Override @Deprecated
+    /**
+     * Formerly used to get Barcode-Bean-Implementations.
+     * 
+     * @param name Symbologiename
+     * @return resolved class
+     * @throws ClassNotFoundException if no Implementation found
+     * @deprecated as of version 2.1.2, replaced by {@link BarcodeGeneratorProvider#getBarcodeGenerator(java.lang.String)}
+     */
+    @Deprecated
+    @Override
     public Class resolveBean(String name) throws ClassNotFoundException {
         String clazz = null;
         if (this.classes != null) {
@@ -127,8 +131,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
         if (clazz == null) {
             clazz = name;
         }
-        final Class cl = Class.forName(clazz + "Bean");
-        return cl;
+        return Class.forName(clazz + "Bean");
     }
 
     @Override

@@ -16,12 +16,18 @@
 package org.krysalis.barcode4j.impl.datamatrix.encoder;
 
 import static org.krysalis.barcode4j.impl.datamatrix.DataMatrixConstants.C40_UNLATCH;
+import org.krysalis.barcode4j.tools.CheckUtil;
 
 /**
  *
  * @author mk
  */
 class C40Encoder implements Encoder {
+
+    protected static final char SHIFT_UPPER = '\u001e';
+    protected static final char SHIFT_3_SET = '\2';
+    protected static final char SHIFT_2_SET = '\1';
+    protected static final char SHIFT_1_SET = '\0';
 
     @Override
     public Encodation getEncodingMode() {
@@ -33,7 +39,7 @@ class C40Encoder implements Encoder {
         //step C
         int lastCharSize = -1;
         final StringBuilder buffer = new StringBuilder();
-        outerloop:
+
         while (context.hasMoreCharacters()) {
             final char c = context.getCurrentChar();
             context.incPos();
@@ -60,7 +66,7 @@ class C40Encoder implements Encoder {
                     lastCharSize = backtrackOneCharacter(context, buffer, removed,
                             lastCharSize);
                 }
-                break outerloop;
+                break;
             }
 
             final int count = buffer.length();
@@ -137,43 +143,30 @@ class C40Encoder implements Encoder {
     }
 
     protected int encodeChar(char c, StringBuilder sb) {
-        if (c == ' ') {
-            sb.append('\3');
-            return 1;
-        } else if (c >= '0' && c <= '9') {
-            sb.append((char) (c - 48 + 4));
-            return 1;
-        } else if (c >= 'A' && c <= 'Z') {
-            sb.append((char) (c - 65 + 14));
-            return 1;
-        } else if (c >= '\0' && c <= '\u001f') {
-            sb.append('\0'); //Shift 1 Set
-            sb.append(c);
-            return 2;
-        } else if (c >= '!' && c <= '/') {
-            sb.append('\1'); //Shift 2 Set
-            sb.append((char) (c - 33));
-            return 2;
-        } else if (c >= ':' && c <= '@') {
-            sb.append('\1'); //Shift 2 Set
-            sb.append((char) (c - 58 + 15));
-            return 2;
-        } else if (c >= '[' && c <= '_') {
-            sb.append('\1'); //Shift 2 Set
-            sb.append((char) (c - 91 + 22));
-            return 2;
-        } else if (c >= '\u0060' && c <= '\u007f') {
-            sb.append('\2'); //Shift 3 Set
-            sb.append((char) (c - 96));
-            return 2;
+        final int res;
+        if (CheckUtil.isSpace(c)) {
+            res = append(sb, '\3');
+        } else if (CheckUtil.isDigit(c)) {
+            res = append(sb, (char) (c - '0' + 4));
+        } else if (CheckUtil.isUpperAtoZ(c)) {
+            res = append(sb, (char) (c - 'A' + 14));
+        } else if (CheckUtil.intervallContains('\0', '\u001f', c)) {
+            res = append(sb, SHIFT_1_SET, c);
+        } else if (CheckUtil.intervallContains('!', '/', c)) {
+            res = append(sb,SHIFT_2_SET,(char) (c - '!'));
+        } else if (CheckUtil.intervallContains(':', '@', c)) {
+            res = append(sb, SHIFT_2_SET, (char) (c - ':' + 15));
+        } else if (CheckUtil.intervallContains('[', '_', c)) {
+            res = append(sb, SHIFT_2_SET, (char) (c - '[' + 22));
+        } else if (CheckUtil.intervallContains('\u0060', '\u007f', c)) {
+            res = append(sb, SHIFT_3_SET, (char) (c - '\u0060'));
         } else if (c >= '\u0080') {
-            sb.append("\1\u001e"); //Shift 2, Upper Shift
-            int len = 2;
-            len += encodeChar((char) (c - 128), sb);
-            return len;
+            final int len = append(sb, SHIFT_2_SET, SHIFT_UPPER);
+            res = len + encodeChar((char) (c - 128), sb);
         } else {
-            throw new IllegalArgumentException("Illegal character: " + c);
+            throw LookAhead.throwIllegalCharacter(c);
         }
+        return res;
     }
 
     protected String encodeToCodewords(StringBuilder sb, int startPos) {
@@ -183,6 +176,13 @@ class C40Encoder implements Encoder {
         final int v = (1600 * c1) + (40 * c2) + c3 + 1;
         final char cw1 = (char) (v / 256);
         final char cw2 = (char) (v % 256);
-        return "" + cw1 + cw2;
+        return String.valueOf(cw1) + cw2;
+    }
+
+    protected int append(StringBuilder sb, char... chars) {
+        for (final char c : chars) {
+            sb.append(c);
+        }
+        return chars.length;
     }
 }

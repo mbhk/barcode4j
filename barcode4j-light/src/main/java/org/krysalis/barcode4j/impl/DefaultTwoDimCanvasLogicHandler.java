@@ -15,55 +15,45 @@
  */
 package org.krysalis.barcode4j.impl;
 
-import org.krysalis.barcode4j.BarGroup;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.TwoDimBarcodeLogicHandler;
 import org.krysalis.barcode4j.output.Canvas;
 
 /**
  * Default 2D Logic Handler implementation for painting on a Canvas.
- * 
+ *
  * @author Jeremias Maerki
- * @version 1.2
+ * @version 1.3
  */
-public class DefaultTwoDimCanvasLogicHandler implements TwoDimBarcodeLogicHandler {
-    
-    private final AbstractBarcodeBean bcBean;
-    private final Canvas canvas;
+public class DefaultTwoDimCanvasLogicHandler extends DefaultCanvasLogicHandler implements TwoDimBarcodeLogicHandler {
+
     private double x = 0.0;
     private double y = 0.0;
-    
+
     /**
      * Main constructor.
+     *
      * @param bcBean the barcode implementation class
      * @param canvas the canvas to paint to
      */
     public DefaultTwoDimCanvasLogicHandler(AbstractBarcodeBean bcBean, Canvas canvas) {
-        this.bcBean = bcBean;
-        this.canvas = canvas;
+        super(bcBean, canvas);
     }
-    
-    private double getStartX() {
-        if (bcBean.hasQuietZone()) {
-            return bcBean.getQuietZone();
-        } else {
-            return 0.0;
-        }
-    }            
 
-    private double getStartY() {
+    @Override
+    protected double getStartY() {
         if (bcBean.hasQuietZone()) {
             return bcBean.getVerticalQuietZone();
         } else {
             return 0.0;
         }
-    }            
+    }
 
     @Override
     public void startBarcode(String msg, String formattedMsg) {
         //Calculate extents
         final BarcodeDimension dim = bcBean.calcDimensions(msg);
-        
+
         canvas.establishDimensions(dim);
         y = getStartY();
     }
@@ -74,22 +64,12 @@ public class DefaultTwoDimCanvasLogicHandler implements TwoDimBarcodeLogicHandle
     }
 
     @Override
-    public void startBarGroup(BarGroup type, String submsg) {
-        //nop
-    }
-
-    @Override
     public void addBar(boolean black, int width) {
         final double w = bcBean.getBarWidth(width);
         if (black) {
             canvas.drawRectWH(x, y, w, bcBean.getBarHeight());
         }
         x += w;
-    }
-
-    @Override
-    public void endBarGroup() {
-        //nop
     }
 
     @Override
