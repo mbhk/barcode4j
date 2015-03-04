@@ -16,6 +16,7 @@
 package org.krysalis.barcode4j.impl.datamatrix.encoder;
 
 import static org.krysalis.barcode4j.impl.datamatrix.DataMatrixConstants.*;
+import org.krysalis.barcode4j.impl.pdf417.PDF417HighLevelEncoder;
 import org.krysalis.barcode4j.tools.CheckUtil;
 
 /**
@@ -32,7 +33,8 @@ class AsciiEncoder implements Encoder {
     @Override
     public void encode(EncoderContext context) {
         //step B
-        final int n = determineConsecutiveDigitCount(context.getMessage(), context.getPos());
+        // method has been duplicated. has nothing to do with PDF417Barcode
+        final int n = PDF417HighLevelEncoder.determineConsecutiveDigitCount(context.getMessage(), context.getPos());
         if (n >= 2) {
             context.writeCodeword(encodeASCIIDigits(context.getMessage().charAt(context.getPos()),
                     context.getMessage().charAt(context.getPos() + 1)));
@@ -84,30 +86,5 @@ class AsciiEncoder implements Encoder {
         } else {
             throw new IllegalArgumentException("not digits: " + digit1 + digit2);
         }
-    }
-
-    /**
-     * Determines the number of consecutive characters that are encodable using
-     * numeric compaction.
-     *
-     * @param msg the message
-     * @param startpos the start position within the message
-     * @return the requested character count
-     */
-    private static int determineConsecutiveDigitCount(String msg, int startpos) {
-        int count = 0;
-        final int len = msg.length();
-        int idx = startpos;
-        if (idx < len) {
-            char ch = msg.charAt(idx);
-            while (CheckUtil.isDigit(ch) && idx < len) {
-                count++;
-                idx++;
-                if (idx < len) {
-                    ch = msg.charAt(idx);
-                }
-            }
-        }
-        return count;
     }
 }
