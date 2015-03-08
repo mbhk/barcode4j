@@ -31,7 +31,7 @@ public class ITF14Test {
 
     @Test
     public void testChecksum() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         ITF14LogicImpl logic;
         String expected = "<BC><SBG:start-char:null></SBG>"
             + "<SBG:msg-char:15></SBG>"
@@ -70,14 +70,14 @@ public class ITF14Test {
     }
 
     private void checkPositive(String msg, Interleaved2Of5LogicImpl logic,
-            StringBuffer sb, String expected) {
+            StringBuilder sb, String expected) {
         sb.setLength(0);
         logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb, false, false),
                 msg);
         assertEquals(expected, sb.toString());
     }
 
-    private void checkNegative(String msg, Interleaved2Of5LogicImpl logic, StringBuffer sb) {
+    private void checkNegative(String msg, Interleaved2Of5LogicImpl logic, StringBuilder sb) {
         try {
             sb.setLength(0);
             logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb, false, false),

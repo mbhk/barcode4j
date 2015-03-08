@@ -18,17 +18,22 @@ package org.krysalis.barcode4j.impl.upcean;
 import org.krysalis.barcode4j.BarGroup;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
+import org.krysalis.barcode4j.tools.CheckUtil;
 
 /**
  * This class is an implementation of the UPC-A barcode.
- * 
+ *
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.3
  */
 public class UPCALogicImpl extends UPCEANLogicImpl {
 
+    private static final int LENGTH_WITHOUT_CHECKSUM = 11;
+    private static final int LENGTH_WITH_CHECKSUM = LENGTH_WITHOUT_CHECKSUM + 1;
+
     /**
      * Main constructor
+     *
      * @param mode the checksum mode
      */
     public UPCALogicImpl(ChecksumMode mode) {
@@ -36,29 +41,33 @@ public class UPCALogicImpl extends UPCEANLogicImpl {
     }
 
     /**
-     * Validates a UPC-A message. The method throws IllegalArgumentExceptions
-     * if an invalid message is passed.
+     * Validates a UPC-A message. The method throws IllegalArgumentExceptions if
+     * an invalid message is passed.
+     *
      * @param msg the message to validate
      */
-    public static void validateMessage(String msg) {
-        UPCEANLogicImpl.validateMessage(msg);
-        if ((msg.length() < 11) || (msg.length() > 12)) {
+    @Override
+    public void validateMessage(String msg) {
+        super.validateMessage(msg);
+        if (!CheckUtil.intervallContains(LENGTH_WITHOUT_CHECKSUM,
+                LENGTH_WITH_CHECKSUM, msg.length())) {
             throw new IllegalArgumentException(
-                "Message must be 11 or 12 characters long. Message: " + msg);
+                    "Message must be 11 or 12 characters long. Message: " + msg);
         }
     }
-    
+
     /**
      * Does checksum processing according to the checksum mode.
+     *
      * @param msg the message to process
      * @param mode the checksum mode
      * @return the possibly modified message
      */
-    public static String handleChecksum(String msg, ChecksumMode mode) {
+    public String handleChecksum(String msg, ChecksumMode mode) {
         if (mode == ChecksumMode.CP_AUTO) {
-            if (msg.length() == 11) {
+            if (msg.length() == LENGTH_WITHOUT_CHECKSUM) {
                 mode = ChecksumMode.CP_ADD;
-            } else if (msg.length() == 12) {
+            } else if (msg.length() == LENGTH_WITH_CHECKSUM) {
                 mode = ChecksumMode.CP_CHECK;
             } else {
                 //Shouldn't happen because of validateMessage
@@ -66,43 +75,43 @@ public class UPCALogicImpl extends UPCEANLogicImpl {
             }
         }
         if (mode == ChecksumMode.CP_ADD) {
-            if (msg.length() != 11) {
+            if (msg.length() != LENGTH_WITHOUT_CHECKSUM) {
                 throw new IllegalArgumentException(
-                    "Message must be 11 characters long");
+                        "Message must be 11 characters long");
             }
             return msg + calcChecksum(msg);
         } else if (mode == ChecksumMode.CP_CHECK) {
-            if (msg.length() != 12) {
+            if (msg.length() != LENGTH_WITH_CHECKSUM) {
                 throw new IllegalArgumentException(
-                    "Message must be 12 characters long");
+                        "Message must be 12 characters long");
             }
             final char check = msg.charAt(11);
             final char expected = calcChecksum(msg.substring(0, 11));
             if (check != expected) {
                 throw new IllegalArgumentException(
-                    "Checksum is bad (" + check + "). Expected: " + expected);
+                        "Checksum is bad (" + check + "). Expected: " + expected);
             }
             return msg;
         } else if (mode == ChecksumMode.CP_IGNORE) {
-            if (msg.length() != 12) {
+            if (msg.length() != LENGTH_WITH_CHECKSUM) {
                 throw new IllegalArgumentException(
-                    "Message must be 12 characters long");
+                        "Message must be 12 characters long");
             }
             return msg;
         } else {
             throw new UnsupportedOperationException(
-                "Unknown checksum mode: " + mode);
+                    "Unknown checksum mode: " + mode);
         }
     }
 
     private String handleChecksum(String msg) {
         return handleChecksum(msg, getChecksumMode());
     }
-    
+
     @Override
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
         final String supp = retrieveSupplemental(msg);
-        String s = removeSupplemental(msg); 
+        String s = removeSupplemental(msg);
         validateMessage(s);
         s = handleChecksum(s);
 
@@ -111,7 +120,7 @@ public class UPCALogicImpl extends UPCEANLogicImpl {
             canonicalMessage = canonicalMessage + "+" + supp;
         }
         logic.startBarcode(canonicalMessage, canonicalMessage);
-        
+
         //Left guard
         drawSideGuard(logic);
 
@@ -122,19 +131,19 @@ public class UPCALogicImpl extends UPCEANLogicImpl {
         logic.endBarGroup();
 
         logic.startBarGroup(BarGroup.UPC_EAN_GROUP, s.substring(1, 6));
-        
+
         //First five data characters
         for (int i = 1; i < 6; i++) {
             encodeChar(logic, s.charAt(i), LEFT_HAND_A);
         }
-        
+
         logic.endBarGroup();
 
         //Center guard
         drawCenterGuard(logic);
 
         logic.startBarGroup(BarGroup.UPC_EAN_GROUP, s.substring(6, 11));
-        
+
         //Last five data characters
         for (int i = 6; i < 11; i++) {
             encodeChar(logic, s.charAt(i), RIGHT_HAND);
@@ -150,12 +159,11 @@ public class UPCALogicImpl extends UPCEANLogicImpl {
 
         //Right guard
         drawSideGuard(logic);
-        
+
         //Optional Supplemental
         if (supp != null) {
             drawSupplemental(logic, supp);
         }
         logic.endBarcode();
     }
-
 }

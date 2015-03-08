@@ -394,18 +394,6 @@ public class PDF417HighLevelEncoder {
                 || ch == 13 //CR
                 || (ch >= 32 && ch <= 126);
     }
-    /*
-    private boolean isByte(int pos) {
-        char ch = msg.charAt(pos);
-        //Sun returns a ASCII 31 (?) for a character that cannot be mapped. Let's hope all
-        //other VMs do the same
-        return (byteMap[pos] != 31 || ch == '?');
-    }
-
-    private boolean isEncodableCharacter(int pos) {
-        char ch = msg.charAt(pos);
-        return isText(ch) || isByte(pos);
-    }*/
 
     /**
      * Determines the number of consecutive characters that are encodable using numeric compaction.
@@ -484,7 +472,6 @@ public class PDF417HighLevelEncoder {
 
             while (numericCount < 13 && CheckUtil.isDigit(ch)) {
                 numericCount++;
-                //textCount++;
                 final int i = idx + numericCount;
                 if (i < len) {
                     ch = msg.charAt(i);

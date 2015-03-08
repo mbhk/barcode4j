@@ -17,7 +17,6 @@ package org.krysalis.barcode4j.impl.upcean;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import org.krysalis.barcode4j.BarcodeDimension;
 
 /**
  * This class implements the EAN-8 barcode.
@@ -31,19 +30,10 @@ public class EAN8Bean extends UPCEANBean {
     public UPCEANLogicImpl createLogicImpl() {
         return new EAN8LogicImpl(getChecksumMode());
     }
-
+    
     @Override
-    public BarcodeDimension calcDimensions(String msg) {
-        double width = 3 * moduleWidth; //left guard
-        width += 4 * 7 * moduleWidth;
-        width += 5 * moduleWidth; //center guard
-        width += 4 * 7 * moduleWidth;
-        width += 3 * moduleWidth; //right guard
-        width += supplementalWidth(msg);
-        final double qz = hasQuietZone() ? quietZone : 0;
-        return new BarcodeDimension(width, getHeight(), 
-                width + (2 * qz), getHeight(), 
-                quietZone, 0.0);
+    int getModuleCount() {
+        return 3 /* left guard */ + 4*7 + 5 /* center guard */ + 4*7 + 3 /* right guard */;
     }
 
     @Override

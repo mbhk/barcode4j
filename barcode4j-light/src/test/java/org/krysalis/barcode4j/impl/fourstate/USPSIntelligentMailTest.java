@@ -194,7 +194,7 @@ public class USPSIntelligentMailTest {
 
         for (int i = 0; i < formatted.length; i++) {
             USPSIntelligentMailLogicImpl logic = new USPSIntelligentMailLogicImpl();
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb), formatted[i]);
             String expected = results[i];
             //System.out.println(expected);

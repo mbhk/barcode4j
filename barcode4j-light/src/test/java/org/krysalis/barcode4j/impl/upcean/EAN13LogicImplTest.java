@@ -64,7 +64,7 @@ public class EAN13LogicImplTest {
 
     @Test
     public void testLogic() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         EAN13LogicImpl logic;
         String expected;
 

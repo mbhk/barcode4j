@@ -18,12 +18,13 @@ package org.krysalis.barcode4j.impl.upcean;
 import org.krysalis.barcode4j.BarGroup;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
+import org.krysalis.barcode4j.tools.CheckUtil;
 
 /**
  * This class is an implementation of the EAN-13 barcode.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
 public class EAN13LogicImpl extends UPCEANLogicImpl {
 
@@ -54,9 +55,10 @@ public class EAN13LogicImpl extends UPCEANLogicImpl {
      * if an invalid message is passed.
      * @param msg the message to validate
      */
-    public static void validateMessage(String msg) {
-        UPCEANLogicImpl.validateMessage(msg);
-        if ((msg.length() < 12) || (msg.length() > 13)) {
+    @Override
+    public void validateMessage(String msg) {
+        super.validateMessage(msg);
+        if (!CheckUtil.intervallContains(12, 13, msg.length())) {
             throw new IllegalArgumentException(
                 "Message must be 12 or 13 characters long. Message: " + msg);
         }
@@ -165,5 +167,4 @@ public class EAN13LogicImpl extends UPCEANLogicImpl {
         }
         logic.endBarcode();
     }
-
 }

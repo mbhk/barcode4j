@@ -66,7 +66,7 @@ public class EAN8LogicImplTest {
 
     @Test
     public void testLogic() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         EAN8LogicImpl logic;
         String expected;
 

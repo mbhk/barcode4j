@@ -47,7 +47,7 @@ public class POSTNETLogicImplTest {
 
     @Test
     public void testLogic() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         POSTNETLogicImpl logic;
         String expected;
 

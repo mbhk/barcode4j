@@ -68,7 +68,7 @@ public class RoyalMailCBCTest {
     @Test
     public void testLogic() throws Exception {
         RoyalMailCBCLogicImpl logic = new RoyalMailCBCLogicImpl(ChecksumMode.CP_AUTO);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb), "B31HQ1A");
         String expected = "<BC>"
             + "<SBG:msg-char:(>B1</SBG>"

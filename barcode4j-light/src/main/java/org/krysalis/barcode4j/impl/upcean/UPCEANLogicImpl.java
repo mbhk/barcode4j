@@ -18,6 +18,7 @@ package org.krysalis.barcode4j.impl.upcean;
 import org.krysalis.barcode4j.BarGroup;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
+import org.krysalis.barcode4j.tools.CheckUtil;
 
 /**
  * This is an abstract base class for UPC and EAN barcodes.
@@ -91,10 +92,9 @@ public abstract class UPCEANLogicImpl {
      * if an invalid message is passed.
      * @param msg the message to validate
      */
-    public static void validateMessage(String msg) {
+    public void validateMessage(String msg) {
         for (int i = 0; i < msg.length(); i++) {
-            final char c = msg.charAt(i);
-            if ((c < '0') || (c > '9')) {
+            if (!CheckUtil.isDigit(msg.charAt(i))) {
                 throw new IllegalArgumentException("Invalid characters found. "
                     + "Valid are 0-9 only. Message: " + msg);
             }
@@ -106,7 +106,7 @@ public abstract class UPCEANLogicImpl {
      * @param msg the message
      * @return char the check character
      */
-    public static char calcChecksum(String msg) {
+    public char calcChecksum(String msg) {
         int oddsum = 0;
         int evensum = 0;
         for (int i = msg.length() - 1; i >= 0; i--) {

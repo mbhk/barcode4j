@@ -55,7 +55,7 @@ public class UPCEANLogicImplTest {
 
     @Test
     public void testSupplemental2() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         EAN13LogicImpl logic;
         String expected;
 
@@ -74,7 +74,7 @@ public class UPCEANLogicImplTest {
 
     @Test
     public void testSupplemental5() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         EAN13LogicImpl logic;
         String expected;
 

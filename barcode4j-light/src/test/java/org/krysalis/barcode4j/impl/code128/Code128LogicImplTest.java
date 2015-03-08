@@ -154,7 +154,7 @@ public class Code128LogicImplTest {
 
     @Test
     public void logic() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         Code128LogicImpl logic;
         String expected;
 
@@ -183,7 +183,7 @@ public class Code128LogicImplTest {
 
     @Test
     public void nonPrintableAscii() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         String expected;
         Code128LogicImpl logic = new Code128LogicImpl();
         logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb, false, true),

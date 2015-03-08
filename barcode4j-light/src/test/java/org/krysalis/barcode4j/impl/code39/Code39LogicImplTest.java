@@ -55,7 +55,7 @@ public class Code39LogicImplTest {
 
         //In standard charset, the * is legal in the message if it is used as start/stop chars
         try {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             logic = new Code39LogicImpl(ChecksumMode.CP_AUTO, false, false, false);
             logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb, true), "*1*");
             String expected = "<BC:1>"
@@ -103,7 +103,7 @@ public class Code39LogicImplTest {
 
         //...but with extended charset enabled, this is valid
         try {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             logic = new Code39LogicImpl(ChecksumMode.CP_AUTO, false, false, true);
             logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb, true), "*1*");
             String expected = "<BC:*1*>"
@@ -135,7 +135,7 @@ public class Code39LogicImplTest {
 
     @Test
     public void logic() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         Code39LogicImpl logic;
         String expected;
 
@@ -226,7 +226,7 @@ public class Code39LogicImplTest {
 
     @Test
     public void displayStartStop() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         Code39LogicImpl logic;
         String expected;
 
@@ -254,7 +254,7 @@ public class Code39LogicImplTest {
 
     @Test
     public void displayChecksum() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         Code39LogicImpl logic;
         String expected;
 
@@ -285,7 +285,7 @@ public class Code39LogicImplTest {
     @Test
     public void extendedCharSet() throws Exception {
         Code39LogicImpl logic = new Code39LogicImpl(ChecksumMode.CP_IGNORE, false, false, true);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         logic.generateBarcodeLogic(new MockClassicBarcodeLogicHandler(sb), "a1$A");
         String expected = "<BC>"
                 + "<SBG:start-char:*>"

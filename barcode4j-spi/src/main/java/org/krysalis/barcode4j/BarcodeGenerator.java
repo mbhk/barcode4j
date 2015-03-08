@@ -22,7 +22,7 @@ import org.krysalis.barcode4j.output.CanvasProvider;
  * This interface is used to generate whole barcodes.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
 public interface BarcodeGenerator {
 

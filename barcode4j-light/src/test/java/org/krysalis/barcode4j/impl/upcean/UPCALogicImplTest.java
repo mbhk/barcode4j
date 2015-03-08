@@ -63,7 +63,7 @@ public class UPCALogicImplTest {
 
     @Test
     public void testLogic() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         UPCALogicImpl logic;
         String expected;
         

@@ -41,7 +41,8 @@ public class EAN128Bean extends Code128Bean {
 
     private ChecksumMode checksumMode = ChecksumMode.CP_AUTO;
     private String template = null;
-    private char groupSeparator = DEFAULT_GROUP_SEPARATOR; //GroupSeperator not Code128LogicImpl.FNC_1; 
+    /** GroupSeperator not Code128LogicImpl.FNC_1 */
+    private char groupSeparator = DEFAULT_GROUP_SEPARATOR; 
     private char checkDigitMarker = DEFAULT_CHECK_DIGIT_MARKER; 
     private boolean omitBrackets = false;
 
@@ -71,8 +72,6 @@ public class EAN128Bean extends Code128Bean {
 
         final ClassicBarcodeLogicHandler handler = 
                 new DefaultCanvasLogicHandler(this, new Canvas(canvas));
-        //handler = new LoggingLogicHandlerProxy(handler);
-        
         impl.generateBarcodeLogic(handler, msg);
     }
     
@@ -109,15 +108,6 @@ public class EAN128Bean extends Code128Bean {
         groupSeparator = c;
         impl.setGroupSeparator(c);
     }
-    
-    /*
-    public EAN128LogicImpl getImpl() {
-        return impl;
-    }
-
-    public void setImpl(EAN128LogicImpl impl) {
-        this.impl = impl;
-    }*/
 
     /**
      * @return the message template with the fields for the EAN message
@@ -128,7 +118,7 @@ public class EAN128Bean extends Code128Bean {
 
     /**
      * Sets the message template with the fields for the EAN message.
-     * <p>
+     *
      * The format of the templates here is a repeating set of AI number (in brackets)
      * followed by a field description. The allowed data types are "n" (numeric), 
      * "an" (alpha-numeric), "d" (date) and "cd" (check digit). Examples: "n13" defines a numeric

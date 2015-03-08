@@ -43,7 +43,6 @@ public class EAN128LogicImpl {
     private final StringBuilder code128Msg;
     private final StringBuilder humanReadableMsg;
     private int[] encodedMsg = new int[]{};
-    private IllegalArgumentException exception = null;
 
     private boolean checksumADD = true;
     private boolean checksumCHECK = true;
@@ -64,7 +63,6 @@ public class EAN128LogicImpl {
         if (msg == null || !msg.equals(msgCache)) {
             code128Msg.setLength(0);
             humanReadableMsg.setLength(0);
-            exception = null;
             if (msg == null) {
                 msgCache = null;
             } else {
@@ -76,8 +74,6 @@ public class EAN128LogicImpl {
                 final Code128Encoder encoder = new Code128Encoder();
                 encodedMsg = encoder.encode(getCode128Msg());
             }
-        } else if (exception != null) {
-            throw exception;
         }
     }
 
@@ -171,7 +167,6 @@ public class EAN128LogicImpl {
             throw getException(e.getMessage());
         }
         final byte lenID = ai.lenID;
-//        byte type = ai.type[0];
         final byte lenMin = ai.lenMinAll;
         final byte lenMax = ai.lenMaxAll;
 
@@ -186,7 +181,6 @@ public class EAN128LogicImpl {
         boolean doChecksumADD = false;
         int[] startA = new int[ai.type.length + 1];
         startA[0] = offset;
-//        start[1] = offset + lenID;
         int newOffset = findGroupSeparator(msg, offset);
         if (newOffset < 0) {
             newOffset = msg.length();
@@ -222,16 +216,7 @@ public class EAN128LogicImpl {
             } else {
                 end = newOffset - ai.minLenAfterVariableLen;
             }
-//            if (ai.checkDigit[i] != CheckDigit.CDNone && !doChecksumADD && checksumCHECK){
-//                char cd1 = CheckDigit.calcCheckdigit(msg, cdStart, start, ai.checkDigit[i]);
-//                char cd2 = msg.charAt(start);
-//                if (cd1 != cd2)
-//                    throw getException("Checkdigit is wrong! Correct is " + cd1
-//                        + " but I found " + cd2 + "!", msg.substring(cdStart, start));
-//                humanReadableMsg.append(cd1);
-//                code128Msg.append(cd1);
-//            } else if (ai.checkDigit[i] == CheckDigit.CDNone || !doChecksumADD) {
-            if (doChecksumADD && i == ai.type.length - 1) { //ai.checkDigit[i] != CheckDigit.CDNone) {
+            if (doChecksumADD && i == ai.type.length - 1) {
                 final char c = CheckDigit.calcCheckdigit(msg,
                         startA[ai.checkDigitStart[i]], start, CheckDigit.CD_31);
                 humanReadableMsg.append(c);
@@ -242,23 +227,12 @@ public class EAN128LogicImpl {
                 }
             } else {
                 checkType(ai, i, msg, start, end, startA[ai.checkDigitStart[i]]);
-//                humanReadableMsg.append(msg.substring(startI, end));
-//                code128Msg.append(msg.substring(startI, end));
             }
         }
-//        if (doChecksumADD) {
-//            char c = CheckDigit.calcCheckdigit(msg, cdStart, newOffset, ai.checkDigit[ai.checkDigit.length-1]);
-//            humanReadableMsg.append(c);
-//            code128Msg.append(c);
-//            if (newOffset < msg.length() && msg.charAt(newOffset) == groupSeparator) {
-//                newOffset++;
-//            }
-//        }
+
         if (newOffset < msg.length()
                 && isGroupSeparator(msg.charAt(newOffset))) {
-            //TODO Needed for 8001?...
             newOffset++;
-//            code128Msg.append(Code128LogicImpl.FNC_1);
         }
         if (!ai.fixed && newOffset < msg.length()) {
             code128Msg.append(Code128LogicImpl.FNC_1);
@@ -285,7 +259,7 @@ public class EAN128LogicImpl {
                 if (msg.charAt(i) > 128 || Character.isDigit(msg.charAt(i))) {
                     throw getException("Character \'" + msg.charAt(i)
                             + "\' must be a valid ASCII byte but not number!",
-                            msg.substring(start, i));
+                            msg.substring(start, i), null);
                 }
             }
         } else if (type == EAN128AI.TYPE_ALPHA_NUM) {
@@ -293,7 +267,7 @@ public class EAN128LogicImpl {
                 if (msg.charAt(i) > 128) {
                     throw getException("Character \'" + msg.charAt(i)
                             + "\' must be a valid ASCII byte!",
-                            msg.substring(start, i));
+                            msg.substring(start, i), null);
                 }
             }
         } else {
@@ -315,7 +289,7 @@ public class EAN128LogicImpl {
                 if (!Character.isDigit(msg.charAt(i))) {
                     throw getException("Character \'" + msg.charAt(i)
                         + "\' must be a Digit!",
-                        msg.substring(start, i));
+                        msg.substring(start, i), null);
                 }
             }
             if (type == EAN128AI.TYPE_NUM_DATE) {
@@ -327,11 +301,11 @@ public class EAN128LogicImpl {
                         || (cm1 == '1' && cm2 > '2')
                         || cm1 > '1') {
                     throw getException("Illegal Month \"" + cm1 + cm2 + "\"!",
-                        msg.substring(start, start + 2));
+                        msg.substring(start, start + 2), null);
                 }
                 if ((cd1 == '3' && cd2 > '1') || cd1 > '3') {
                     throw getException("Illegal Day \"" + cd1 + cd2 + "\"!",
-                        msg.substring(start, start + 4));
+                        msg.substring(start, start + 4), null);
                 }
             }
         }
@@ -340,10 +314,10 @@ public class EAN128LogicImpl {
     }
 
     private IllegalArgumentException getException(String text) {
-        return getException(text, "");
+        return getException(text, "", null);
     }
 
-    private IllegalArgumentException getException(String text, String msgOk) {
+    private IllegalArgumentException getException(String text, String msgOk, Throwable cause) {
         if (msgOk == null) {
             msgOk = "";
         }
@@ -351,8 +325,8 @@ public class EAN128LogicImpl {
             text = text + " Accepted start of Message: \""
                 + humanReadableMsg.toString() + msgOk + "\"";
         }
-        exception = new IllegalArgumentException(text);
-        return exception;
+
+        return new IllegalArgumentException(text, cause);
     }
 
 
@@ -386,23 +360,15 @@ public class EAN128LogicImpl {
             throw new RuntimeException("Internal error");
         }
     }
-    /**
-     * @return
-     */
+
     public char getGroupSeparator() {
         return groupSeparator;
     }
 
-    /**
-     * @param c
-     */
     public void setGroupSeparator(char c) {
         groupSeparator = c;
     }
 
-    /**
-     * @param string
-     */
     public final void setTemplate(String string) {
         EAN128AI[] newTemplates;
         if (string == null || string.trim().length() == 0) {
@@ -420,32 +386,20 @@ public class EAN128LogicImpl {
         }
         ais = newTemplates;
     }
-    /**
-     * @return
-     */
+
     public char getCheckDigitMarker() {
         return checkDigitMarker;
     }
 
-    /**
-     * @param c
-     */
     public void setCheckDigitMarker(char c) {
         checkDigitMarker = c;
     }
 
-    /**
-     * @return
-     */
     public boolean isOmitBrackets() {
         return omitBrackets;
     }
 
-    /**
-     * @param b
-     */
     public void setOmitBrackets(boolean b) {
         omitBrackets = b;
     }
-
 }

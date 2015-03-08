@@ -44,7 +44,7 @@ public class CodabarLogicImplTest {
 
     @Test
     public void logic() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         CodabarLogicImpl logic;
         String expected;
 
@@ -77,7 +77,7 @@ public class CodabarLogicImplTest {
 
     @Test
     public void startStopHandling() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         CodabarLogicImpl logic;
         String expected;
 

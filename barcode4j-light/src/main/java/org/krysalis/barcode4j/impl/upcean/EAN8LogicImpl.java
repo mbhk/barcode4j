@@ -18,12 +18,13 @@ package org.krysalis.barcode4j.impl.upcean;
 import org.krysalis.barcode4j.BarGroup;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.ClassicBarcodeLogicHandler;
+import org.krysalis.barcode4j.tools.CheckUtil;
 
 /**
  * This class is an implementation of the EAN-8 barcode.
  * 
  * @author Jeremias Maerki
- * @version $Id$
+ * @version 1.2
  */
 public class EAN8LogicImpl extends UPCEANLogicImpl {
 
@@ -40,9 +41,10 @@ public class EAN8LogicImpl extends UPCEANLogicImpl {
      * if an invalid message is passed.
      * @param msg the message to validate
      */
-    public static void validateMessage(String msg) {
-        UPCEANLogicImpl.validateMessage(msg);
-        if ((msg.length() < 7) || (msg.length() > 8)) {
+    @Override
+    public void validateMessage(String msg) {
+        super.validateMessage(msg);
+        if (!CheckUtil.intervallContains(7, 8, msg.length())) {
             throw new IllegalArgumentException(
                 "Message must be 7 or 8 characters long. Message: " + msg);
         }
@@ -146,5 +148,4 @@ public class EAN8LogicImpl extends UPCEANLogicImpl {
         }
         logic.endBarcode();
     }
-
 }

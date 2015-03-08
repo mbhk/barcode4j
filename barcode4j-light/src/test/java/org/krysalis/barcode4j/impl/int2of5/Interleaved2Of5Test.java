@@ -43,7 +43,7 @@ public class Interleaved2Of5Test {
 
     @Test
     public void testLogic() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         Interleaved2Of5LogicImpl logic;
         String expected;
 

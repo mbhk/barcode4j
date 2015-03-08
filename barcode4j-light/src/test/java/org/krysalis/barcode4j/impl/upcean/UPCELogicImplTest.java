@@ -83,22 +83,23 @@ public class UPCELogicImplTest {
 
     @Test
     public void testMessageCompaction() throws Exception {
-        for (String[] COMPACTION_TESTS1 : COMPACTION_TESTS) {
-            assertEquals(COMPACTION_TESTS1[1] + " must be compacted to " + COMPACTION_TESTS1[0], COMPACTION_TESTS1[0], UPCELogicImpl.compactMessage(COMPACTION_TESTS1[1]));
-            String nocheck = COMPACTION_TESTS1[1].substring(0, 11);
-            assertEquals(nocheck + " must be compacted to " + COMPACTION_TESTS1[0], COMPACTION_TESTS1[0], UPCELogicImpl.compactMessage(nocheck));
+        UPCELogicImpl impl = new UPCELogicImpl(ChecksumMode.CP_AUTO);
+        for (String[] testValue : COMPACTION_TESTS) {
+            assertEquals(testValue[1] + " must be compacted to " + testValue[0], testValue[0], impl.compactMessage(testValue[1]));
+            String nocheck = testValue[1].substring(0, 11);
+            assertEquals(nocheck + " must be compacted to " + testValue[0], testValue[0], impl.compactMessage(nocheck));
         }
         final String noUPCE = "01234567890";
-        assertNull(UPCELogicImpl.compactMessage(noUPCE));
-        assertNull(UPCELogicImpl.compactMessage(noUPCE + UPCEANLogicImpl.calcChecksum(noUPCE)));
+        assertNull(impl.compactMessage(noUPCE));
+        assertNull(impl.compactMessage(noUPCE + impl.calcChecksum(noUPCE)));
         try {
-            UPCELogicImpl.compactMessage("ajsgf");
+            impl.compactMessage("ajsgf");
             fail("Invalid messages must fail");
         } catch (IllegalArgumentException iae) {
             //must fail
         }
         try {
-            UPCELogicImpl.compactMessage("0000000000000000000000000");
+            impl.compactMessage("0000000000000000000000000");
             fail("Invalid messages must fail");
         } catch (IllegalArgumentException iae) {
             //must fail
@@ -107,24 +108,17 @@ public class UPCELogicImplTest {
 
     @Test
     public void testMessageExpansion() throws Exception {
-        for (int i = 0; i < COMPACTION_TESTS.length; i++) {
-            assertEquals(
-                    COMPACTION_TESTS[i][0] + " must be expanded to "
-                    + COMPACTION_TESTS[i][1],
-                    COMPACTION_TESTS[i][1],
-                    UPCELogicImpl.expandMessage(COMPACTION_TESTS[i][0]));
-            String nocheck = COMPACTION_TESTS[i][0].substring(0, 7);
-            assertEquals(
-                    nocheck + " must be expanded to "
-                    + COMPACTION_TESTS[i][1],
-                    COMPACTION_TESTS[i][1],
-                    UPCELogicImpl.expandMessage(nocheck));
+        UPCELogicImpl impl = new UPCELogicImpl(ChecksumMode.CP_AUTO);
+        for (String[] testValue : COMPACTION_TESTS) {
+            assertEquals(testValue[0] + " must be expanded to " + testValue[1], testValue[1], impl.expandMessage(testValue[0]));
+            String nocheck = testValue[0].substring(0, 7);
+            assertEquals(nocheck + " must be expanded to " + testValue[1], testValue[1], impl.expandMessage(nocheck));
         }
     }
 
     @Test
     public void testLogic() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         UPCELogicImpl logic;
         String expected;
 
