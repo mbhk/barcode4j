@@ -198,10 +198,10 @@ public class PDF417HighLevelEncoder {
             switch (submode) {
             case SUBMODE_ALPHA:
                 if (isAlphaUpper(ch)) {
-                    if (ch != ' ') {
-                        tmp.append((char)(ch - 65));
-                    } else {
+                    if (ch == ' ') {
                         tmp.append((char)26); //space
+                    } else {
+                        tmp.append((char)(ch - 65));
                     }
                 } else {
                     if (isAlphaLower(ch)) {
@@ -221,10 +221,10 @@ public class PDF417HighLevelEncoder {
                 break;
             case SUBMODE_LOWER:
                 if (isAlphaLower(ch)) {
-                    if (ch != ' ') {
-                        tmp.append((char)(ch - 97));
-                    } else {
+                    if (ch == ' ') {
                         tmp.append((char)26); //space
+                    } else {
+                        tmp.append((char)(ch - 97));
                     }
                 } else {
                     if (isAlphaUpper(ch)) {

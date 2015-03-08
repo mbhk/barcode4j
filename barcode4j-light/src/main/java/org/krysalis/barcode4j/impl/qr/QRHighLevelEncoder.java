@@ -22,15 +22,13 @@ import org.krysalis.barcode4j.tools.CheckUtil;
 /**
  * High-level encoder for QR Code.
  *
- * @version 1.2
+ * @version 1.3
  */
 public class QRHighLevelEncoder {
 
-    private final String msg;
     private final int encodingMode;
 
     public QRHighLevelEncoder(String msg) {
-        this.msg = msg;
         this.encodingMode = analyzeMessage(msg);
     }
 
@@ -42,13 +40,13 @@ public class QRHighLevelEncoder {
         int mode = NUMERIC;
         for (int i = 0; i < msg.length(); i++) {
             final char ch = msg.charAt(i);
-            if (CheckUtil.isDigit(ch)) {
-                //nop
-            } else if (mode == NUMERIC && isAlphanumeric(ch)) {
-                mode = ALPHANUMERIC;
-            } else {
-                mode = BINARY;
-                break;
+            if (!CheckUtil.isDigit(ch)) {
+                if (mode == NUMERIC && isAlphanumeric(ch)) {
+                    mode = ALPHANUMERIC;
+                } else {
+                    mode = BINARY;
+                    break;
+                }
             }
         }
         return mode;

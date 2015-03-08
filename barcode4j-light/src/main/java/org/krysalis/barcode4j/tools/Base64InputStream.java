@@ -71,10 +71,8 @@ public class Base64InputStream extends InputStream {
     @Override
     public int read() throws IOException {
         checkOpen();
-        if (tripleIndex >= tripleFilled) {
-            if (!readNextTriple()) {
-                return EOF;
-            }
+        if (tripleIndex >= tripleFilled && !readNextTriple()) {
+            return EOF;
         }
         return triple[tripleIndex++];
     }

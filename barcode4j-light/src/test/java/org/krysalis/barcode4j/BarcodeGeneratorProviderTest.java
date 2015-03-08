@@ -69,14 +69,9 @@ public class BarcodeGeneratorProviderTest {
         assertNotSame("must be new instance", result2, result);
     }
 
-    @Test
-    public void badBarcodeGenerator() {
+    @Test(expected = BarcodeException.class)
+    public void badBarcodeGenerator() throws BarcodeException {
         BarcodeGeneratorProvider instance = BarcodeGeneratorProvider.getInstance();
-        try {
-            BarcodeGenerator bad = instance.getBarcodeGenerator("foobar");
-            fail("must throw exception");
-        } catch (BarcodeException ex) {
-            Logger.getLogger(BarcodeGeneratorProviderTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        instance.getBarcodeGenerator("foobar");
     }
 }

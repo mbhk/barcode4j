@@ -55,11 +55,9 @@ class C40Encoder implements Encoder {
             if (!context.hasMoreCharacters()) {
                 //Avoid having a single C40 value in the last triplet
                 final StringBuilder removed = new StringBuilder();
-                if ((buffer.length() % 3) == 2) {
-                    if (available < 2 || available > 2) {
-                        lastCharSize = backtrackOneCharacter(context, buffer, removed,
-                                lastCharSize);
-                    }
+                if ((buffer.length() % 3) == 2 && (available < 2 || available > 2)) {
+                    lastCharSize = backtrackOneCharacter(context, buffer, removed,
+                            lastCharSize);
                 }
                 while ((buffer.length() % 3) == 1
                         && ((lastCharSize <= 3 && available != 1) || lastCharSize > 3)) {
@@ -125,8 +123,6 @@ class C40Encoder implements Encoder {
             }
             if (context.hasMoreCharacters()) {
                 context.writeCodeword(C40_UNLATCH);
-            } else {
-                //No unlatch
             }
             context.incPos(-1);
         } else if (rest == 0) {

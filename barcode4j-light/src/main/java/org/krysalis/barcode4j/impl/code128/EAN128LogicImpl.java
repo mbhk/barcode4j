@@ -276,11 +276,11 @@ public class EAN128LogicImpl {
 
     private void checkType(EAN128AI ai, byte idx, String msg, int start, int end, int cdStart) {
         final byte type = ai.type[idx];
-        if (type == EAN128AI.TYPEError) {
+        if (type == EAN128AI.TYPE_ERROR) {
             throw getException("This AI is not allowed by configuration! ("
                 + ai.toString() + ")");
 
-        } else if (type == EAN128AI.TYPEAlpha) {
+        } else if (type == EAN128AI.TYPE_ALPHA) {
             for (int i = end - 1; i >= start; i--) {
                 if (msg.charAt(i) > 128 || Character.isDigit(msg.charAt(i))) {
                     throw getException("Character \'" + msg.charAt(i)
@@ -288,7 +288,7 @@ public class EAN128LogicImpl {
                             msg.substring(start, i));
                 }
             }
-        } else if (type == EAN128AI.TYPEAlphaNum) {
+        } else if (type == EAN128AI.TYPE_ALPHA_NUM) {
             for (int i = end - 1; i >= start; i--) {
                 if (msg.charAt(i) > 128) {
                     throw getException("Character \'" + msg.charAt(i)
@@ -318,7 +318,7 @@ public class EAN128LogicImpl {
                         msg.substring(start, i));
                 }
             }
-            if (type == EAN128AI.TYPENumDate) {
+            if (type == EAN128AI.TYPE_NUM_DATE) {
                 final char cm1 = msg.charAt(start + 2);
                 final char cm2 = msg.charAt(start + 3);
                 final char cd1 = msg.charAt(start + 4);
@@ -337,19 +337,6 @@ public class EAN128LogicImpl {
         }
         humanReadableMsg.append(msg.substring(start, end));
         code128Msg.append(msg.substring(start, end));
-    }
-
-    private char getIDChar(String msg, int offset) {
-        char ret;
-        try {
-            ret = msg.charAt(offset);
-        } catch (Exception e) {
-            throw getException("Unable to read last ID: Message too short!");
-        }
-        if (!Character.isDigit(ret)) {
-            throw getException("Unable to read last ID: Characters must be numerical!");
-        }
-        return ret;
     }
 
     private IllegalArgumentException getException(String text) {

@@ -33,18 +33,16 @@ public class BarGroupTest {
         assertEquals("start-char", BarGroup.START_CHARACTER.getName());
     }
 
+    @Test
+    public void testByNameOk() {
+        assertEquals(BarGroup.UPC_EAN_GROUP, BarGroup.byName("upc-ean-group"));
+    }
+
     /**
      * Test of byName method, of class BarGroup.
      */
-    @Test
-    public void testByName() {
-        System.out.println("byName");
-        assertEquals(BarGroup.UPC_EAN_GROUP, BarGroup.byName("upc-ean-group"));
-
-        try {
-            BarGroup.byName("foo");
-            fail("foo is no BarGroup");
-        } catch (IllegalArgumentException e) {
-        }
+    @Test(expected = IllegalArgumentException.class)
+    public void testByNameFail() {
+        BarGroup.byName("foo");
     }
 }

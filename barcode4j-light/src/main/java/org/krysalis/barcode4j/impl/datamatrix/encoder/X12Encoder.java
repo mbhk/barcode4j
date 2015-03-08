@@ -84,8 +84,6 @@ class X12Encoder extends C40Encoder {
             context.incPos(-1);
             if (available > 1) {
                 context.writeCodeword(X12_UNLATCH);
-            } else {
-                //NOP - No unlatch necessary
             }
             context.signalEncoderChange(Encodation.ASCII_ENCODATION);
         }
