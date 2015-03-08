@@ -44,7 +44,7 @@ import org.krysalis.barcode4j.output.Orientation;
 /**
  * This ImageConverter converts barcodes to Java2D.
  * 
- * @version 1.1
+ * @version 1.2
  */
 public class ImageConverterBarcode2G2D extends AbstractImageConverter {
 
@@ -68,8 +68,7 @@ public class ImageConverterBarcode2G2D extends AbstractImageConverter {
             final Graphics2DImagePainter painter = new Graphics2DImagePainterBarcode(
                     barcodeImage, bargen, expandedMsg, orientation);
 
-            final ImageGraphics2D g2dImage = new ImageGraphics2D(src.getInfo(), painter);
-            return g2dImage;
+            return new ImageGraphics2D(src.getInfo(), painter);
         } catch (ConfigurationException ce) {
             throw new ImageException("Error in Barcode XML", ce);
         } catch (BarcodeException be) {
@@ -89,10 +88,10 @@ public class ImageConverterBarcode2G2D extends AbstractImageConverter {
 
     private static class Graphics2DImagePainterBarcode implements Graphics2DImagePainter {
 
-        private ImageBarcode barcodeImage;
-        private BarcodeGenerator bargen;
-        private Orientation orientation;
-        private String msg;
+        private final ImageBarcode barcodeImage;
+        private final BarcodeGenerator bargen;
+        private final Orientation orientation;
+        private final String msg;
 
         public Graphics2DImagePainterBarcode(ImageBarcode barcodeImage, BarcodeGenerator bargen,
                 String msg, Orientation orientation) {

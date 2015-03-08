@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.krysalis.barcode4j.image.loader;
 
 import java.io.IOException;
@@ -27,8 +26,12 @@ import org.apache.xmlgraphics.image.loader.ImageSessionContext;
 import org.apache.xmlgraphics.image.loader.impl.AbstractImageLoader;
 
 /**
- * ImageLoader for barcodes. This implementation doesn't really load anything since the full
- * barcode has to be loaded and pre-processed at preloading time.
+ * ImageLoader for barcodes.
+ *
+ * This implementation doesn't really load anything since the full barcode has
+ * to be loaded and pre-processed at preloading time.
+ *
+ * @version 1.2
  */
 public class ImageLoaderBarcode extends AbstractImageLoader {
 
@@ -36,6 +39,7 @@ public class ImageLoaderBarcode extends AbstractImageLoader {
 
     /**
      * Main constructor.
+     *
      * @param targetFlavor the target flavor
      */
     public ImageLoaderBarcode(ImageFlavor targetFlavor) {
@@ -52,13 +56,12 @@ public class ImageLoaderBarcode extends AbstractImageLoader {
 
     @Override
     public Image loadImage(ImageInfo info, Map hints, ImageSessionContext session)
-                throws ImageException, IOException {
+            throws ImageException, IOException {
         final Image img = info.getOriginalImage();
         if (!(img instanceof ImageBarcode)) {
             throw new IllegalArgumentException(
                     "ImageInfo was expected to contain the Barcode document");
         }
-        final ImageBarcode barcodeImage = (ImageBarcode)img;
-        return barcodeImage;
+        return (ImageBarcode) img;
     }
 }

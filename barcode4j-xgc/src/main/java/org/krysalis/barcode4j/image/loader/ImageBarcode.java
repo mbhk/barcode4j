@@ -37,8 +37,8 @@ public class ImageBarcode extends AbstractImage {
 
     static final Object MESSAGE = "Message";
 
-    private Configuration barcodeXML;
-    private BarcodeDimension bardim;
+    private final Configuration barcodeXML;
+    private final BarcodeDimension bardim;
 
     /**
      * Main constructor.

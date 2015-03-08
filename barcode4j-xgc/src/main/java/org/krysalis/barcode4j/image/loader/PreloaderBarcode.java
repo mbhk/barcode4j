@@ -54,17 +54,18 @@ import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * Image preloader for barcodes (barcode XML).
+ * 
+ * @version 1.2
  */
 public class PreloaderBarcode extends AbstractImagePreloader {
 
     @Override
     public ImageInfo preloadImage(String uri, Source src, ImageContext context)
             throws IOException {
-        ImageInfo info = null;
         if (!isSupportedSource(src)) {
             return null;
         }
-        info = getImage(uri, src, context);
+        final ImageInfo info = getImage(uri, src, context);
         if (info != null) {
             ImageUtil.closeQuietly(src); //Image is fully read
         }
@@ -96,18 +97,7 @@ public class PreloaderBarcode extends AbstractImagePreloader {
                 return null;
             }
 
-            ImageInfo info;
-            try {
-                info = createImageInfo(uri, context, doc);
-            } catch (ConfigurationException e) {
-                resetInputStream(in);
-                throw new IOException("Error in Barcode XML: " + e.getLocalizedMessage());
-            } catch (BarcodeException e) {
-                resetInputStream(in);
-                throw new IOException("Error processing Barcode XML: " + e.getLocalizedMessage());
-            }
-
-            return info;
+            return getImageInfo(in, uri, context, doc);
         } catch (SAXException se) {
             resetInputStream(in);
             return null;
@@ -115,6 +105,21 @@ public class PreloaderBarcode extends AbstractImagePreloader {
             //Parser not available, propagate exception
             throw new RuntimeException(pce);
         }
+    }
+    
+    private ImageInfo getImageInfo(InputStream in, String uri,
+            ImageContext context, Document doc) throws IOException {
+        final ImageInfo info;
+        try {
+            info = createImageInfo(uri, context, doc);
+        } catch (ConfigurationException e) {
+            resetInputStream(in);
+            throw new IOException("Error in Barcode XML", e);
+        } catch (BarcodeException e) {
+            resetInputStream(in);
+            throw new IOException("Error processing Barcode XML", e);
+        }
+        return info;
     }
 
     private void resetInputStream(InputStream in) {

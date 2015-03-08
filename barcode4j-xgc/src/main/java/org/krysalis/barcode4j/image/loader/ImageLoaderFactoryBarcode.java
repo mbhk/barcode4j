@@ -16,6 +16,8 @@
 
 package org.krysalis.barcode4j.image.loader;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.xmlgraphics.image.loader.ImageFlavor;
 import org.apache.xmlgraphics.image.loader.impl.AbstractImageLoaderFactory;
 import org.apache.xmlgraphics.image.loader.spi.ImageLoader;
@@ -23,9 +25,10 @@ import org.apache.xmlgraphics.image.loader.spi.ImageLoader;
 /**
  * Factory class for the ImageLoader for barcodes.
  * 
- * @version 1.1
+ * @version 1.2
  */
 public class ImageLoaderFactoryBarcode extends AbstractImageLoaderFactory {
+    private static final Logger LOGGER = Logger.getLogger(ImageLoaderFactoryBarcode.class.getName());
 
     /** MIME type for Barcode4J's barcode XML */
     public static final String MIME_TYPE = "application/x-barcode4j+xml";
@@ -51,7 +54,7 @@ public class ImageLoaderFactoryBarcode extends AbstractImageLoaderFactory {
             Class.forName("org.krysalis.barcode4j.BarcodeGenerator");
             return true;
         } catch (Exception e) {
-            //ignore
+            LOGGER.log(Level.INFO, "Barcode4J not in classpath", e);
         }
         return false;
     }
