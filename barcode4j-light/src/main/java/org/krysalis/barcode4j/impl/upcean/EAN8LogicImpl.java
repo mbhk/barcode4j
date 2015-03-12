@@ -22,7 +22,7 @@ import org.krysalis.barcode4j.tools.CheckUtil;
 
 /**
  * This class is an implementation of the EAN-8 barcode.
- * 
+ *
  * @author Jeremias Maerki
  * @version 1.2
  */
@@ -30,76 +30,84 @@ public class EAN8LogicImpl extends UPCEANLogicImpl {
 
     /**
      * Main constructor.
+     *
      * @param mode the checksum mode
      */
     public EAN8LogicImpl(ChecksumMode mode) {
         super(mode);
     }
-    
+
+    ChecksumMode determineMode(String msg) {
+        final ChecksumMode mode;
+        if (msg.length() == 7) {
+            mode = ChecksumMode.CP_ADD;
+        } else if (msg.length() == 8) {
+            mode = ChecksumMode.CP_CHECK;
+        } else {
+            //Shouldn't happen because of validateMessage
+            throw new RuntimeException("Internal error");
+        }
+        return mode;
+    }
+
     /**
-     * Validates a EAN-8 message. The method throws IllegalArgumentExceptions
-     * if an invalid message is passed.
+     * Validates a EAN-8 message. The method throws IllegalArgumentExceptions if
+     * an invalid message is passed.
+     *
      * @param msg the message to validate
      */
     @Override
     public void validateMessage(String msg) {
-        super.validateMessage(msg);
+        validateChars(msg);
         if (!CheckUtil.intervallContains(7, 8, msg.length())) {
             throw new IllegalArgumentException(
-                "Message must be 7 or 8 characters long. Message: " + msg);
+                    "Message must be 7 or 8 characters long. Message: " + msg);
         }
     }
-    
-    private String handleChecksum(String msg) {
+
+    String handleChecksum(String msg) {
         ChecksumMode mode = getChecksumMode();
         if (mode == ChecksumMode.CP_AUTO) {
-            if (msg.length() == 7) {
-                mode = ChecksumMode.CP_ADD;
-            } else if (msg.length() == 8) {
-                mode = ChecksumMode.CP_CHECK;
-            } else {
-                //Shouldn't happen because of validateMessage
-                throw new RuntimeException("Internal error");
-            }
+            mode = determineMode(msg);
         }
         if (mode == ChecksumMode.CP_ADD) {
             if (msg.length() > 7) {
                 throw new IllegalArgumentException(
-                    "Message is too long (max. 7 characters)");
+                        "Message is too long (max. 7 characters)");
             }
             if (msg.length() < 7) {
                 throw new IllegalArgumentException(
-                    "Message must be 7 characters long");
+                        "Message must be 7 characters long");
             }
             return msg + calcChecksum(msg);
         } else if (mode == ChecksumMode.CP_CHECK) {
             if (msg.length() > 8) {
                 throw new IllegalArgumentException(
-                    "Message is too long (max. 8 characters)");
+                        "Message is too long (max. 8 characters)");
             }
             if (msg.length() < 8) {
                 throw new IllegalArgumentException(
-                    "Message must be 8 characters long");
+                        "Message must be 8 characters long");
             }
             final char check = msg.charAt(7);
             final char expected = calcChecksum(msg.substring(0, 7));
             if (check != expected) {
                 throw new IllegalArgumentException(
-                    "Checksum is bad (" + check + "). Expected: " + expected);
+                        "Checksum is bad (" + check + "). Expected: " + expected);
             }
             return msg;
         } else if (mode == ChecksumMode.CP_IGNORE) {
             return msg;
         } else {
             throw new UnsupportedOperationException(
-                "Unknown checksum mode: " + mode);
+                    "Unknown checksum mode: " + mode);
         }
     }
-    
+
     @Override
     public void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg) {
         final String supp = retrieveSupplemental(msg);
-        String s = removeSupplemental(msg); 
+        String s = removeSupplemental(msg);
         validateMessage(s);
         s = handleChecksum(s);
 
@@ -108,19 +116,19 @@ public class EAN8LogicImpl extends UPCEANLogicImpl {
             canonicalMessage = canonicalMessage + "+" + supp;
         }
         logic.startBarcode(canonicalMessage, canonicalMessage);
-        
+
         //Left guard
         drawSideGuard(logic);
 
         logic.startBarGroup(BarGroup.UPC_EAN_GROUP, s.substring(0, 4));
-        
+
         //First four data characters
         for (int i = 0; i < 4; i++) {
             encodeChar(logic, s.charAt(i), LEFT_HAND_A);
         }
 
         logic.endBarGroup();
-        
+
         //Center guard
         drawCenterGuard(logic);
 
@@ -138,7 +146,7 @@ public class EAN8LogicImpl extends UPCEANLogicImpl {
         logic.endBarGroup();
 
         logic.endBarGroup();
-        
+
         //Right guard
         drawSideGuard(logic);
 

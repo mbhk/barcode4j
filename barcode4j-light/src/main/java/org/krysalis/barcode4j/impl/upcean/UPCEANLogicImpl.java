@@ -22,57 +22,67 @@ import org.krysalis.barcode4j.tools.CheckUtil;
 
 /**
  * This is an abstract base class for UPC and EAN barcodes.
- * 
+ *
  * @author Jeremias Maerki
  * @version $Id$
  */
 public abstract class UPCEANLogicImpl {
 
-    /** Left hand A character set */
+    /**
+     * Left hand A character set
+     */
     protected static final byte LEFT_HAND_A = 0;
-    /** Left hand B character set */
+    /**
+     * Left hand B character set
+     */
     protected static final byte LEFT_HAND_B = 1;
-    /** Right hand character set */
-    protected static final byte RIGHT_HAND  = 2;
-    /** Odd parity character set */
-    protected static final byte ODD_PARITY  = LEFT_HAND_A;
-    /** Even parity character set */
+    /**
+     * Right hand character set
+     */
+    protected static final byte RIGHT_HAND = 2;
+    /**
+     * Odd parity character set
+     */
+    protected static final byte ODD_PARITY = LEFT_HAND_A;
+    /**
+     * Even parity character set
+     */
     protected static final byte EVEN_PARITY = LEFT_HAND_B;
 
-    private static final byte[][] CHARSET = {{3, 2, 1, 1}, 
-                                             {2, 2, 2, 1}, 
-                                             {2, 1, 2, 2}, 
-                                             {1, 4, 1, 1}, 
-                                             {1, 1, 3, 2}, 
-                                             {1, 2, 3, 1}, 
-                                             {1, 1, 1, 4}, 
-                                             {1, 3, 1, 2}, 
-                                             {1, 2, 1, 3}, 
-                                             {3, 1, 1, 2}};
-        
+    private static final byte[][] CHARSET = {{3, 2, 1, 1},
+    {2, 2, 2, 1},
+    {2, 1, 2, 2},
+    {1, 4, 1, 1},
+    {1, 1, 3, 2},
+    {1, 2, 3, 1},
+    {1, 1, 1, 4},
+    {1, 3, 1, 2},
+    {1, 2, 1, 3},
+    {3, 1, 1, 2}};
+
     private static final byte O = ODD_PARITY;
     private static final byte E = EVEN_PARITY;
-    
-    private static final byte[][] SUPP2_PARITY =
-            {{O, O}, {O, E}, {E, O}, {E, E}};
-                                    
-    private static final byte[][] SUPP5_PARITY =
-            {{E, E, O, O, O},
-             {E, O, E, O, O},
-             {E, O, O, E, O},
-             {E, O, O, O, E},
-             {O, E, E, O, O},
-             {O, O, E, E, O},
-             {O, O, O, E, E},
-             {O, E, O, E, O},
-             {O, E, O, O, E},
-             {O, O, E, O, E}};
-                                             
+
+    private static final byte[][] SUPP2_PARITY
+            = {{O, O}, {O, E}, {E, O}, {E, E}};
+
+    private static final byte[][] SUPP5_PARITY
+            = {{E, E, O, O, O},
+            {E, O, E, O, O},
+            {E, O, O, E, O},
+            {E, O, O, O, E},
+            {O, E, E, O, O},
+            {O, O, E, E, O},
+            {O, O, O, E, E},
+            {O, E, O, E, O},
+            {O, E, O, O, E},
+            {O, O, E, O, E}};
+
     private ChecksumMode checksumMode = ChecksumMode.CP_AUTO;
 
-    
     /**
      * Main constructor
+     *
      * @param mode the checksum mode
      */
     public UPCEANLogicImpl(ChecksumMode mode) {
@@ -81,6 +91,7 @@ public abstract class UPCEANLogicImpl {
 
     /**
      * Returns the current checksum mode.
+     *
      * @return the checksum mode
      */
     public ChecksumMode getChecksumMode() {
@@ -90,19 +101,25 @@ public abstract class UPCEANLogicImpl {
     /**
      * Validates a UPC/EAN message. The method throws IllegalArgumentExceptions
      * if an invalid message is passed.
+     *
      * @param msg the message to validate
      */
     public void validateMessage(String msg) {
+        validateChars(msg);
+    }
+
+    protected void validateChars(String msg) {
         for (int i = 0; i < msg.length(); i++) {
             if (!CheckUtil.isDigit(msg.charAt(i))) {
                 throw new IllegalArgumentException("Invalid characters found. "
-                    + "Valid are 0-9 only. Message: " + msg);
+                        + "Valid are 0-9 only. Message: " + msg);
             }
         }
     }
-    
+
     /**
      * Calculates the check character for a given message
+     *
      * @param msg the message
      * @return char the check character
      */
@@ -122,7 +139,7 @@ public abstract class UPCEANLogicImpl {
         }
         return Character.forDigit(check, 10);
     }
-    
+
     private int widthAt(char ch, int index) {
         if (Character.isDigit(ch)) {
             final int digit = Character.digit(ch, 10);
@@ -135,6 +152,7 @@ public abstract class UPCEANLogicImpl {
 
     /**
      * Encodes a character.
+     *
      * @param logic the logic handler to receive generated events
      * @param c the character to encode
      * @param charset the character set to use
@@ -150,8 +168,8 @@ public abstract class UPCEANLogicImpl {
         } else {
             for (byte i = 0; i < 4; i++) {
                 final int width = widthAt(c, i);
-                final boolean black = (i % 2 == 0 && charset == RIGHT_HAND) 
-                                    || (i % 2 != 0 && charset == LEFT_HAND_A);
+                final boolean black = (i % 2 == 0 && charset == RIGHT_HAND)
+                        || (i % 2 != 0 && charset == LEFT_HAND_A);
                 logic.addBar(black, width);
             }
         }
@@ -160,6 +178,7 @@ public abstract class UPCEANLogicImpl {
 
     /**
      * Generates a side guard.
+     *
      * @param logic the logic handler to receive generated events
      */
     protected void drawSideGuard(ClassicBarcodeLogicHandler logic) {
@@ -173,6 +192,7 @@ public abstract class UPCEANLogicImpl {
 
     /**
      * Generates a center guard.
+     *
      * @param logic the logic handler to receive generated events
      */
     protected void drawCenterGuard(ClassicBarcodeLogicHandler logic) {
@@ -188,6 +208,7 @@ public abstract class UPCEANLogicImpl {
 
     /**
      * Generates a left guard for a supplemental.
+     *
      * @param logic the logic handler to receive generated events
      */
     private void drawSuppLeftGuard(ClassicBarcodeLogicHandler logic) {
@@ -201,6 +222,7 @@ public abstract class UPCEANLogicImpl {
 
     /**
      * Generates a supplemental separator.
+     *
      * @param logic the logic handler to receive generated events
      */
     private void drawSuppSeparator(ClassicBarcodeLogicHandler logic) {
@@ -213,6 +235,7 @@ public abstract class UPCEANLogicImpl {
 
     /**
      * Generates a 2-character supplemental.
+     *
      * @param logic the logic handler to receive generated events
      * @param supp the two characters
      */
@@ -229,18 +252,19 @@ public abstract class UPCEANLogicImpl {
 
     /**
      * Generates a 5-character supplemental.
+     *
      * @param logic the logic handler to receive generated events
      * @param supp the five characters
      */
     private void drawSupplemental5(ClassicBarcodeLogicHandler logic, String supp) {
         final int suppValue = Integer.parseInt(supp);
-        final int weightedSum = 
-              3 * ((suppValue / 10000) % 10)
-            + 9 * ((suppValue / 1000) % 10)
-            + 3 * ((suppValue / 100) % 10)
-            + 9 * ((suppValue / 10) % 10)
-            + 3 * (suppValue % 10);
-        final byte checksum = (byte)(weightedSum % 10);
+        final int weightedSum
+                = 3 * ((suppValue / 10000) % 10)
+                + 9 * ((suppValue / 1000) % 10)
+                + 3 * ((suppValue / 100) % 10)
+                + 9 * ((suppValue / 10) % 10)
+                + 3 * (suppValue % 10);
+        final byte checksum = (byte) (weightedSum % 10);
         logic.startBarGroup(BarGroup.UPC_EAN_SUPP, supp);
         drawSuppLeftGuard(logic);
         for (byte i = 0; i < 5; i++) {
@@ -254,6 +278,7 @@ public abstract class UPCEANLogicImpl {
 
     /**
      * Generates events for a supplemental.
+     *
      * @param logic the logic handler to receive generated events
      * @param supp the supplemental
      */
@@ -267,14 +292,14 @@ public abstract class UPCEANLogicImpl {
             drawSupplemental5(logic, supp);
         } else {
             throw new IllegalArgumentException(
-                "Only supplemental lengths 2 and 5 are allowed: " + supp.length());
+                    "Only supplemental lengths 2 and 5 are allowed: " + supp.length());
         }
     }
 
     /**
-     * Returns the length of the supplemental part of a UPC/EAN message.
-     * The method throws an IllegalArgumentException if the supplement is 
-     * malformed.
+     * Returns the length of the supplemental part of a UPC/EAN message. The
+     * method throws an IllegalArgumentException if the supplement is malformed.
+     *
      * @param msg the UPC/EAN message
      * @return 2 or 5 if there is a supplemental, 0 if there's none.
      */
@@ -288,12 +313,13 @@ public abstract class UPCEANLogicImpl {
             return 5;
         } else {
             throw new IllegalArgumentException(
-                "Illegal supplemental length (valid: 2 or 5): " + supp);
+                    "Illegal supplemental length (valid: 2 or 5): " + supp);
         }
     }
 
     /**
-     * Removes an optional supplemental (ex. "+20") from the message. 
+     * Removes an optional supplemental (ex. "+20") from the message.
+     *
      * @param msg a UPC/EAN message
      * @return the message without the supplemental
      */
@@ -305,10 +331,11 @@ public abstract class UPCEANLogicImpl {
             return msg;
         }
     }
-    
+
     /**
-     * Returns the supplemental part of a UPC/EAN message if there is one. 
-     * Supplementals are added in the form: "+[supplemental]" (ex. "+20"). 
+     * Returns the supplemental part of a UPC/EAN message if there is one.
+     * Supplementals are added in the form: "+[supplemental]" (ex. "+20").
+     *
      * @param msg a UPC/EAN message
      * @return the supplemental part, null if there is none
      */
@@ -320,12 +347,13 @@ public abstract class UPCEANLogicImpl {
             return null;
         }
     }
-    
+
     /**
      * Generates the barcode logic.
+     *
      * @param logic the logic handler to receive generated events
      * @param msg the message to encode
      */
     public abstract void generateBarcodeLogic(ClassicBarcodeLogicHandler logic, String msg);
-                                             
+
 }

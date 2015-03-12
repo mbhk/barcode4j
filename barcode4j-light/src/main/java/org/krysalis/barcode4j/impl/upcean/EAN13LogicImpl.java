@@ -24,9 +24,9 @@ import org.krysalis.barcode4j.tools.CheckUtil;
  * This class is an implementation of the EAN-13 barcode.
  * 
  * @author Jeremias Maerki
- * @version 1.2
+ * @version 1.3
  */
-public class EAN13LogicImpl extends UPCEANLogicImpl {
+public class EAN13LogicImpl extends EAN8LogicImpl {
 
     private static final byte A = LEFT_HAND_A;
     private static final byte B = LEFT_HAND_B;
@@ -57,14 +57,15 @@ public class EAN13LogicImpl extends UPCEANLogicImpl {
      */
     @Override
     public void validateMessage(String msg) {
-        super.validateMessage(msg);
+        validateChars(msg);
         if (!CheckUtil.intervallContains(12, 13, msg.length())) {
             throw new IllegalArgumentException(
                 "Message must be 12 or 13 characters long. Message: " + msg);
         }
     }
     
-    private String handleChecksum(String msg) {
+    @Override
+    String handleChecksum(String msg) {
         ChecksumMode mode = getChecksumMode();
         if (mode == ChecksumMode.CP_AUTO) {
             if (msg.length() == 12) {

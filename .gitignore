@@ -19,3 +19,5 @@ deploy-site.bat
 .settings
 nb-configuration.xml
 nbactions.xml
+*.iml
+.idea/
