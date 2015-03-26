@@ -16,13 +16,14 @@
 package org.krysalis.barcode4j;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,13 +39,13 @@ public class BarcodeGeneratorProvider {
     private static BarcodeGeneratorProvider instance;
     private static final Logger LOGGER = Logger.getLogger(BarcodeGeneratorProvider.class.getName());
     private final ServiceLoader<BarcodeGenerator> loader;
-    private final Map<String, Class<BarcodeGenerator>> barcodeGenerators;
+    private final ConcurrentMap<String, Class<BarcodeGenerator>> barcodeGenerators;
 
     /**
      * Initialize this singleton.
      */
     private BarcodeGeneratorProvider() {
-        this.barcodeGenerators = new HashMap<String, Class<BarcodeGenerator>>();
+        this.barcodeGenerators = new ConcurrentHashMap<String, Class<BarcodeGenerator>>();
         loader = ServiceLoader.load(BarcodeGenerator.class);
         initialize();
     }

@@ -58,7 +58,7 @@ public class MessageUtil {
                 if (m.end(3) - m.start(3) != 4) {
                     throw new IllegalArgumentException("Unfinished Unicode-Sequence in `" + message + "` (" + substr + ")");
                 }
-                final char c = (char) Integer.parseUnsignedInt(substr, 16);
+                final char c = (char) Integer.parseInt(substr, 16);
                 res.append(c);
             }
             processedUntil = m.end();
