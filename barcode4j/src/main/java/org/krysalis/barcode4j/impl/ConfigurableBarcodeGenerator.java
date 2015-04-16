@@ -15,6 +15,7 @@
  */
 package org.krysalis.barcode4j.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +26,6 @@ import org.krysalis.barcode4j.BarcodeUtil;
 import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.output.CanvasProvider;
 import org.krysalis.barcode4j.tools.Length;
-
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
@@ -44,7 +44,7 @@ public abstract class ConfigurableBarcodeGenerator
     private static final List<String> elements;
 
     static {
-        elements = new java.util.ArrayList();
+        elements = new ArrayList<String>();
         //All barcode names
         elements.addAll(BarcodeUtil.getInstance().getClassResolver().getBarcodeNames());
         //All configuration element names

@@ -70,8 +70,8 @@ public class BarcodeUtil {
         return this.classResolver;
     }
 
-    private static Class resolve(BarcodeClassResolver resolver, String type) {
-        Class res = null;
+    private static Class<?> resolve(BarcodeClassResolver resolver, String type) {
+        Class<?> res = null;
         try {
             res = resolver.resolve(type);
         } catch (ClassNotFoundException cnfe) {
@@ -104,14 +104,13 @@ public class BarcodeUtil {
     }
 
     private static class BarcodeCfgAndClass {
-        private Class clazz = null;
+        private Class<?> clazz = null;
         private Configuration cfg = null;
     }
 
-    private static BarcodeGenerator instantiateBarcode(Class clazz) throws BarcodeException {
+    private static BarcodeGenerator instantiateBarcode(Class<?> clazz) throws BarcodeException {
         if (clazz == null) {
-            throw new BarcodeException(
-                    "No known barcode configuration element found");
+            throw new BarcodeException("No known barcode configuration element found");
         }
         final BarcodeGenerator res;
         try {

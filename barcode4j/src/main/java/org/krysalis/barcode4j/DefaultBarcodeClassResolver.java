@@ -17,6 +17,8 @@ package org.krysalis.barcode4j;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,8 +33,8 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
 
     private static final String INTL_2_OF_5_CLASSNAME = "org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5";
     private static final String EAN_128_CLASSNAME = "org.krysalis.barcode4j.impl.code128.EAN128";
-    private Map classes;
-    private Set mainIDs;
+    private Map<String, String> classes;
+    private Set<String> mainIDs;
 
     /**
      * Main constructor.
@@ -92,8 +94,8 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
      */
     public final synchronized void registerBarcodeClass(String id, String classname, boolean mainID) {
         if (this.classes == null) {
-            this.classes = new java.util.HashMap();
-            this.mainIDs = new java.util.HashSet();
+            this.classes = new HashMap<String, String>();
+            this.mainIDs = new HashSet<String>();
         }
         this.classes.put(id.toLowerCase(), classname);
         if (mainID) {
@@ -102,7 +104,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
     }
 
     @Override
-    public Class resolve(String name) throws ClassNotFoundException {
+    public Class<?> resolve(String name) throws ClassNotFoundException {
         String clazz = null;
         if (this.classes != null) {
             clazz = (String)this.classes.get(name.toLowerCase());
@@ -123,7 +125,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
      */
     @Deprecated
     @Override
-    public Class resolveBean(String name) throws ClassNotFoundException {
+    public Class<?> resolveBean(String name) throws ClassNotFoundException {
         String clazz = null;
         if (this.classes != null) {
             clazz = (String)this.classes.get(name.toLowerCase());
@@ -135,7 +137,7 @@ public class DefaultBarcodeClassResolver implements BarcodeClassResolver {
     }
 
     @Override
-    public Collection getBarcodeNames() {
+    public Collection<String> getBarcodeNames() {
         return Collections.unmodifiableCollection(this.mainIDs);
     }
 }
