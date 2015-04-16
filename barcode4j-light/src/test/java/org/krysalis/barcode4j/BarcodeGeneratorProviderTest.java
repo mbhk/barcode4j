@@ -16,8 +16,6 @@
 package org.krysalis.barcode4j;
 
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 import org.junit.Test;

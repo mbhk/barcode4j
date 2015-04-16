@@ -24,7 +24,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.TextAlignment;
 import org.krysalis.barcode4j.output.AbstractXMLGeneratingCanvasProvider;
-import org.krysalis.barcode4j.output.BarcodeCanvasSetupException;
 import org.krysalis.barcode4j.output.Orientation;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;

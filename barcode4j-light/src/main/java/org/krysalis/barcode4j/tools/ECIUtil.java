@@ -16,6 +16,7 @@
 
 package org.krysalis.barcode4j.tools;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,7 +29,7 @@ public class ECIUtil {
     /** ECI code for 8-bit binary data */
     public static final int ECI_BINARY = 899;
 
-    private static final Map encodingToECI = new java.util.HashMap();
+    private static final Map<String, Integer> encodingToECI = new HashMap<String, Integer>();
 
     static {
         mapEncoding("Cp437", 2);

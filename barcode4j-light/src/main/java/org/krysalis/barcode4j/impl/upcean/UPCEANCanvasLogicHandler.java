@@ -15,7 +15,8 @@
  */
 package org.krysalis.barcode4j.impl.upcean;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import org.krysalis.barcode4j.BarGroup;
 import org.krysalis.barcode4j.BarcodeDimension;
@@ -44,7 +45,7 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
     private double groupx;
     private boolean inMsgGroup;
     private boolean inSupplemental;
-    private final Stack groupStack = new Stack();
+    private final Deque<BarGroup> groupStack = new ArrayDeque<BarGroup>();
 
     /**
      * Main constructor.
@@ -213,6 +214,9 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
                 DrawingUtil.drawText(canvas, bcBean,
                         lead, leadx, leadx + leadw,
                         bcBean.getHeight(), TextAlignment.TA_CENTER);
+            break;
+            case HRP_NONE:
+                // Don't draw any text
                 break;
         }
     }
@@ -248,6 +252,9 @@ public class UPCEANCanvasLogicHandler implements ClassicBarcodeLogicHandler {
                         groupx + bcBean.getBarWidth(1),
                         x - bcBean.getBarWidth(1),
                         bcBean.getHeight(), TextAlignment.TA_JUSTIFY);
+                break;
+            case HRP_NONE:
+                // Don't draw any text
                 break;
         }
     }

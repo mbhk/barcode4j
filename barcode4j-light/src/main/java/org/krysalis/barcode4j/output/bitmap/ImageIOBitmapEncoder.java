@@ -69,8 +69,8 @@ public class ImageIOBitmapEncoder implements BitmapEncoder {
             String mime, int resolution) throws IOException {
 
         //Simply get first offered writer
-        final Iterator i = ImageIO.getImageWritersByMIMEType(mime);
-        final ImageWriter writer = (ImageWriter) i.next();
+        final Iterator<ImageWriter> i = ImageIO.getImageWritersByMIMEType(mime);
+        final ImageWriter writer = i.next();
 
         //Prepare output
         final ImageOutputStream imout = ImageIO.createImageOutputStream(out);

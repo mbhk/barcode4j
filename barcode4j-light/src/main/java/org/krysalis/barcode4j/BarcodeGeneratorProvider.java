@@ -108,6 +108,7 @@ public class BarcodeGeneratorProvider {
             try {
                 final BarcodeGenerator bg = iterator.next();
                 final String id = bg.getId();
+                @SuppressWarnings("unchecked")
                 final Class<BarcodeGenerator> clazz = (Class<BarcodeGenerator>) bg.getClass();
                 barcodeGenerators.put(id, clazz);
                 final Collection<String> addIds = bg.getAdditionalNames();
@@ -117,7 +118,8 @@ public class BarcodeGeneratorProvider {
                     }
                 }
             } catch (ServiceConfigurationError e) {
-                LOGGER.log(Level.WARNING, "Failed to load a BarcodeGenerator service.", e);
+                LOGGER.log(Level.WARNING,
+                        "Failed to load a BarcodeGenerator service.", e);
             }
         }
         if (LOGGER.isLoggable(Level.INFO)) {

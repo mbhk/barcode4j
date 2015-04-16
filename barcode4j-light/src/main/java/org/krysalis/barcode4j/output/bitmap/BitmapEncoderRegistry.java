@@ -71,7 +71,7 @@ public final class BitmapEncoderRegistry {
     private static synchronized void register(String classname, int priority, boolean complain) {
         Throwable error = null;
         try {
-            final Class clazz = Class.forName(classname);
+            final Class<?> clazz = Class.forName(classname);
             final BitmapEncoder encoder = (BitmapEncoder) clazz.newInstance();
             encoders.add(new Entry(encoder, priority));
         } catch (ClassNotFoundException e) {

@@ -41,7 +41,7 @@ public class PageInfo {
      * @param hints the processing hints
      * @return the page info object or null if no such information is available
      */
-    public static PageInfo fromProcessingHints(Map hints) {
+    public static PageInfo fromProcessingHints(Map<String, Object> hints) {
         if (hints.containsKey("page-number")) {
             final int pageNumber = ((Number)hints.get("page-number")).intValue();
             final String pageName = (String)hints.get("page-name");

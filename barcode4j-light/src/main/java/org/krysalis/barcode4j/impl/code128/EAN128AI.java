@@ -154,7 +154,7 @@ public class EAN128AI {
             if (is == null) {
                 final String rbName = EAN128AI.class.getPackage().getName() + "." + bundlename;
                 final ResourceBundle rb = ResourceBundle.getBundle(rbName);
-                final Enumeration keys = rb.getKeys();
+                final Enumeration<String> keys = rb.getKeys();
                 while (keys.hasMoreElements()) {
                     final String key = (String) keys.nextElement();
                     p.put(key, rb.getObject(key));
