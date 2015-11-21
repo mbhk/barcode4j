@@ -7,7 +7,6 @@
         <version>2.2.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>net.sf.barcode4j</groupId>
     <artifactId>barcode4j-webapp</artifactId>
     <packaging>war</packaging>
 

@@ -59,7 +59,6 @@ public class CommandLineTestCase {
 
     private void callCLI(String[] args) {
         Main app = new Main();
-        app.setErrStream(new PrintStream(err));
         app.setOutStream(new PrintStream(out));
         app.setExitHandler(exitHandler);
         try {

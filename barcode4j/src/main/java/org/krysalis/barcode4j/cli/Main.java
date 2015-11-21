@@ -29,26 +29,25 @@ import java.util.logging.Logger;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.MissingOptionException;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionGroup;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
+import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.output.bitmap.BitmapEncoderRegistry;
 import org.krysalis.barcode4j.output.eps.EPSCanvasProvider;
 import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.krysalis.barcode4j.tools.MimeTypes;
-
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.MissingOptionException;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.OptionGroup;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
-import org.krysalis.barcode4j.output.Orientation;
 
 /**
  * Command-line interface.
@@ -66,10 +65,6 @@ public class Main {
      * stdout for this application (default: System.out)
      */
     private PrintStream stdout = System.out;
-    /**
-     * stderr for this application (default: System.err)
-     */
-    private PrintStream stderr = System.err;
 
     private ExitHandler exitHandler = new DefaultExitHandler();
     private Options options;
@@ -89,10 +84,6 @@ public class Main {
         stdout = out;
     }
 
-    public void setErrStream(PrintStream err) {
-        stderr = err;
-    }
-
     /**
      * Set an alternative exit handler here.
      *
@@ -105,7 +96,7 @@ public class Main {
     private CommandLine parseCommandLine(String... args) {
         CommandLine res = null;
         try {
-            final CommandLineParser clp = new PosixParser();
+            final CommandLineParser clp = new DefaultParser();
             res = clp.parse(getOptions(), args);
 
             //Message
@@ -206,50 +197,33 @@ public class Main {
         if (options == null) {
             this.options = new Options();
 
-            OptionBuilder.withLongOpt("verbose");
-            OptionBuilder.withDescription("enable debug output");
-            this.options.addOption(OptionBuilder.create('v'));
+            options.addOption(Option.builder("v").longOpt("verbose").desc("enable debug output").build());
 
-            //Group: file/stdout
-            OptionBuilder.withLongOpt("output");
-            OptionBuilder.withArgName("file");
-            OptionBuilder.hasArg();
-            OptionBuilder.withDescription("the output filename");
-            this.options.addOption(OptionBuilder.create('o'));
+            // Group: file/stdout
+            options.addOption(
+                    Option.builder("o").longOpt("output").hasArg().argName("file").desc("the output filename").build());
 
-            //Group: config file/barcode type
+            // Group: config file/barcode type
             final OptionGroup group = new OptionGroup();
             group.setRequired(true);
-            OptionBuilder.withArgName("file");
-            OptionBuilder.withLongOpt("config");
-            OptionBuilder.hasArg();
-            OptionBuilder.withDescription("the config file");
-            group.addOption(OptionBuilder.create('c'));
+            group.addOption(
+                    Option.builder("c").longOpt("config").hasArg().argName("cfg-file").desc("the config file").build());
+            group.addOption(Option.builder("s").longOpt("symbol").hasArg().argName("symbology")
+                    .desc("the barcode symbology to select (default settings, use -c if you want to customize)")
+                    .build());
+            options.addOptionGroup(group);
 
-            OptionBuilder.withArgName("name");
-            OptionBuilder.withLongOpt("symbol");
-            OptionBuilder.hasArg();
-            OptionBuilder.withDescription("the barcode symbology to select (default settings, use -c if you want to customize)");
-            group.addOption(OptionBuilder.create('s'));
-            this.options.addOptionGroup(group);
+            // Output format type
+            options.addOption(Option.builder("f").longOpt("format").hasArg().argName("format").desc(String
+                    .format("the output format: MIME type or file extension%nDefault: %s (SVG)", MimeTypes.MIME_SVG))
+                    .build());
 
-            //Output format type
-            OptionBuilder.withArgName("format");
-            OptionBuilder.withLongOpt("format");
-            OptionBuilder.hasArg();
-            OptionBuilder.withDescription(String.format("the output format: MIME type or file extension%nDefault: %s (SVG)", MimeTypes.MIME_SVG));
-            this.options.addOption(OptionBuilder.create('f'));
+            // Bitmap-specific options
+            options.addOption(Option.builder("d").longOpt("dpi").hasArg().argName("integer").type(Integer.class)
+                    .desc(String.format("(for bitmaps) the image resolution in dpi%nDefault: 300")).build());
+            options.addOption(Option.builder().longOpt("bw")
+                    .desc("(for bitmaps) create monochrome (1-bit) image instead of grayscale (8-bit)").build());
 
-            //Bitmap-specific options
-            OptionBuilder.withArgName("integer");
-            OptionBuilder.withLongOpt("dpi");
-            OptionBuilder.hasArg();
-            OptionBuilder.withDescription(String.format("(for bitmaps) the image resolution in dpi%nDefault: 300"));
-            this.options.addOption(OptionBuilder.create('d'));
-
-            OptionBuilder.withLongOpt("bw");
-            OptionBuilder.withDescription("(for bitmaps) create monochrome (1-bit) image instead of grayscale (8-bit)");
-            this.options.addOption(OptionBuilder.create());
         }
         return this.options;
     }
