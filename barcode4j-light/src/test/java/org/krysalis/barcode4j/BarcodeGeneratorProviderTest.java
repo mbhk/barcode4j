@@ -59,7 +59,7 @@ public class BarcodeGeneratorProviderTest {
     @Test
     public void getBarcodeGenerator() throws Exception {
         System.out.println("getBarcodeGenerator");
-        String id = "qr";
+        String id = "ean-13";
         BarcodeGeneratorProvider instance = BarcodeGeneratorProvider.getInstance();
         BarcodeGenerator result = instance.getBarcodeGenerator(id);
         assertNotNull(result);

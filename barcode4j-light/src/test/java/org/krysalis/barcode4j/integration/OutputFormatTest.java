@@ -104,24 +104,6 @@ public class OutputFormatTest {
         assertEquals(BarcodeFormat.DATA_MATRIX, res.getBarcodeFormat());
     }
 
-    @Test
-    public void createAndDecodeQRCode() throws BarcodeException, IOException, NotFoundException {
-        String message = "visit http://barcode4j.sourceforge.net";
-        BarcodeGenerator gen = provider.getBarcodeGenerator("qr-code");
-        BitmapCanvasProvider bitmap = new BitmapCanvasProvider(out,
-                "image/x-png", 300, BufferedImage.TYPE_BYTE_BINARY, false, Orientation.ONEHUNDRED_EIGHTY);
-        gen.generateBarcode(bitmap, message);
-        bitmap.finish();
-        try {
-            out.close();
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        }
-        Result res = decode(outFile.getAbsolutePath());
-        assertEquals(message, res.getText());
-        assertEquals(BarcodeFormat.QR_CODE, res.getBarcodeFormat());
-    }
-
     private Result decode(String filename) throws IOException, NotFoundException {
         InputStream barCodeInputStream = new FileInputStream(filename);
         BufferedImage barCodeBufferedImage = ImageIO.read(barCodeInputStream);
