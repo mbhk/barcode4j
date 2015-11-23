@@ -23,7 +23,7 @@ import org.krysalis.barcode4j.BarcodeUtil;
 import org.krysalis.barcode4j.output.Orientation;
 import org.w3c.dom.DocumentFragment;
 
-import com.github.mbhk.barcode4j.DefaultConfiguration;
+import com.github.mbhk.barcode4j.Configuration;
 
 
 /**
@@ -36,8 +36,8 @@ public class DOMSVGOutputTest {
 
     @Test
     public void testDOMSVG() throws Exception {
-        DefaultConfiguration cfg = new DefaultConfiguration("cfg");
-        cfg.addChild(new DefaultConfiguration("intl2of5"));
+        Configuration cfg = new Configuration("cfg");
+        cfg.addChild(new Configuration("intl2of5"));
         BarcodeGenerator gen = BarcodeUtil.getInstance().createBarcodeGenerator(cfg);
         SVGCanvasProvider svg = new SVGCanvasProvider(false, Orientation.ZERO);
 

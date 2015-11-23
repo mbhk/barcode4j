@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.github.mbhk.barcode4j.DefaultConfiguration;
+import com.github.mbhk.barcode4j.Configuration;
 
 /**
  *
@@ -32,7 +32,7 @@ public class USPCIntelligentMailTest {
         USPSIntelligentMailBean refBean = new USPSIntelligentMailBean();
         
         USPSIntelligentMail gen = new USPSIntelligentMail();
-        DefaultConfiguration cfg = new DefaultConfiguration("usps4cb");
+        Configuration cfg = new Configuration("usps4cb");
         gen.configure(cfg);
         USPSIntelligentMailBean xmlBean = gen.getUSPSIntelligentMailBean();
         assertEquals(refBean.getAscenderHeight(), xmlBean.getAscenderHeight(), 0.01);

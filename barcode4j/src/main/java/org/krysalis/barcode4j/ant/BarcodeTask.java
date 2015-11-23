@@ -38,7 +38,6 @@ import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.krysalis.barcode4j.tools.MimeTypes;
 
 import com.github.mbhk.barcode4j.Configuration;
-import com.github.mbhk.barcode4j.DefaultConfiguration;
 
 /**
  * Ant task for Barcode4J.
@@ -139,10 +138,7 @@ public class BarcodeTask extends Task {
 
     private Configuration getConfiguration() {
         if (symbol != null) {
-            final DefaultConfiguration cfg = new DefaultConfiguration("cfg");
-            final DefaultConfiguration child = new DefaultConfiguration(symbol);
-            cfg.addChild(child);
-            return cfg;
+            return new Configuration(symbol);
         }
         if (configurationFile != null) {
             try {
@@ -151,13 +147,13 @@ public class BarcodeTask extends Task {
                 }
                 log("Using configuration: " + configurationFile);
 
-                final DefaultConfiguration.Builder builder = new DefaultConfiguration.Builder();
+                final Configuration.Builder builder = Configuration.builder();
                 return builder.buildFromFile(configurationFile.toPath());
             } catch (Exception e) {
                 throw new BuildException("Error reading configuration file: " + e.getMessage());
             }
         }
-        return new DefaultConfiguration("cfg");
+        return new Configuration("cfg");
     }
 
     /**

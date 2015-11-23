@@ -21,7 +21,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.github.mbhk.barcode4j.DefaultConfiguration;
+import com.github.mbhk.barcode4j.Configuration;
 
 /**
  * Test class for the POSTNET implementation.
@@ -47,7 +47,7 @@ public class POSTNETTest {
         POSTNETBean refBean = new POSTNETBean();
 
         POSTNET gen = new POSTNET();
-        DefaultConfiguration cfg = new DefaultConfiguration("postnet");
+        Configuration cfg = new Configuration("postnet");
         gen.configure(cfg);
         POSTNETBean xmlBean = gen.getPOSTNETBean();
         assertEquals(refBean.getBarHeight(), xmlBean.getBarHeight(), 0.01);

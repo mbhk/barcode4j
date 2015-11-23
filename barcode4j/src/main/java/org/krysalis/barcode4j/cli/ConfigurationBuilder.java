@@ -25,7 +25,6 @@ import org.krysalis.barcode4j.BarcodeException;
 
 import com.github.mbhk.barcode4j.Configuration;
 import com.github.mbhk.barcode4j.ConfigurationException;
-import com.github.mbhk.barcode4j.DefaultConfiguration;
 
 /**
  *
@@ -39,17 +38,13 @@ public class ConfigurationBuilder {
         // utility class
     }
 
-    public static DefaultConfiguration createEmptyConfiguration() {
-        return new DefaultConfiguration("cfg");
+    public static Configuration createEmptyConfiguration() {
+        return new Configuration("cfg");
     }
 
     public static Configuration createDefaultConfiguration(String symbologie) {
-        final DefaultConfiguration cfg = createEmptyConfiguration();
-        if (symbologie != null && !symbologie.isEmpty()) {
-            final DefaultConfiguration child = new DefaultConfiguration(symbologie);
-            cfg.addChild(child);
-        }
-        return cfg;
+        return (symbologie == null || symbologie.isEmpty()) ? createEmptyConfiguration()
+                : new Configuration(symbologie);
     }
 
     public static Configuration buildFromFile(String filename) throws BarcodeException {
@@ -58,21 +53,13 @@ public class ConfigurationBuilder {
     }
 
     public static Configuration buildFromFile(Path inputFile) throws BarcodeException {
-        final DefaultConfiguration.Builder builder = new DefaultConfiguration.Builder();
-        Throwable t = null;
-        Configuration res = null;
         if (!(Files.exists(inputFile) && Files.isRegularFile(inputFile) && Files.isReadable(inputFile))) {
             throw new BarcodeException("ConfigurationFile not readable: " + inputFile);
         }
         try {
-            res = builder.buildFromFile(inputFile);
+            return Configuration.builder().buildFromFile(inputFile);
         } catch (ConfigurationException ex) {
-            t = ex;
+            throw new BarcodeException("Error reading ConfigurationFile", ex);
         }
-
-        if (t != null) {
-            throw new BarcodeException("Error reading ConfigurationFile", t);
-        }
-        return res;
     }
 }

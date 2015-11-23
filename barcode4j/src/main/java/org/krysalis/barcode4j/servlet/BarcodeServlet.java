@@ -41,7 +41,6 @@ import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.krysalis.barcode4j.tools.MimeTypes;
 
 import com.github.mbhk.barcode4j.Configuration;
-import com.github.mbhk.barcode4j.DefaultConfiguration;
 
 /**
  * Simple barcode servlet.
@@ -53,25 +52,25 @@ public class BarcodeServlet extends HttpServlet {
     private static final long serialVersionUID = -1612710758060435089L;
 
     /** Parameter name for the message */
-    public static final String BARCODE_MSG                 = "msg";
+    public static final String BARCODE_MSG = "msg";
     /** Parameter name for the barcode type */
-    public static final String BARCODE_TYPE                = "type";
+    public static final String BARCODE_TYPE = "type";
     /** Parameter name for the barcode height */
-    public static final String BARCODE_HEIGHT              = "height";
+    public static final String BARCODE_HEIGHT = "height";
     /** Parameter name for the module width */
-    public static final String BARCODE_MODULE_WIDTH        = "mw";
+    public static final String BARCODE_MODULE_WIDTH = "mw";
     /** Parameter name for the wide factor */
-    public static final String BARCODE_WIDE_FACTOR         = "wf";
+    public static final String BARCODE_WIDE_FACTOR = "wf";
     /** Parameter name for the quiet zone */
-    public static final String BARCODE_QUIET_ZONE          = "qz";
+    public static final String BARCODE_QUIET_ZONE = "qz";
     /** Parameter name for the human-readable placement */
-    public static final String BARCODE_HUMAN_READABLE_POS  = "hrp";
+    public static final String BARCODE_HUMAN_READABLE_POS = "hrp";
     /** Parameter name for the output format */
-    public static final String BARCODE_FORMAT              = "fmt";
+    public static final String BARCODE_FORMAT = "fmt";
     /** Parameter name for the image resolution (for bitmaps) */
-    public static final String BARCODE_IMAGE_RESOLUTION    = "res";
+    public static final String BARCODE_IMAGE_RESOLUTION = "res";
     /** Parameter name for the grayscale or b/w image (for bitmaps) */
-    public static final String BARCODE_IMAGE_GRAYSCALE     = "gray";
+    public static final String BARCODE_IMAGE_GRAYSCALE = "gray";
     /** Parameter name for the font size of the human readable display */
     public static final String BARCODE_HUMAN_READABLE_SIZE = "hrsize";
     /** Parameter name for the font name of the human readable display */
@@ -85,7 +84,7 @@ public class BarcodeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-                throws ServletException, IOException {
+            throws ServletException, IOException {
 
         try {
             final String format = determineFormat(request);
@@ -104,12 +103,12 @@ public class BarcodeServlet extends HttpServlet {
             final ByteArrayOutputStream bout = new ByteArrayOutputStream(4096);
             try {
                 if (format.equals(MimeTypes.MIME_SVG)) {
-                    //Create Barcode and render it to SVG
+                    // Create Barcode and render it to SVG
                     final SVGCanvasProvider svg = new SVGCanvasProvider(false, orientation);
                     gen.generateBarcode(svg, msg);
                     final org.w3c.dom.DocumentFragment frag = svg.getDOMFragment();
 
-                    //Serialize SVG barcode
+                    // Serialize SVG barcode
                     final TransformerFactory factory = TransformerFactory.newInstance();
                     final Transformer trans = factory.newTransformer();
                     final Source src = new javax.xml.transform.dom.DOMSource(frag);
@@ -121,26 +120,22 @@ public class BarcodeServlet extends HttpServlet {
                     eps.finish();
                 } else {
                     final String resText = request.getParameter(BARCODE_IMAGE_RESOLUTION);
-                    int resolution = 300; //dpi
+                    int resolution = 300; // dpi
                     if (resText != null) {
                         resolution = Integer.parseInt(resText);
                     }
                     if (resolution > 2400) {
-                        throw new IllegalArgumentException(
-                            "Resolutions above 2400dpi are not allowed");
+                        throw new IllegalArgumentException("Resolutions above 2400dpi are not allowed");
                     }
                     if (resolution < 10) {
-                        throw new IllegalArgumentException(
-                            "Minimum resolution must be 10dpi");
+                        throw new IllegalArgumentException("Minimum resolution must be 10dpi");
                     }
                     final String gray = request.getParameter(BARCODE_IMAGE_GRAYSCALE);
                     final BitmapCanvasProvider bitmap = "true".equalsIgnoreCase(gray)
-                        ? new BitmapCanvasProvider(
-                                bout, format, resolution,
-                                BufferedImage.TYPE_BYTE_GRAY, true, orientation)
-                        : new BitmapCanvasProvider(
-                                bout, format, resolution,
-                                BufferedImage.TYPE_BYTE_BINARY, false, orientation);
+                            ? new BitmapCanvasProvider(bout, format, resolution, BufferedImage.TYPE_BYTE_GRAY, true,
+                                    orientation)
+                            : new BitmapCanvasProvider(bout, format, resolution, BufferedImage.TYPE_BYTE_BINARY, false,
+                                    orientation);
                     gen.generateBarcode(bitmap, msg);
                     bitmap.finish();
                 }
@@ -168,7 +163,9 @@ public class BarcodeServlet extends HttpServlet {
 
     /**
      * Check the request for the desired output format.
-     * @param request the request to use
+     * 
+     * @param request
+     *            the request to use
      * @return MIME type of the desired output format.
      */
     protected String determineFormat(HttpServletRequest request) {
@@ -182,88 +179,45 @@ public class BarcodeServlet extends HttpServlet {
 
     /**
      * Build an Avalon Configuration object from the request.
-     * @param request the request to use
+     * 
+     * @param request
+     *            the request to use
      * @return the newly built COnfiguration object
      * @todo Change to bean API
      */
     protected Configuration buildCfg(HttpServletRequest request) {
-        final DefaultConfiguration cfg = new DefaultConfiguration("barcode");
-        //Get type
+        // Get type
         String type = request.getParameter(BARCODE_TYPE);
-        if (type == null) {
+        if (type == null || type.trim().isEmpty()) {
             type = "code128";
         }
-        final DefaultConfiguration child = new DefaultConfiguration(type);
-        cfg.addChild(child);
-        //Get additional attributes
-        DefaultConfiguration attr;
-        final String height = request.getParameter(BARCODE_HEIGHT);
-        if (height != null) {
-            attr = new DefaultConfiguration("height");
-            attr.setValue(height);
-            child.addChild(attr);
-        }
-        final String moduleWidth = request.getParameter(BARCODE_MODULE_WIDTH);
-        if (moduleWidth != null) {
-            attr = new DefaultConfiguration("module-width");
-            attr.setValue(moduleWidth);
-            child.addChild(attr);
-        }
-        final String wideFactor = request.getParameter(BARCODE_WIDE_FACTOR);
-        if (wideFactor != null) {
-            attr = new DefaultConfiguration("wide-factor");
-            attr.setValue(wideFactor);
-            child.addChild(attr);
-        }
+        final Configuration cfg = new Configuration(type);
+        // Get additional attributes
+        cfg.addChild(new Configuration("height", request.getParameter(BARCODE_HEIGHT)));
+        cfg.addChild(new Configuration("module-width", request.getParameter(BARCODE_MODULE_WIDTH)));
+        cfg.addChild(new Configuration("wide-factor", request.getParameter(BARCODE_WIDE_FACTOR)));
         final String quietZone = request.getParameter(BARCODE_QUIET_ZONE);
         if (quietZone != null) {
-            attr = new DefaultConfiguration("quiet-zone");
+            final Configuration quietCfg = new Configuration("quiet-zone");
             if (quietZone.startsWith("disable")) {
-                attr.setAttribute("enabled", "false");
+                quietCfg.setAttribute("enabled", "false");
             } else {
-                attr.setValue(quietZone);
+                quietCfg.setValue(quietZone);
             }
-            child.addChild(attr);
+            cfg.addChild(quietCfg);
         }
 
-        // creating human readable configuration according to the new Barcode Element Mappings
-        // where the human-readable has children for font name, font size, placement and
+        // creating human readable configuration according to the new Barcode
+        // Element Mappings
+        // where the human-readable has children for font name, font size,
+        // placement and
         // custom pattern.
-        final String humanReadablePosition = request.getParameter(BARCODE_HUMAN_READABLE_POS);
-        final String pattern = request.getParameter(BARCODE_HUMAN_READABLE_PATTERN);
-        final String humanReadableSize = request.getParameter(BARCODE_HUMAN_READABLE_SIZE);
-        final String humanReadableFont = request.getParameter(BARCODE_HUMAN_READABLE_FONT);
-
-        if (!((humanReadablePosition == null)
-                && (pattern == null)
-                && (humanReadableSize == null)
-                && (humanReadableFont == null))) {
-            attr = new DefaultConfiguration("human-readable");
-
-            DefaultConfiguration subAttr;
-            if (pattern != null) {
-                subAttr = new DefaultConfiguration("pattern");
-                subAttr.setValue(pattern);
-                attr.addChild(subAttr);
-            }
-            if (humanReadableSize != null) {
-                subAttr = new DefaultConfiguration("font-size");
-                subAttr.setValue(humanReadableSize);
-                attr.addChild(subAttr);
-            }
-            if (humanReadableFont != null) {
-                subAttr = new DefaultConfiguration("font-name");
-                subAttr.setValue(humanReadableFont);
-                attr.addChild(subAttr);
-            }
-            if (humanReadablePosition != null) {
-              subAttr = new DefaultConfiguration("placement");
-              subAttr.setValue(humanReadablePosition);
-              attr.addChild(subAttr);
-            }
-
-            child.addChild(attr);
-        }
+        final Configuration attr = new Configuration("human-readable");
+        attr.addChild(new Configuration("pattern", request.getParameter(BARCODE_HUMAN_READABLE_PATTERN)));
+        attr.addChild(new Configuration("font-size", request.getParameter(BARCODE_HUMAN_READABLE_SIZE)));
+        attr.addChild(new Configuration("font-name", request.getParameter(BARCODE_HUMAN_READABLE_FONT)));
+        attr.addChild(new Configuration("placement", request.getParameter(BARCODE_HUMAN_READABLE_POS)));
+        cfg.addChild(attr);
 
         return cfg;
     }

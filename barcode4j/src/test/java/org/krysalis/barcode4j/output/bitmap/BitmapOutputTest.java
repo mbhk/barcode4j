@@ -29,8 +29,8 @@ import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
 import org.krysalis.barcode4j.output.Orientation;
 
+import com.github.mbhk.barcode4j.Configuration;
 import com.github.mbhk.barcode4j.ConfigurationException;
-import com.github.mbhk.barcode4j.DefaultConfiguration;
 
 /**
  * Test class for basic bitmap output functionality.
@@ -41,8 +41,8 @@ import com.github.mbhk.barcode4j.DefaultConfiguration;
 public class BitmapOutputTest {
 
     private BarcodeGenerator getGenerator() throws ConfigurationException, BarcodeException {
-        DefaultConfiguration cfg = new DefaultConfiguration("cfg");
-        cfg.addChild(new DefaultConfiguration("intl2of5"));
+        Configuration cfg = new Configuration("cfg");
+        cfg.addChild(new Configuration("intl2of5"));
 
         BarcodeUtil util = BarcodeUtil.getInstance();
         BarcodeGenerator gen = util.createBarcodeGenerator(cfg);
