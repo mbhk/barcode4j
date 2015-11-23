@@ -17,19 +17,18 @@
 package org.krysalis.barcode4j.impl.code128;
 
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.tools.Length;
+
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * This class is an implementation of the Code 128 barcode.
  * 
  * @author Jeremias Maerki, Dietmar Bürkle
  */
-public class EAN128 extends Code128 
-            implements Configurable {
+public class EAN128 extends Code128 {
 
     /** Create a new instance. */
     public EAN128() {

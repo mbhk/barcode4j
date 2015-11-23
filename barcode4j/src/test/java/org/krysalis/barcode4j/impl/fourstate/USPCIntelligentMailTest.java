@@ -15,10 +15,11 @@
  */
 package org.krysalis.barcode4j.impl.fourstate;
 
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import static org.junit.Assert.assertEquals;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
+
+import com.github.mbhk.barcode4j.DefaultConfiguration;
 
 /**
  *

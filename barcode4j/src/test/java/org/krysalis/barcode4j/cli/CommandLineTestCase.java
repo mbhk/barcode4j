@@ -15,13 +15,16 @@
  */
 package org.krysalis.barcode4j.cli;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 
-import org.apache.avalon.framework.ExceptionUtil;
-
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,8 +50,7 @@ public class CommandLineTestCase {
         System.out.println("Msg: " + this.exitHandler.getLastMsg());
         System.out.println("Exit code: " + this.exitHandler.getLastExitCode());
         if (this.exitHandler.getLastThrowable() != null) {
-            System.out.println(ExceptionUtil.printStackTrace(
-                this.exitHandler.getLastThrowable()));
+            exitHandler.getLastThrowable().printStackTrace();
         }
         System.out.println("--- stdout (" + this.out.size() + ") ---");
         System.out.println(new String(this.out.toByteArray(), "US-ASCII"));

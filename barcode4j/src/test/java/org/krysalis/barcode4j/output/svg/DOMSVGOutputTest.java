@@ -15,15 +15,15 @@
  */
 package org.krysalis.barcode4j.output.svg;
 
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
+import org.krysalis.barcode4j.output.Orientation;
 import org.w3c.dom.DocumentFragment;
 
-import org.krysalis.barcode4j.output.Orientation;
-
-import static org.junit.Assert.*;
-import org.junit.Test;
+import com.github.mbhk.barcode4j.DefaultConfiguration;
 
 
 /**

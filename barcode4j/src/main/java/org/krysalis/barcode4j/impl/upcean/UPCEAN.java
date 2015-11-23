@@ -15,12 +15,12 @@
  */
 package org.krysalis.barcode4j.impl.upcean;
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator;
 import org.krysalis.barcode4j.tools.Length;
+
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * This is an abstract base class for UPC and EAN barcodes.
@@ -28,8 +28,7 @@ import org.krysalis.barcode4j.tools.Length;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public abstract class UPCEAN extends ConfigurableBarcodeGenerator 
-            implements Configurable {
+public abstract class UPCEAN extends ConfigurableBarcodeGenerator {
 
     @Override
     public void configure(Configuration cfg) throws ConfigurationException {

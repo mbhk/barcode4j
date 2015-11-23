@@ -15,16 +15,17 @@
  */
 package org.krysalis.barcode4j.cli;
 
-import java.io.File;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
-import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
+
 import org.krysalis.barcode4j.BarcodeException;
-import org.xml.sax.SAXException;
+
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
+import com.github.mbhk.barcode4j.DefaultConfiguration;
 
 /**
  *
@@ -53,23 +54,18 @@ public class ConfigurationBuilder {
 
     public static Configuration buildFromFile(String filename) throws BarcodeException {
         LOGGER.log(Level.INFO, "Using configurationfile: {}", filename);
-        final File cfgFile = new File(filename);
-        return buildFromFile(cfgFile);
+        return buildFromFile(Paths.get(filename));
     }
 
-    public static Configuration buildFromFile(File inputFile) throws BarcodeException {
-        final DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
+    public static Configuration buildFromFile(Path inputFile) throws BarcodeException {
+        final DefaultConfiguration.Builder builder = new DefaultConfiguration.Builder();
         Throwable t = null;
         Configuration res = null;
-        if (!(inputFile.exists() && inputFile.isFile() && inputFile.canRead())) {
-            throw new BarcodeException("ConfigurationFile not readable: " + inputFile.getName());
+        if (!(Files.exists(inputFile) && Files.isRegularFile(inputFile) && Files.isReadable(inputFile))) {
+            throw new BarcodeException("ConfigurationFile not readable: " + inputFile);
         }
         try {
             res = builder.buildFromFile(inputFile);
-        } catch (SAXException ex) {
-            t = ex;
-        } catch (IOException ex) {
-            t = ex;
         } catch (ConfigurationException ex) {
             t = ex;
         }

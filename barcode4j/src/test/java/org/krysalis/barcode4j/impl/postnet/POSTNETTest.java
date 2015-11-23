@@ -15,10 +15,13 @@
  */
 package org.krysalis.barcode4j.impl.postnet;
 
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
+
+import com.github.mbhk.barcode4j.DefaultConfiguration;
 
 /**
  * Test class for the POSTNET implementation.

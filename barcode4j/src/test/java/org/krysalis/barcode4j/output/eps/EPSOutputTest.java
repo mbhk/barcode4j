@@ -15,14 +15,15 @@
  */
 package org.krysalis.barcode4j.output.eps;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayOutputStream;
 
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import org.junit.Test;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import com.github.mbhk.barcode4j.DefaultConfiguration;
 
 /**
  * Test class for basic EPS output functionality.

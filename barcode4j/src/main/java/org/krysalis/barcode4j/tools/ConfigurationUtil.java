@@ -23,9 +23,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
+import com.github.mbhk.barcode4j.DefaultConfiguration;
 
 /**
  * This utility class provides helper methods for Avalon Configuration objects.
