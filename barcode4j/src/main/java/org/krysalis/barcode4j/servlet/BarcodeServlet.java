@@ -198,12 +198,8 @@ public class BarcodeServlet extends HttpServlet {
         cfg.addChild(new Configuration("wide-factor", request.getParameter(BARCODE_WIDE_FACTOR)));
         final String quietZone = request.getParameter(BARCODE_QUIET_ZONE);
         if (quietZone != null) {
-            final Configuration quietCfg = new Configuration("quiet-zone");
-            if (quietZone.startsWith("disable")) {
-                quietCfg.setAttribute("enabled", "false");
-            } else {
-                quietCfg.setValue(quietZone);
-            }
+            final Configuration quietCfg = new Configuration("quiet-zone", quietZone);
+            quietCfg.setAttribute("enabled", quietZone.startsWith("disable") ? "false" : "true");
             cfg.addChild(quietCfg);
         }
 

@@ -21,10 +21,11 @@ public class Configuration {
     private String value;
     private final Map<String, String> attributes = new HashMap<String, String>();
     private final Map<String, Configuration> childs = new HashMap<String, Configuration>();
-
+// TODO make accessors thread-safe
     public Configuration(String name) {
         this(name, null);
     }
+
     public Configuration(String name, String value) {
         if (name == null) {
             throw new IllegalArgumentException("name must not be null.");
@@ -152,11 +153,11 @@ public class Configuration {
         if (key == null) {
             throw new IllegalArgumentException("key must not be null.");
         }
-        attributes.put(key, trimIfNonNull(value));
+        attributes.put(key.trim(), trimIfNonNull(value));
     }
 
-    public void setValue(String newValue) {
-        value = trimIfNonNull(newValue);
+    public void setValue(String value) {
+        this.value = trimIfNonNull(value);
     }
 
     private String trimIfNonNull(String in) {
@@ -165,13 +166,12 @@ public class Configuration {
 
     public static class Builder {
         private static final Logger LOGGER = Logger.getLogger(Builder.class.getName());
-        
+
         private Builder() {
             // hide constructor
         }
 
         public Configuration buildFromFile(Path inputFile) throws ConfigurationException {
-            // TODO Auto-generated method stub
 
             SAXBuilder sb = new SAXBuilder();
             Document doc = null;
@@ -181,11 +181,9 @@ public class Configuration {
                 Element rootElement = doc.getRootElement();
                 res = processElement(rootElement, true);
             } catch (JDOMException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                throw new ConfigurationException("Configurationfile is not parseable.");
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                throw new ConfigurationException("Failure while reading configurationfile.");
             }
             return res;
         }
@@ -196,8 +194,7 @@ public class Configuration {
                 return processElement(elem.getChildren().get(0), false);
             }
 
-            Configuration res = new Configuration(elem.getName());
-            res.setValue(elem.getText());
+            Configuration res = new Configuration(elem.getName(), elem.getText());
             for (Attribute attribute : elem.getAttributes()) {
                 res.setAttribute(attribute.getName(), attribute.getValue());
             }
