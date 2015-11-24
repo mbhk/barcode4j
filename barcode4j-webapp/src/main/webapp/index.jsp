@@ -13,28 +13,11 @@
     <p>This page demostrates the usage of the BarcodeServlet.</p>
     <%
     final String genbc = bcrequest.toURL();
-    if (bcrequest.isSVG()) {
-    %>
-    <p>The generated barcode in SVG format (only displayed if SVG is supported in your browser):</p>
-    <%
-        if (bcrequest.isSvgEmbed()) {
-    %>
-    <p>
-      <embed src="<%=genbc%>&ext=.svg" pluginspage="http://www.adobe.com/svg/viewer/install/" width="100%" height="100"/>
-    </p>
-    <%
-        } else {
-    %>
-    <p>
-      <object type="image/svg+xml" data="<%=genbc%>&ext=.svg" name="DynamicBarcode" width="100%" height="100"/>
-    </p>
-    <%
-        }
-    } else if (bcrequest.isBitmap()) {
+    if (bcrequest.isBitmap() || bcrequest.isSVG()) {
     %>
     <p>The generated barcode in <%=bcrequest.getFormat()%> format (only displayed if <%=bcrequest.getFormat()%> is supported on the server and in your browser):</p>
     <p>
-      <img src="<%=genbc%>"/>
+      <img src="<%=genbc%>" />
     </p>
     <%
     } else {

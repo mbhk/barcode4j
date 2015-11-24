@@ -16,12 +16,18 @@ import org.jdom2.input.SAXBuilder;
 
 import java.util.Set;
 
+/**
+ * Configuration.
+ * 
+ * Not Thread-safe!
+ * @author mkr
+ */
 public class Configuration {
     private final String name;
     private String value;
     private final Map<String, String> attributes = new HashMap<String, String>();
     private final Map<String, Configuration> childs = new HashMap<String, Configuration>();
-// TODO make accessors thread-safe
+
     public Configuration(String name) {
         this(name, null);
     }
@@ -31,7 +37,7 @@ public class Configuration {
             throw new IllegalArgumentException("name must not be null.");
         }
         this.name = name.trim();
-        this.value = value;
+        this.value = value == null ? null : value.trim();
     }
 
     public void addChild(Configuration cfg) {
@@ -69,13 +75,13 @@ public class Configuration {
     }
 
     public Configuration getChild(String name) throws ConfigurationException {
-        return childs.containsKey(name) ? getChild(name, true) : new Configuration(name);
+        return getChild(name, true);
     }
 
-    public Configuration getChild(String name, boolean failOnMissing) throws ConfigurationException {
+    public Configuration getChild(String name, boolean defaultIfMissing) throws ConfigurationException {
 
-        if (failOnMissing && !childs.containsKey(name)) {
-            throw new ConfigurationException("no configuration " + name + " registered!");
+        if (defaultIfMissing && !childs.containsKey(name)) {
+            return new Configuration(name);
         } else {
             return childs.get(name);
         }

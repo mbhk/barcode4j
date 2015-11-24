@@ -104,7 +104,7 @@ public class BarcodeServlet extends HttpServlet {
             try {
                 if (format.equals(MimeTypes.MIME_SVG)) {
                     // Create Barcode and render it to SVG
-                    final SVGCanvasProvider svg = new SVGCanvasProvider(false, orientation);
+                    final SVGCanvasProvider svg = new SVGCanvasProvider(true, orientation);
                     gen.generateBarcode(svg, msg);
                     final org.w3c.dom.DocumentFragment frag = svg.getDOMFragment();
 
@@ -178,7 +178,7 @@ public class BarcodeServlet extends HttpServlet {
     }
 
     /**
-     * Build an Avalon Configuration object from the request.
+     * Build an Configuration object from the request.
      * 
      * @param request
      *            the request to use
@@ -193,9 +193,15 @@ public class BarcodeServlet extends HttpServlet {
         }
         final Configuration cfg = new Configuration(type);
         // Get additional attributes
-        cfg.addChild(new Configuration("height", request.getParameter(BARCODE_HEIGHT)));
-        cfg.addChild(new Configuration("module-width", request.getParameter(BARCODE_MODULE_WIDTH)));
-        cfg.addChild(new Configuration("wide-factor", request.getParameter(BARCODE_WIDE_FACTOR)));
+        final String height = request.getParameter(BARCODE_HEIGHT);
+        final String moduleWidth = request.getParameter(BARCODE_MODULE_WIDTH);
+        final String wideFactor = request.getParameter(BARCODE_WIDE_FACTOR);
+        if (height != null)
+            cfg.addChild(new Configuration("height", height));
+        if (moduleWidth != null)
+            cfg.addChild(new Configuration("module-width", moduleWidth));
+        if (wideFactor != null)
+            cfg.addChild(new Configuration("wide-factor", wideFactor));
         final String quietZone = request.getParameter(BARCODE_QUIET_ZONE);
         if (quietZone != null) {
             final Configuration quietCfg = new Configuration("quiet-zone", quietZone);
@@ -208,12 +214,23 @@ public class BarcodeServlet extends HttpServlet {
         // where the human-readable has children for font name, font size,
         // placement and
         // custom pattern.
-        final Configuration attr = new Configuration("human-readable");
-        attr.addChild(new Configuration("pattern", request.getParameter(BARCODE_HUMAN_READABLE_PATTERN)));
-        attr.addChild(new Configuration("font-size", request.getParameter(BARCODE_HUMAN_READABLE_SIZE)));
-        attr.addChild(new Configuration("font-name", request.getParameter(BARCODE_HUMAN_READABLE_FONT)));
-        attr.addChild(new Configuration("placement", request.getParameter(BARCODE_HUMAN_READABLE_POS)));
-        cfg.addChild(attr);
+        final String barcodePattern = request.getParameter(BARCODE_HUMAN_READABLE_PATTERN);
+        final String readableSize = request.getParameter(BARCODE_HUMAN_READABLE_SIZE);
+        final String readableFont = request.getParameter(BARCODE_HUMAN_READABLE_FONT);
+        final String readablePos = request.getParameter(BARCODE_HUMAN_READABLE_POS);
+
+        if (!(barcodePattern == null && readableSize == null && readableFont == null && readablePos == null)) {
+            final Configuration attr = new Configuration("human-readable");
+            if (barcodePattern != null)
+                attr.addChild(new Configuration("pattern", barcodePattern));
+            if (readableSize != null)
+                attr.addChild(new Configuration("font-size", readableSize));
+            if (readableFont != null)
+                attr.addChild(new Configuration("font-name", readableFont));
+            if (readablePos != null)
+                attr.addChild(new Configuration("placement", readablePos));
+            cfg.addChild(attr);
+        }
 
         return cfg;
     }
