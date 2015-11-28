@@ -26,21 +26,18 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
 import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
+import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.output.eps.EPSCanvasProvider;
 import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.krysalis.barcode4j.tools.MimeTypes;
 
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
-import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Task;
-import org.krysalis.barcode4j.output.Orientation;
+import com.github.mbhk.barcode4j.Configuration;
 
 /**
  * Ant task for Barcode4J.
@@ -141,10 +138,7 @@ public class BarcodeTask extends Task {
 
     private Configuration getConfiguration() {
         if (symbol != null) {
-            final DefaultConfiguration cfg = new DefaultConfiguration("cfg");
-            final DefaultConfiguration child = new DefaultConfiguration(symbol);
-            cfg.addChild(child);
-            return cfg;
+            return new Configuration(symbol);
         }
         if (configurationFile != null) {
             try {
@@ -153,13 +147,13 @@ public class BarcodeTask extends Task {
                 }
                 log("Using configuration: " + configurationFile);
 
-                final DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
-                return builder.buildFromFile(configurationFile);
+                final Configuration.Builder builder = Configuration.builder();
+                return builder.buildFromFile(configurationFile.toPath());
             } catch (Exception e) {
                 throw new BuildException("Error reading configuration file: " + e.getMessage());
             }
         }
-        return new DefaultConfiguration("cfg");
+        return new Configuration("cfg");
     }
 
     /**

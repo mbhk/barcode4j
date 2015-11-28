@@ -15,15 +15,18 @@
  */
 package org.krysalis.barcode4j.tools;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.avalon.framework.configuration.Configuration;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import com.github.mbhk.barcode4j.Configuration;
 
 /**
  * Test case for ConfigurationUtil.

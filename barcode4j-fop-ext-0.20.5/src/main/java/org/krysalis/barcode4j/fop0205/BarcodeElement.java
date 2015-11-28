@@ -18,23 +18,7 @@ package org.krysalis.barcode4j.fop0205;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.krysalis.barcode4j.BarcodeConstants;
-import org.krysalis.barcode4j.BarcodeDimension;
-import org.krysalis.barcode4j.BarcodeException;
-import org.krysalis.barcode4j.BarcodeGenerator;
-import org.krysalis.barcode4j.BarcodeUtil;
-import org.krysalis.barcode4j.tools.ConfigurationUtil;
-import org.krysalis.barcode4j.tools.MessageUtil;
-import org.krysalis.barcode4j.tools.UnitConv;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import org.xml.sax.Attributes;
-
 import org.apache.avalon.framework.CascadingRuntimeException;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-
 import org.apache.fop.apps.FOPException;
 import org.apache.fop.fo.DirectPropertyListBuilder;
 import org.apache.fop.fo.FObj;
@@ -44,7 +28,21 @@ import org.apache.fop.layout.Area;
 import org.apache.fop.layout.FontState;
 import org.apache.fop.layout.inline.ForeignObjectArea;
 import org.apache.fop.messaging.MessageHandler;
+import org.krysalis.barcode4j.BarcodeConstants;
+import org.krysalis.barcode4j.BarcodeDimension;
+import org.krysalis.barcode4j.BarcodeException;
+import org.krysalis.barcode4j.BarcodeGenerator;
+import org.krysalis.barcode4j.BarcodeUtil;
 import org.krysalis.barcode4j.output.Orientation;
+import org.krysalis.barcode4j.tools.ConfigurationUtil;
+import org.krysalis.barcode4j.tools.MessageUtil;
+import org.krysalis.barcode4j.tools.UnitConv;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
+
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * Class representing bc:barcode pseudo flow object.

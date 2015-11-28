@@ -20,9 +20,8 @@ import org.krysalis.barcode4j.impl.AbstractBarcodeBean;
 import org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator;
 import org.krysalis.barcode4j.tools.Length;
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * This class is an implementation of the Interleaved 2 of 5 barcode.
@@ -30,8 +29,7 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class Interleaved2Of5 extends ConfigurableBarcodeGenerator
-            implements Configurable {
+public class Interleaved2Of5 extends ConfigurableBarcodeGenerator {
 
     /** Create a new instance. */
     public Interleaved2Of5() {

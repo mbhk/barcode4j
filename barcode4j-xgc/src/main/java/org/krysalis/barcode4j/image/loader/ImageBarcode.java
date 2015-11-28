@@ -16,15 +16,14 @@
 
 package org.krysalis.barcode4j.image.loader;
 
-import org.krysalis.barcode4j.BarcodeDimension;
-import org.krysalis.barcode4j.tools.ConfigurationUtil;
-
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-
 import org.apache.xmlgraphics.image.loader.ImageFlavor;
 import org.apache.xmlgraphics.image.loader.ImageInfo;
 import org.apache.xmlgraphics.image.loader.impl.AbstractImage;
+import org.krysalis.barcode4j.BarcodeDimension;
+import org.krysalis.barcode4j.tools.ConfigurationUtil;
+
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * Image implementation for barcodes. It implements the Image interface from Apache XML Graphic

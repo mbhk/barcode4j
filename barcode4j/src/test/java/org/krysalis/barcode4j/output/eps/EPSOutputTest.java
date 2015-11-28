@@ -15,14 +15,15 @@
  */
 package org.krysalis.barcode4j.output.eps;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayOutputStream;
 
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import org.junit.Test;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import com.github.mbhk.barcode4j.Configuration;
 
 /**
  * Test class for basic EPS output functionality.
@@ -34,8 +35,8 @@ public class EPSOutputTest {
 
     @Test
     public void testEPS() throws Exception {
-        DefaultConfiguration cfg = new DefaultConfiguration("cfg");
-        cfg.addChild(new DefaultConfiguration("intl2of5"));
+        Configuration cfg = new Configuration("cfg");
+        cfg.addChild(new Configuration("intl2of5"));
 
         BarcodeUtil util = BarcodeUtil.getInstance();
         BarcodeGenerator gen = util.createBarcodeGenerator(cfg);

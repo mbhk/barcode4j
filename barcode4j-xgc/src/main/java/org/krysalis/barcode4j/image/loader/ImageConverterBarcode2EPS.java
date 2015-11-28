@@ -22,23 +22,22 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
-import org.krysalis.barcode4j.BarcodeException;
-import org.krysalis.barcode4j.BarcodeGenerator;
-import org.krysalis.barcode4j.BarcodeUtil;
-import org.krysalis.barcode4j.output.eps.EPSCanvasProvider;
-import org.krysalis.barcode4j.tools.PageInfo;
-import org.krysalis.barcode4j.tools.VariableUtil;
-
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-
 import org.apache.xmlgraphics.image.loader.Image;
 import org.apache.xmlgraphics.image.loader.ImageException;
 import org.apache.xmlgraphics.image.loader.ImageFlavor;
 import org.apache.xmlgraphics.image.loader.impl.AbstractImageConverter;
 import org.apache.xmlgraphics.image.loader.impl.ImageRawEPS;
 import org.apache.xmlgraphics.image.loader.impl.ImageRawStream;
+import org.krysalis.barcode4j.BarcodeException;
+import org.krysalis.barcode4j.BarcodeGenerator;
+import org.krysalis.barcode4j.BarcodeUtil;
 import org.krysalis.barcode4j.output.Orientation;
+import org.krysalis.barcode4j.output.eps.EPSCanvasProvider;
+import org.krysalis.barcode4j.tools.PageInfo;
+import org.krysalis.barcode4j.tools.VariableUtil;
+
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * This ImageConverter converts barcodes to EPS.

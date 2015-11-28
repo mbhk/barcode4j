@@ -15,10 +15,13 @@
  */
 package org.krysalis.barcode4j.impl.postnet;
 
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
+
+import com.github.mbhk.barcode4j.Configuration;
 
 /**
  * Test class for the POSTNET implementation.
@@ -44,7 +47,7 @@ public class POSTNETTest {
         POSTNETBean refBean = new POSTNETBean();
 
         POSTNET gen = new POSTNET();
-        DefaultConfiguration cfg = new DefaultConfiguration("postnet");
+        Configuration cfg = new Configuration("postnet");
         gen.configure(cfg);
         POSTNETBean xmlBean = gen.getPOSTNETBean();
         assertEquals(refBean.getBarHeight(), xmlBean.getBarHeight(), 0.01);

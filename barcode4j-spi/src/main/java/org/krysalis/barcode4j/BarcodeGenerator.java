@@ -16,7 +16,11 @@
 package org.krysalis.barcode4j;
 
 import java.util.Collection;
+
 import org.krysalis.barcode4j.output.CanvasProvider;
+
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * This interface is used to generate whole barcodes.
@@ -42,6 +46,8 @@ public interface BarcodeGenerator {
      * barcode's dimensions
      */
     BarcodeDimension calcDimensions(String msg);
+    
+    void configure(Configuration cfg) throws ConfigurationException;
 
     /**
      * Identifying Name of this Barcodetype.

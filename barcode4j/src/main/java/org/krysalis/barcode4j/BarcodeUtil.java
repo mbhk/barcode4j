@@ -17,13 +17,14 @@ package org.krysalis.barcode4j;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator;
+import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.w3c.dom.DocumentFragment;
 
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.container.ContainerUtil;
-import org.krysalis.barcode4j.output.Orientation;
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * This is a convenience class to generate barcodes. It is implemented as
@@ -126,16 +127,11 @@ public class BarcodeUtil {
         return res;
     }
 
-    private static void configure(BarcodeGenerator gen, Configuration configuration) throws BarcodeException {
+    private static void configure(ConfigurableBarcodeGenerator gen, Configuration configuration) throws BarcodeException {
         try {
-            ContainerUtil.configure(gen, configuration);
+            gen.configure(configuration);
         } catch (ConfigurationException iae) {
             throw new BarcodeException("Cannot configure barcode generator: " + iae.getMessage());
-        }
-        try {
-            ContainerUtil.initialize(gen);
-        } catch (Exception e) {
-            throw new IllegalStateException("Cannot initialize barcode generator.", e);
         }
     }
 
@@ -153,7 +149,7 @@ public class BarcodeUtil {
             throws BarcodeException {
         final BarcodeCfgAndClass cfgAndClass = resolveBarcodeCfgAndClass(cfg, classResolver);
         final BarcodeGenerator gen = instantiateBarcode(cfgAndClass.clazz);
-        configure(gen, cfgAndClass.cfg == null ? cfg : cfgAndClass.cfg);
+        configure((ConfigurableBarcodeGenerator)gen, cfgAndClass.cfg == null ? cfg : cfgAndClass.cfg);
         return gen;
     }
 

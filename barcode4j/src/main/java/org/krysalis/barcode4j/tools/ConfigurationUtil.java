@@ -23,9 +23,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * This utility class provides helper methods for Avalon Configuration objects.
@@ -67,7 +66,7 @@ public class ConfigurationUtil {
         }
     }
 
-    private static DefaultConfiguration processNode(Node node) {
+    private static Configuration processNode(Node node) {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             return processElement((Element)node);
         } else if (node.getNodeType() == Node.DOCUMENT_NODE) {
@@ -80,12 +79,12 @@ public class ConfigurationUtil {
         }
     }
 
-    private static DefaultConfiguration processElement(Element el) {
+    private static Configuration processElement(Element el) {
         String name = el.getLocalName();
         if (name == null) {
             name = el.getTagName();
         }
-        final DefaultConfiguration cfg = new DefaultConfiguration(name);
+        final Configuration cfg = new Configuration(name);
         final NamedNodeMap atts = el.getAttributes();
         for (int i = 0; i < atts.getLength(); i++) {
             final Attr attr = (Attr)atts.item(i);

@@ -15,16 +15,16 @@
  */
 package org.krysalis.barcode4j.cli;
 
-import java.io.File;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
-import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
+
 import org.krysalis.barcode4j.BarcodeException;
-import org.xml.sax.SAXException;
+
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  *
@@ -38,45 +38,28 @@ public class ConfigurationBuilder {
         // utility class
     }
 
-    public static DefaultConfiguration createEmptyConfiguration() {
-        return new DefaultConfiguration("cfg");
+    public static Configuration createEmptyConfiguration() {
+        return new Configuration("cfg");
     }
 
     public static Configuration createDefaultConfiguration(String symbologie) {
-        final DefaultConfiguration cfg = createEmptyConfiguration();
-        if (symbologie != null && !symbologie.isEmpty()) {
-            final DefaultConfiguration child = new DefaultConfiguration(symbologie);
-            cfg.addChild(child);
-        }
-        return cfg;
+        return (symbologie == null || symbologie.isEmpty()) ? createEmptyConfiguration()
+                : new Configuration(symbologie);
     }
 
     public static Configuration buildFromFile(String filename) throws BarcodeException {
         LOGGER.log(Level.INFO, "Using configurationfile: {}", filename);
-        final File cfgFile = new File(filename);
-        return buildFromFile(cfgFile);
+        return buildFromFile(Paths.get(filename));
     }
 
-    public static Configuration buildFromFile(File inputFile) throws BarcodeException {
-        final DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
-        Throwable t = null;
-        Configuration res = null;
-        if (!(inputFile.exists() && inputFile.isFile() && inputFile.canRead())) {
-            throw new BarcodeException("ConfigurationFile not readable: " + inputFile.getName());
+    public static Configuration buildFromFile(Path inputFile) throws BarcodeException {
+        if (!(Files.exists(inputFile) && Files.isRegularFile(inputFile) && Files.isReadable(inputFile))) {
+            throw new BarcodeException("ConfigurationFile not readable: " + inputFile);
         }
         try {
-            res = builder.buildFromFile(inputFile);
-        } catch (SAXException ex) {
-            t = ex;
-        } catch (IOException ex) {
-            t = ex;
+            return Configuration.builder().buildFromFile(inputFile);
         } catch (ConfigurationException ex) {
-            t = ex;
+            throw new BarcodeException("Error reading ConfigurationFile", ex);
         }
-
-        if (t != null) {
-            throw new BarcodeException("Error reading ConfigurationFile", t);
-        }
-        return res;
     }
 }

@@ -19,9 +19,8 @@ import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator;
 import org.krysalis.barcode4j.tools.Length;
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * Implements the USPS Intelligent Mail Barcode (Four State Customer Barcode).
@@ -29,8 +28,7 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class USPSIntelligentMail extends ConfigurableBarcodeGenerator 
-            implements Configurable {
+public class USPSIntelligentMail extends ConfigurableBarcodeGenerator {
 
     /** Create a new instance. */
     public USPSIntelligentMail() {

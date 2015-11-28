@@ -15,12 +15,12 @@
  */
 package org.krysalis.barcode4j.impl.code39;
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator;
 import org.krysalis.barcode4j.tools.Length;
+
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * This class is an implementation of the Code39 barcode.
@@ -28,8 +28,7 @@ import org.krysalis.barcode4j.tools.Length;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class Code39 extends ConfigurableBarcodeGenerator 
-            implements Configurable {
+public class Code39 extends ConfigurableBarcodeGenerator {
 
     /** Create a new instance. */
     public Code39() {

@@ -15,8 +15,6 @@
  */
 package org.krysalis.barcode4j.cli;
 
-import org.apache.avalon.framework.ExceptionUtil;
-
 /**
  * Abstract base class for an exit handler for the CLI.
  * 

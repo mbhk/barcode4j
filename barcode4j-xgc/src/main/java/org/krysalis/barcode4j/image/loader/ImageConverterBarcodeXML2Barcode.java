@@ -19,6 +19,12 @@ package org.krysalis.barcode4j.image.loader;
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.xmlgraphics.image.loader.Image;
+import org.apache.xmlgraphics.image.loader.ImageException;
+import org.apache.xmlgraphics.image.loader.ImageFlavor;
+import org.apache.xmlgraphics.image.loader.XMLNamespaceEnabledImageFlavor;
+import org.apache.xmlgraphics.image.loader.impl.AbstractImageConverter;
+import org.apache.xmlgraphics.image.loader.impl.ImageXMLDOM;
 import org.krysalis.barcode4j.BarcodeConstants;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeException;
@@ -29,15 +35,8 @@ import org.krysalis.barcode4j.tools.PageInfo;
 import org.krysalis.barcode4j.tools.VariableUtil;
 import org.w3c.dom.Document;
 
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-
-import org.apache.xmlgraphics.image.loader.Image;
-import org.apache.xmlgraphics.image.loader.ImageException;
-import org.apache.xmlgraphics.image.loader.ImageFlavor;
-import org.apache.xmlgraphics.image.loader.XMLNamespaceEnabledImageFlavor;
-import org.apache.xmlgraphics.image.loader.impl.AbstractImageConverter;
-import org.apache.xmlgraphics.image.loader.impl.ImageXMLDOM;
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * This ImageConverter converts barcodes XML to a barcode representation needed by the

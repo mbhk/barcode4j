@@ -19,9 +19,8 @@ import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.ConfigurableBarcodeGenerator;
 import org.krysalis.barcode4j.tools.Length;
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * Implements the Royal Mail Customer Barcode.
@@ -29,8 +28,7 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
  * @author Jeremias Maerki
  * @version $Id$
  */
-public class RoyalMailCBC extends ConfigurableBarcodeGenerator 
-            implements Configurable {
+public class RoyalMailCBC extends ConfigurableBarcodeGenerator {
 
     /** Create a new instance. */
     public RoyalMailCBC() {

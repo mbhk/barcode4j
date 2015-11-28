@@ -22,10 +22,22 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import org.apache.batik.dom.svg.SVGDOMImplementation;
+import org.apache.fop.area.PageViewport;
+import org.apache.fop.render.Graphics2DAdapter;
+import org.apache.fop.render.Graphics2DImagePainter;
+import org.apache.fop.render.ImageAdapter;
+import org.apache.fop.render.Renderer;
+import org.apache.fop.render.RendererContext;
+import org.apache.fop.render.RendererContextConstants;
+import org.apache.fop.render.XMLHandler;
+import org.apache.xmlgraphics.ps.PSGenerator;
+import org.apache.xmlgraphics.ps.PSImageUtils;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
 import org.krysalis.barcode4j.output.BarcodeCanvasSetupException;
+import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.output.eps.EPSCanvasProvider;
 import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider;
@@ -35,21 +47,7 @@ import org.krysalis.barcode4j.tools.UnitConv;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.batik.dom.svg.SVGDOMImplementation;
-
-import org.apache.xmlgraphics.ps.PSGenerator;
-import org.apache.xmlgraphics.ps.PSImageUtils;
-
-import org.apache.fop.area.PageViewport;
-import org.apache.fop.render.Graphics2DAdapter;
-import org.apache.fop.render.Graphics2DImagePainter;
-import org.apache.fop.render.ImageAdapter;
-import org.apache.fop.render.Renderer;
-import org.apache.fop.render.RendererContext;
-import org.apache.fop.render.RendererContextConstants;
-import org.apache.fop.render.XMLHandler;
-import org.krysalis.barcode4j.output.Orientation;
+import com.github.mbhk.barcode4j.Configuration;
 
 /**
  * XMLHandler for Apache FOP that handles the Barcode XML by converting it to

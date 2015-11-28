@@ -19,25 +19,23 @@ import java.awt.geom.Point2D;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.fop.apps.FOPException;
+import org.apache.fop.fo.FONode;
+import org.apache.fop.fo.PropertyList;
 import org.krysalis.barcode4j.BarcodeDimension;
 import org.krysalis.barcode4j.BarcodeException;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.BarcodeUtil;
+import org.krysalis.barcode4j.output.Orientation;
 import org.krysalis.barcode4j.tools.ConfigurationUtil;
 import org.krysalis.barcode4j.tools.MessageUtil;
 import org.krysalis.barcode4j.tools.PageInfo;
 import org.krysalis.barcode4j.tools.UnitConv;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-
-import org.apache.fop.apps.FOPException;
-import org.apache.fop.fo.FONode;
-import org.apache.fop.fo.PropertyList;
-import org.krysalis.barcode4j.output.Orientation;
+import com.github.mbhk.barcode4j.Configuration;
+import com.github.mbhk.barcode4j.ConfigurationException;
 
 /**
  * Class representing bc:barcode extension element object.
